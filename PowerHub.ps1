@@ -533,7 +533,6 @@ function Complete-InstallQueue {
     if ($failed.Count -eq 0) {
         Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı." -Color Green
         $controls.ActivityText.Text = "$successCount uygulama başarıyla kuruldu."
-        [Windows.MessageBox]::Show($window, 'Seçilen tüm uygulamalar başarıyla kuruldu.', 'PowerHub', 'OK', 'Information') | Out-Null
     } else {
         Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı, $($failed.Count) başarısız." -Color Yellow
         $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
