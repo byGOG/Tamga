@@ -17,7 +17,7 @@ Add-Type -AssemblyName System.Xaml
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PowerHub" Width="1100" Height="730" MinWidth="900" MinHeight="600"
+        Title="PowerHub" Width="760" Height="900" MinWidth="680" MinHeight="700"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource PageBg}"
         FontFamily="Segoe UI Variable, Segoe UI" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
@@ -119,7 +119,7 @@ Add-Type -AssemblyName System.Xaml
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -151,12 +151,7 @@ Add-Type -AssemblyName System.Xaml
                     </Border>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="PowerHub" Foreground="White" FontWeight="Bold" FontSize="17"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                            <TextBlock Text="Uygulama merkezi" Foreground="#9CB1C2" FontSize="10"/>
-                            <Border Background="#174C70" CornerRadius="6" Padding="4,1" Margin="6,0,0,0">
-                                <TextBlock Text="PRO" Foreground="#7DD3FC" FontSize="7" FontWeight="Bold"/>
-                            </Border>
-                        </StackPanel>
+                        <TextBlock Text="Uygulama merkezi" Foreground="#9CB1C2" FontSize="10" Margin="0,2,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -259,7 +254,7 @@ Add-Type -AssemblyName System.Xaml
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="30,24,30,22">
+        <Grid Grid.Column="1" Margin="22,20,22,18">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -274,7 +269,7 @@ Add-Type -AssemblyName System.Xaml
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="58"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="285"/>
+                        <ColumnDefinition Width="210"/>
                     </Grid.ColumnDefinitions>
                     <Border Width="46" Height="46" Background="{DynamicResource Primary}" CornerRadius="14"
                             VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -356,11 +351,11 @@ Add-Type -AssemblyName System.Xaml
                     </Style>
                 </ListBox.Resources>
                 <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate><WrapPanel IsItemsHost="True"/></ItemsPanelTemplate>
+                    <ItemsPanelTemplate><StackPanel IsItemsHost="True"/></ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,10,8"/>
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,8"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Template">
                             <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
@@ -369,7 +364,7 @@ Add-Type -AssemblyName System.Xaml
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="374" Height="70" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                        <Border Height="70" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
                                 CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
                             <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
