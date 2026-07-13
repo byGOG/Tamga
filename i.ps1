@@ -26,5 +26,4 @@ Start-Process -FilePath $windowsPowerShell -WindowStyle Hidden -ArgumentList @(
     '-File', ('"{0}"' -f $applicationScript)
 )
 
-Write-Host 'PowerHub başlatıldı.' -ForegroundColor Cyan
-
+Write-Host 'PowerHub started.' -ForegroundColor Cyan
