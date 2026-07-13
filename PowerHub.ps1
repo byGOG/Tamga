@@ -463,9 +463,10 @@ function Set-PowerHubWindowLayout {
         $dpiScale = if ($workArea.Width -gt 0) { $screenArea.Width / $workArea.Width } else { 1 }
         $appLeftPixels = $screenArea.Left + [int](($window.Left - $workArea.Left) * $dpiScale)
         $terminalLeft = $screenArea.Left + $margin
-        $terminalTop = $screenArea.Top + $margin
-        $terminalWidth = [Math]::Max(320, $appLeftPixels - $terminalLeft - $margin)
-        $terminalHeight = [Math]::Max(500, $screenArea.Height - ($margin * 2))
+        $terminalTop = $screenArea.Top + 24
+        $availableWidth = [Math]::Max(420, $appLeftPixels - $terminalLeft - $margin)
+        $terminalWidth = [Math]::Min(960, $availableWidth)
+        $terminalHeight = [Math]::Min(620, [Math]::Max(420, $screenArea.Height - 80))
         [PowerHubWindowLayout]::MoveWindow($terminalHandle, $terminalLeft, $terminalTop, $terminalWidth, $terminalHeight, $true) | Out-Null
     }
 }
