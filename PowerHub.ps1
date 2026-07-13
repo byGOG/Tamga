@@ -445,7 +445,7 @@ $apps = [Collections.ArrayList]@(
     [pscustomobject]@{ Name='Visual Studio Code'; Description='Modern kod editörü'; Id='Microsoft.VisualStudioCode'; Category='Geliştirme'; Initial='VS'; Color='#007ACC'; IsSelected=$false },
     [pscustomobject]@{ Name='Git'; Description='Sürüm kontrol sistemi'; Id='Git.Git'; Category='Geliştirme'; Initial='G'; Color='#F05032'; IsSelected=$false },
     [pscustomobject]@{ Name='Node.js LTS'; Description='JavaScript çalışma ortamı'; Id='OpenJS.NodeJS.LTS'; Category='Geliştirme'; Initial='N'; Color='#339933'; IsSelected=$false },
-    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; Category='Araçlar'; Initial='7'; Color='#6B7280'; IsSelected=$false },
+    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Araçlar'; Initial='7'; Color='#6B7280'; IsSelected=$false },
     [pscustomobject]@{ Name='PowerToys'; Description='Windows üretkenlik araçları'; Id='Microsoft.PowerToys'; Category='Araçlar'; Initial='P'; Color='#735DD0'; IsSelected=$false },
     [pscustomobject]@{ Name='Everything'; Description='Anında dosya arama'; Id='voidtools.Everything'; Category='Araçlar'; Initial='E'; Color='#F97316'; IsSelected=$false },
     [pscustomobject]@{ Name='Notepad++'; Description='Hızlı metin editörü'; Id='Notepad++.Notepad++'; Category='Araçlar'; Initial='N+'; Color='#73B53E'; IsSelected=$false }
@@ -526,10 +526,16 @@ $controls.InstallButton.Add_Click({
             $item = $items[$i]
             $sender.ReportProgress([int](($i / $items.Count) * 100), "Kuruluyor: $($item.Name)")
             try {
-                $process = Start-Process -FilePath 'winget.exe' -ArgumentList @(
-                    'install','--id',$item.Id,'--exact','--silent',
+                $installArguments = if ($item.InstallArguments) {
+                    @($item.InstallArguments)
+                } else {
+                    @('install','--id',$item.Id,'--exact')
+                }
+                $installArguments += @(
+                    '--silent',
                     '--accept-package-agreements','--accept-source-agreements','--disable-interactivity'
-                ) -Wait -PassThru -WindowStyle Hidden
+                )
+                $process = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -Wait -PassThru -WindowStyle Hidden
                 [void]$results.Add([pscustomobject]@{ Name=$item.Name; Success=($process.ExitCode -eq 0); Code=$process.ExitCode })
             } catch {
                 [void]$results.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Code=-1 })
