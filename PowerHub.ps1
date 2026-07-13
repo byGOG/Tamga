@@ -58,9 +58,33 @@ Add-Type -AssemblyName System.Xaml
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Foreground" Value="#D7DEF0"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="Padding" Value="14,11"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="Padding" Value="8,7"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="NavBorder" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="11" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="NavBorder" Property="Background" Value="#394149"/>
+                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="#526270"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="NavBorder" Property="Background" Value="#174C70"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Cursor" Value="Hand"/>
@@ -113,38 +137,91 @@ Add-Type -AssemblyName System.Xaml
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" Margin="8,0,0,28">
-                    <Border Width="38" Height="38" Background="#0078D4" CornerRadius="11">
-                        <Border.Effect><DropShadowEffect Color="#140C38" BlurRadius="14" ShadowDepth="3" Opacity="0.45"/></Border.Effect>
+                <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
+                    <Border Width="40" Height="40" CornerRadius="12">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#0EA5E9" Offset="0"/>
+                                <GradientStop Color="#0067C0" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect><DropShadowEffect Color="#071A29" BlurRadius="14" ShadowDepth="3" Opacity="0.48"/></Border.Effect>
                         <TextBlock Text="P" Foreground="White" FontSize="20" FontWeight="Bold"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="PowerHub" Foreground="White" FontWeight="Bold" FontSize="17"/>
-                        <TextBlock Text="Toplu uygulama kurucu" Foreground="#8E9AB6" FontSize="11"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <TextBlock Text="Uygulama merkezi" Foreground="#9CB1C2" FontSize="10"/>
+                            <Border Background="#174C70" CornerRadius="6" Padding="4,1" Margin="6,0,0,0">
+                                <TextBlock Text="PRO" Foreground="#7DD3FC" FontSize="7" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock Grid.Row="1" Text="KATEGORİLER" Foreground="#65708A" FontSize="10"
-                           FontWeight="Bold" Margin="13,0,0,8"/>
+                <Grid Grid.Row="1" Margin="8,0,8,8">
+                    <TextBlock Text="KATEGORİLER" Foreground="#7F94A6" FontSize="9" FontWeight="Bold"/>
+                    <Border Height="1" Background="#485058" Margin="78,6,0,0"/>
+                </Grid>
                 <StackPanel Grid.Row="2" x:Name="CategoryPanel">
-                    <Button Style="{StaticResource NavButton}" Tag="Tümü" Content="▦   Tüm uygulamalar" Background="#454A50"/>
-                    <Button Style="{StaticResource NavButton}" Tag="Tarayıcı" Content="◎   Tarayıcılar"/>
-                    <Button Style="{StaticResource NavButton}" Tag="İletişim" Content="✉   İletişim"/>
-                    <Button Style="{StaticResource NavButton}" Tag="Medya" Content="▷   Medya"/>
-                    <Button Style="{StaticResource NavButton}" Tag="Geliştirme" Content="&lt;/&gt;  Geliştirme"/>
-                    <Button Style="{StaticResource NavButton}" Tag="Araçlar" Content="⚙   Araçlar"/>
-                    <Border Background="#2E4354" BorderBrush="#436B88" BorderThickness="1" CornerRadius="13"
-                            Padding="11" Margin="7,20,7,0">
+                    <Button Style="{StaticResource NavButton}" Tag="Tümü" Background="#174C70" BorderBrush="#278DD1">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#087BBE" CornerRadius="8"><TextBlock Text="▦" Foreground="White" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="Tüm uygulamalar" Foreground="White" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Border Grid.Column="2" Background="#23516C" CornerRadius="8" Padding="6,2" VerticalAlignment="Center"><TextBlock Text="16" Foreground="#BEE7FF" FontSize="8" FontWeight="Bold"/></Border>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Tag="Tarayıcı">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#334D5E" CornerRadius="8"><TextBlock Text="◎" Foreground="#7DD3FC" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="Tarayıcılar" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Tag="İletişim">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#433C59" CornerRadius="8"><TextBlock Text="✉" Foreground="#C4B5FD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="İletişim" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Tag="Medya">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#574632" CornerRadius="8"><TextBlock Text="▷" Foreground="#FCD34D" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="Medya" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Tag="Geliştirme">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#284B47" CornerRadius="8"><TextBlock Text="&lt;/&gt;" Foreground="#6EE7B7" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="Geliştirme" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Tag="Araçlar">
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28" Background="#3B485A" CornerRadius="8"><TextBlock Text="⚙" Foreground="#93C5FD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                            <TextBlock Grid.Column="1" Text="Araçlar" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="4" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Border BorderBrush="#2E769F" BorderThickness="1" CornerRadius="14" Padding="11" Margin="0,17,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#123B55" Offset="0"/><GradientStop Color="#205B73" Offset="1"/></LinearGradientBrush>
+                        </Border.Background>
                         <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Width="31" Height="31" Background="#0078D4" CornerRadius="9">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="40"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Border Width="33" Height="33" Background="#0786D1" CornerRadius="10">
+                                <Border.Effect><DropShadowEffect Color="#06283C" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/></Border.Effect>
                                 <TextBlock Text="⚡" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                 <TextBlock Text="Tek tıkla kurulum" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
-                                <TextBlock Text="Sessiz ve otomatik" Foreground="#AFC7D8" FontSize="9" Margin="0,2,0,0"/>
+                                <TextBlock Text="Sessiz • Güvenli • Güncel" Foreground="#9DD5F2" FontSize="8" Margin="0,3,0,0"/>
                             </StackPanel>
+                            <TextBlock Grid.Column="2" Text="›" Foreground="#8FD8FF" FontSize="20" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </StackPanel>
@@ -378,8 +455,10 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
         $script:activeCategory = [string]$sender.Tag
         foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
             $nav.Background = [Windows.Media.Brushes]::Transparent
+            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
         }
-        $sender.Background = New-ColorBrush '#454A50'
+        $sender.Background = New-ColorBrush '#174C70'
+        $sender.BorderBrush = New-ColorBrush '#278DD1'
         Update-AppList
     })
 }
