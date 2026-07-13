@@ -26,10 +26,10 @@ Add-Type -AssemblyName System.Xaml
         <SolidColorBrush x:Key="Primary" Color="#0078D4"/>
         <SolidColorBrush x:Key="Ink" Color="#202124"/>
         <SolidColorBrush x:Key="Muted" Color="#697078"/>
-        <SolidColorBrush x:Key="PageBg" Color="#ECEEF1"/>
-        <SolidColorBrush x:Key="CardBg" Color="#F9FAFB"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#D5D8DC"/>
-        <SolidColorBrush x:Key="SoftBg" Color="#E3F1FC"/>
+        <SolidColorBrush x:Key="PageBg" Color="#DDE1E5"/>
+        <SolidColorBrush x:Key="CardBg" Color="#ECEFF1"/>
+        <SolidColorBrush x:Key="CardBorder" Color="#C5CBD1"/>
+        <SolidColorBrush x:Key="SoftBg" Color="#D6E4EF"/>
         <SolidColorBrush x:Key="SoftText" Color="#0067B8"/>
         <Style TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
@@ -94,7 +94,7 @@ Add-Type -AssemblyName System.Xaml
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid Width="20" Height="20">
-                            <Border x:Name="CheckBorder" Background="#FFFFFF" BorderBrush="#8A9097"
+                            <Border x:Name="CheckBorder" Background="#E5E9EC" BorderBrush="#858D95"
                                     BorderThickness="1.2" CornerRadius="5"/>
                             <Path x:Name="CheckMark" Data="M 4 10 L 8 14 L 16 6" Stroke="White"
                                   StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
@@ -103,7 +103,7 @@ Add-Type -AssemblyName System.Xaml
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource Primary}"/>
-                                <Setter TargetName="CheckBorder" Property="Background" Value="#F0F7FD"/>
+                                <Setter TargetName="CheckBorder" Property="Background" Value="#DCE7EF"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CheckBorder" Property="Background" Value="{DynamicResource Primary}"/>
@@ -269,7 +269,7 @@ Add-Type -AssemblyName System.Xaml
 
             <Border x:Name="HeaderBanner" CornerRadius="18" Padding="20,17" Background="{DynamicResource CardBg}"
                     BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
-                <Border.Effect><DropShadowEffect Color="#717780" BlurRadius="20" ShadowDepth="4" Opacity="0.22"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="#626971" BlurRadius="18" ShadowDepth="3" Opacity="0.16"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="58"/>
@@ -299,7 +299,7 @@ Add-Type -AssemblyName System.Xaml
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="#FFFFFF" BorderBrush="{DynamicResource CardBorder}"
+                        <Border Background="#E3E7EA" BorderBrush="{DynamicResource CardBorder}"
                                 BorderThickness="1" CornerRadius="11" Height="42">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -368,7 +368,7 @@ Add-Type -AssemblyName System.Xaml
 
             <Border Grid.Row="3" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="13"
                     Padding="16,12" Margin="0,8,0,0">
-                <Border.Effect><DropShadowEffect Color="#717780" BlurRadius="18" ShadowDepth="3" Opacity="0.22"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="#626971" BlurRadius="16" ShadowDepth="2" Opacity="0.16"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
