@@ -329,7 +329,7 @@ Add-Type -AssemblyName System.Xaml
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,9,9"/>
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,10,8"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Template">
                             <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
@@ -338,25 +338,24 @@ Add-Type -AssemblyName System.Xaml
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="184" Height="86" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
-                                CornerRadius="12" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
-                            <Border.Effect><DropShadowEffect Color="#717780" BlurRadius="10" ShadowDepth="1" Opacity="0.18"/></Border.Effect>
+                        <Border Width="374" Height="70" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                                CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
+                            <Border.Effect><DropShadowEffect Color="#717780" BlurRadius="9" ShadowDepth="1" Opacity="0.16"/></Border.Effect>
                             <Grid>
-                                <Grid.RowDefinitions><RowDefinition Height="4"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="{Binding Color}"/>
-                                <Grid Grid.Row="1" Margin="10,7,8,8">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="41"/><ColumnDefinition Width="*"/><ColumnDefinition Width="23"/></Grid.ColumnDefinitions>
-                                    <Border Width="34" Height="34" Background="{Binding Color}" CornerRadius="10" VerticalAlignment="Center">
+                                <Grid Grid.Column="1" Margin="11,7,10,7">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="43"/><ColumnDefinition Width="*"/><ColumnDefinition Width="25"/></Grid.ColumnDefinitions>
+                                    <Border Width="36" Height="36" Background="{Binding Color}" CornerRadius="10" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
                                         <TextBlock Text="{Binding Initial}" Foreground="White" FontWeight="Bold" FontSize="14"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="1,0,3,0">
-                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="12"
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="1,0,6,0">
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="13"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="9" Margin="0,2,0,0"
+                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,2,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Category}" Foreground="{Binding Color}" FontSize="8" FontWeight="Bold" Margin="0,3,0,0"/>
                                     </StackPanel>
                                     <CheckBox Grid.Column="2" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
