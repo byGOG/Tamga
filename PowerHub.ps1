@@ -7,35 +7,8 @@
 
 if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
     $hostExe = if ($PSVersionTable.PSEdition -eq 'Core') { 'pwsh.exe' } else { 'powershell.exe' }
-    Start-Process $hostExe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File', ('"{0}"' -f $PSCommandPath))
+    Start-Process $hostExe -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File', ('"{0}"' -f $PSCommandPath))
     exit
-}
-
-Add-Type @'
-using System;
-using System.Runtime.InteropServices;
-public static class PowerHubConsoleWindow {
-    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
-    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
-    [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-}
-'@
-
-$consoleWindow = [PowerHubConsoleWindow]::GetConsoleWindow()
-$restoreConsoleWhenClosed = $consoleWindow -ne [IntPtr]::Zero -and [PowerHubConsoleWindow]::IsWindowVisible($consoleWindow)
-if ($restoreConsoleWhenClosed) {
-    [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 0) | Out-Null
-}
-
-$terminalWindow = [IntPtr]::Zero
-if ($env:WT_SESSION) {
-    $terminalProcess = Get-Process WindowsTerminal -ErrorAction SilentlyContinue |
-        Where-Object { $_.MainWindowHandle -ne 0 -and $_.MainWindowTitle -match 'PowerShell' } |
-        Select-Object -First 1
-    if ($terminalProcess) {
-        $terminalWindow = $terminalProcess.MainWindowHandle
-        [PowerHubConsoleWindow]::ShowWindow($terminalWindow, 6) | Out-Null
-    }
 }
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
@@ -621,13 +594,4 @@ if ($winget) {
 
 Update-AppList
 Update-SelectionStatus
-try {
-    $window.ShowDialog() | Out-Null
-} finally {
-    if ($restoreConsoleWhenClosed -and $consoleWindow -ne [IntPtr]::Zero) {
-        [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 5) | Out-Null
-    }
-    if ($terminalWindow -ne [IntPtr]::Zero) {
-        [PowerHubConsoleWindow]::ShowWindow($terminalWindow, 9) | Out-Null
-    }
-}
+$window.ShowDialog() | Out-Null
