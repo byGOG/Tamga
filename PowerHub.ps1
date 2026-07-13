@@ -13,12 +13,22 @@ if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 Add-Type -AssemblyName System.Xaml
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public static class PowerHubWindowLayout {
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+}
+'@
 
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PowerHub" Width="760" Height="900" MinWidth="680" MinHeight="700"
-        WindowStartupLocation="CenterScreen" Background="{DynamicResource PageBg}"
+        Title="PowerHub" Width="780" Height="900" MinWidth="700" MinHeight="700"
+        WindowStartupLocation="Manual" Background="{DynamicResource PageBg}"
         FontFamily="Segoe UI Variable, Segoe UI" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -282,7 +292,7 @@ Add-Type -AssemblyName System.Xaml
                     </Border>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="Paket merkezi" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource Ink}"/>
-                        <TextBlock Text="Uygulamalarını seç ve tek seferde kur."
+                        <TextBlock Text="Seç, kur ve devam et."
                                    Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
@@ -425,6 +435,39 @@ $controls = @{}
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
+}
+
+function Set-PowerHubWindowLayout {
+    $workArea = [Windows.SystemParameters]::WorkArea
+    $margin = 16
+    $window.Width = 780
+    $window.Height = [Math]::Max($window.MinHeight, $workArea.Height - ($margin * 2))
+    $window.Left = $workArea.Right - $window.Width - $margin
+    $window.Top = $workArea.Top + $margin
+
+    $terminalHandle = [IntPtr]::Zero
+    $terminalProcess = Get-Process WindowsTerminal -ErrorAction SilentlyContinue |
+        Where-Object { $_.MainWindowHandle -ne 0 -and $_.MainWindowTitle -match 'PowerShell|Terminal' } |
+        Select-Object -First 1
+    if ($terminalProcess) {
+        $terminalHandle = $terminalProcess.MainWindowHandle
+    } else {
+        $consoleHandle = [PowerHubWindowLayout]::GetConsoleWindow()
+        if ($consoleHandle -ne [IntPtr]::Zero -and [PowerHubWindowLayout]::IsWindowVisible($consoleHandle)) {
+            $terminalHandle = $consoleHandle
+        }
+    }
+
+    if ($terminalHandle -ne [IntPtr]::Zero) {
+        $screenArea = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea
+        $dpiScale = if ($workArea.Width -gt 0) { $screenArea.Width / $workArea.Width } else { 1 }
+        $appLeftPixels = $screenArea.Left + [int](($window.Left - $workArea.Left) * $dpiScale)
+        $terminalLeft = $screenArea.Left + $margin
+        $terminalTop = $screenArea.Top + $margin
+        $terminalWidth = [Math]::Max(320, $appLeftPixels - $terminalLeft - $margin)
+        $terminalHeight = [Math]::Max(500, $screenArea.Height - ($margin * 2))
+        [PowerHubWindowLayout]::MoveWindow($terminalHandle, $terminalLeft, $terminalTop, $terminalWidth, $terminalHeight, $true) | Out-Null
+    }
 }
 
 function Write-PowerHubLog {
@@ -640,5 +683,6 @@ if ($winget) {
 
 Update-AppList
 Update-SelectionStatus
+Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 $window.ShowDialog() | Out-Null
