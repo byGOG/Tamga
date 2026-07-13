@@ -1,5 +1,5 @@
 # PowerHub bootstrapper
-# Usage: irm https://bygog.github.io/PowerHub/i.ps1 | iex
+# Usage: irm https://bygog.github.io/PowerHub/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
 
