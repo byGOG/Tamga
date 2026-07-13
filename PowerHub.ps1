@@ -505,73 +505,95 @@ $controls.SelectAllButton.Add_Click({
     Update-SelectionStatus
 })
 
-$controls.InstallButton.Add_Click({
-    $queue = @($apps | Where-Object IsSelected | ForEach-Object { [pscustomobject]@{ Name=$_.Name; Id=$_.Id } })
-    if ($queue.Count -eq 0) { return }
+$script:installQueue = @()
+$script:installIndex = 0
+$script:installResults = [Collections.ArrayList]::new()
+$script:installProcess = $null
+$script:installTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
 
+function Complete-InstallQueue {
+    $script:installTimer.Stop()
+    $script:isInstalling = $false
+    $controls.SelectAllButton.IsEnabled = $true
+    $controls.InstallButton.IsEnabled = $true
+    $controls.InstallProgress.Value = 100
+
+    $failed = @($script:installResults | Where-Object { -not $_.Success })
+    $successCount = @($script:installResults | Where-Object Success).Count
+    if ($failed.Count -eq 0) {
+        $controls.ActivityText.Text = "$successCount uygulama başarıyla kuruldu."
+        [Windows.MessageBox]::Show($window, 'Seçilen tüm uygulamalar başarıyla kuruldu.', 'PowerHub', 'OK', 'Information') | Out-Null
+    } else {
+        $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
+        $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
+        [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
+    }
+}
+
+function Start-NextInstall {
+    if ($script:installIndex -ge $script:installQueue.Count) {
+        Complete-InstallQueue
+        return
+    }
+
+    $item = $script:installQueue[$script:installIndex]
+    $controls.InstallProgress.Value = [int](($script:installIndex / $script:installQueue.Count) * 100)
+    $controls.ActivityText.Text = "Kuruluyor: $($item.Name)"
+    $installArguments = if ($item.InstallArguments) {
+        @($item.InstallArguments)
+    } else {
+        @('install','--id',$item.Id,'--exact')
+    }
+    $installArguments += @(
+        '--silent',
+        '--accept-package-agreements','--accept-source-agreements','--disable-interactivity'
+    )
+
+    try {
+        $script:installProcess = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -PassThru -WindowStyle Hidden
+        $script:installTimer.Start()
+    } catch {
+        [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Code=-1 })
+        $script:installIndex++
+        Start-NextInstall
+    }
+}
+
+$script:installTimer.Add_Tick({
+    if (-not $script:installProcess) { return }
+    $script:installProcess.Refresh()
+    if (-not $script:installProcess.HasExited) { return }
+
+    $script:installTimer.Stop()
+    $item = $script:installQueue[$script:installIndex]
+    $exitCode = $script:installProcess.ExitCode
+    [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Code=$exitCode })
+    $script:installProcess.Dispose()
+    $script:installProcess = $null
+    $script:installIndex++
+    Start-NextInstall
+})
+
+$controls.InstallButton.Add_Click({
+    $script:installQueue = @($apps | Where-Object IsSelected | ForEach-Object {
+        [pscustomobject]@{
+            Name = $_.Name
+            Id = $_.Id
+            InstallArguments = if ($_.PSObject.Properties['InstallArguments']) { @($_.InstallArguments) } else { $null }
+        }
+    })
+    if ($script:installQueue.Count -eq 0) { return }
+
+    $script:installIndex = 0
+    $script:installResults = [Collections.ArrayList]::new()
     $script:isInstalling = $true
     $controls.InstallButton.IsEnabled = $false
     $controls.SelectAllButton.IsEnabled = $false
     $controls.InstallProgress.Visibility = 'Visible'
     $controls.InstallProgress.Value = 0
     $controls.ActivityText.Text = 'Kurulum hazırlanıyor...'
-
-    $worker = New-Object ComponentModel.BackgroundWorker
-    $worker.WorkerReportsProgress = $true
-    $worker.DoWork += {
-        param($sender, $e)
-        $items = @($e.Argument)
-        $results = [Collections.ArrayList]::new()
-        for ($i = 0; $i -lt $items.Count; $i++) {
-            $item = $items[$i]
-            $sender.ReportProgress([int](($i / $items.Count) * 100), "Kuruluyor: $($item.Name)")
-            try {
-                $installArguments = if ($item.InstallArguments) {
-                    @($item.InstallArguments)
-                } else {
-                    @('install','--id',$item.Id,'--exact')
-                }
-                $installArguments += @(
-                    '--silent',
-                    '--accept-package-agreements','--accept-source-agreements','--disable-interactivity'
-                )
-                $process = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -Wait -PassThru -WindowStyle Hidden
-                [void]$results.Add([pscustomobject]@{ Name=$item.Name; Success=($process.ExitCode -eq 0); Code=$process.ExitCode })
-            } catch {
-                [void]$results.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Code=-1 })
-            }
-        }
-        $e.Result = $results
-        $sender.ReportProgress(100, 'Kurulum tamamlandı.')
-    }
-    $worker.ProgressChanged += {
-        param($sender, $e)
-        $controls.InstallProgress.Value = $e.ProgressPercentage
-        $controls.ActivityText.Text = [string]$e.UserState
-    }
-    $worker.RunWorkerCompleted += {
-        param($sender, $e)
-        $script:isInstalling = $false
-        $controls.SelectAllButton.IsEnabled = $true
-        $controls.InstallButton.IsEnabled = $true
-        if ($e.Error) {
-            $controls.ActivityText.Text = "Kurulum hatası: $($e.Error.Message)"
-            [Windows.MessageBox]::Show($window, $e.Error.Message, 'PowerHub', 'OK', 'Error') | Out-Null
-        } else {
-            $failed = @($e.Result | Where-Object { -not $_.Success })
-            $successCount = @($e.Result | Where-Object Success).Count
-            if ($failed.Count -eq 0) {
-                $controls.ActivityText.Text = "$successCount uygulama başarıyla kuruldu."
-                [Windows.MessageBox]::Show($window, 'Seçilen tüm uygulamalar başarıyla kuruldu.', 'PowerHub', 'OK', 'Information') | Out-Null
-            } else {
-                $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
-                $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
-                [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
-            }
-        }
-        Update-SelectionStatus
-    }
-    $worker.RunWorkerAsync($queue)
+    Start-NextInstall
 })
 
 $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
