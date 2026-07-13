@@ -432,6 +432,15 @@ function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
 
+function Write-PowerHubLog {
+    param(
+        [Parameter(Mandatory)][string]$Message,
+        [ConsoleColor]$Color = [ConsoleColor]::Gray
+    )
+    $timestamp = Get-Date -Format 'HH:mm:ss'
+    Write-Host "[$timestamp] [PowerHub] $Message" -ForegroundColor $Color
+}
+
 $apps = [Collections.ArrayList]@(
     [pscustomobject]@{ Name='Google Chrome'; Description='Hızlı web tarayıcısı'; Id='Google.Chrome'; Category='Tarayıcı'; Initial='G'; Color='#4285F4'; IsSelected=$false },
     [pscustomobject]@{ Name='Mozilla Firefox'; Description='Özgür ve gizlilik odaklı'; Id='Mozilla.Firefox'; Category='Tarayıcı'; Initial='F'; Color='#FF7139'; IsSelected=$false },
@@ -522,9 +531,14 @@ function Complete-InstallQueue {
     $failed = @($script:installResults | Where-Object { -not $_.Success })
     $successCount = @($script:installResults | Where-Object Success).Count
     if ($failed.Count -eq 0) {
+        Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı." -Color Green
         $controls.ActivityText.Text = "$successCount uygulama başarıyla kuruldu."
         [Windows.MessageBox]::Show($window, 'Seçilen tüm uygulamalar başarıyla kuruldu.', 'PowerHub', 'OK', 'Information') | Out-Null
     } else {
+        Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı, $($failed.Count) başarısız." -Color Yellow
+        foreach ($failedItem in $failed) {
+            Write-PowerHubLog -Message "Başarısız: $($failedItem.Name), çıkış kodu: $($failedItem.Code)" -Color Red
+        }
         $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
         $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
         [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
@@ -551,9 +565,12 @@ function Start-NextInstall {
     )
 
     try {
-        $script:installProcess = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -PassThru -WindowStyle Hidden
+        Write-PowerHubLog -Message "Kuruluyor: $($item.Name)" -Color Cyan
+        Write-PowerHubLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
+        $script:installProcess = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -PassThru -NoNewWindow
         $script:installTimer.Start()
     } catch {
+        Write-PowerHubLog -Message "Başlatma hatası ($($item.Name)): $($_.Exception.Message)" -Color Red
         [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Code=-1 })
         $script:installIndex++
         Start-NextInstall
@@ -568,6 +585,11 @@ $script:installTimer.Add_Tick({
     $script:installTimer.Stop()
     $item = $script:installQueue[$script:installIndex]
     $exitCode = $script:installProcess.ExitCode
+    if ($exitCode -eq 0) {
+        Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
+    } else {
+        Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
+    }
     [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Code=$exitCode })
     $script:installProcess.Dispose()
     $script:installProcess = $null
@@ -585,6 +607,8 @@ $controls.InstallButton.Add_Click({
     })
     if ($script:installQueue.Count -eq 0) { return }
 
+    Write-Host ''
+    Write-PowerHubLog -Message "$($script:installQueue.Count) uygulamalık kurulum kuyruğu başlatıldı." -Color White
     $script:installIndex = 0
     $script:installResults = [Collections.ArrayList]::new()
     $script:isInstalling = $true
@@ -598,6 +622,7 @@ $controls.InstallButton.Add_Click({
 
 $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
 if ($winget) {
+    Write-PowerHubLog -Message "winget hazır: $($winget.Source)" -Color Green
     $controls.WingetIconBox.Background = New-ColorBrush '#214B35'
     $controls.WingetIcon.Text = '✓'
     $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
@@ -608,6 +633,7 @@ if ($winget) {
     $controls.WingetBadgeText.Text = 'AKTİF'
     $controls.WingetBadgeText.Foreground = New-ColorBrush '#7EE2A8'
 } else {
+    Write-PowerHubLog -Message 'winget bulunamadı. Microsoft App Installer gerekli.' -Color Red
     $controls.WingetIconBox.Background = New-ColorBrush '#512D32'
     $controls.WingetIcon.Text = '!'
     $controls.WingetIcon.Foreground = New-ColorBrush '#FF9B9B'
@@ -622,4 +648,5 @@ if ($winget) {
 
 Update-AppList
 Update-SelectionStatus
+Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 $window.ShowDialog() | Out-Null
