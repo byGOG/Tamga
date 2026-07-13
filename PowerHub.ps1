@@ -27,6 +27,17 @@ if ($restoreConsoleWhenClosed) {
     [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 0) | Out-Null
 }
 
+$terminalWindow = [IntPtr]::Zero
+if ($env:WT_SESSION) {
+    $terminalProcess = Get-Process WindowsTerminal -ErrorAction SilentlyContinue |
+        Where-Object { $_.MainWindowHandle -ne 0 -and $_.MainWindowTitle -match 'PowerShell' } |
+        Select-Object -First 1
+    if ($terminalProcess) {
+        $terminalWindow = $terminalProcess.MainWindowHandle
+        [PowerHubConsoleWindow]::ShowWindow($terminalWindow, 6) | Out-Null
+    }
+}
+
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 Add-Type -AssemblyName System.Xaml
 
@@ -615,5 +626,8 @@ try {
 } finally {
     if ($restoreConsoleWhenClosed -and $consoleWindow -ne [IntPtr]::Zero) {
         [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 5) | Out-Null
+    }
+    if ($terminalWindow -ne [IntPtr]::Zero) {
+        [PowerHubConsoleWindow]::ShowWindow($terminalWindow, 9) | Out-Null
     }
 }
