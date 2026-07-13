@@ -24,13 +24,13 @@ Add-Type -AssemblyName System.Xaml
         UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.Resources>
         <SolidColorBrush x:Key="Primary" Color="#0078D4"/>
-        <SolidColorBrush x:Key="Ink" Color="#202124"/>
-        <SolidColorBrush x:Key="Muted" Color="#697078"/>
-        <SolidColorBrush x:Key="PageBg" Color="#DDE1E5"/>
-        <SolidColorBrush x:Key="CardBg" Color="#ECEFF1"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#C5CBD1"/>
-        <SolidColorBrush x:Key="SoftBg" Color="#D6E4EF"/>
-        <SolidColorBrush x:Key="SoftText" Color="#0067B8"/>
+        <SolidColorBrush x:Key="Ink" Color="#F0F3F5"/>
+        <SolidColorBrush x:Key="Muted" Color="#AAB3BC"/>
+        <SolidColorBrush x:Key="PageBg" Color="#252A30"/>
+        <SolidColorBrush x:Key="CardBg" Color="#30363D"/>
+        <SolidColorBrush x:Key="CardBorder" Color="#454D56"/>
+        <SolidColorBrush x:Key="SoftBg" Color="#263F52"/>
+        <SolidColorBrush x:Key="SoftText" Color="#82CEFF"/>
         <Style TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -94,7 +94,7 @@ Add-Type -AssemblyName System.Xaml
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid Width="20" Height="20">
-                            <Border x:Name="CheckBorder" Background="#E5E9EC" BorderBrush="#858D95"
+                            <Border x:Name="CheckBorder" Background="#292F35" BorderBrush="#7B8792"
                                     BorderThickness="1.2" CornerRadius="5"/>
                             <Path x:Name="CheckMark" Data="M 4 10 L 8 14 L 16 6" Stroke="White"
                                   StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
@@ -103,7 +103,7 @@ Add-Type -AssemblyName System.Xaml
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource Primary}"/>
-                                <Setter TargetName="CheckBorder" Property="Background" Value="#DCE7EF"/>
+                                <Setter TargetName="CheckBorder" Property="Background" Value="#263F52"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CheckBorder" Property="Background" Value="{DynamicResource Primary}"/>
@@ -269,7 +269,7 @@ Add-Type -AssemblyName System.Xaml
 
             <Border x:Name="HeaderBanner" CornerRadius="18" Padding="20,17" Background="{DynamicResource CardBg}"
                     BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
-                <Border.Effect><DropShadowEffect Color="#626971" BlurRadius="18" ShadowDepth="3" Opacity="0.16"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="#0E1114" BlurRadius="18" ShadowDepth="3" Opacity="0.30"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="58"/>
@@ -293,17 +293,17 @@ Add-Type -AssemblyName System.Xaml
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
                                 <TextBlock Text="16 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10" FontWeight="SemiBold"/>
                             </Border>
-                            <Border Background="#E8F6EC" CornerRadius="9" Padding="9,4">
-                                <TextBlock Text="●  Sistem hazır" Foreground="#287A45" FontSize="10" FontWeight="SemiBold"/>
+                            <Border Background="#203B2C" CornerRadius="9" Padding="9,4">
+                                <TextBlock Text="●  Sistem hazır" Foreground="#70D596" FontSize="10" FontWeight="SemiBold"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="#E3E7EA" BorderBrush="{DynamicResource CardBorder}"
+                        <Border Background="#292F35" BorderBrush="{DynamicResource CardBorder}"
                                 BorderThickness="1" CornerRadius="11" Height="42">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <TextBlock Text="⌕" FontSize="22" Foreground="#697078" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="⌕" FontSize="22" Foreground="#AAB3BC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center" FontSize="13" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
                                          ToolTip="Uygulama ara..." Margin="0,0,8,0"/>
@@ -311,7 +311,7 @@ Add-Type -AssemblyName System.Xaml
                         </Border>
                         <Grid Margin="3,9,3,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold"/>
-                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#287A45" FontSize="9" FontWeight="Bold"/>
+                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#70D596" FontSize="9" FontWeight="Bold"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -324,6 +324,37 @@ Add-Type -AssemblyName System.Xaml
 
             <ListBox x:Name="AppList" Grid.Row="2" BorderThickness="0" Background="Transparent"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.Resources>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Width" Value="9"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ScrollBar">
+                                    <Grid Background="#252A30">
+                                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/>
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb>
+                                                    <Thumb.Template>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border Background="#5A6570" CornerRadius="4" Margin="2,0"/>
+                                                        </ControlTemplate>
+                                                    </Thumb.Template>
+                                                </Thumb>
+                                            </Track.Thumb>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/>
+                                            </Track.IncreaseRepeatButton>
+                                        </Track>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate><WrapPanel IsItemsHost="True"/></ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
@@ -340,7 +371,7 @@ Add-Type -AssemblyName System.Xaml
                     <DataTemplate>
                         <Border Width="374" Height="70" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
                                 CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
-                            <Border.Effect><DropShadowEffect Color="#717780" BlurRadius="9" ShadowDepth="1" Opacity="0.16"/></Border.Effect>
+                            <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="{Binding Color}"/>
@@ -368,7 +399,7 @@ Add-Type -AssemblyName System.Xaml
 
             <Border Grid.Row="3" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="13"
                     Padding="16,12" Margin="0,8,0,0">
-                <Border.Effect><DropShadowEffect Color="#626971" BlurRadius="16" ShadowDepth="2" Opacity="0.16"/></Border.Effect>
+                <Border.Effect><DropShadowEffect Color="#0E1114" BlurRadius="16" ShadowDepth="2" Opacity="0.28"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
