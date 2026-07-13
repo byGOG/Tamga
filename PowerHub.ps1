@@ -536,9 +536,6 @@ function Complete-InstallQueue {
         [Windows.MessageBox]::Show($window, 'Seçilen tüm uygulamalar başarıyla kuruldu.', 'PowerHub', 'OK', 'Information') | Out-Null
     } else {
         Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı, $($failed.Count) başarısız." -Color Yellow
-        foreach ($failedItem in $failed) {
-            Write-PowerHubLog -Message "Başarısız: $($failedItem.Name), çıkış kodu: $($failedItem.Code)" -Color Red
-        }
         $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
         $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
         [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
@@ -584,7 +581,8 @@ $script:installTimer.Add_Tick({
 
     $script:installTimer.Stop()
     $item = $script:installQueue[$script:installIndex]
-    $exitCode = $script:installProcess.ExitCode
+    $script:installProcess.WaitForExit()
+    $exitCode = [int]$script:installProcess.ExitCode
     if ($exitCode -eq 0) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
     } else {
