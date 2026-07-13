@@ -7,8 +7,24 @@
 
 if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
     $hostExe = if ($PSVersionTable.PSEdition -eq 'Core') { 'pwsh.exe' } else { 'powershell.exe' }
-    Start-Process $hostExe -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File', ('"{0}"' -f $PSCommandPath))
+    Start-Process $hostExe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File', ('"{0}"' -f $PSCommandPath))
     exit
+}
+
+Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public static class PowerHubConsoleWindow {
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+}
+'@
+
+$consoleWindow = [PowerHubConsoleWindow]::GetConsoleWindow()
+$restoreConsoleWhenClosed = $consoleWindow -ne [IntPtr]::Zero -and [PowerHubConsoleWindow]::IsWindowVisible($consoleWindow)
+if ($restoreConsoleWhenClosed) {
+    [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 0) | Out-Null
 }
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
@@ -594,4 +610,10 @@ if ($winget) {
 
 Update-AppList
 Update-SelectionStatus
-$window.ShowDialog() | Out-Null
+try {
+    $window.ShowDialog() | Out-Null
+} finally {
+    if ($restoreConsoleWhenClosed -and $consoleWindow -ne [IntPtr]::Zero) {
+        [PowerHubConsoleWindow]::ShowWindow($consoleWindow, 5) | Out-Null
+    }
+}
