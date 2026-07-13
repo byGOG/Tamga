@@ -149,17 +149,34 @@ Add-Type -AssemblyName System.Xaml
                     </Border>
                 </StackPanel>
 
-                <Border Grid.Row="3" Background="#3B3F44" BorderBrush="#555B62" BorderThickness="1" CornerRadius="12" Padding="12">
+                <Border Grid.Row="3" BorderBrush="#545A61" BorderThickness="1" CornerRadius="14" Padding="10">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#3B3F44" Offset="0"/>
+                            <GradientStop Color="#33373B" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
                     <Grid>
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                        <Border Width="26" Height="26" Background="#294A3B" CornerRadius="13">
-                            <Ellipse Width="9" Height="9" Fill="#6DD58C"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="34"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="WingetIconBox" Width="28" Height="28" Background="#214B35" CornerRadius="9">
+                            <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="Kurulum motoru" Foreground="#8E9AB6" FontSize="9"/>
-                            <TextBlock x:Name="WingetStatus" Text="winget denetleniyor..." Foreground="#C9D3E8"
-                                       FontSize="11" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                            <TextBlock x:Name="WingetStatus" Text="winget kontrol ediliyor" Foreground="White"
+                                       FontSize="11" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="WingetDetail" Text="Kurulum motoru" Foreground="#91A0AF"
+                                       FontSize="9" Margin="0,2,0,0"/>
                         </StackPanel>
+                        <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" CornerRadius="8"
+                                Padding="6,4" VerticalAlignment="Center">
+                            <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8"
+                                       FontSize="8" FontWeight="Bold"/>
+                        </Border>
                     </Grid>
                 </Border>
             </Grid>
@@ -298,7 +315,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetStatus','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -443,11 +460,25 @@ $controls.InstallButton.Add_Click({
 
 $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
 if ($winget) {
-    $controls.WingetStatus.Text = '● winget hazır'
-    $controls.WingetStatus.Foreground = [Windows.Media.BrushConverter]::new().ConvertFromString('#7EE2A8')
+    $controls.WingetIconBox.Background = New-ColorBrush '#214B35'
+    $controls.WingetIcon.Text = '✓'
+    $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
+    $controls.WingetStatus.Text = 'winget hazır'
+    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
+    $controls.WingetDetail.Text = 'Paket yöneticisi çevrimiçi'
+    $controls.WingetBadge.Background = New-ColorBrush '#204A32'
+    $controls.WingetBadgeText.Text = 'AKTİF'
+    $controls.WingetBadgeText.Foreground = New-ColorBrush '#7EE2A8'
 } else {
-    $controls.WingetStatus.Text = '● winget bulunamadı'
-    $controls.WingetStatus.Foreground = [Windows.Media.BrushConverter]::new().ConvertFromString('#FF9B9B')
+    $controls.WingetIconBox.Background = New-ColorBrush '#512D32'
+    $controls.WingetIcon.Text = '!'
+    $controls.WingetIcon.Foreground = New-ColorBrush '#FF9B9B'
+    $controls.WingetStatus.Text = 'winget bulunamadı'
+    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
+    $controls.WingetDetail.Text = 'App Installer gerekli'
+    $controls.WingetBadge.Background = New-ColorBrush '#512D32'
+    $controls.WingetBadgeText.Text = 'EKSİK'
+    $controls.WingetBadgeText.Foreground = New-ColorBrush '#FF9B9B'
     $controls.ActivityText.Text = 'Microsoft App Installer (winget) gerekli.'
 }
 
