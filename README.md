@@ -2,6 +2,10 @@
 
 [Türkçe](#türkçe) · [English](#english)
 
+<p align="center">
+  <img src="assets/powerhub-preview.png" alt="PowerHub application preview" width="100%">
+</p>
+
 ## Türkçe
 
 PowerHub, Windows uygulamalarını seçip `winget` üzerinden toplu ve sessiz biçimde kurmak için hazırlanmış modern bir PowerShell/WPF arayüzüdür.
