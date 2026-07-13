@@ -462,10 +462,9 @@ function Set-PowerHubWindowLayout {
         $screenArea = [System.Windows.Forms.Screen]::PrimaryScreen.WorkingArea
         $dpiScale = if ($workArea.Width -gt 0) { $screenArea.Width / $workArea.Width } else { 1 }
         $appLeftPixels = $screenArea.Left + [int](($window.Left - $workArea.Left) * $dpiScale)
-        $terminalLeft = $screenArea.Left + $margin
-        $terminalTop = $screenArea.Top + 24
-        $availableWidth = [Math]::Max(420, $appLeftPixels - $terminalLeft - $margin)
-        $terminalWidth = [Math]::Min(960, $availableWidth)
+        $terminalLeft = $screenArea.Left + 64
+        $terminalTop = $screenArea.Top + 120
+        $terminalWidth = [Math]::Max(420, $appLeftPixels - $terminalLeft - 32)
         $terminalHeight = [Math]::Min(620, [Math]::Max(420, $screenArea.Height - 80))
         [PowerHubWindowLayout]::MoveWindow($terminalHandle, $terminalLeft, $terminalTop, $terminalWidth, $terminalHeight, $true) | Out-Null
     }
