@@ -916,7 +916,9 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Grid>
             </Border>
 
-            <ListBox x:Name="SecurityCheckList" Grid.Row="2" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox x:Name="SecurityCheckList" Grid.Row="2" BorderThickness="0" Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ListBox.Resources>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,7"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -926,16 +928,17 @@ if ($fontInstallFailures.Count -gt 0) {
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Height="68" Background="#292929" BorderBrush="#434343" BorderThickness="1" CornerRadius="6">
+                        <Border MinHeight="68" Background="#292929" BorderBrush="#434343" BorderThickness="1" CornerRadius="6" Padding="0,8">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="130"/></Grid.ColumnDefinitions>
                                 <Border Background="{Binding Accent}"/>
                                 <Border Grid.Column="1" Width="34" Height="34" CornerRadius="17" Background="{Binding IconBackground}" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Icon}" Foreground="{Binding Foreground}" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,1,8,1">
                                     <TextBlock Text="{Binding Name}" Foreground="White" FontSize="13.5" FontWeight="SemiBold"/>
-                                    <TextBlock Text="{Binding Detail}" Foreground="#929FA8" FontSize="10.5" Margin="0,4,12,0" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Detail}" Foreground="#929FA8" FontSize="10.5" Margin="0,4,8,0"
+                                               TextWrapping="Wrap" TextTrimming="None" MaxHeight="32" LineHeight="15" ToolTip="{Binding Detail}"/>
                                 </StackPanel>
                                 <Border Grid.Column="3" Background="{Binding StatusBackground}" BorderBrush="{Binding StatusBorder}" BorderThickness="1" CornerRadius="4" Padding="9,5" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding StatusLabel}" Foreground="{Binding Foreground}" FontSize="9" FontWeight="Bold"/>
