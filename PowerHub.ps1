@@ -33,14 +33,14 @@ public static class PowerHubWindowLayout {
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.Resources>
-        <SolidColorBrush x:Key="Primary" Color="#0078D4"/>
-        <SolidColorBrush x:Key="Ink" Color="#F7F9FA"/>
-        <SolidColorBrush x:Key="Muted" Color="#BCC5CE"/>
-        <SolidColorBrush x:Key="PageBg" Color="#252A30"/>
-        <SolidColorBrush x:Key="CardBg" Color="#30363D"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#454D56"/>
-        <SolidColorBrush x:Key="SoftBg" Color="#263F52"/>
-        <SolidColorBrush x:Key="SoftText" Color="#82CEFF"/>
+        <SolidColorBrush x:Key="Primary" Color="#0F8AD8"/>
+        <SolidColorBrush x:Key="Ink" Color="#F4F7F9"/>
+        <SolidColorBrush x:Key="Muted" Color="#AEBAC4"/>
+        <SolidColorBrush x:Key="PageBg" Color="#20262C"/>
+        <SolidColorBrush x:Key="CardBg" Color="#2B333B"/>
+        <SolidColorBrush x:Key="CardBorder" Color="#3E4A55"/>
+        <SolidColorBrush x:Key="SoftBg" Color="#233C4E"/>
+        <SolidColorBrush x:Key="SoftText" Color="#79CEFA"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
             <Setter Property="Width" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -122,6 +122,38 @@ public static class PowerHubWindowLayout {
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="#263A46"/>
+            <Setter Property="BorderBrush" Value="#3D5968"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#7FD5FF"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="IconSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="IconSurface" Property="Background" Value="#174C70"/>
+                                <Setter TargetName="IconSurface" Property="BorderBrush" Value="#278DD1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="IconSurface" Property="Background" Value="#0D659E"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="IconSurface" Property="Opacity" Value="0.42"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Width" Value="20"/>
@@ -162,8 +194,8 @@ public static class PowerHubWindowLayout {
         <Border x:Name="Sidebar" Grid.Column="0" BorderThickness="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#24272B" Offset="0"/>
-                    <GradientStop Color="#35393E" Offset="1"/>
+                    <GradientStop Color="#1C2228" Offset="0"/>
+                    <GradientStop Color="#293139" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
             <Grid Margin="20,24">
@@ -239,18 +271,38 @@ public static class PowerHubWindowLayout {
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="HeaderBanner" CornerRadius="18" Padding="22,19" Background="{DynamicResource CardBg}"
-                    BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
-                <Border.Effect><DropShadowEffect Color="#0E1114" BlurRadius="18" ShadowDepth="3" Opacity="0.30"/></Border.Effect>
+            <Border x:Name="HeaderBanner" CornerRadius="20" Padding="22,19" BorderBrush="#46545F" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#303A44" Offset="0"/>
+                        <GradientStop Color="#283038" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect><DropShadowEffect Color="#0B1116" BlurRadius="22" ShadowDepth="4" Opacity="0.34"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="260"/>
                     </Grid.ColumnDefinitions>
-                    <Border Width="50" Height="50" Background="{DynamicResource Primary}" CornerRadius="15"
+                    <Border Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" Margin="-22,-19,-22,0" CornerRadius="20,20,2,2">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#0F8AD8" Offset="0"/>
+                                <GradientStop Color="#51C5EF" Offset="0.48"/>
+                                <GradientStop Color="#7565E8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Border Width="50" Height="50" CornerRadius="16"
                             VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Border.Effect><DropShadowEffect Color="#0078D4" BlurRadius="12" ShadowDepth="2" Opacity="0.30"/></Border.Effect>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#159CE8" Offset="0"/>
+                                <GradientStop Color="#086CB5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect><DropShadowEffect Color="#0879C5" BlurRadius="14" ShadowDepth="3" Opacity="0.38"/></Border.Effect>
                         <Grid>
                             <Rectangle Width="21" Height="17" Fill="Transparent" Stroke="White" StrokeThickness="1.8" RadiusX="3" RadiusY="3"/>
                             <Path Data="M 15 17 L 23 17 M 19 13 L 19 21" Stroke="White" StrokeThickness="1.8"
@@ -258,8 +310,9 @@ public static class PowerHubWindowLayout {
                         </Grid>
                     </Border>
                     <StackPanel Grid.Column="1">
+                        <TextBlock Text="POWERHUB  /  WINGET" FontSize="9.5" FontWeight="Bold" Foreground="#65C9F5" Margin="0,0,0,3"/>
                         <TextBlock Text="Paket merkezi" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource Ink}"/>
-                        <TextBlock Text="Seç, kur ve devam et."
+                        <TextBlock Text="Keşfet, seç ve tek akışta kur."
                                    Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
@@ -274,8 +327,8 @@ public static class PowerHubWindowLayout {
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="#292F35" BorderBrush="{DynamicResource CardBorder}"
-                                BorderThickness="1" CornerRadius="11" Height="46">
+                        <Border Background="#20282F" BorderBrush="#4B5964"
+                                BorderThickness="1" CornerRadius="13" Height="46">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                 <TextBlock Text="⌕" FontSize="22" Foreground="#AAB3BC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -283,7 +336,7 @@ public static class PowerHubWindowLayout {
                                            FontSize="13" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center" FontSize="14" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
-                                         ToolTip="Uygulama ara..." Margin="0,0,8,0"/>
+                                         ToolTip="Uygulama ara..." AutomationProperties.Name="Uygulama ara" Margin="0,0,8,0"/>
                                 <Button x:Name="SearchClearButton" Grid.Column="2" Content="×" Width="26" Height="26" Padding="0"
                                         Background="Transparent" Foreground="#AEB9C4" FontSize="18" ToolTip="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
@@ -296,9 +349,11 @@ public static class PowerHubWindowLayout {
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" Margin="0,18,0,12">
-                <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
-                <TextBlock x:Name="ResultCount" HorizontalAlignment="Right" Foreground="{StaticResource Muted}" FontSize="13"/>
+            <Grid Grid.Row="1" Margin="0,19,0,12">
+                <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
+                <Border HorizontalAlignment="Right" Background="#29343D" BorderBrush="#3E4D58" BorderThickness="1" CornerRadius="9" Padding="9,4">
+                    <TextBlock x:Name="ResultCount" Foreground="#B8C6D1" FontSize="11" FontWeight="SemiBold"/>
+                </Border>
             </Grid>
 
             <ListBox x:Name="AppList" Grid.Row="2" BorderThickness="0" Background="Transparent"
@@ -339,7 +394,7 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,10"/>
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,9"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Template">
                             <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
@@ -348,16 +403,16 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border x:Name="CardBorder" Height="82" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
-                                CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
-                            <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
+                        <Border x:Name="CardBorder" Height="80" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                                CornerRadius="14" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
+                            <Border.Effect><DropShadowEffect Color="#0C1115" BlurRadius="11" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="14,9,13,9">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="36"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
-                                    <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Center">
-                                        <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
+                                    <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="13" VerticalAlignment="Center">
+                                        <Border.Effect><DropShadowEffect Color="#101820" BlurRadius="8" ShadowDepth="2" Opacity="0.34"/></Border.Effect>
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="34" Height="34" Stretch="Uniform"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
@@ -371,22 +426,29 @@ public static class PowerHubWindowLayout {
                                         <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
-                                    <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="8" Padding="8,4" Margin="8,0,10,0"
+                                    <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="8" Padding="8,4" Margin="8,0,8,0"
                                             VerticalAlignment="Center" ToolTip="Kurulum kaynağı">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
-                                    <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Content="↗" Width="28" Height="28" Padding="0"
-                                            Background="#344550" BorderBrush="#465D69" BorderThickness="1" Foreground="#79CFF7" FontSize="15"
-                                            Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                    <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
+                                            Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
+                                            VerticalAlignment="Top" HorizontalAlignment="Center">
+                                        <Grid Width="16" Height="16">
+                                            <Path Data="M 3,7 L 3,13 L 9,13" Stroke="#85D9FF" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                            <Path Data="M 7,3 L 13,3 L 13,9 M 13,3 L 6,10" Stroke="#85D9FF" StrokeThickness="1.5"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                        </Grid>
+                                    </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                              Visibility="{Binding CheckVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                              Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name}"
+                                              VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Grid>
                         </Border>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background" Value="#363E47"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#5A6876"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="#323D46"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#557184"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsChecked, ElementName=AppCheck}" Value="True">
                                 <Setter TargetName="CardBorder" Property="Background" Value="#293F50"/>
@@ -398,21 +460,26 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="3" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="13"
-                    Padding="16,12" Margin="0,8,0,0">
-                <Border.Effect><DropShadowEffect Color="#0E1114" BlurRadius="16" ShadowDepth="2" Opacity="0.28"/></Border.Effect>
+            <Border Grid.Row="3" BorderBrush="#46545F" BorderThickness="1" CornerRadius="16" Padding="17,13" Margin="0,9,0,0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#2B343C" Offset="0"/>
+                        <GradientStop Color="#28323A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect><DropShadowEffect Color="#0A0F13" BlurRadius="18" ShadowDepth="3" Opacity="0.32"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"/>
                         <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"/>
-                        <ProgressBar x:Name="InstallProgress" Height="4" Margin="0,8,18,0" Minimum="0" Maximum="100"
+                        <ProgressBar x:Name="InstallProgress" Height="3" Margin="0,9,18,0" Minimum="0" Maximum="100"
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#29485C" Foreground="#8EDBFF"
                                 Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)"/>
-                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="{DynamicResource Primary}" Foreground="White"
+                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#0F8AD8" Foreground="White"
                                 IsEnabled="False" ToolTip="Seçilenleri kur (Enter)"/>
                     </StackPanel>
                 </Grid>
@@ -1012,6 +1079,10 @@ $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windo
 function Open-PowerHubWebsite {
     param($Item, [string]$Url, [switch]$WebResource)
     if ([string]::IsNullOrWhiteSpace($Url)) { return }
+    $now = [DateTime]::UtcNow
+    if ($script:lastWebsiteUrl -eq $Url -and ($now - $script:lastWebsiteOpenAt).TotalMilliseconds -lt 750) { return }
+    $script:lastWebsiteUrl = $Url
+    $script:lastWebsiteOpenAt = $now
     try {
         Start-Process -FilePath $Url
         $label = if ($WebResource) { 'Site açıldı' } else { 'Resmî site açıldı' }
@@ -1022,6 +1093,27 @@ function Open-PowerHubWebsite {
         Write-PowerHubLog -Message "Site açılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
     }
 }
+
+$script:lastWebsiteUrl = $null
+$script:lastWebsiteOpenAt = [DateTime]::MinValue
+$websiteClickHandler = [Windows.RoutedEventHandler]{
+    param($sender, $eventArgs)
+    $button = $eventArgs.Source -as [Windows.Controls.Button]
+    if (-not $button) {
+        $node = $eventArgs.OriginalSource
+        while ($node -and -not ($node -is [Windows.Controls.Button])) {
+            try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+        }
+        $button = $node -as [Windows.Controls.Button]
+    }
+    if (-not $button -or [string]::IsNullOrWhiteSpace([string]$button.Tag)) { return }
+    $container = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $button)
+    if (-not $container) { return }
+    $item = $container.DataContext
+    Open-PowerHubWebsite -Item $item -Url ([string]$button.Tag) -WebResource:$item.IsWebResource
+    $eventArgs.Handled = $true
+}
+$controls.AppList.AddHandler([Windows.Controls.Primitives.ButtonBase]::ClickEvent, $websiteClickHandler, $true)
 
 $controls.AppList.Add_PreviewMouseLeftButtonUp({
     param($sender, $eventArgs)
