@@ -416,24 +416,36 @@ function ConvertFrom-Base64Image([string]$base64) {
 function Get-PowerHubLogoCatalog {
     $cacheDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
     $cachePath = Join-Path $cacheDirectory 'logos.json'
+    $bundledPath = Join-Path $PSScriptRoot 'logos.json'
     $developmentPath = Join-Path $PSScriptRoot 'PowerHub\logos.json'
-    $catalogPath = @(
-        (Join-Path $PSScriptRoot 'logos.json'),
-        $developmentPath,
-        $cachePath
-    ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    $isInstalledCache = [IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\') -eq [IO.Path]::GetFullPath($cacheDirectory).TrimEnd('\')
+    $catalogPath = if (-not $isInstalledCache -and (Test-Path -LiteralPath $bundledPath)) {
+        $bundledPath
+    } elseif (Test-Path -LiteralPath $developmentPath) {
+        $developmentPath
+    } else {
+        $null
+    }
 
     try {
         if (-not $catalogPath) {
-            [IO.Directory]::CreateDirectory($cacheDirectory) | Out-Null
-            $response = Invoke-WebRequest -UseBasicParsing -Uri 'https://bygog.github.io/PowerHub/logos.json' -TimeoutSec 15
-            $json = if ($response.Content -is [byte[]]) {
-                [Text.Encoding]::UTF8.GetString([byte[]]$response.Content)
-            } else {
-                [string]$response.Content
+            try {
+                [IO.Directory]::CreateDirectory($cacheDirectory) | Out-Null
+                $response = Invoke-WebRequest -UseBasicParsing -Uri 'https://bygog.github.io/PowerHub/logos.json' -TimeoutSec 15
+                $json = if ($response.Content -is [byte[]]) {
+                    [Text.Encoding]::UTF8.GetString([byte[]]$response.Content)
+                } else {
+                    [string]$response.Content
+                }
+                [IO.File]::WriteAllText($cachePath, $json, [Text.UTF8Encoding]::new($false))
+                $catalogPath = $cachePath
+            } catch {
+                if (Test-Path -LiteralPath $cachePath) {
+                    $catalogPath = $cachePath
+                } else {
+                    throw
+                }
             }
-            [IO.File]::WriteAllText($cachePath, $json, [Text.UTF8Encoding]::new($false))
-            $catalogPath = $cachePath
         }
 
         $catalogObject = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json
