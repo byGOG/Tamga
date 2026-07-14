@@ -337,7 +337,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Button x:Name="UpdateCenterButton" Grid.Row="3" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
                         ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -352,7 +352,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="4" Style="{StaticResource AboutNavButton}" Margin="0,7,0,0"
+                <Button x:Name="AboutButton" Grid.Row="4" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -367,9 +367,9 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="5" Height="52" Background="#252525" BorderBrush="#414141" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="5" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
                         CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
-                    <Grid Width="183" HorizontalAlignment="Center">
+                    <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="42"/>
