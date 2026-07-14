@@ -734,7 +734,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Grid Margin="0,16,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                             <Button x:Name="AboutByGogButton" Grid.Column="0" Content="byGOG" Background="#303030" Foreground="#E1E9EE"
-                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG GitHub profilini aç"/>
+                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG web sitesini aç"/>
                             <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="#174A63" Foreground="#A9E5FF"
                                     BorderBrush="#286783" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
                         </Grid>
@@ -1743,7 +1743,7 @@ $controls.AboutButton.Add_Click({ Set-PowerHubAboutVisibility $true })
 $controls.AboutCloseButton.Add_Click({ Set-PowerHubAboutVisibility $false })
 $controls.AboutBackdrop.Add_MouseLeftButtonUp({ Set-PowerHubAboutVisibility $false })
 $controls.AboutByGogButton.Add_Click({
-    try { Start-Process -FilePath 'https://github.com/byGOG' } catch { Write-PowerHubLog -Message "byGOG profili açılamadı: $($_.Exception.Message)" -Color Red }
+    try { Start-Process -FilePath 'https://bygog.github.io/' } catch { Write-PowerHubLog -Message "byGOG web sitesi açılamadı: $($_.Exception.Message)" -Color Red }
 })
 $controls.AboutGitHubButton.Add_Click({
     try { Start-Process -FilePath 'https://github.com/byGOG/PowerHub' } catch { Write-PowerHubLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
