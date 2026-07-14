@@ -195,39 +195,16 @@ public static class PowerHubWindowLayout {
                     <TextBlock Text="KATEGORİLER" Foreground="#9AAEBD" FontSize="10.5" FontWeight="Bold"/>
                     <Border Height="1" Background="#485058" Margin="78,6,0,0"/>
                 </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,8">
-                        <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
-                        <StackPanel x:Name="CategoryPanel"/>
-                    </ScrollViewer>
-                    <Border x:Name="QuickInstallCard" Grid.Row="1" Background="#2B333A" BorderBrush="#435462" BorderThickness="1"
-                            CornerRadius="15" Margin="0,8,0,0" Cursor="Hand" ToolTip="Görünen uygulamaları hızlıca seç">
-                        <Border.Effect><DropShadowEffect Color="#101820" BlurRadius="12" ShadowDepth="2" Opacity="0.30"/></Border.Effect>
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/></Grid.ColumnDefinitions>
-                            <Border Background="#1595DA" CornerRadius="15,0,0,15"/>
-                            <Border Grid.Column="1" Width="34" Height="34" Background="#0A79B8" CornerRadius="11" VerticalAlignment="Center">
-                                <Border.Effect><DropShadowEffect Color="#071A29" BlurRadius="9" ShadowDepth="2" Opacity="0.42"/></Border.Effect>
-                                <TextBlock Text="⚡" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,12,4,12">
-                                <TextBlock Text="Tek tıkla kurulum" Foreground="#F4F8FB" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock Text="Görünenleri hızlıca seç" Foreground="#9FB3C2" FontSize="10" Margin="0,3,0,0"/>
-                            </StackPanel>
-                            <Border x:Name="QuickInstallArrow" Grid.Column="3" Width="24" Height="24" Background="#344550" CornerRadius="8"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="→" Foreground="#72CBF5" FontSize="14" FontWeight="SemiBold"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </Grid>
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,8">
+                    <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
+                    <StackPanel x:Name="CategoryPanel"/>
+                </ScrollViewer>
 
                 <Border x:Name="WingetCard" Grid.Row="3" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
                         CornerRadius="15" Padding="11" Margin="0,10,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Border.Effect><DropShadowEffect Color="#11161A" BlurRadius="10" ShadowDepth="1" Opacity="0.24"/></Border.Effect>
                     <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="38"/>
                             <ColumnDefinition Width="*"/>
@@ -237,12 +214,8 @@ public static class PowerHubWindowLayout {
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock x:Name="WingetStatus" Text="winget kontrol ediliyor" Foreground="White"
-                                       FontSize="12.5" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="WingetDetail" Text="Paket yöneticisi çevrimiçi" Foreground="#91A0AF"
-                                       FontSize="10" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
-                        </StackPanel>
+                        <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="White"
+                                   FontSize="12.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
                                 CornerRadius="9" Padding="7,4" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -250,6 +223,9 @@ public static class PowerHubWindowLayout {
                                 <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="9" FontWeight="Bold"/>
                             </StackPanel>
                         </Border>
+                        <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                   Text="Paket yöneticisi çevrimiçi" Foreground="#91A0AF" FontSize="10"
+                                   Margin="0,5,0,0" TextWrapping="Wrap" MaxHeight="30"/>
                     </Grid>
                 </Border>
             </Grid>
@@ -447,7 +423,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','QuickInstallCard','QuickInstallArrow','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -961,23 +937,6 @@ $window.Add_PreviewKeyDown({
 })
 
 $controls.SelectAllButton.Add_Click({
-    $allSelected = $script:visibleApps.Count -gt 0 -and @($script:visibleApps | Where-Object { -not $_.IsSelected }).Count -eq 0
-    foreach ($app in $script:visibleApps) { $app.IsSelected = -not $allSelected }
-    Update-AppList
-    Update-SelectionStatus
-})
-
-$controls.QuickInstallCard.Add_MouseEnter({
-    $controls.QuickInstallCard.Background = New-ColorBrush '#313E47'
-    $controls.QuickInstallCard.BorderBrush = New-ColorBrush '#278DD1'
-    $controls.QuickInstallArrow.Background = New-ColorBrush '#174C70'
-})
-$controls.QuickInstallCard.Add_MouseLeave({
-    $controls.QuickInstallCard.Background = New-ColorBrush '#2B333A'
-    $controls.QuickInstallCard.BorderBrush = New-ColorBrush '#435462'
-    $controls.QuickInstallArrow.Background = New-ColorBrush '#344550'
-})
-$controls.QuickInstallCard.Add_MouseLeftButtonUp({
     $allSelected = $script:visibleApps.Count -gt 0 -and @($script:visibleApps | Where-Object { -not $_.IsSelected }).Count -eq 0
     foreach ($app in $script:visibleApps) { $app.IsSelected = -not $allSelected }
     Update-AppList
