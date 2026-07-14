@@ -576,13 +576,19 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
-        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Background="#DC080C10" Visibility="Collapsed">
+        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed">
+            <Grid.Background>
+                <RadialGradientBrush Center="0.5,0.44" GradientOrigin="0.5,0.44" RadiusX="0.78" RadiusY="0.78">
+                    <GradientStop Color="#C8172B38" Offset="0"/><GradientStop Color="#E3080C10" Offset="0.68"/><GradientStop Color="#F205080B" Offset="1"/>
+                </RadialGradientBrush>
+            </Grid.Background>
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
-            <Border x:Name="AboutCard" Width="540" MaxHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Background="#151B21" BorderBrush="#40515D" BorderThickness="1" CornerRadius="22" ClipToBounds="True">
-                <Border.Effect><DropShadowEffect Color="#020507" BlurRadius="42" ShadowDepth="10" Opacity="0.78"/></Border.Effect>
+            <Border x:Name="AboutCard" Width="560" MaxHeight="740" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    BorderBrush="#4B6574" BorderThickness="1" CornerRadius="24" ClipToBounds="True">
+                <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#182128" Offset="0"/><GradientStop Color="#12181E" Offset="1"/></LinearGradientBrush></Border.Background>
+                <Border.Effect><DropShadowEffect Color="#010304" BlurRadius="52" ShadowDepth="12" Opacity="0.86"/></Border.Effect>
                 <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="170"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid.RowDefinitions><RowDefinition Height="184"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Border Grid.Row="0">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -590,33 +596,37 @@ if ($fontInstallFailures.Count -gt 0) {
                             </LinearGradientBrush>
                         </Border.Background>
                         <Grid ClipToBounds="True">
+                            <Border Height="2" VerticalAlignment="Top" HorizontalAlignment="Stretch"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#19BDF0" Offset="0"/><GradientStop Color="#4ED7F7" Offset="0.5"/><GradientStop Color="#745CE8" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <Ellipse Width="260" Height="260" Stroke="#2A91BE" StrokeThickness="2" Opacity="0.23" HorizontalAlignment="Right" Margin="0,-72,30,0"/>
                             <Ellipse Width="170" Height="170" Stroke="#52D5F2" StrokeThickness="1.5" Opacity="0.24" HorizontalAlignment="Right" Margin="0,-18,82,0"/>
                             <Ellipse Width="82" Height="82" Fill="#173F52" Stroke="#48CFF2" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,126,0">
                                 <Ellipse.Effect><DropShadowEffect Color="#30BCE8" BlurRadius="30" ShadowDepth="0" Opacity="0.58"/></Ellipse.Effect>
                             </Ellipse>
                             <Path Data="M 300 145 L 390 70 L 485 118 M 330 25 L 420 105 L 535 42" Stroke="#3BBDE4" StrokeThickness="1.4" Opacity="0.32"/>
-                            <Border Width="56" Height="56" CornerRadius="17" Background="#078AD5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="26,0,0,26">
+                            <Border Width="58" Height="58" CornerRadius="18" Background="#078AD5" BorderBrush="#49C9F3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="28,0,0,28">
                                 <Border.Effect><DropShadowEffect Color="#078AD5" BlurRadius="20" ShadowDepth="3" Opacity="0.58"/></Border.Effect>
                                 <TextBlock Text="P" Foreground="White" FontSize="27" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="96,0,0,29">
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="101,0,0,31">
                                 <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="Bold"/>
                                 <TextBlock Text="Windows uygulama merkezi" Foreground="#8FCBE7" FontSize="11.5" Margin="0,3,0,0"/>
                             </StackPanel>
-                            <Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#163848" BorderBrush="#2E6A83" BorderThickness="1"
-                                    CornerRadius="10" Padding="9,5" Margin="0,18,58,0">
-                                <TextBlock Text="STABLE • 2026" Foreground="#75D9FA" FontSize="9" FontWeight="Bold"/>
-                            </Border>
-                            <Button x:Name="AboutCloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="×" Width="32" Height="32"
-                                    Padding="0" Margin="0,15,15,0" Background="#26323A" Foreground="#C6D4DD" FontSize="19" ToolTip="Kapat (Esc)"/>
+                            <Button x:Name="AboutCloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="&#xE711;" Width="34" Height="34"
+                                    Padding="0" Margin="0,16,16,0" Background="#25323A" Foreground="#C6DCE8" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" ToolTip="Kapat (Esc)"/>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Row="1" Margin="27,22,27,25">
-                        <TextBlock Text="Hakkında" Foreground="White" FontSize="19" FontWeight="SemiBold"/>
+                    <StackPanel Grid.Row="1" Margin="29,24,29,26">
+                        <TextBlock Text="POWERHUB  /  HAKKINDA" Foreground="#62CFF5" FontSize="9.5" FontWeight="Bold"/>
+                        <TextBlock Text="Uygulamaların için tek merkez." Foreground="White" FontSize="21" FontWeight="SemiBold" Margin="0,6,0,0"/>
                         <TextBlock Text="PowerHub, Windows uygulamalarını keşfetmek, resmî kaynaklara ulaşmak ve güvenli paket kurulumlarını tek merkezden yönetmek için geliştirildi."
-                                   Foreground="#AEBBC5" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,9,0,0"/>
-                        <Border Background="#1D252C" BorderBrush="#2B3E49" BorderThickness="0,0,0,0" CornerRadius="12" Padding="15,13" Margin="0,17,0,0">
+                                   Foreground="#AEBBC5" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,10,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                            <Border Background="#193344" CornerRadius="9" Padding="10,6" Margin="0,0,7,0"><TextBlock Text="✓  WinGet destekli" Foreground="#79D8FA" FontSize="10" FontWeight="SemiBold"/></Border>
+                            <Border Background="#21362D" CornerRadius="9" Padding="10,6" Margin="0,0,7,0"><TextBlock Text="●  Güvenli kaynaklar" Foreground="#82DBA5" FontSize="10" FontWeight="SemiBold"/></Border>
+                            <Border Background="#302D43" CornerRadius="9" Padding="10,6"><TextBlock Text="◇  Açık kaynak" Foreground="#B9AFFF" FontSize="10" FontWeight="SemiBold"/></Border>
+                        </StackPanel>
+                        <Border CornerRadius="13" Padding="16,14" Margin="0,17,0,0" BorderBrush="#2D424E" BorderThickness="1">
+                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#1D2931" Offset="0"/><GradientStop Color="#192127" Offset="1"/></LinearGradientBrush></Border.Background>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="#26B9E8" CornerRadius="2"/>
@@ -627,12 +637,12 @@ if ($fontInstallFailures.Count -gt 0) {
                         </Border>
                         <Grid Margin="0,20,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="⚡  BYGOG" Background="#202C34" Foreground="#DFF5FF"
+                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="⚡  byGOG" Background="#202F38" Foreground="#DFF5FF"
                                     BorderBrush="#365365" BorderThickness="1" Padding="13,10" ToolTip="byGOG GitHub profilini aç"/>
                             <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="↗  GitHub projesi" Background="#17384A" Foreground="#8EDBFF"
                                     BorderBrush="#2D6079" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
                         </Grid>
-                        <TextBlock Text="© 2026 byGOG  •  Açık kaynak PowerShell projesi" Foreground="#63737E" FontSize="9.5"
+                        <TextBlock Text="© 2026 byGOG  •  PowerShell ile açık kaynak" Foreground="#6D7E89" FontSize="9.5"
                                    HorizontalAlignment="Center" Margin="0,18,0,0"/>
                     </StackPanel>
                 </Grid>
