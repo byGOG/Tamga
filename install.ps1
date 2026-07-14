@@ -19,7 +19,7 @@ if (-not (Test-Path -LiteralPath $windowsPowerShell)) {
     $windowsPowerShell = 'powershell.exe'
 }
 
-Start-Process -FilePath $windowsPowerShell -WindowStyle Hidden -ArgumentList @(
+Start-Process -FilePath $windowsPowerShell -ArgumentList @(
     '-NoProfile',
     '-ExecutionPolicy', 'Bypass',
     '-STA',

@@ -1467,6 +1467,7 @@ function Set-WingetCardState {
 
 $script:wingetReady = $false
 $script:wingetInstallProcess = $null
+$script:wingetInstallResultFile = $null
 $script:wingetInstallTimer = [Windows.Threading.DispatcherTimer]::new()
 $script:wingetInstallTimer.Interval = [TimeSpan]::FromMilliseconds(500)
 
@@ -1477,9 +1478,15 @@ $script:wingetInstallTimer.Add_Tick({
 
     $script:wingetInstallTimer.Stop()
     $script:wingetInstallProcess.WaitForExit()
-    $exitCode = [int]$script:wingetInstallProcess.ExitCode
+    $processExitCode = [int]$script:wingetInstallProcess.ExitCode
     $script:wingetInstallProcess.Dispose()
     $script:wingetInstallProcess = $null
+    $exitCode = $processExitCode
+    if ($script:wingetInstallResultFile -and (Test-Path -LiteralPath $script:wingetInstallResultFile)) {
+        try { $exitCode = [int](Get-Content -LiteralPath $script:wingetInstallResultFile -Raw -ErrorAction Stop).Trim() } catch {}
+        Remove-Item -LiteralPath $script:wingetInstallResultFile -Force -ErrorAction SilentlyContinue
+    }
+    $script:wingetInstallResultFile = $null
     $wingetCommand = Resolve-WingetExecutable
 
     if ($exitCode -eq 0 -and $wingetCommand) {
@@ -1521,7 +1528,10 @@ function Save-PowerHubFile {
 function Confirm-PowerHubHash {
     param([string]$FilePath, [string]$HashFile)
     $expected = ((Get-Content -LiteralPath $HashFile -Raw).Trim() -split '\s+')[0].ToUpperInvariant()
-    $actual = (Get-FileHash -LiteralPath $FilePath -Algorithm SHA256).Hash.ToUpperInvariant()
+    $stream = [IO.File]::OpenRead($FilePath)
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try { $actual = ([BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-', '').ToUpperInvariant() }
+    finally { $sha256.Dispose(); $stream.Dispose() }
     if ($expected -ne $actual) { throw "SHA256 doğrulaması başarısız: $(Split-Path $FilePath -Leaf)" }
 }
 
@@ -1554,7 +1564,9 @@ try {
     Save-PowerHubFile "$releaseBase/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.txt" $appInstallerHash
     Confirm-PowerHubHash $appInstallerBundle $appInstallerHash
 
-    Expand-Archive -LiteralPath $dependencyArchive -DestinationPath $dependencyDirectory -Force
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    if (Test-Path -LiteralPath $dependencyDirectory) { Remove-Item -LiteralPath $dependencyDirectory -Recurse -Force }
+    [IO.Compression.ZipFile]::ExtractToDirectory($dependencyArchive, $dependencyDirectory)
     $architectureDirectory = Join-Path $dependencyDirectory $packageArchitecture
     $dependencyPackages = @(Get-ChildItem -LiteralPath $architectureDirectory -File | Where-Object Extension -in @('.appx','.msix'))
     if ($dependencyPackages.Count -eq 0) { throw "Mimariye uygun bağımlılık bulunamadı: $packageArchitecture" }
@@ -1587,16 +1599,25 @@ try {
     $result = 1
 } finally {
     Remove-Item -LiteralPath $workDirectory -Recurse -Force -ErrorAction SilentlyContinue
+    if ($env:POWERHUB_WINGET_RESULT_FILE) {
+        [IO.File]::WriteAllText($env:POWERHUB_WINGET_RESULT_FILE, [string]$result)
+    }
 }
 exit $result
 '@
     $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($installerScript))
     try {
+        $script:wingetInstallResultFile = Join-Path $env:TEMP ("PowerHub-WinGet-result-{0}.txt" -f [Guid]::NewGuid().ToString('N'))
+        $env:POWERHUB_WINGET_RESULT_FILE = $script:wingetInstallResultFile
         $script:wingetInstallProcess = Start-Process -FilePath 'powershell.exe' -ArgumentList @(
             '-NoProfile','-ExecutionPolicy','Bypass','-OutputFormat','Text','-EncodedCommand',$encodedCommand
         ) -PassThru -NoNewWindow
+        Remove-Item Env:\POWERHUB_WINGET_RESULT_FILE -ErrorAction SilentlyContinue
         $script:wingetInstallTimer.Start()
     } catch {
+        Remove-Item Env:\POWERHUB_WINGET_RESULT_FILE -ErrorAction SilentlyContinue
+        if ($script:wingetInstallResultFile) { Remove-Item -LiteralPath $script:wingetInstallResultFile -Force -ErrorAction SilentlyContinue }
+        $script:wingetInstallResultFile = $null
         Write-PowerHubLog -Message "winget kurulumu başlatılamadı: $($_.Exception.Message)" -Color Red
         $controls.ActivityText.Text = 'Store bağımsız kurulum başlatılamadı. Durum kartından yeniden deneyin.'
         Set-WingetCardState -State Error
