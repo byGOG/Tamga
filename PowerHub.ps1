@@ -201,52 +201,54 @@ public static class PowerHubWindowLayout {
                         <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
                         <StackPanel x:Name="CategoryPanel"/>
                     </ScrollViewer>
-                    <Border Grid.Row="1" BorderBrush="#2E769F" BorderThickness="1" CornerRadius="14" Padding="11" Margin="0,8,0,0">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#123B55" Offset="0"/><GradientStop Color="#205B73" Offset="1"/></LinearGradientBrush>
-                        </Border.Background>
+                    <Border x:Name="QuickInstallCard" Grid.Row="1" Background="#2B333A" BorderBrush="#435462" BorderThickness="1"
+                            CornerRadius="15" Margin="0,8,0,0" Cursor="Hand" ToolTip="Görünen uygulamaları hızlıca seç">
+                        <Border.Effect><DropShadowEffect Color="#101820" BlurRadius="12" ShadowDepth="2" Opacity="0.30"/></Border.Effect>
                         <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="40"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="33" Height="33" Background="#0786D1" CornerRadius="10">
-                                <Border.Effect><DropShadowEffect Color="#06283C" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/></Border.Effect>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/></Grid.ColumnDefinitions>
+                            <Border Background="#1595DA" CornerRadius="15,0,0,15"/>
+                            <Border Grid.Column="1" Width="34" Height="34" Background="#0A79B8" CornerRadius="11" VerticalAlignment="Center">
+                                <Border.Effect><DropShadowEffect Color="#071A29" BlurRadius="9" ShadowDepth="2" Opacity="0.42"/></Border.Effect>
                                 <TextBlock Text="⚡" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Tek tıkla kurulum" Foreground="White" FontSize="12.5" FontWeight="SemiBold"/>
-                                <TextBlock Text="Sessiz • Güvenli • Güncel" Foreground="#B3DFF6" FontSize="9.5" Margin="0,3,0,0"/>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,12,4,12">
+                                <TextBlock Text="Tek tıkla kurulum" Foreground="#F4F8FB" FontSize="13" FontWeight="SemiBold"/>
+                                <TextBlock Text="Görünenleri hızlıca seç" Foreground="#9FB3C2" FontSize="10" Margin="0,3,0,0"/>
                             </StackPanel>
-                            <TextBlock Grid.Column="2" Text="›" Foreground="#8FD8FF" FontSize="20" VerticalAlignment="Center"/>
+                            <Border x:Name="QuickInstallArrow" Grid.Column="3" Width="24" Height="24" Background="#344550" CornerRadius="8"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="→" Foreground="#72CBF5" FontSize="14" FontWeight="SemiBold"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
                         </Grid>
                     </Border>
                 </Grid>
 
-                <Border x:Name="WingetCard" Grid.Row="3" BorderBrush="#545A61" BorderThickness="1" CornerRadius="14" Padding="10">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#3B3F44" Offset="0"/>
-                            <GradientStop Color="#33373B" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
+                <Border x:Name="WingetCard" Grid.Row="3" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
+                        CornerRadius="15" Padding="11" Margin="0,10,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
+                    <Border.Effect><DropShadowEffect Color="#11161A" BlurRadius="10" ShadowDepth="1" Opacity="0.24"/></Border.Effect>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="34"/>
+                            <ColumnDefinition Width="38"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Width="28" Height="28" Background="#214B35" CornerRadius="9">
+                        <Border x:Name="WingetIconBox" Width="30" Height="30" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="10">
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock x:Name="WingetStatus" Text="winget kontrol ediliyor" Foreground="White"
                                        FontSize="12.5" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="WingetDetail" Text="Kurulum motoru" Foreground="#91A0AF"
-                                       FontSize="10.5" Margin="0,2,0,0"/>
+                            <TextBlock x:Name="WingetDetail" Text="Paket yöneticisi çevrimiçi" Foreground="#91A0AF"
+                                       FontSize="10" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
-                        <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" CornerRadius="8"
-                                Padding="6,4" VerticalAlignment="Center">
-                            <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8"
-                                       FontSize="9" FontWeight="Bold"/>
+                        <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
+                                CornerRadius="9" Padding="7,4" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="WingetBadgeDot" Width="5" Height="5" Fill="#67DB95" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="9" FontWeight="Bold"/>
+                            </StackPanel>
                         </Border>
                     </Grid>
                 </Border>
@@ -445,7 +447,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','QuickInstallCard','QuickInstallArrow','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -965,6 +967,23 @@ $controls.SelectAllButton.Add_Click({
     Update-SelectionStatus
 })
 
+$controls.QuickInstallCard.Add_MouseEnter({
+    $controls.QuickInstallCard.Background = New-ColorBrush '#313E47'
+    $controls.QuickInstallCard.BorderBrush = New-ColorBrush '#278DD1'
+    $controls.QuickInstallArrow.Background = New-ColorBrush '#174C70'
+})
+$controls.QuickInstallCard.Add_MouseLeave({
+    $controls.QuickInstallCard.Background = New-ColorBrush '#2B333A'
+    $controls.QuickInstallCard.BorderBrush = New-ColorBrush '#435462'
+    $controls.QuickInstallArrow.Background = New-ColorBrush '#344550'
+})
+$controls.QuickInstallCard.Add_MouseLeftButtonUp({
+    $allSelected = $script:visibleApps.Count -gt 0 -and @($script:visibleApps | Where-Object { -not $_.IsSelected }).Count -eq 0
+    foreach ($app in $script:visibleApps) { $app.IsSelected = -not $allSelected }
+    Update-AppList
+    Update-SelectionStatus
+})
+
 $script:installQueue = @()
 $script:installIndex = 0
 $script:installResults = [Collections.ArrayList]::new()
@@ -1095,13 +1114,16 @@ function Set-WingetCardState {
         'Ready' {
             $script:wingetReady = $true
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Arrow
-            $controls.WingetCard.BorderBrush = New-ColorBrush '#545A61'
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#46515A'
             $controls.WingetIconBox.Background = New-ColorBrush '#214B35'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#346A4D'
             $controls.WingetIcon.Text = '✓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
             $controls.WingetStatus.Text = 'winget hazır'
             $controls.WingetDetail.Text = 'Paket yöneticisi çevrimiçi'
             $controls.WingetBadge.Background = New-ColorBrush '#204A32'
+            $controls.WingetBadge.BorderBrush = New-ColorBrush '#346A4D'
+            $controls.WingetBadgeDot.Fill = New-ColorBrush '#67DB95'
             $controls.WingetBadgeText.Text = 'AKTİF'
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#7EE2A8'
         }
@@ -1110,11 +1132,14 @@ function Set-WingetCardState {
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Hand
             $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
             $controls.WingetIconBox.Background = New-ColorBrush '#594523'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#8A682F'
             $controls.WingetIcon.Text = '↓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
             $controls.WingetStatus.Text = 'winget kur'
             $controls.WingetDetail.Text = 'Otomatik kurmak için tıklayın'
             $controls.WingetBadge.Background = New-ColorBrush '#58441F'
+            $controls.WingetBadge.BorderBrush = New-ColorBrush '#8A682F'
+            $controls.WingetBadgeDot.Fill = New-ColorBrush '#F5BC5A'
             $controls.WingetBadgeText.Text = 'KUR'
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFD58A'
         }
@@ -1123,11 +1148,14 @@ function Set-WingetCardState {
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Wait
             $controls.WingetCard.BorderBrush = New-ColorBrush '#278DD1'
             $controls.WingetIconBox.Background = New-ColorBrush '#174C70'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#278DD1'
             $controls.WingetIcon.Text = '…'
             $controls.WingetIcon.Foreground = New-ColorBrush '#BEE7FF'
             $controls.WingetStatus.Text = 'winget kuruluyor'
             $controls.WingetDetail.Text = 'App Installer indiriliyor'
             $controls.WingetBadge.Background = New-ColorBrush '#174C70'
+            $controls.WingetBadge.BorderBrush = New-ColorBrush '#278DD1'
+            $controls.WingetBadgeDot.Fill = New-ColorBrush '#61C7FF'
             $controls.WingetBadgeText.Text = 'BEKLE'
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#BEE7FF'
         }
@@ -1136,11 +1164,14 @@ function Set-WingetCardState {
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Hand
             $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
             $controls.WingetIconBox.Background = New-ColorBrush '#594523'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#8A682F'
             $controls.WingetIcon.Text = '↗'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
             $controls.WingetStatus.Text = 'App Installer gerekli'
             $controls.WingetDetail.Text = 'Microsoft Store sayfasını açmak için tıklayın'
             $controls.WingetBadge.Background = New-ColorBrush '#58441F'
+            $controls.WingetBadge.BorderBrush = New-ColorBrush '#8A682F'
+            $controls.WingetBadgeDot.Fill = New-ColorBrush '#F5BC5A'
             $controls.WingetBadgeText.Text = 'STORE'
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFD58A'
         }
