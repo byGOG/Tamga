@@ -169,49 +169,8 @@ public static class PowerHubWindowLayout {
                     <TextBlock Text="KATEGORİLER" Foreground="#7F94A6" FontSize="9" FontWeight="Bold"/>
                     <Border Height="1" Background="#485058" Margin="78,6,0,0"/>
                 </Grid>
-                <StackPanel Grid.Row="2" x:Name="CategoryPanel">
-                    <Button Style="{StaticResource NavButton}" Tag="Tümü" Background="#174C70" BorderBrush="#278DD1">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#087BBE" CornerRadius="8"><TextBlock Text="▦" Foreground="White" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="Tüm uygulamalar" Foreground="White" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <Border Grid.Column="2" Background="#23516C" CornerRadius="8" Padding="6,2" VerticalAlignment="Center"><TextBlock Text="16" Foreground="#BEE7FF" FontSize="8" FontWeight="Bold"/></Border>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}" Tag="Tarayıcı">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#334D5E" CornerRadius="8"><TextBlock Text="◎" Foreground="#7DD3FC" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="Tarayıcılar" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}" Tag="İletişim">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#433C59" CornerRadius="8"><TextBlock Text="✉" Foreground="#C4B5FD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="İletişim" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}" Tag="Medya">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#574632" CornerRadius="8"><TextBlock Text="▷" Foreground="#FCD34D" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="Medya" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}" Tag="Geliştirme">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#284B47" CornerRadius="8"><TextBlock Text="&lt;/&gt;" Foreground="#6EE7B7" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="Geliştirme" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="3" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource NavButton}" Tag="Araçlar">
-                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <Border Width="28" Height="28" Background="#3B485A" CornerRadius="8"><TextBlock Text="⚙" Foreground="#93C5FD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Grid.Column="1" Text="Araçlar" Foreground="#E7EDF3" FontSize="11" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="4" Foreground="#8093A2" FontSize="9" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                        </Grid>
-                    </Button>
+                <StackPanel Grid.Row="2">
+                    <StackPanel x:Name="CategoryPanel"/>
                     <Border BorderBrush="#2E769F" BorderThickness="1" CornerRadius="14" Padding="11" Margin="0,17,0,0">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#123B55" Offset="0"/><GradientStop Color="#205B73" Offset="1"/></LinearGradientBrush>
@@ -296,7 +255,7 @@ public static class PowerHubWindowLayout {
                                    Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
-                                <TextBlock Text="16 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10" FontWeight="SemiBold"/>
                             </Border>
                             <Border Background="#203B2C" CornerRadius="9" Padding="9,4">
                                 <TextBlock Text="●  Sistem hazır" Foreground="#70D596" FontSize="10" FontWeight="SemiBold"/>
@@ -432,7 +391,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -499,22 +458,84 @@ function Write-PowerHubLog {
 }
 
 $apps = [Collections.ArrayList]@(
-    [pscustomobject]@{ Name='Google Chrome'; Description='Hızlı web tarayıcısı'; Id='Google.Chrome'; Category='Tarayıcı'; Initial='G'; Color='#4285F4'; IsSelected=$false },
-    [pscustomobject]@{ Name='Mozilla Firefox'; Description='Özgür ve gizlilik odaklı'; Id='Mozilla.Firefox'; Category='Tarayıcı'; Initial='F'; Color='#FF7139'; IsSelected=$false },
-    [pscustomobject]@{ Name='Brave'; Description='Reklam engelleyici tarayıcı'; Id='Brave.Brave'; Category='Tarayıcı'; Initial='B'; Color='#FB542B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Discord'; Description='Topluluk ve sesli sohbet'; Id='Discord.Discord'; Category='İletişim'; Initial='D'; Color='#5865F2'; IsSelected=$false },
-    [pscustomobject]@{ Name='Telegram'; Description='Hızlı ve güvenli mesajlaşma'; Id='Telegram.TelegramDesktop'; Category='İletişim'; Initial='T'; Color='#229ED9'; IsSelected=$false },
-    [pscustomobject]@{ Name='Zoom'; Description='Video toplantıları'; Id='Zoom.Zoom'; Category='İletişim'; Initial='Z'; Color='#2D8CFF'; IsSelected=$false },
-    [pscustomobject]@{ Name='VLC'; Description='Her formatı oynatır'; Id='VideoLAN.VLC'; Category='Medya'; Initial='V'; Color='#F59E0B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Spotify'; Description='Müzik ve podcast'; Id='Spotify.Spotify'; Category='Medya'; Initial='S'; Color='#1DB954'; IsSelected=$false },
-    [pscustomobject]@{ Name='OBS Studio'; Description='Kayıt ve canlı yayın'; Id='OBSProject.OBSStudio'; Category='Medya'; Initial='O'; Color='#4B5563'; IsSelected=$false },
+    [pscustomobject]@{ Name='Google Chrome'; Description='Hızlı web tarayıcısı'; Id='Google.Chrome'; Category='Web Tarayıcıları'; Initial='G'; Color='#4285F4'; IsSelected=$false },
+    [pscustomobject]@{ Name='Mozilla Firefox'; Description='Özgür ve gizlilik odaklı'; Id='Mozilla.Firefox'; Category='Web Tarayıcıları'; Initial='F'; Color='#FF7139'; IsSelected=$false },
+    [pscustomobject]@{ Name='Brave'; Description='Reklam engelleyici tarayıcı'; Id='Brave.Brave'; Category='Web Tarayıcıları'; Initial='B'; Color='#FB542B'; IsSelected=$false },
+    [pscustomobject]@{ Name='Zen Browser'; Description='Sade ve modern tarayıcı'; Id='Zen-Team.Zen-Browser'; Category='Web Tarayıcıları'; Initial='Z'; Color='#6B7CFF'; IsSelected=$false },
+    [pscustomobject]@{ Name='Tor Browser'; Description='Anonimlik odaklı tarayıcı'; Id='TorProject.TorBrowser'; Category='Web Tarayıcıları'; Initial='T'; Color='#7D4698'; IsSelected=$false },
+    [pscustomobject]@{ Name='Mullvad Browser'; Description='Parmak izi korumalı tarayıcı'; Id='MullvadVPN.MullvadBrowser'; Category='Web Tarayıcıları'; Initial='M'; Color='#D29422'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Discord'; Description='Topluluk ve sesli sohbet'; Id='Discord.Discord'; Category='İletişim & Sosyal'; Initial='D'; Color='#5865F2'; IsSelected=$false },
+    [pscustomobject]@{ Name='Telegram'; Description='Hızlı ve güvenli mesajlaşma'; Id='Telegram.TelegramDesktop'; Category='İletişim & Sosyal'; Initial='T'; Color='#229ED9'; IsSelected=$false },
+    [pscustomobject]@{ Name='WhatsApp'; Description='Mesajlaşma ve görüntülü arama'; Id='9NKSQGP7F2NH'; InstallArguments=@('install','-e','--id','9NKSQGP7F2NH','--source','msstore'); Category='İletişim & Sosyal'; Initial='W'; Color='#25D366'; IsSelected=$false },
+    [pscustomobject]@{ Name='Thunderbird'; Description='Açık kaynak e-posta istemcisi'; Id='Mozilla.Thunderbird'; Category='İletişim & Sosyal'; Initial='T'; Color='#0A84FF'; IsSelected=$false },
+    [pscustomobject]@{ Name='Zoom'; Description='Video toplantıları'; Id='Zoom.Zoom'; Category='İletişim & Sosyal'; Initial='Z'; Color='#2D8CFF'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Google Drive'; Description='Bulut depolama ve eşitleme'; Id='Google.GoogleDrive'; Category='Üretkenlik'; Initial='G'; Color='#4A8AF4'; IsSelected=$false },
+    [pscustomobject]@{ Name='Dropbox'; Description='Dosya eşitleme ve paylaşım'; Id='Dropbox.Dropbox'; Category='Üretkenlik'; Initial='D'; Color='#0061FF'; IsSelected=$false },
+    [pscustomobject]@{ Name='CopyQ'; Description='Gelişmiş pano yöneticisi'; Id='hluk.CopyQ'; Category='Üretkenlik'; Initial='C'; Color='#4B7D8F'; IsSelected=$false },
+    [pscustomobject]@{ Name='Flow Launcher'; Description='Hızlı uygulama başlatıcı'; Id='Flow-Launcher.Flow-Launcher'; Category='Üretkenlik'; Initial='F'; Color='#5B8DEF'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='VLC'; Description='Her formatı oynatır'; Id='VideoLAN.VLC'; Category='Multimedya'; Initial='V'; Color='#F59E0B'; IsSelected=$false },
+    [pscustomobject]@{ Name='OBS Studio'; Description='Kayıt ve canlı yayın'; Id='OBSProject.OBSStudio'; Category='Multimedya'; Initial='O'; Color='#4B5563'; IsSelected=$false },
+    [pscustomobject]@{ Name='HandBrake'; Description='Video dönüştürme aracı'; Id='HandBrake.HandBrake'; Category='Multimedya'; Initial='H'; Color='#3FA35C'; IsSelected=$false },
+    [pscustomobject]@{ Name='ImageGlass'; Description='Hafif ve modern görsel görüntüleyici'; Id='DuongDieuPhap.ImageGlass'; Category='Multimedya'; Initial='I'; Color='#D9509E'; IsSelected=$false },
+    [pscustomobject]@{ Name='Spotify'; Description='Müzik ve podcast'; Id='Spotify.Spotify'; Category='Multimedya'; Initial='S'; Color='#1DB954'; IsSelected=$false },
+    [pscustomobject]@{ Name='foobar2000'; Description='Özelleştirilebilir müzik oynatıcı'; Id='PeterPawlowski.foobar2000'; Category='Multimedya'; Initial='F'; Color='#566270'; IsSelected=$false },
+
     [pscustomobject]@{ Name='Visual Studio Code'; Description='Modern kod editörü'; Id='Microsoft.VisualStudioCode'; Category='Geliştirme'; Initial='VS'; Color='#007ACC'; IsSelected=$false },
     [pscustomobject]@{ Name='Git'; Description='Sürüm kontrol sistemi'; Id='Git.Git'; Category='Geliştirme'; Initial='G'; Color='#F05032'; IsSelected=$false },
     [pscustomobject]@{ Name='Node.js LTS'; Description='JavaScript çalışma ortamı'; Id='OpenJS.NodeJS.LTS'; Category='Geliştirme'; Initial='N'; Color='#339933'; IsSelected=$false },
-    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Araçlar'; Initial='7'; InitialOpacity=0.0; Logo=$sevenZipLogo; Color='#6B7280'; IsSelected=$false },
-    [pscustomobject]@{ Name='PowerToys'; Description='Windows üretkenlik araçları'; Id='Microsoft.PowerToys'; Category='Araçlar'; Initial='P'; Color='#735DD0'; IsSelected=$false },
-    [pscustomobject]@{ Name='Everything'; Description='Anında dosya arama'; Id='voidtools.Everything'; Category='Araçlar'; Initial='E'; Color='#F97316'; IsSelected=$false },
-    [pscustomobject]@{ Name='Notepad++'; Description='Hızlı metin editörü'; Id='Notepad++.Notepad++'; Category='Araçlar'; Initial='N+'; Color='#73B53E'; IsSelected=$false }
+    [pscustomobject]@{ Name='Python 3.13'; Description='Python geliştirme ortamı'; Id='Python.Python.3.13'; Category='Geliştirme'; Initial='Py'; Color='#3776AB'; IsSelected=$false },
+    [pscustomobject]@{ Name='Docker Desktop'; Description='Konteyner geliştirme platformu'; Id='Docker.DockerDesktop'; Category='Geliştirme'; Initial='D'; Color='#2496ED'; IsSelected=$false },
+    [pscustomobject]@{ Name='Postman'; Description='API geliştirme ve test aracı'; Id='Postman.Postman'; Category='Geliştirme'; Initial='P'; Color='#FF6C37'; IsSelected=$false },
+    [pscustomobject]@{ Name='Notepad++'; Description='Hızlı metin ve kod editörü'; Id='Notepad++.Notepad++'; Category='Geliştirme'; Initial='N+'; Color='#73B53E'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Claude'; Description='Anthropic yapay zeka asistanı'; Id='Anthropic.Claude'; Category='Yapay Zeka'; Initial='C'; Color='#C67C5B'; IsSelected=$false },
+    [pscustomobject]@{ Name='Cursor'; Description='Yapay zeka destekli kod editörü'; Id='Anysphere.Cursor'; Category='Yapay Zeka'; Initial='C'; Color='#4A4A4A'; IsSelected=$false },
+    [pscustomobject]@{ Name='Google Antigravity'; Description='Yapay zeka geliştirme aracı'; Id='Google.Antigravity'; Category='Yapay Zeka'; Initial='A'; Color='#5965D8'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='HWiNFO64'; Description='Donanım izleme ve tanılama'; Id='REALiX.HWiNFO'; Category='Donanım & Test'; Initial='H'; Color='#2979A8'; IsSelected=$false },
+    [pscustomobject]@{ Name='CPU-Z'; Description='İşlemci ve sistem bilgileri'; Id='CPUID.CPU-Z'; Category='Donanım & Test'; Initial='C'; Color='#6D4BA0'; IsSelected=$false },
+    [pscustomobject]@{ Name='GPU-Z'; Description='Ekran kartı bilgileri'; Id='TechPowerUp.GPU-Z'; Category='Donanım & Test'; Initial='G'; Color='#2C8D65'; IsSelected=$false },
+    [pscustomobject]@{ Name='OCCT'; Description='Kararlılık ve stres testi'; Id='OCBase.OCCT.Personal'; Category='Donanım & Test'; Initial='O'; Color='#D8543D'; IsSelected=$false },
+    [pscustomobject]@{ Name='FurMark 2'; Description='GPU stres ve kıyaslama testi'; Id='Geeks3D.FurMark.2'; Category='Donanım & Test'; Initial='F'; Color='#B64936'; IsSelected=$false },
+    [pscustomobject]@{ Name='PassMark PerformanceTest'; Description='Bilgisayar performans testi'; Id='PassMark.PerformanceTest'; Category='Donanım & Test'; Initial='P'; Color='#35699A'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='PowerToys'; Description='Windows üretkenlik araçları'; Id='Microsoft.PowerToys'; Category='Sistem Araçları'; Initial='P'; Color='#735DD0'; IsSelected=$false },
+    [pscustomobject]@{ Name='Rufus'; Description='Önyüklenebilir USB hazırlama'; Id='Rufus.Rufus'; Category='Sistem Araçları'; Initial='R'; Color='#3A7D9A'; IsSelected=$false },
+    [pscustomobject]@{ Name='Ventoy'; Description='Çoklu ISO önyükleme aracı'; Id='Ventoy.Ventoy'; Category='Sistem Araçları'; Initial='V'; Color='#4A8B55'; IsSelected=$false },
+    [pscustomobject]@{ Name='BleachBit'; Description='Sistem temizleme aracı'; Id='BleachBit.BleachBit'; Category='Sistem Araçları'; Initial='B'; Color='#799C3A'; IsSelected=$false },
+    [pscustomobject]@{ Name='UniGetUI'; Description='Paket yöneticileri için arayüz'; Id='Devolutions.UniGetUI'; Category='Sistem Araçları'; Initial='U'; Color='#4E78A7'; IsSelected=$false },
+    [pscustomobject]@{ Name='Everything'; Description='Anında dosya arama'; Id='voidtools.Everything'; Category='Sistem Araçları'; Initial='E'; Color='#F97316'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Malwarebytes'; Description='Kötü amaçlı yazılım koruması'; Id='Malwarebytes.Malwarebytes'; Category='Güvenlik'; Initial='M'; Color='#1479C9'; IsSelected=$false },
+    [pscustomobject]@{ Name='Bitwarden'; Description='Açık kaynak parola yöneticisi'; Id='Bitwarden.Bitwarden'; Category='Güvenlik'; Initial='B'; Color='#175DDC'; IsSelected=$false },
+    [pscustomobject]@{ Name='ESET Security'; Description='Antivirüs ve internet güvenliği'; Id='ESET.Security'; Category='Güvenlik'; Initial='E'; Color='#00A6A6'; IsSelected=$false },
+    [pscustomobject]@{ Name='Sandboxie Plus'; Description='Yalıtılmış uygulama ortamı'; Id='Sandboxie.Plus'; Category='Güvenlik'; Initial='S'; Color='#D5A62E'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Proton VPN'; Description='Gizlilik odaklı VPN'; Id='Proton.ProtonVPN'; Category='Gizlilik & Ağ'; Initial='P'; Color='#6D4AFF'; IsSelected=$false },
+    [pscustomobject]@{ Name='OpenVPN Connect'; Description='Güvenli VPN istemcisi'; Id='OpenVPNTechnologies.OpenVPNConnect'; Category='Gizlilik & Ağ'; Initial='O'; Color='#EA7E20'; IsSelected=$false },
+    [pscustomobject]@{ Name='GoodbyeDPI'; Description='DPI engellerine karşı ağ aracı'; Id='ValdikSS.GoodbyeDPI'; Category='Gizlilik & Ağ'; Initial='G'; Color='#3D7B8A'; IsSelected=$false },
+    [pscustomobject]@{ Name='DNS Jumper'; Description='Hızlı DNS değiştirme aracı'; Id='sordum.DnsJumper'; Category='Gizlilik & Ağ'; Initial='D'; Color='#3A8A7A'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Steam'; Description='PC oyun mağazası ve platformu'; Id='Valve.Steam'; Category='Oyun & Platformlar'; Initial='S'; Color='#1B6B9B'; IsSelected=$false },
+    [pscustomobject]@{ Name='Epic Games Launcher'; Description='Epic oyun mağazası'; Id='EpicGames.EpicGamesLauncher'; Category='Oyun & Platformlar'; Initial='E'; Color='#4B4B4B'; IsSelected=$false },
+    [pscustomobject]@{ Name='Battle.net'; Description='Blizzard oyun platformu'; Id='Blizzard.BattleNet'; Category='Oyun & Platformlar'; Initial='B'; Color='#148EFF'; IsSelected=$false },
+    [pscustomobject]@{ Name='GOG Galaxy'; Description='GOG oyun kütüphanesi'; Id='GOG.Galaxy'; Category='Oyun & Platformlar'; Initial='G'; Color='#8B4FA8'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Dosya Yönetimi'; Initial='7'; InitialOpacity=0.0; Logo=$sevenZipLogo; Color='#6B7280'; IsSelected=$false },
+    [pscustomobject]@{ Name='WinRAR'; Description='Arşivleme ve sıkıştırma aracı'; Id='RARLab.WinRAR'; Category='Dosya Yönetimi'; Initial='W'; Color='#7A5B91'; IsSelected=$false },
+    [pscustomobject]@{ Name='WizTree'; Description='Hızlı disk alanı analizi'; Id='AntibodySoftware.WizTree'; Category='Dosya Yönetimi'; Initial='W'; Color='#49944A'; IsSelected=$false },
+    [pscustomobject]@{ Name='TeraCopy'; Description='Hızlı ve güvenilir dosya kopyalama'; Id='CodeSector.TeraCopy'; Category='Dosya Yönetimi'; Initial='T'; Color='#3D7FA5'; IsSelected=$false },
+    [pscustomobject]@{ Name='OneCommander'; Description='Modern çift panelli dosya yöneticisi'; Id='MilosParipovic.OneCommander'; Category='Dosya Yönetimi'; Initial='1'; Color='#4B79A8'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='VirtualBox'; Description='Açık kaynak sanallaştırma'; Id='Oracle.VirtualBox'; Category='Sanallaştırma'; Initial='V'; Color='#2366A8'; IsSelected=$false },
+    [pscustomobject]@{ Name='VirtualBox Extension Pack'; Description='USB ve uzak bağlantı eklentileri'; Action='Url'; Url='https://www.virtualbox.org/wiki/Downloads'; Category='Sanallaştırma'; Initial='V+'; Color='#376F9C'; IsSelected=$false },
+    [pscustomobject]@{ Name='VMware Workstation Pro'; Description='Profesyonel masaüstü sanallaştırma'; Action='Url'; Url='https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion'; Category='Sanallaştırma'; Initial='VM'; Color='#E28A24'; IsSelected=$false },
+
+    [pscustomobject]@{ Name='Office Tool Plus'; Description='Office dağıtım ve yönetim aracı'; Id='Yerong.OfficeToolPlus'; Category='Betikler & Otomasyon'; Initial='O'; Color='#D64A3A'; IsSelected=$false },
+    [pscustomobject]@{ Name='CTT WinUtil'; Description='Windows bakım ve yapılandırma aracı'; Action='Url'; Url='https://github.com/ChrisTitusTech/winutil'; Category='Betikler & Otomasyon'; Initial='W'; Color='#4C8B69'; IsSelected=$false }
 )
 
 foreach ($app in $apps) {
@@ -525,6 +546,85 @@ foreach ($app in $apps) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
 }
+
+$categoryDefinitions = @(
+    [pscustomobject]@{ Name='Tümü'; Display='Tüm uygulamalar'; Icon='▦'; Background='#087BBE'; Foreground='#FFFFFF' },
+    [pscustomobject]@{ Name='Web Tarayıcıları'; Display='Web Tarayıcıları'; Icon='◎'; Background='#334D5E'; Foreground='#7DD3FC' },
+    [pscustomobject]@{ Name='İletişim & Sosyal'; Display='İletişim & Sosyal'; Icon='✉'; Background='#433C59'; Foreground='#C4B5FD' },
+    [pscustomobject]@{ Name='Üretkenlik'; Display='Üretkenlik'; Icon='◆'; Background='#3D5258'; Foreground='#9ED5D8' },
+    [pscustomobject]@{ Name='Multimedya'; Display='Multimedya'; Icon='▷'; Background='#574632'; Foreground='#FCD34D' },
+    [pscustomobject]@{ Name='Geliştirme'; Display='Geliştirme'; Icon='</>'; Background='#284B47'; Foreground='#6EE7B7' },
+    [pscustomobject]@{ Name='Yapay Zeka'; Display='Yapay Zeka'; Icon='✦'; Background='#51405E'; Foreground='#D8B4FE' },
+    [pscustomobject]@{ Name='Donanım & Test'; Display='Donanım & Test'; Icon='◫'; Background='#55473D'; Foreground='#F5C59B' },
+    [pscustomobject]@{ Name='Sistem Araçları'; Display='Sistem Araçları'; Icon='⚙'; Background='#3B485A'; Foreground='#93C5FD' },
+    [pscustomobject]@{ Name='Güvenlik'; Display='Güvenlik'; Icon='◇'; Background='#563C43'; Foreground='#FDA4AF' },
+    [pscustomobject]@{ Name='Gizlilik & Ağ'; Display='Gizlilik & Ağ'; Icon='⌁'; Background='#34545B'; Foreground='#8FE3E8' },
+    [pscustomobject]@{ Name='Oyun & Platformlar'; Display='Oyun & Platformlar'; Icon='◈'; Background='#40533B'; Foreground='#B7E39B' },
+    [pscustomobject]@{ Name='Dosya Yönetimi'; Display='Dosya Yönetimi'; Icon='▤'; Background='#56503D'; Foreground='#E8D897' },
+    [pscustomobject]@{ Name='Sanallaştırma'; Display='Sanallaştırma'; Icon='⬡'; Background='#444A68'; Foreground='#B8C2FF' },
+    [pscustomobject]@{ Name='Betikler & Otomasyon'; Display='Betikler & Otomasyon'; Icon='⚡'; Background='#55435B'; Foreground='#E8B8F3' }
+)
+
+foreach ($category in $categoryDefinitions) {
+    $count = if ($category.Name -eq 'Tümü') { $apps.Count } else { @($apps | Where-Object Category -eq $category.Name).Count }
+    $button = [Windows.Controls.Button]::new()
+    $button.Style = $window.Resources['NavButton']
+    $button.Tag = $category.Name
+    $button.ToolTip = $category.Display
+    $button.Margin = [Windows.Thickness]::new(0,1,0,1)
+    $button.Padding = [Windows.Thickness]::new(7,4,7,4)
+    if ($category.Name -eq 'Tümü') {
+        $button.Background = New-ColorBrush '#174C70'
+        $button.BorderBrush = New-ColorBrush '#278DD1'
+    }
+
+    $grid = [Windows.Controls.Grid]::new()
+    $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
+    $grid.ColumnDefinitions[0].Width = [Windows.GridLength]::new(30)
+    $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
+    $grid.ColumnDefinitions[1].Width = [Windows.GridLength]::new(1, [Windows.GridUnitType]::Star)
+    $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
+    $grid.ColumnDefinitions[2].Width = [Windows.GridLength]::Auto
+
+    $iconBox = [Windows.Controls.Border]::new()
+    $iconBox.Width = 24
+    $iconBox.Height = 24
+    $iconBox.CornerRadius = [Windows.CornerRadius]::new(7)
+    $iconBox.Background = New-ColorBrush $category.Background
+    $icon = [Windows.Controls.TextBlock]::new()
+    $icon.Text = $category.Icon
+    $icon.Foreground = New-ColorBrush $category.Foreground
+    $icon.FontSize = if ($category.Icon -eq '</>') { 8 } else { 11 }
+    $icon.FontWeight = [Windows.FontWeights]::SemiBold
+    $icon.HorizontalAlignment = 'Center'
+    $icon.VerticalAlignment = 'Center'
+    $iconBox.Child = $icon
+
+    $label = [Windows.Controls.TextBlock]::new()
+    $label.Text = $category.Display
+    $label.Foreground = New-ColorBrush '#E7EDF3'
+    $label.FontSize = 9.5
+    $label.FontWeight = if ($category.Name -eq 'Tümü') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
+    $label.VerticalAlignment = 'Center'
+    $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
+    [Windows.Controls.Grid]::SetColumn($label, 1)
+
+    $countText = [Windows.Controls.TextBlock]::new()
+    $countText.Text = [string]$count
+    $countText.Foreground = New-ColorBrush '#8FA2B2'
+    $countText.FontSize = 8
+    $countText.VerticalAlignment = 'Center'
+    $countText.Margin = [Windows.Thickness]::new(4,0,3,0)
+    [Windows.Controls.Grid]::SetColumn($countText, 2)
+
+    [void]$grid.Children.Add($iconBox)
+    [void]$grid.Children.Add($label)
+    [void]$grid.Children.Add($countText)
+    $button.Content = $grid
+    [void]$controls.CategoryPanel.Children.Add($button)
+}
+
+$controls.TotalAppBadgeText.Text = "{0} uygulama" -f $apps.Count
 
 $script:activeCategory = 'Tümü'
 $script:isInstalling = $false
@@ -595,13 +695,15 @@ function Complete-InstallQueue {
     $controls.InstallProgress.Value = 100
 
     $failed = @($script:installResults | Where-Object { -not $_.Success })
-    $successCount = @($script:installResults | Where-Object Success).Count
+    $manualCount = @($script:installResults | Where-Object Manual).Count
+    $successCount = @($script:installResults | Where-Object { $_.Success -and -not $_.Manual }).Count
+    $summary = if ($manualCount -gt 0) { "$successCount kuruldu, $manualCount indirme sayfası açıldı" } else { "$successCount başarılı" }
     if ($failed.Count -eq 0) {
-        Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı." -Color Green
-        $controls.ActivityText.Text = "$successCount uygulama başarıyla kuruldu."
+        Write-PowerHubLog -Message "İşlem tamamlandı: $summary." -Color Green
+        $controls.ActivityText.Text = "$summary."
     } else {
-        Write-PowerHubLog -Message "Kurulum tamamlandı: $successCount başarılı, $($failed.Count) başarısız." -Color Yellow
-        $controls.ActivityText.Text = "$successCount başarılı, $($failed.Count) başarısız."
+        Write-PowerHubLog -Message "İşlem tamamlandı: $summary, $($failed.Count) başarısız." -Color Yellow
+        $controls.ActivityText.Text = "$summary, $($failed.Count) başarısız."
         $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
         [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
     }
@@ -615,6 +717,22 @@ function Start-NextInstall {
 
     $item = $script:installQueue[$script:installIndex]
     $controls.InstallProgress.Value = [int](($script:installIndex / $script:installQueue.Count) * 100)
+
+    if ($item.Action -eq 'Url') {
+        try {
+            $controls.ActivityText.Text = "İndirme sayfası açılıyor: $($item.Name)"
+            Write-PowerHubLog -Message "Resmî indirme sayfası açılıyor: $($item.Name)" -Color Cyan
+            Start-Process -FilePath $item.Url
+            [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$true; Manual=$true; Code=0 })
+        } catch {
+            Write-PowerHubLog -Message "Sayfa açılamadı ($($item.Name)): $($_.Exception.Message)" -Color Red
+            [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$true; Code=-1 })
+        }
+        $script:installIndex++
+        Start-NextInstall
+        return
+    }
+
     $controls.ActivityText.Text = "Kuruluyor: $($item.Name)"
     $installArguments = if ($item.InstallArguments) {
         @($item.InstallArguments)
@@ -633,7 +751,7 @@ function Start-NextInstall {
         $script:installTimer.Start()
     } catch {
         Write-PowerHubLog -Message "Başlatma hatası ($($item.Name)): $($_.Exception.Message)" -Color Red
-        [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Code=-1 })
+        [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=-1 })
         $script:installIndex++
         Start-NextInstall
     }
@@ -653,7 +771,7 @@ $script:installTimer.Add_Tick({
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
     }
-    [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Code=$exitCode })
+    [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Manual=$false; Code=$exitCode })
     $script:installProcess.Dispose()
     $script:installProcess = $null
     $script:installIndex++
@@ -665,6 +783,8 @@ $controls.InstallButton.Add_Click({
         [pscustomobject]@{
             Name = $_.Name
             Id = $_.Id
+            Action = if ($_.PSObject.Properties['Action']) { $_.Action } else { 'Winget' }
+            Url = if ($_.PSObject.Properties['Url']) { $_.Url } else { $null }
             InstallArguments = if ($_.PSObject.Properties['InstallArguments']) { @($_.InstallArguments) } else { $null }
         }
     })
