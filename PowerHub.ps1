@@ -601,7 +601,7 @@ if ($fontInstallFailures.Count -gt 0) {
 
         <Grid x:Name="AppDetailOverlay" Grid.Column="1" Panel.ZIndex="55" Visibility="Collapsed" Background="#B8080A0C">
             <Border x:Name="AppDetailBackdrop" Background="Transparent"/>
-            <Border x:Name="AppDetailDrawer" Width="430" HorizontalAlignment="Right" Background="#222222" BorderBrush="#474747" BorderThickness="1,0,0,0">
+            <Border x:Name="AppDetailDrawer" Width="460" HorizontalAlignment="Right" Background="#222222" BorderBrush="#474747" BorderThickness="1,0,0,0">
                 <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.64"/></Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -639,6 +639,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                     <TextBlock x:Name="AppDetailStatusText" Text="TARANIYOR" Foreground="#82CEFF" FontSize="11" FontWeight="Bold" HorizontalAlignment="Right"/>
                                 </Grid>
                             </Border>
+                            <TextBlock x:Name="AppDetailStatusDescription" Text="Paket durumu açıklaması" Foreground="#98A6AE" FontSize="10.5" Margin="1,7,0,0" TextWrapping="Wrap"/>
                             <Grid Margin="0,12,0,0">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="#292929" BorderBrush="#414141" BorderThickness="1" CornerRadius="5" Padding="11,9">
@@ -668,7 +669,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                     <TextBlock x:Name="AppDetailAuthor" Grid.Row="4" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                     <TextBlock Grid.Row="5" Text="Lisans" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock x:Name="AppDetailLicense" Grid.Row="5" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Row="6" Text="Kurucu türü" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock Grid.Row="6" Text="Yükleyici türü" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock x:Name="AppDetailInstallerType" Grid.Row="6" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock Grid.Row="7" Text="Etiketler" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock x:Name="AppDetailTags" Grid.Row="7" Grid.Column="1" Text="—" Foreground="#A9C6D5" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
@@ -976,7 +977,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
-  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -2067,7 +2068,9 @@ function Get-AppDetailTags {
 
 function Set-AppDetailMetadata {
     param($Metadata)
-    $controls.AppDetailInstalledVersion.Text = $Metadata.InstalledVersion
+    $installedVersion = $Metadata.InstalledVersion
+    if ($script:detailApp -and $script:detailApp.InstallState -notin @('Installed','UpdateAvailable') -and $installedVersion -eq '—') { $installedVersion = 'Kurulu değil' }
+    $controls.AppDetailInstalledVersion.Text = $installedVersion
     $controls.AppDetailCatalogVersion.Text = $Metadata.CatalogVersion
     $controls.AppDetailPublisher.Text = $Metadata.Publisher
     $controls.AppDetailAuthor.Text = $Metadata.Author
@@ -2130,7 +2133,7 @@ function Start-AppDetailMetadataLoad {
         $sourceIndex = [Array]::IndexOf([object[]]$arguments, '--source')
         if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt $arguments.Count) { $source = [string]$arguments[$sourceIndex + 1] }
     }
-    $controls.AppDetailSource.Text = "WinGet • $source"
+    $controls.AppDetailSource.Text = if ($source -eq 'msstore') { 'Microsoft Store' } else { 'WinGet Community' }
     $script:detailMetadataResultFile = Join-Path $env:TEMP ("PowerHub-detail-{0}.json" -f [Guid]::NewGuid().ToString('N'))
     $payloadJson = @{ Winget=(Resolve-WingetExecutable); Id=$App.Id; Source=$source; ResultFile=$script:detailMetadataResultFile } | ConvertTo-Json -Compress
     $payloadBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($payloadJson))
@@ -2179,6 +2182,7 @@ function Show-AppDetail {
     $controls.AppDetailInitial.Foreground = New-ColorBrush $App.Color
     $controls.AppDetailInitial.Opacity = $App.InitialOpacity
     $controls.AppDetailStatusText.Text = $App.SourceLabel
+    $controls.AppDetailStatusDescription.Text = $App.StatusDetail
     $controls.AppDetailStatusText.Foreground = New-ColorBrush $App.SourceForeground
     $controls.AppDetailStatusBadge.Background = New-ColorBrush $App.SourceBackground
     $controls.AppDetailStatusBadge.BorderBrush = New-ColorBrush $App.SourceBackground
@@ -2207,7 +2211,6 @@ function Show-AppDetail {
     $duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(180))
     $controls.AppDetailDrawer.BeginAnimation([Windows.UIElement]::OpacityProperty, [Windows.Media.Animation.DoubleAnimation]::new(0,1,$duration))
     $translate.BeginAnimation([Windows.Media.TranslateTransform]::XProperty, [Windows.Media.Animation.DoubleAnimation]::new(24,0,$duration))
-    $controls.AppDetailCloseButton.Focus() | Out-Null
 }
 
 $controls.AppDetailCloseButton.Add_Click({ Close-AppDetail })
@@ -2417,6 +2420,7 @@ $script:updateTimer.Add_Tick({
     $exitCode = [int]$script:updateProcess.ExitCode
     $script:updateProcess.Dispose()
     $script:updateProcess = $null
+    if ($exitCode -eq 0 -and $script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$package.Id) }
     [void]$script:updateResults.Add([pscustomobject]@{ Name=$package.Name; Success=($exitCode -eq 0); Code=$exitCode })
     Write-PowerHubLog -Message $(if ($exitCode -eq 0) { "Güncellendi: $($package.Name)" } else { "Güncellenemedi: $($package.Name), kod: $exitCode" }) -Color $(if ($exitCode -eq 0) { 'Green' } else { 'Red' })
     $script:updateIndex++
@@ -2659,6 +2663,7 @@ $script:installTimer.Add_Tick({
     $exitCode = [int]$script:installProcess.ExitCode
     if ($exitCode -eq 0) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
+        if ($script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$item.Id) }
         Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
         $catalogApp = $apps | Where-Object Id -eq $item.Id | Select-Object -First 1
         if ($catalogApp) {
