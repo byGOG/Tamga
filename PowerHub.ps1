@@ -1070,7 +1070,6 @@ foreach ($app in $apps) {
 }
 
 $categoryDefinitions = @(
-    [pscustomobject]@{ Name='Tümü'; Display='Tüm uygulamalar'; Glyph='E80A' },
     [pscustomobject]@{ Name='Web Tarayıcıları'; Display='Web Tarayıcıları'; Glyph='E774' },
     [pscustomobject]@{ Name='Eklentiler'; Display='Eklentiler'; Glyph='E710' },
     [pscustomobject]@{ Name='İletişim & Sosyal'; Display='İletişim & Sosyal'; Glyph='E715' },
@@ -1095,7 +1094,7 @@ $categoryDefinitions = @(
 )
 
 foreach ($category in $categoryDefinitions) {
-    $count = if ($category.Name -eq 'Tümü') { $apps.Count } else { @($apps | Where-Object Category -eq $category.Name).Count }
+    $count = @($apps | Where-Object Category -eq $category.Name).Count
     $button = [Windows.Controls.Button]::new()
     $button.Style = $window.Resources['NavButton']
     $button.Tag = $category.Name
@@ -1103,7 +1102,7 @@ foreach ($category in $categoryDefinitions) {
     $button.Margin = [Windows.Thickness]::new(0,1,0,1)
     $button.Padding = [Windows.Thickness]::new(9,7,7,7)
     [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
-    if ($category.Name -eq 'Tümü') {
+    if ($category.Name -eq 'Web Tarayıcıları') {
         $button.Background = New-ColorBrush '#2D2D2D'
         $button.BorderBrush = New-ColorBrush '#168FC6'
         $button.BorderThickness = [Windows.Thickness]::new(3,0,0,0)
@@ -1120,23 +1119,23 @@ foreach ($category in $categoryDefinitions) {
     $icon = [Windows.Controls.TextBlock]::new()
     $icon.Text = [string][char][Convert]::ToInt32($category.Glyph, 16)
     $icon.FontFamily = [Windows.Media.FontFamily]::new('Segoe Fluent Icons, Segoe MDL2 Assets')
-    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#55BCE8' } else { '#9B9B9B' })
+    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#55BCE8' } else { '#9B9B9B' })
     $icon.FontSize = 15
     $icon.HorizontalAlignment = 'Left'
     $icon.VerticalAlignment = 'Center'
 
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
-    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#FFFFFF' } else { '#C8C8C8' })
+    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#FFFFFF' } else { '#C8C8C8' })
     $label.FontSize = 11.5
-    $label.FontWeight = if ($category.Name -eq 'Tümü') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
+    $label.FontWeight = if ($category.Name -eq 'Web Tarayıcıları') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
     $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
     [Windows.Controls.Grid]::SetColumn($label, 1)
 
     $countBadge = [Windows.Controls.Border]::new()
-    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#25343B' } else { '#242424' })
-    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#366072' } else { '#444444' })
+    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#25343B' } else { '#242424' })
+    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#366072' } else { '#444444' })
     $countBadge.BorderThickness = [Windows.Thickness]::new(1)
     $countBadge.CornerRadius = [Windows.CornerRadius]::new(7)
     $countBadge.Padding = [Windows.Thickness]::new(6,3,6,3)
@@ -1146,7 +1145,7 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($countBadge, 2)
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#8DD7F4' } else { '#A0A0A0' })
+    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#8DD7F4' } else { '#A0A0A0' })
     $countText.FontSize = 9
     $countText.HorizontalAlignment = 'Center'
     $countBadge.Child = $countText
@@ -1163,9 +1162,9 @@ foreach ($category in $categoryDefinitions) {
 }
 
 $controls.TotalAppBadgeText.Text = "{0} uygulama" -f $apps.Count
-$controls.CategoryBadgeText.Text = "{0} kategori" -f ($categoryDefinitions.Count - 1)
+$controls.CategoryBadgeText.Text = "{0} kategori" -f $categoryDefinitions.Count
 
-$script:activeCategory = 'Tümü'
+$script:activeCategory = 'Web Tarayıcıları'
 $script:isInstalling = $false
 $script:visibleApps = @()
 
@@ -1193,14 +1192,15 @@ function Update-SelectionStatus {
 
 function Update-AppList {
     $search = $controls.SearchBox.Text.Trim()
+    $isSearching = -not [string]::IsNullOrWhiteSpace($search)
     $script:visibleApps = @($apps | Where-Object {
-        ($script:activeCategory -eq 'Tümü' -or $_.Category -eq $script:activeCategory) -and
-        ([string]::IsNullOrWhiteSpace($search) -or $_.Name -like "*$search*" -or $_.Description -like "*$search*")
+        ($isSearching -or $_.Category -eq $script:activeCategory) -and
+        (-not $isSearching -or $_.Name -like "*$search*" -or $_.Description -like "*$search*")
     })
     $controls.AppList.ItemsSource = $null
     $controls.AppList.ItemsSource = $script:visibleApps
     $controls.ResultCount.Text = "{0} uygulama" -f $script:visibleApps.Count
-    $controls.SectionTitle.Text = if ($script:activeCategory -eq 'Tümü') { 'Tüm uygulamalar' } else { $script:activeCategory }
+    $controls.SectionTitle.Text = if ($isSearching) { 'Arama sonuçları' } else { $script:activeCategory }
     $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' }).Count -gt 0
     if (-not $script:isInstalling) { $controls.SelectAllButton.IsEnabled = $hasInstallableApps }
     $controls.SelectAllButton.Content = if ($hasInstallableApps) { 'Görünenleri seç' } else { 'Karttan siteyi aç' }
