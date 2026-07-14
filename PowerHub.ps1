@@ -437,7 +437,7 @@ public static class PowerHubWindowLayout {
                                     </Border>
                                     <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
-                                            VerticalAlignment="Top" HorizontalAlignment="Center">
+                                            VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                    Foreground="#8CDBFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
