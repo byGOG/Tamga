@@ -1668,19 +1668,22 @@ $script:systemScanTimer.Add_Tick({
 })
 
 function Start-SystemScan {
+    param([switch]$PreserveCurrentState)
     if ($script:systemScanProcess -or $script:isInstalling) { return }
     $winget = Resolve-WingetExecutable
     if (-not $winget) { return }
 
-    foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Pending }
-    Update-AppList
-    Update-SelectionStatus
+    if (-not $PreserveCurrentState) {
+        foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Pending }
+        Update-AppList
+        Update-SelectionStatus
+    }
     $controls.SelectAllButton.IsEnabled = $false
     $controls.SystemScanBadge.Background = New-ColorBrush '#263F52'
     $controls.SystemScanBadgeText.Foreground = New-ColorBrush '#82CEFF'
     $controls.SystemScanBadgeText.Text = '◌  Sistem taranıyor'
     $controls.SystemScanBadge.ToolTip = 'Kurulu uygulamalar ve güncellemeler denetleniyor'
-    $controls.ActivityText.Text = 'Kurulu uygulamalar ve güncellemeler taranıyor...'
+    if (-not $PreserveCurrentState) { $controls.ActivityText.Text = 'Kurulu uygulamalar ve güncellemeler taranıyor...' }
     $controls.UpdateCountText.Text = 'Taranıyor'
     $controls.UpdateLastScanText.Text = 'WinGet paketleri denetleniyor...'
     $controls.UpdateEmptyState.Visibility = 'Collapsed'
@@ -1989,7 +1992,7 @@ function Complete-UpdateQueue {
     foreach ($package in $script:updatePackages) { $package.IsSelected = $false }
     $controls.UpdateList.Items.Refresh()
     Update-UpdateCenterSelectionStatus
-    Start-SystemScan
+    Start-SystemScan -PreserveCurrentState
 }
 
 function Start-NextUpdate {
@@ -2197,7 +2200,7 @@ function Complete-InstallQueue {
     }
     Update-InstallQueueSummary
     Update-SelectionStatus
-    Start-SystemScan
+    Start-SystemScan -PreserveCurrentState
 }
 
 function Start-NextInstall {
@@ -2275,6 +2278,13 @@ $script:installTimer.Add_Tick({
     if ($exitCode -eq 0) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
         Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
+        $catalogApp = $apps | Where-Object Id -eq $item.Id | Select-Object -First 1
+        if ($catalogApp) {
+            Set-AppInstallState -App $catalogApp -State $(if ($item.Operation -eq 'Uninstall') { 'NotInstalled' } else { 'Installed' })
+            Update-AppList
+            Update-SelectionStatus
+            Update-SystemScanSummary
+        }
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
         Set-InstallQueueEntryState -Entry $item -State Failed -Detail "WinGet çıkış kodu: $exitCode" -Code $exitCode
