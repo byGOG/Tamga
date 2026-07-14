@@ -45,6 +45,7 @@ Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` diz
 | **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
 | **Birleşik işlem kuyruğu** | Kurulum, güncelleme ve kaldırma için paket bazlı canlı durum, güvenli iptal ve başarısızları yeniden deneme |
 | **Güvenli kaldırma** | Kurulu WinGet uygulamalarını kart üzerindeki kaldırma düğmesi, açık onay ve otomatik yeniden tarama ile kaldırma |
+| **Uygulama detay çekmecesi** | Logo, açıklama, durum, kategori, paket kimliği, resmî site ve bağlama uygun hızlı işlemleri tek panelde gösterme |
 | **Resmî kaynaklar** | Uygulama kartından resmî siteye doğrudan erişim; web kaynaklarını kurulumdan ayırma |
 | **Sandbox desteği** | Boş Windows Sandbox ortamında WinGet ve gerekli bağımlılıkları hazırlama |
 | **Marka logoları** | Önbelleğe alınan uygulama logoları ve ağ sorunu durumunda güvenli yedek görünüm |
@@ -161,6 +162,7 @@ The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub
 | **Update Center** | Version comparison, individual or bulk selection, and live update progress |
 | **Unified operation queue** | Per-package live status, safe cancellation, and failed-item retry for installs, upgrades, and removals |
 | **Safe uninstall** | Remove installed WinGet applications from their cards with explicit confirmation and automatic rescanning |
+| **Application detail drawer** | View branding, description, status, category, package ID, official site, and context-aware actions in one panel |
 | **Official sources** | Direct access to official sites while keeping web resources out of install queues |
 | **Sandbox support** | Store-independent WinGet and dependency setup for clean Windows Sandbox sessions |
 | **Brand assets** | Cached application logos with a safe fallback when the network is unavailable |

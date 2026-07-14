@@ -520,7 +520,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="12,7,11,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
@@ -539,19 +539,24 @@ if ($fontInstallFailures.Count -gt 0) {
                                             VerticalAlignment="Center" ToolTip="{Binding StatusDetail}">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
-                                    <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
+                                    <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
+                                            AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Text="&#xE76C;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                                                   Foreground="#C2CBD1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                    Foreground="#8CDBFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <Button x:Name="UninstallButton" Grid.Column="4" Style="{StaticResource IconButton}"
+                                    <Button x:Name="UninstallButton" Grid.Column="5" Style="{StaticResource IconButton}"
                                             Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
                                                    Foreground="#FF9B9B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <CheckBox x:Name="AppCheck" Grid.Column="5" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                    <CheckBox x:Name="AppCheck" Grid.Column="6" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
@@ -592,6 +597,79 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Grid>
             </Border>
         </Grid>
+
+
+        <Grid x:Name="AppDetailOverlay" Grid.Column="1" Panel.ZIndex="55" Visibility="Collapsed" Background="#B8080A0C">
+            <Border x:Name="AppDetailBackdrop" Background="Transparent"/>
+            <Border x:Name="AppDetailDrawer" Width="430" HorizontalAlignment="Right" Background="#222222" BorderBrush="#474747" BorderThickness="1,0,0,0">
+                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.64"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="#292929" BorderBrush="#444444" BorderThickness="0,0,0,1" Padding="20,17">
+                        <Grid>
+                            <Border Height="2" VerticalAlignment="Top" Margin="-20,-17,-20,0">
+                                <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#18A7E0" Offset="0"/><GradientStop Color="#765DE8" Offset="1"/></LinearGradientBrush></Border.Background>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock Text="POWERHUB  /  UYGULAMA" Foreground="#55C8F3" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="Uygulama ayrıntıları" Foreground="White" FontSize="21" FontWeight="SemiBold" Margin="0,4,45,0"/>
+                            </StackPanel>
+                            <Button x:Name="AppDetailCloseButton" Content="&#xE711;" Width="34" Height="34" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    Style="{StaticResource IconButton}" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" ToolTip="Ayrıntıları kapat"/>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="20,20,20,18">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="68"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Width="54" Height="54" Background="#2C2C2C" BorderBrush="#454545" BorderThickness="1" CornerRadius="7">
+                                    <Grid>
+                                        <Image x:Name="AppDetailLogo" Width="46" Height="46" Stretch="Uniform" SnapsToDevicePixels="True"/>
+                                        <TextBlock x:Name="AppDetailInitial" Text="P" Foreground="#55C8F3" FontSize="21" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock x:Name="AppDetailName" Text="Uygulama" Foreground="#F5F5F5" FontSize="19" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                    <TextBlock x:Name="AppDetailCategory" Text="Kategori" Foreground="#8FB7CA" FontSize="11" Margin="0,6,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                            <Border x:Name="AppDetailStatusBadge" Background="#263F52" BorderBrush="#36596E" BorderThickness="1" CornerRadius="5" Padding="11,8" Margin="0,18,0,0">
+                                <Grid>
+                                    <TextBlock Text="PAKET DURUMU" Foreground="#80909A" FontSize="9" FontWeight="Bold"/>
+                                    <TextBlock x:Name="AppDetailStatusText" Text="TARANIYOR" Foreground="#82CEFF" FontSize="11" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock Text="AÇIKLAMA" Foreground="#7F8B94" FontSize="9" FontWeight="Bold" Margin="0,21,0,0"/>
+                            <TextBlock x:Name="AppDetailDescription" Text="Uygulama açıklaması" Foreground="#C5CDD2" FontSize="12.5" LineHeight="19" TextWrapping="Wrap" Margin="0,7,0,0"/>
+                            <TextBlock Text="PAKET BİLGİLERİ" Foreground="#7F8B94" FontSize="9" FontWeight="Bold" Margin="0,22,0,8"/>
+                            <Border Background="#292929" BorderBrush="#414141" BorderThickness="1" CornerRadius="6" Padding="13,11">
+                                <Grid>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="90"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <TextBlock Text="Paket kimliği" Foreground="#8D999F" FontSize="10.5"/>
+                                    <TextBlock x:Name="AppDetailId" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontFamily="Cascadia Mono, Consolas" FontSize="10.5" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="1" Text="Kaynak" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailSource" Grid.Row="1" Grid.Column="1" Text="WinGet" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock Grid.Row="2" Text="Kategori" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailMetaCategory" Grid.Row="2" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Border Grid.Row="2" Background="#292929" BorderBrush="#444444" BorderThickness="0,1,0,0" Padding="16,13">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Button x:Name="AppDetailRemoveButton" Content="Kaldır" Background="#543136" Foreground="#FFAAAA" Visibility="Collapsed" Margin="0,0,8,0"
+                                    ToolTip="Uygulamayı bilgisayardan kaldır"/>
+                            <Button x:Name="AppDetailWebsiteButton" Grid.Column="1" Content="Resmî site  ↗" Background="#333333" Foreground="#9EDBF3" HorizontalAlignment="Left"
+                                    ToolTip="Uygulamanın resmî sitesini aç"/>
+                            <Button x:Name="AppDetailPrimaryButton" Grid.Column="2" Content="Kurulum için seç  →" Background="#087EBD" Foreground="White" MinWidth="145"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
 
         <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="#A8080A0C">
             <Border x:Name="QueueBackdrop" Background="Transparent"/>
@@ -878,7 +956,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
-  'UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1907,6 +1985,80 @@ function Open-PowerHubWebsite {
     }
 }
 
+$script:detailApp = $null
+function Close-AppDetail {
+    $controls.AppDetailOverlay.Visibility = [Windows.Visibility]::Collapsed
+    $script:detailApp = $null
+}
+
+function Show-AppDetail {
+    param($App)
+    if (-not $App) { return }
+    $script:detailApp = $App
+    $controls.AppDetailName.Text = $App.Name
+    $controls.AppDetailCategory.Text = $App.Category
+    $controls.AppDetailDescription.Text = $App.Description
+    $controls.AppDetailId.Text = if ($App.IsWebResource) { 'Web kaynağı' } else { $App.Id }
+    $controls.AppDetailSource.Text = if ($App.IsWebResource) { 'Resmî web kaynağı' } else { 'WinGet' }
+    $controls.AppDetailMetaCategory.Text = $App.Category
+    $controls.AppDetailLogo.Source = $App.Logo
+    $controls.AppDetailInitial.Text = $App.Initial
+    $controls.AppDetailInitial.Foreground = New-ColorBrush $App.Color
+    $controls.AppDetailInitial.Opacity = $App.InitialOpacity
+    $controls.AppDetailStatusText.Text = $App.SourceLabel
+    $controls.AppDetailStatusText.Foreground = New-ColorBrush $App.SourceForeground
+    $controls.AppDetailStatusBadge.Background = New-ColorBrush $App.SourceBackground
+    $controls.AppDetailStatusBadge.BorderBrush = New-ColorBrush $App.SourceBackground
+    $controls.AppDetailWebsiteButton.Visibility = if ($App.WebsiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+    $controls.AppDetailRemoveButton.Visibility = if ($App.InstallState -in @('Installed','UpdateAvailable')) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+    $controls.AppDetailPrimaryButton.IsEnabled = -not $script:isInstalling
+    $controls.AppDetailPrimaryButton.Visibility = [Windows.Visibility]::Visible
+    if ($App.IsWebResource) {
+        $controls.AppDetailPrimaryButton.Content = 'Siteyi aç  →'
+        $controls.AppDetailWebsiteButton.Visibility = [Windows.Visibility]::Collapsed
+    } elseif ($App.InstallState -eq 'Installed') {
+        $controls.AppDetailPrimaryButton.Visibility = [Windows.Visibility]::Collapsed
+    } elseif ($App.InstallState -eq 'UpdateAvailable') {
+        $controls.AppDetailPrimaryButton.Content = 'Güncelleme için seç  →'
+    } elseif ($App.InstallState -eq 'Pending') {
+        $controls.AppDetailPrimaryButton.Content = 'Durum taranıyor'
+        $controls.AppDetailPrimaryButton.IsEnabled = $false
+    } else {
+        $controls.AppDetailPrimaryButton.Content = 'Kurulum için seç  →'
+    }
+    $controls.AppDetailOverlay.Visibility = [Windows.Visibility]::Visible
+    $translate = [Windows.Media.TranslateTransform]::new(24,0)
+    $controls.AppDetailDrawer.RenderTransform = $translate
+    $controls.AppDetailDrawer.Opacity = 0
+    $duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(180))
+    $controls.AppDetailDrawer.BeginAnimation([Windows.UIElement]::OpacityProperty, [Windows.Media.Animation.DoubleAnimation]::new(0,1,$duration))
+    $translate.BeginAnimation([Windows.Media.TranslateTransform]::XProperty, [Windows.Media.Animation.DoubleAnimation]::new(24,0,$duration))
+    $controls.AppDetailCloseButton.Focus() | Out-Null
+}
+
+$controls.AppDetailCloseButton.Add_Click({ Close-AppDetail })
+$controls.AppDetailBackdrop.Add_MouseLeftButtonUp({ Close-AppDetail })
+$controls.AppDetailWebsiteButton.Add_Click({
+    if ($script:detailApp) { Open-PowerHubWebsite -Item $script:detailApp -Url $script:detailApp.WebsiteUrl -WebResource:$script:detailApp.IsWebResource }
+})
+$controls.AppDetailPrimaryButton.Add_Click({
+    $app = $script:detailApp
+    if (-not $app) { return }
+    if ($app.IsWebResource) {
+        Open-PowerHubWebsite -Item $app -Url $app.Url -WebResource
+    } elseif ($app.Operation -ne 'None') {
+        $app.IsSelected = $true
+        Update-AppList
+        Update-SelectionStatus
+    }
+    Close-AppDetail
+})
+$controls.AppDetailRemoveButton.Add_Click({
+    $app = $script:detailApp
+    Close-AppDetail
+    if ($app) { Request-AppUninstall -App $app }
+})
+
 $script:lastWebsiteUrl = $null
 $script:lastWebsiteOpenAt = [DateTime]::MinValue
 $websiteClickHandler = [Windows.RoutedEventHandler]{
@@ -1920,6 +2072,11 @@ $websiteClickHandler = [Windows.RoutedEventHandler]{
         $button = $node -as [Windows.Controls.Button]
     }
     if (-not $button) { return }
+    if ($button.Name -eq 'DetailButton') {
+        Show-AppDetail -App $button.DataContext
+        $eventArgs.Handled = $true
+        return
+    }
     if ($button.Name -eq 'UninstallButton') {
         Request-AppUninstall -App $button.DataContext
         $eventArgs.Handled = $true
@@ -1945,7 +2102,7 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     $node = $source
     while ($node) {
         if ($node -is [Windows.Controls.Button]) {
-            if ($node.Name -eq 'UninstallButton') { return }
+            if ($node.Name -in @('DetailButton','UninstallButton')) { return }
             Open-PowerHubWebsite -Item $item -Url ([string]$node.Tag) -WebResource:$item.IsWebResource
             $eventArgs.Handled = $true
             return
@@ -1972,6 +2129,11 @@ $window.Add_PreviewKeyDown({
 
     if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.UninstallConfirmOverlay.Visibility -eq [Windows.Visibility]::Visible) {
         Close-UninstallConfirmation
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.AppDetailOverlay.Visibility -eq [Windows.Visibility]::Visible) {
+        Close-AppDetail
         $eventArgs.Handled = $true
         return
     }
