@@ -1,103 +1,259 @@
+<div align="center">
+
 # PowerHub
 
-[Türkçe](#türkçe) · [English](#english)
+**Windows uygulamalarını keşfet, denetle, toplu kur ve güncel tut.**
 
-<p align="center">
-  <img src="assets/powerhub-preview.png" alt="PowerHub application preview" width="100%">
-</p>
+[![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5.1%20%7C%207-5391FE?logo=powershell&logoColor=white)](https://learn.microsoft.com/powershell/)
+[![WinGet](https://img.shields.io/badge/WinGet-powered-00A4EF)](https://learn.microsoft.com/windows/package-manager/winget/)
+[![Last commit](https://img.shields.io/github/last-commit/byGOG/PowerHub?color=18A7E0)](https://github.com/byGOG/PowerHub/commits/main)
+[![Repo size](https://img.shields.io/github/repo-size/byGOG/PowerHub?color=765DE8)](https://github.com/byGOG/PowerHub)
+
+[Türkçe](#türkçe) · [English](#english) · [Web sitesi](https://bygog.github.io/) · [Sorun bildir](https://github.com/byGOG/PowerHub/issues)
+
+</div>
+
+![PowerHub uygulama önizlemesi](assets/powerhub-preview.png)
+
+---
 
 ## Türkçe
 
-PowerHub, Windows uygulamalarını seçip `winget` üzerinden toplu ve sessiz biçimde kurmak için hazırlanmış modern bir PowerShell/WPF arayüzüdür.
+PowerHub, Windows uygulamalarını tek merkezden yönetmek için geliştirilmiş açık kaynak bir PowerShell/WPF arayüzüdür. WinGet kataloğunu modern bir masaüstü deneyimiyle birleştirir; uygulama keşfi, kurulum, sistem taraması ve güncelleme işlemlerini sadeleştirir.
 
-- 21 kategoride 132 güvenli uygulama ve web kaynağı
-- Fluent 2 esintili katmanlı koyu arayüz, vektör ikonlar ve erişilebilir kontroller
-- Tüm uygulamalar için önbelleğe alınan marka logoları
-- Canlı arama, kategori filtreleme, kaynak rozetleri ve kartın tamamından seçim
-- WEB kaynaklarında doğrudan site açma; web kartları kurulum seçimine dahil edilmez
-- Kurulabilir uygulama kartlarında seçimi değiştirmeden açılan resmî site düğmesi
-- Klavye kısayolları: `Ctrl+F` ara, `Ctrl+A` görünenleri seç, `Esc` temizle, `Enter` kurulumu başlat
-- Canlı terminal günlükleri ve kurulum ilerlemesi
-- Winget eksikse durum kartından Microsoft Store gerektirmeyen otomatik kurulum
-- Windows Sandbox için mimariye uygun WinGet bağımlılıkları ve SHA-256 doğrulaması
-- Winget paketi bulunmayan seçili araçlar için resmî indirme sayfası
+### Hızlı başlangıç
 
-### Hızlı çalıştırma
-
-PowerShell'e aşağıdaki komutu yapıştırın:
+PowerShell'i açın ve şu komutu çalıştırın:
 
 ```powershell
 irm https://bygog.github.io/PowerHub/install.ps1 | iex
 ```
 
-Başlatıcı, güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` klasörüne indirir ve Windows PowerShell'i STA modunda kullanarak arayüzü açar. Her çalıştırmada en güncel sürüm alınır.
+Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` dizinine indirir ve uygulamayı STA modunda açar. Sisteminizde WinGet yoksa PowerHub durum kartı üzerinden Microsoft Store gerektirmeyen kurulumu başlatabilir.
+
+> [!IMPORTANT]
+> İnternetten indirilen betikleri çalıştırmadan önce incelemek iyi bir güvenlik alışkanlığıdır. Aşağıdaki [Güvenlik](#güvenlik) bölümüne bakın.
+
+### Öne çıkanlar
+
+| Alan | PowerHub ne sunuyor? |
+| --- | --- |
+| **Modern arayüz** | Windows 11 ve Fluent tasarım diline uyumlu, net ve erişilebilir koyu WPF arayüzü |
+| **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir web kaynağı |
+| **Akıllı sistem taraması** | Kurulu uygulamaları ve bekleyen WinGet güncellemelerini arka planda denetleme |
+| **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
+| **Toplu kurulum** | Seçilen paketleri sessiz ve sıralı biçimde kurma; sonuçları terminalde izleme |
+| **Resmî kaynaklar** | Uygulama kartından resmî siteye doğrudan erişim; web kaynaklarını kurulumdan ayırma |
+| **Sandbox desteği** | Boş Windows Sandbox ortamında WinGet ve gerekli bağımlılıkları hazırlama |
+| **Marka logoları** | Önbelleğe alınan uygulama logoları ve ağ sorunu durumunda güvenli yedek görünüm |
+
+### Nasıl çalışır?
+
+1. PowerHub açılışta WinGet durumunu ve kurulu paketleri denetler.
+2. Arama veya kategori menüsüyle istediğiniz uygulamaya odaklanırsınız.
+3. Uygulamaları seçer, resmî sitelerini açar ya da toplu kurulumu başlatırsınız.
+4. Güncelleme Merkezi, mevcut ve yeni sürümleri karşılaştırarak seçili paketleri yükseltir.
+5. Tüm komutlar ve sonuçlar görünür terminal günlüğüne yazılır.
+
+### Klavye kısayolları
+
+| Kısayol | İşlev |
+| --- | --- |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Arama alanına odaklan |
+| <kbd>Ctrl</kbd> + <kbd>A</kbd> | Görünen kurulabilir uygulamaları seç / seçimi kaldır |
+| <kbd>Enter</kbd> | Seçilen uygulamaların kurulumunu başlat |
+| <kbd>Esc</kbd> | Aramayı, seçimi veya açık pencereyi temizle |
+
+### Kurulum seçenekleri
+
+#### Tek komutla
+
+```powershell
+irm https://bygog.github.io/PowerHub/install.ps1 | iex
+```
+
+#### Önce inceleyerek
+
+```powershell
+$installer = irm https://bygog.github.io/PowerHub/install.ps1
+$installer
+```
+
+İçeriği inceledikten sonra:
+
+```powershell
+$installer | iex
+```
+
+#### Elle çalıştırma
+
+```powershell
+git clone https://github.com/byGOG/PowerHub.git
+cd PowerHub
+powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
+```
 
 ### Gereksinimler
 
 - Windows 10 veya Windows 11
 - Windows PowerShell 5.1 ya da PowerShell 7
-- Microsoft App Installer ile gelen `winget`
 - İnternet bağlantısı
+- Paket kurulumları için yönetici izni gerekebilir
+- WinGet önerilir; eksikse PowerHub içinden Store bağımsız kurulum yapılabilir
 
 ### Güvenlik
 
-İnternetten alınan bir betiği çalıştırmadan önce içeriğini incelemek için:
+- Kurulum komutları paket kimliğini tam eşleştiren `--exact` seçeneğini kullanır.
+- Paket ve kaynak sözleşmeleri WinGet üzerinden açık biçimde kabul edilir.
+- WinGet bağımlılıkları resmî Microsoft/GitHub kaynaklarından alınır ve desteklenen dosyalarda SHA-256 doğrulaması uygulanır.
+- PowerHub kalıcı Execution Policy değişikliği yapmaz; başlatıcı yalnızca kendi süreç kapsamını kullanır.
+- Kurulum günlükleri terminalde görünür; başarısız paketler ayrıca raporlanır.
 
-```powershell
-irm https://bygog.github.io/PowerHub/install.ps1
-```
-
-Ana uygulama dosyasını doğrudan görüntülemek için:
+Ana uygulama dosyasını doğrudan inceleyebilirsiniz:
 
 ```text
 https://bygog.github.io/PowerHub/PowerHub.ps1
 ```
+
+### Proje yapısı
+
+```text
+PowerHub/
+├─ PowerHub.ps1          # WPF arayüzü, katalog ve kurulum motoru
+├─ install.ps1           # Hafif çevrimiçi başlatıcı
+├─ logos.json            # Uygulama logo kataloğu
+├─ assets/               # README görselleri
+└─ .nojekyll             # GitHub Pages yapılandırması
+```
+
+### Katkıda bulunma
+
+Hata raporu, uygulama önerisi veya geliştirme fikri için [issue açabilirsiniz](https://github.com/byGOG/PowerHub/issues). Değişiklik göndermeden önce mevcut işlevleri koruduğunuzdan ve PowerShell 5.1 uyumluluğunu bozmadığınızdan emin olun.
 
 ---
 
 ## English
 
-PowerHub is a modern PowerShell/WPF interface for selecting and silently installing multiple Windows applications through `winget`.
-
-- 132 safe applications and web resources across 21 categories
-- Fluent 2-inspired layered dark interface, vector icons, and accessible controls
-- Cached brand logos for every application
-- Live search, category filtering, source badges, and full-card selection
-- Direct site launching for WEB resources; web cards are excluded from installation selection
-- Official website button on installable app cards without changing selection
-- Keyboard shortcuts: `Ctrl+F` search, `Ctrl+A` select visible, `Esc` clear, `Enter` install
-- Live terminal logs and installation progress
-- Store-independent App Installer setup from the status card when winget is missing
-- Architecture-aware WinGet dependencies and SHA-256 verification for Windows Sandbox
-- Official download pages for selected tools not packaged by winget
+PowerHub is an open-source PowerShell/WPF interface for managing Windows applications from one place. It combines the WinGet catalog with a modern desktop experience and streamlines discovery, installation, system scanning, and package updates.
 
 ### Quick start
 
-Paste the following command into PowerShell:
+Open PowerShell and run:
 
 ```powershell
 irm https://bygog.github.io/PowerHub/install.ps1 | iex
 ```
 
-The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub` and launches the interface with Windows PowerShell in STA mode. It retrieves the latest version on every run.
+The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub` and launches it in STA mode. If WinGet is unavailable, PowerHub can install its Store-independent dependencies from the status card.
+
+> [!IMPORTANT]
+> Review remote scripts before executing them. See the [Security](#security) section for an inspection-first workflow.
+
+### Highlights
+
+| Area | What PowerHub provides |
+| --- | --- |
+| **Modern interface** | A clear, accessible dark WPF interface inspired by Windows 11 and Fluent design |
+| **Application catalog** | 132 applications and trusted web resources across 21 categories |
+| **Smart system scan** | Background detection of installed applications and pending WinGet updates |
+| **Update Center** | Version comparison, individual or bulk selection, and live update progress |
+| **Bulk installation** | Silent sequential installation with visible terminal results |
+| **Official sources** | Direct access to official sites while keeping web resources out of install queues |
+| **Sandbox support** | Store-independent WinGet and dependency setup for clean Windows Sandbox sessions |
+| **Brand assets** | Cached application logos with a safe fallback when the network is unavailable |
+
+### Workflow
+
+1. PowerHub checks WinGet, installed packages, and available updates on startup.
+2. Search or category navigation focuses the catalog on what you need.
+3. Select applications, open official websites, or start a bulk installation.
+4. Update Center compares installed and available versions and upgrades selected packages.
+5. Commands and results remain visible in the terminal log.
+
+### Keyboard shortcuts
+
+| Shortcut | Action |
+| --- | --- |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Focus search |
+| <kbd>Ctrl</kbd> + <kbd>A</kbd> | Toggle all visible installable applications |
+| <kbd>Enter</kbd> | Install selected applications |
+| <kbd>Esc</kbd> | Clear search, selection, or the open dialog |
+
+### Installation options
+
+#### One command
+
+```powershell
+irm https://bygog.github.io/PowerHub/install.ps1 | iex
+```
+
+#### Inspect first
+
+```powershell
+$installer = irm https://bygog.github.io/PowerHub/install.ps1
+$installer
+```
+
+After reviewing the content:
+
+```powershell
+$installer | iex
+```
+
+#### Manual launch
+
+```powershell
+git clone https://github.com/byGOG/PowerHub.git
+cd PowerHub
+powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
+```
 
 ### Requirements
 
 - Windows 10 or Windows 11
 - Windows PowerShell 5.1 or PowerShell 7
-- `winget`, included with Microsoft App Installer
-- An internet connection
+- Internet access
+- Administrator approval may be required for package installation
+- WinGet is recommended; PowerHub can provision it without Microsoft Store when missing
 
 ### Security
 
-To inspect the remote bootstrapper before running it:
+- Installation commands use `--exact` package matching.
+- Package and source agreements are explicitly handled through WinGet.
+- WinGet dependencies come from official Microsoft/GitHub sources, with SHA-256 verification where supported.
+- PowerHub does not make a permanent Execution Policy change; the launcher uses process scope only.
+- Terminal logs remain visible and failed packages are reported separately.
 
-```powershell
-irm https://bygog.github.io/PowerHub/install.ps1
-```
-
-To view the main application script directly:
+Inspect the main application directly:
 
 ```text
 https://bygog.github.io/PowerHub/PowerHub.ps1
 ```
+
+### Project structure
+
+```text
+PowerHub/
+├─ PowerHub.ps1          # WPF interface, catalog, and installation engine
+├─ install.ps1           # Lightweight online bootstrapper
+├─ logos.json            # Application logo catalog
+├─ assets/               # README media
+└─ .nojekyll             # GitHub Pages configuration
+```
+
+### Contributing
+
+Use [GitHub Issues](https://github.com/byGOG/PowerHub/issues) for bug reports, application requests, and improvement ideas. Please preserve existing behavior and Windows PowerShell 5.1 compatibility when proposing changes.
+
+---
+
+<div align="center">
+
+PowerHub is maintained by [byGOG](https://bygog.github.io/).
+
+*Sordum.net topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı.*
+
+[Sordum.net](https://www.sordum.net/) · [GitHub](https://github.com/byGOG/PowerHub) · [Website](https://bygog.github.io/)
+
+</div>
