@@ -438,7 +438,7 @@ public static class PowerHubWindowLayout {
                                     <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Top" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE8A7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                        <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                    Foreground="#8CDBFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}"
