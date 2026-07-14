@@ -1109,261 +1109,67 @@ function Write-PowerHubLog {
     Write-Host "[$timestamp] [PowerHub] $Message" -ForegroundColor $Color
 }
 
-$apps = [Collections.ArrayList]@(
-    [pscustomobject]@{ Name='Google Chrome'; Description='Hızlı web tarayıcısı'; Id='Google.Chrome'; Category='Web Tarayıcıları'; Initial='G'; Color='#4285F4'; IsSelected=$false },
-    [pscustomobject]@{ Name='Mozilla Firefox'; Description='Özgür ve gizlilik odaklı'; Id='Mozilla.Firefox'; Category='Web Tarayıcıları'; Initial='F'; Color='#FF7139'; IsSelected=$false },
-    [pscustomobject]@{ Name='Brave'; Description='Reklam engelleyici tarayıcı'; Id='Brave.Brave'; Category='Web Tarayıcıları'; Initial='B'; Color='#FB542B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Zen Browser'; Description='Sade ve modern tarayıcı'; Id='Zen-Team.Zen-Browser'; Category='Web Tarayıcıları'; Initial='Z'; Color='#6B7CFF'; IsSelected=$false },
-    [pscustomobject]@{ Name='Tor Browser'; Description='Anonimlik odaklı tarayıcı'; Id='TorProject.TorBrowser'; Category='Web Tarayıcıları'; Initial='T'; Color='#7D4698'; IsSelected=$false },
-    [pscustomobject]@{ Name='Mullvad Browser'; Description='Parmak izi korumalı tarayıcı'; Id='MullvadVPN.MullvadBrowser'; Category='Web Tarayıcıları'; Initial='M'; Color='#D29422'; IsSelected=$false },
+function Import-PowerHubCatalog {
+    $cacheDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
+    $cachePath = Join-Path $cacheDirectory 'catalog.json'
+    $bundledPath = Join-Path $PSScriptRoot 'catalog.json'
+    $developmentPath = Join-Path $PSScriptRoot 'PowerHub\catalog.json'
+    $catalogPath = if (Test-Path -LiteralPath $bundledPath) {
+        $bundledPath
+    } elseif (Test-Path -LiteralPath $developmentPath) {
+        $developmentPath
+    } else {
+        $null
+    }
 
-    [pscustomobject]@{ Name='Discord'; Description='Topluluk ve sesli sohbet'; Id='Discord.Discord'; Category='İletişim & Sosyal'; Initial='D'; Color='#5865F2'; IsSelected=$false },
-    [pscustomobject]@{ Name='Telegram'; Description='Hızlı ve güvenli mesajlaşma'; Id='Telegram.TelegramDesktop'; Category='İletişim & Sosyal'; Initial='T'; Color='#229ED9'; IsSelected=$false },
-    [pscustomobject]@{ Name='WhatsApp'; Description='Mesajlaşma ve görüntülü arama'; Id='9NKSQGP7F2NH'; InstallArguments=@('install','-e','--id','9NKSQGP7F2NH','--source','msstore'); Category='İletişim & Sosyal'; Initial='W'; Color='#25D366'; IsSelected=$false },
-    [pscustomobject]@{ Name='Thunderbird'; Description='Açık kaynak e-posta istemcisi'; Id='Mozilla.Thunderbird'; Category='İletişim & Sosyal'; Initial='T'; Color='#0A84FF'; IsSelected=$false },
-    [pscustomobject]@{ Name='Zoom'; Description='Video toplantıları'; Id='Zoom.Zoom'; Category='İletişim & Sosyal'; Initial='Z'; Color='#2D8CFF'; IsSelected=$false },
+    try {
+        if (-not $catalogPath) {
+            [IO.Directory]::CreateDirectory($cacheDirectory) | Out-Null
+            $response = Invoke-WebRequest -UseBasicParsing -Uri 'https://bygog.github.io/PowerHub/catalog.json' -TimeoutSec 20
+            $json = if ($response.Content -is [byte[]]) {
+                [Text.Encoding]::UTF8.GetString([byte[]]$response.Content)
+            } else {
+                [string]$response.Content
+            }
+            [IO.File]::WriteAllText($cachePath, $json, [Text.UTF8Encoding]::new($false))
+            $catalogPath = $cachePath
+        }
 
-    [pscustomobject]@{ Name='Google Drive'; Description='Bulut depolama ve eşitleme'; Id='Google.GoogleDrive'; Category='Üretkenlik'; Initial='G'; Color='#4A8AF4'; IsSelected=$false },
-    [pscustomobject]@{ Name='Dropbox'; Description='Dosya eşitleme ve paylaşım'; Id='Dropbox.Dropbox'; Category='Üretkenlik'; Initial='D'; Color='#0061FF'; IsSelected=$false },
-    [pscustomobject]@{ Name='CopyQ'; Description='Gelişmiş pano yöneticisi'; Id='hluk.CopyQ'; Category='Üretkenlik'; Initial='C'; Color='#4B7D8F'; IsSelected=$false },
-    [pscustomobject]@{ Name='Flow Launcher'; Description='Hızlı uygulama başlatıcı'; Id='Flow-Launcher.Flow-Launcher'; Category='Üretkenlik'; Initial='F'; Color='#5B8DEF'; IsSelected=$false },
+        $catalog = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if ($catalog.SchemaVersion -ne 1) {
+            throw "Desteklenmeyen katalog şeması: $($catalog.SchemaVersion)"
+        }
+        if (@($catalog.Applications).Count -eq 0 -or @($catalog.Categories).Count -eq 0) {
+            throw 'Katalog uygulama veya kategori içermiyor.'
+        }
 
-    [pscustomobject]@{ Name='VLC'; Description='Her formatı oynatır'; Id='VideoLAN.VLC'; Category='Multimedya'; Initial='V'; Color='#F59E0B'; IsSelected=$false },
-    [pscustomobject]@{ Name='OBS Studio'; Description='Kayıt ve canlı yayın'; Id='OBSProject.OBSStudio'; Category='Multimedya'; Initial='O'; Color='#4B5563'; IsSelected=$false },
-    [pscustomobject]@{ Name='HandBrake'; Description='Video dönüştürme aracı'; Id='HandBrake.HandBrake'; Category='Multimedya'; Initial='H'; Color='#3FA35C'; IsSelected=$false },
-    [pscustomobject]@{ Name='ImageGlass'; Description='Hafif ve modern görsel görüntüleyici'; Id='DuongDieuPhap.ImageGlass'; Category='Multimedya'; Initial='I'; Color='#D9509E'; IsSelected=$false },
-    [pscustomobject]@{ Name='Spotify'; Description='Müzik ve podcast'; Id='Spotify.Spotify'; Category='Multimedya'; Initial='S'; Color='#1DB954'; IsSelected=$false },
-    [pscustomobject]@{ Name='foobar2000'; Description='Özelleştirilebilir müzik oynatıcı'; Id='PeterPawlowski.foobar2000'; Category='Multimedya'; Initial='F'; Color='#566270'; IsSelected=$false },
+        Write-PowerHubLog -Message "Katalog hazır: $(@($catalog.Applications).Count) uygulama, $(@($catalog.Categories).Count) kategori." -Color DarkCyan
+        return $catalog
+    } catch {
+        throw "PowerHub kataloğu yüklenemedi: $($_.Exception.Message)"
+    }
+}
 
-    [pscustomobject]@{ Name='Visual Studio Code'; Description='Modern kod editörü'; Id='Microsoft.VisualStudioCode'; Category='Geliştirme'; Initial='VS'; Color='#007ACC'; IsSelected=$false },
-    [pscustomobject]@{ Name='Git'; Description='Sürüm kontrol sistemi'; Id='Git.Git'; Category='Geliştirme'; Initial='G'; Color='#F05032'; IsSelected=$false },
-    [pscustomobject]@{ Name='Node.js LTS'; Description='JavaScript çalışma ortamı'; Id='OpenJS.NodeJS.LTS'; Category='Geliştirme'; Initial='N'; Color='#339933'; IsSelected=$false },
-    [pscustomobject]@{ Name='Python 3.13'; Description='Python geliştirme ortamı'; Id='Python.Python.3.13'; Category='Geliştirme'; Initial='Py'; Color='#3776AB'; IsSelected=$false },
-    [pscustomobject]@{ Name='Docker Desktop'; Description='Konteyner geliştirme platformu'; Id='Docker.DockerDesktop'; Category='Geliştirme'; Initial='D'; Color='#2496ED'; IsSelected=$false },
-    [pscustomobject]@{ Name='Postman'; Description='API geliştirme ve test aracı'; Id='Postman.Postman'; Category='Geliştirme'; Initial='P'; Color='#FF6C37'; IsSelected=$false },
-    [pscustomobject]@{ Name='Notepad++'; Description='Hızlı metin ve kod editörü'; Id='Notepad++.Notepad++'; Category='Geliştirme'; Initial='N+'; Color='#73B53E'; IsSelected=$false },
+$catalog = Import-PowerHubCatalog
+$apps = [Collections.ArrayList]::new()
+foreach ($entry in @($catalog.Applications)) {
+    $record = [ordered]@{}
+    foreach ($property in $entry.PSObject.Properties) {
+        $record[$property.Name] = $property.Value
+    }
+    $record['IsSelected'] = $false
+    [void]$apps.Add([pscustomobject]$record)
+}
 
-    [pscustomobject]@{ Name='Claude'; Description='Anthropic yapay zeka asistanı'; Id='Anthropic.Claude'; Category='Yapay Zeka'; Initial='C'; Color='#C67C5B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Cursor'; Description='Yapay zeka destekli kod editörü'; Id='Anysphere.Cursor'; Category='Yapay Zeka'; Initial='C'; Color='#4A4A4A'; IsSelected=$false },
-    [pscustomobject]@{ Name='Google Antigravity'; Description='Yapay zeka geliştirme aracı'; Id='Google.Antigravity'; Category='Yapay Zeka'; Initial='A'; Color='#5965D8'; IsSelected=$false },
+$sevenZipApp = $apps | Where-Object Name -eq '7-Zip' | Select-Object -First 1
+if ($sevenZipApp) {
+    $sevenZipApp | Add-Member -NotePropertyName Logo -NotePropertyValue $sevenZipLogo -Force
+    $sevenZipApp | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 0.0 -Force
+}
 
-    [pscustomobject]@{ Name='HWiNFO64'; Description='Donanım izleme ve tanılama'; Id='REALiX.HWiNFO'; Category='Donanım & Test'; Initial='H'; Color='#2979A8'; IsSelected=$false },
-    [pscustomobject]@{ Name='CPU-Z'; Description='İşlemci ve sistem bilgileri'; Id='CPUID.CPU-Z'; Category='Donanım & Test'; Initial='C'; Color='#6D4BA0'; IsSelected=$false },
-    [pscustomobject]@{ Name='GPU-Z'; Description='Ekran kartı bilgileri'; Id='TechPowerUp.GPU-Z'; Category='Donanım & Test'; Initial='G'; Color='#2C8D65'; IsSelected=$false },
-    [pscustomobject]@{ Name='OCCT'; Description='Kararlılık ve stres testi'; Id='OCBase.OCCT.Personal'; Category='Donanım & Test'; Initial='O'; Color='#D8543D'; IsSelected=$false },
-    [pscustomobject]@{ Name='FurMark 2'; Description='GPU stres ve kıyaslama testi'; Id='Geeks3D.FurMark.2'; Category='Donanım & Test'; Initial='F'; Color='#B64936'; IsSelected=$false },
-    [pscustomobject]@{ Name='PassMark PerformanceTest'; Description='Bilgisayar performans testi'; Id='PassMark.PerformanceTest'; Category='Donanım & Test'; Initial='P'; Color='#35699A'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='PowerToys'; Description='Windows üretkenlik araçları'; Id='Microsoft.PowerToys'; Category='Sistem Araçları'; Initial='P'; Color='#735DD0'; IsSelected=$false },
-    [pscustomobject]@{ Name='Rufus'; Description='Önyüklenebilir USB hazırlama'; Id='Rufus.Rufus'; Category='Sistem Araçları'; Initial='R'; Color='#3A7D9A'; IsSelected=$false },
-    [pscustomobject]@{ Name='Ventoy'; Description='Çoklu ISO önyükleme aracı'; Id='Ventoy.Ventoy'; Category='Sistem Araçları'; Initial='V'; Color='#4A8B55'; IsSelected=$false },
-    [pscustomobject]@{ Name='BleachBit'; Description='Sistem temizleme aracı'; Id='BleachBit.BleachBit'; Category='Sistem Araçları'; Initial='B'; Color='#799C3A'; IsSelected=$false },
-    [pscustomobject]@{ Name='UniGetUI'; Description='Paket yöneticileri için arayüz'; Id='Devolutions.UniGetUI'; Category='Sistem Araçları'; Initial='U'; Color='#4E78A7'; IsSelected=$false },
-    [pscustomobject]@{ Name='Everything'; Description='Anında dosya arama'; Id='voidtools.Everything'; Category='Dosya Yönetimi'; Initial='E'; Color='#F97316'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Malwarebytes'; Description='Kötü amaçlı yazılım koruması'; Id='Malwarebytes.Malwarebytes'; Category='Güvenlik'; Initial='M'; Color='#1479C9'; IsSelected=$false },
-    [pscustomobject]@{ Name='Bitwarden'; Description='Açık kaynak parola yöneticisi'; Id='Bitwarden.Bitwarden'; Category='Güvenlik'; Initial='B'; Color='#175DDC'; IsSelected=$false },
-    [pscustomobject]@{ Name='ESET Security'; Description='Antivirüs ve internet güvenliği'; Id='ESET.Security'; Category='Güvenlik'; Initial='E'; Color='#00A6A6'; IsSelected=$false },
-    [pscustomobject]@{ Name='Sandboxie Plus'; Description='Yalıtılmış uygulama ortamı'; Id='Sandboxie.Plus'; Category='Güvenlik'; Initial='S'; Color='#D5A62E'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Proton VPN'; Description='Gizlilik odaklı VPN'; Id='Proton.ProtonVPN'; Category='Gizlilik & Ağ Ayarları'; Initial='P'; Color='#6D4AFF'; IsSelected=$false },
-    [pscustomobject]@{ Name='OpenVPN Connect'; Description='Güvenli VPN istemcisi'; Id='OpenVPNTechnologies.OpenVPNConnect'; Category='Gizlilik & Ağ Ayarları'; Initial='O'; Color='#EA7E20'; IsSelected=$false },
-    [pscustomobject]@{ Name='GoodbyeDPI'; Description='DPI engellerine karşı ağ aracı'; Id='ValdikSS.GoodbyeDPI'; Category='Gizlilik & Ağ Ayarları'; Initial='G'; Color='#3D7B8A'; IsSelected=$false },
-    [pscustomobject]@{ Name='DNS Jumper'; Description='Hızlı DNS değiştirme aracı'; Id='sordum.DnsJumper'; Category='Gizlilik & Ağ Ayarları'; Initial='D'; Color='#3A8A7A'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Steam'; Description='PC oyun mağazası ve platformu'; Id='Valve.Steam'; Category='Oyun & Platformlar'; Initial='S'; Color='#1B6B9B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Epic Games Launcher'; Description='Epic oyun mağazası'; Id='EpicGames.EpicGamesLauncher'; Category='Oyun & Platformlar'; Initial='E'; Color='#4B4B4B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Battle.net'; Description='Blizzard oyun platformu'; Id='Blizzard.BattleNet'; Category='Oyun & Platformlar'; Initial='B'; Color='#148EFF'; IsSelected=$false },
-    [pscustomobject]@{ Name='GOG Galaxy'; Description='GOG oyun kütüphanesi'; Id='GOG.Galaxy'; Category='Oyun & Platformlar'; Initial='G'; Color='#8B4FA8'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Dosya Yönetimi'; Initial='7'; InitialOpacity=0.0; Logo=$sevenZipLogo; Color='#6B7280'; IsSelected=$false },
-    [pscustomobject]@{ Name='WinRAR'; Description='Arşivleme ve sıkıştırma aracı'; Id='RARLab.WinRAR'; Category='Dosya Yönetimi'; Initial='W'; Color='#7A5B91'; IsSelected=$false },
-    [pscustomobject]@{ Name='WizTree'; Description='Hızlı disk alanı analizi'; Id='AntibodySoftware.WizTree'; Category='Dosya Yönetimi'; Initial='W'; Color='#49944A'; IsSelected=$false },
-    [pscustomobject]@{ Name='TeraCopy'; Description='Hızlı ve güvenilir dosya kopyalama'; Id='CodeSector.TeraCopy'; Category='Sistem Araçları'; Initial='T'; Color='#3D7FA5'; IsSelected=$false },
-    [pscustomobject]@{ Name='OneCommander'; Description='Modern çift panelli dosya yöneticisi'; Id='MilosParipovic.OneCommander'; Category='Dosya Yönetimi'; Initial='1'; Color='#4B79A8'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='VirtualBox'; Description='Açık kaynak sanallaştırma'; Id='Oracle.VirtualBox'; Category='Sanallaştırma'; Initial='V'; Color='#2366A8'; IsSelected=$false },
-    [pscustomobject]@{ Name='VirtualBox Extension Pack'; Description='USB ve uzak bağlantı eklentileri'; Action='Url'; Url='https://www.virtualbox.org/wiki/Downloads'; Category='Sanallaştırma'; Initial='V+'; Color='#376F9C'; IsSelected=$false },
-    [pscustomobject]@{ Name='VMware Workstation Pro'; Description='Profesyonel masaüstü sanallaştırma'; Action='Url'; Url='https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion'; Category='Sanallaştırma'; Initial='VM'; Color='#E28A24'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Office Tool Plus'; Description='Office dağıtım ve yönetim aracı'; Id='Yerong.OfficeToolPlus'; Category='Betikler & Otomasyon'; Initial='O'; Color='#D64A3A'; IsSelected=$false },
-    [pscustomobject]@{ Name='CTT WinUtil'; Description='Windows bakım ve yapılandırma aracı'; Action='Url'; Url='https://github.com/ChrisTitusTech/winutil'; Category='Betikler & Otomasyon'; Initial='W'; Color='#4C8B69'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='uBlock Origin'; Description='İçerik ve takipçi engelleyici'; Action='Url'; Url='https://ublockorigin.com/tr'; Category='Eklentiler'; Initial='uB'; Color='#C73535'; IsSelected=$false },
-    [pscustomobject]@{ Name='Dark Reader'; Description='Web siteleri için karanlık tema'; Action='Url'; Url='https://darkreader.org/'; Category='Eklentiler'; Initial='DR'; Color='#4A5365'; IsSelected=$false },
-    [pscustomobject]@{ Name='SponsorBlock'; Description='YouTube sponsor bölümü atlama'; Action='Url'; Url='https://sponsor.ajay.app/'; Category='Eklentiler'; Initial='SB'; Color='#2D9B61'; IsSelected=$false },
-    [pscustomobject]@{ Name='Greasy Fork'; Description='Açık kullanıcı betiği dizini'; Action='Url'; Url='https://greasyfork.org/'; Category='Eklentiler'; Initial='GF'; Color='#607D4F'; IsSelected=$false },
-    [pscustomobject]@{ Name='TWP Translate Web Pages'; Description='Web sayfası çeviri eklentisi'; Action='Url'; Url='https://github.com/FilipePS/Traduzir-paginas-web'; Category='Eklentiler'; Initial='T'; Color='#3678C8'; IsSelected=$false },
-    [pscustomobject]@{ Name='YouTube Auto HD + FPS'; Description='YouTube kalite ve FPS tercihi eklentisi'; Action='Url'; Url='https://github.com/avi12/youtube-auto-hd'; Category='Eklentiler'; Initial='HD'; Color='#D63A3A'; IsSelected=$false },
-    [pscustomobject]@{ Name='Firefox Relay'; Description='E-posta maskeleri ve gizlilik'; Action='Url'; Url='https://relay.firefox.com/'; Category='Eklentiler'; Initial='FR'; Color='#7A4BD4'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Gmail'; Description='Google web posta hizmeti'; Action='Url'; Url='https://mail.google.com/'; Category='İletişim & Sosyal'; Initial='G'; Color='#D94B40'; IsSelected=$false },
-    [pscustomobject]@{ Name='Outlook'; Description='Microsoft web posta hizmeti'; Action='Url'; Url='https://outlook.live.com/'; Category='İletişim & Sosyal'; Initial='O'; Color='#1678C8'; IsSelected=$false },
-    [pscustomobject]@{ Name='Yahoo Mail'; Description='Yahoo web posta hizmeti'; Action='Url'; Url='https://mail.yahoo.com/'; Category='İletişim & Sosyal'; Initial='Y'; Color='#6A3BC2'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='DeepL Translate'; Description='Yapay zeka destekli çeviri'; Id='DeepL.DeepL'; Category='Üretkenlik'; Initial='D'; Color='#175E85'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='K-Lite Codec Pack Full'; Description='Windows medya codec paketi'; Id='CodecGuide.K-LiteCodecPack.Full'; Category='Multimedya'; Initial='K'; Color='#4B78A5'; IsSelected=$false },
-    [pscustomobject]@{ Name='Subtitle Edit'; Description='Altyazı düzenleme ve eşitleme'; Id='Nikse.SubtitleEdit'; Category='Multimedya'; Initial='SE'; Color='#397D9B'; IsSelected=$false },
-    [pscustomobject]@{ Name='ShareX'; Description='Ekran görüntüsü ve paylaşım aracı'; Id='ShareX.ShareX'; Category='Multimedya'; Initial='S'; Color='#2A8CC7'; IsSelected=$false },
-    [pscustomobject]@{ Name='AIMP'; Description='Hafif ve gelişmiş müzik oynatıcı'; Id='AIMP.AIMP'; Category='Multimedya'; Initial='A'; Color='#E58A2D'; IsSelected=$false },
-    [pscustomobject]@{ Name='iTunes'; Description='Apple müzik ve aygıt yönetimi'; Id='Apple.iTunes'; Category='Multimedya'; Initial='i'; Color='#D94E86'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='GitHub Desktop'; Description='GitHub için masaüstü istemcisi'; Id='GitHub.GitHubDesktop'; Category='Geliştirme'; Initial='GH'; Color='#4E4A59'; IsSelected=$false },
-    [pscustomobject]@{ Name='PowerShell 7'; Description='Modern çapraz platform kabuğu'; Id='Microsoft.PowerShell'; Category='Geliştirme'; Initial='PS'; Color='#3574C3'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='LLM Stats'; Description='LLM kullanım ve model istatistikleri'; Action='Url'; Url='https://llm-stats.com/'; Category='Yapay Zeka'; Initial='LS'; Color='#5265A8'; IsSelected=$false },
-    [pscustomobject]@{ Name='Artificial Analysis'; Description='Yapay zeka model karşılaştırmaları'; Action='Url'; Url='https://artificialanalysis.ai/'; Category='Yapay Zeka'; Initial='AA'; Color='#5F55B5'; IsSelected=$false },
-    [pscustomobject]@{ Name='Arena AI'; Description='Topluluk tabanlı yapay zeka arenası'; Action='Url'; Url='https://arena.ai/'; Category='Yapay Zeka'; Initial='A'; Color='#7861D1'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Resource Hacker'; Description='Windows kaynak düzenleyicisi'; Id='AngusJohnson.ResourceHacker'; Category='Sistem Araçları'; Initial='RH'; Color='#47769A'; IsSelected=$false },
-    [pscustomobject]@{ Name='Process Lasso'; Description='İşlem ve CPU optimizasyonu'; Id='BitSum.ProcessLasso'; Category='Sistem Araçları'; Initial='PL'; Color='#3D75A6'; IsSelected=$false },
-    [pscustomobject]@{ Name='Bulk Crap Uninstaller'; Description='Toplu ve kalıntısız kaldırıcı'; Id='Klocman.BulkCrapUninstaller'; Category='Sistem Araçları'; Initial='BC'; Color='#4C8A68'; IsSelected=$false },
-    [pscustomobject]@{ Name='O&O AppBuster'; Description='Windows uygulama yöneticisi'; Id='OO-Software.AppBuster'; Category='Sistem Araçları'; Initial='O'; Color='#356D9A'; IsSelected=$false },
-    [pscustomobject]@{ Name='balenaEtcher'; Description='Önyüklenebilir disk yazma aracı'; Id='Balena.Etcher'; Category='Sistem Araçları'; Initial='bE'; Color='#4D72C8'; IsSelected=$false },
-    [pscustomobject]@{ Name='Windows 10 Media Creation Tool'; Description='Resmî Windows 10 medya aracı'; Action='Url'; Url='https://www.microsoft.com/software-download/windows10'; Category='Sistem Araçları'; Initial='10'; Color='#1784C7'; IsSelected=$false },
-    [pscustomobject]@{ Name='Windows 11 Media Creation Tool'; Description='Resmî Windows 11 medya aracı'; Action='Url'; Url='https://www.microsoft.com/software-download/windows11'; Category='Sistem Araçları'; Initial='11'; Color='#2E82C9'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='HashCheck'; Description='Dosya sağlama toplamı eklentisi'; Id='gurnec.HashCheckShellExtension'; Category='Dosya Yönetimi'; Initial='H'; Color='#6B7B8A'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='BurnInTest'; Description='Donanım kararlılık ve dayanıklılık testi'; Action='Url'; Url='https://www.passmark.com/products/burnintest/download.php'; Category='Donanım & Test'; Initial='BI'; Color='#B04B3A'; IsSelected=$false },
-    [pscustomobject]@{ Name='AMD Software: Adrenalin'; Description='AMD ekran kartı sürücüleri'; Action='Url'; Url='https://www.amd.com/en/support/download/drivers.html'; Category='Donanım & Test'; Initial='A'; Color='#C63D36'; IsSelected=$false },
-    [pscustomobject]@{ Name='Intel Driver & Support Assistant'; Description='Intel sürücü tarama ve güncelleme'; Id='Intel.IntelDriverAndSupportAssistant'; Category='Donanım & Test'; Initial='I'; Color='#1671B8'; IsSelected=$false },
-    [pscustomobject]@{ Name='NVIDIA App'; Description='NVIDIA sürücü ve oyun ayarları'; Id='XP8CLZL93F5Z4P'; InstallArguments=@('install','-e','--id','XP8CLZL93F5Z4P','--source','msstore'); Category='Donanım & Test'; Initial='N'; Color='#6AAB35'; IsSelected=$false },
-    [pscustomobject]@{ Name='DriverStore Explorer'; Description='Windows sürücü deposu yöneticisi'; Id='lostindark.DriverStoreExplorer'; Category='Donanım & Test'; Initial='DS'; Color='#53759A'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='AnyDesk'; Description='Uzak masaüstü bağlantısı'; Id='AnyDesk.AnyDesk'; Category='Ağ & Uzaktan Erişim'; Initial='A'; Color='#E14A43'; IsSelected=$false },
-    [pscustomobject]@{ Name='TeamViewer'; Description='Uzaktan destek ve erişim'; Id='TeamViewer.TeamViewer'; Category='Ağ & Uzaktan Erişim'; Initial='T'; Color='#2275C9'; IsSelected=$false },
-    [pscustomobject]@{ Name='LocalSend'; Description='Yerel ağda dosya paylaşımı'; Id='LocalSend.LocalSend'; Category='Ağ & Uzaktan Erişim'; Initial='L'; Color='#3E85C7'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Sideloadly'; Description='iOS uygulama imzalama ve yükleme'; Action='Url'; Url='https://sideloadly.io/'; Category='Mobil & Araçlar'; Initial='S'; Color='#4E83B8'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Internet Download Manager'; Description='Gelişmiş indirme yöneticisi'; Id='Tonec.InternetDownloadManager'; Category='İndirme Yöneticileri'; Initial='ID'; Color='#3A7DA2'; IsSelected=$false },
-    [pscustomobject]@{ Name='JDownloader 2'; Description='Açık kaynak indirme yöneticisi'; Id='AppWork.JDownloader'; Category='İndirme Yöneticileri'; Initial='J'; Color='#D9A52E'; IsSelected=$false },
-    [pscustomobject]@{ Name='qBittorrent'; Description='Açık kaynak BitTorrent istemcisi'; Id='qBittorrent.qBittorrent'; Category='İndirme Yöneticileri'; Initial='qB'; Color='#3E79B8'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Avira Free Security'; Description='Ücretsiz antivirüs ve güvenlik'; Action='Url'; Url='https://www.avira.com/en/free-security'; Category='Güvenlik'; Initial='A'; Color='#D94A48'; IsSelected=$false },
-    [pscustomobject]@{ Name='Bitdefender Antivirus Free'; Description='Ücretsiz kötü amaçlı yazılım koruması'; Action='Url'; Url='https://www.bitdefender.com/en-us/consumer/free-antivirus'; Category='Güvenlik'; Initial='B'; Color='#D52C32'; IsSelected=$false },
-    [pscustomobject]@{ Name='Emsisoft Emergency Kit'; Description='Taşınabilir zararlı yazılım tarayıcısı'; Action='Url'; Url='https://www.emsisoft.com/en/home/emergency-kit/'; Category='Güvenlik'; Initial='E'; Color='#397CC1'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Zen Privacy'; Description='Sistem genelinde reklam ve takipçi koruması'; Id='ZenPrivacy.ZenDesktop'; Category='Gizlilik & Ağ Ayarları'; Initial='Z'; Color='#287AB8'; IsSelected=$false },
-    [pscustomobject]@{ Name='O&O ShutUp10++'; Description='Windows gizlilik ayarları yöneticisi'; Id='OO-Software.ShutUp10'; Category='Gizlilik & Ağ Ayarları'; Initial='O'; Color='#3C6A92'; IsSelected=$false },
-    [pscustomobject]@{ Name='privacy.sexy'; Description='Açık kaynak gizlilik yapılandırmaları'; Action='Url'; Url='https://privacy.sexy/'; Category='Gizlilik & Ağ Ayarları'; Initial='p'; Color='#8A4EA0'; IsSelected=$false },
-    [pscustomobject]@{ Name='GoodbyeDPI UI'; Description='GoodbyeDPI için grafik arayüz'; Action='Url'; Url='https://github.com/Storik4pro/goodbyeDPI-UI'; Category='Gizlilik & Ağ Ayarları'; Initial='GU'; Color='#447A8A'; IsSelected=$false },
-    [pscustomobject]@{ Name='NextDNS'; Description='Özelleştirilebilir güvenli DNS'; Action='Url'; Url='https://nextdns.io/'; Category='Gizlilik & Ağ Ayarları'; Initial='N'; Color='#4C6FD1'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='SeriesGraph'; Description='Dizi keşif ve ilişki haritası'; Action='Url'; Url='https://seriesgraph.com/'; Category='Film & Medya'; Initial='SG'; Color='#6856A8'; IsSelected=$false },
-    [pscustomobject]@{ Name='OpenSubtitles'; Description='Altyazı arama ve indirme'; Action='Url'; Url='https://www.opensubtitles.com/'; Category='Film & Medya'; Initial='OS'; Color='#4E7CA5'; IsSelected=$false },
-    [pscustomobject]@{ Name='IPTVnator'; Description='Açık kaynak IPTV oynatıcısı'; Id='4gray.iptvnator'; Category='Film & Medya'; Initial='IP'; Color='#6A52C2'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Ninite'; Description='Toplu uygulama kurulum hizmeti'; Action='Url'; Url='https://ninite.com/'; Category='Uygulama Arşivleri'; Initial='N'; Color='#3B76A0'; IsSelected=$false },
-    [pscustomobject]@{ Name='Microsoft Package Picker'; Description='Microsoft Store çoklu uygulama paketi'; Action='Url'; Url='https://apps.microsoft.com/'; Category='Uygulama Arşivleri'; Initial='MP'; Color='#2778B8'; IsSelected=$false },
-    [pscustomobject]@{ Name='UUP dump'; Description='Windows UUP indirme aracı'; Action='Url'; Url='https://uupdump.net/'; Category='Uygulama Arşivleri'; Initial='U'; Color='#3F78A5'; IsSelected=$false },
-    [pscustomobject]@{ Name='AtlasOS'; Description='Windows performans yapılandırma projesi'; Action='Url'; Url='https://atlasos.net/'; Category='Uygulama Arşivleri'; Initial='A'; Color='#5968C5'; IsSelected=$false },
-    [pscustomobject]@{ Name='Softpedia'; Description='Yazılım indirme ve inceleme dizini'; Action='Url'; Url='https://www.softpedia.com/'; Category='Uygulama Arşivleri'; Initial='S'; Color='#3E7FB0'; IsSelected=$false },
-    [pscustomobject]@{ Name='TechSpot Downloads'; Description='Teknoloji ve yazılım indirme dizini'; Action='Url'; Url='https://www.techspot.com/downloads/'; Category='Uygulama Arşivleri'; Initial='TS'; Color='#D06A32'; IsSelected=$false },
-    [pscustomobject]@{ Name='ReviOS'; Description='Windows yapılandırma ve optimizasyon projesi'; Action='Url'; Url='https://revi.cc/'; Category='Uygulama Arşivleri'; Initial='R'; Color='#6855B7'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='BrowserLeaks'; Description='Tarayıcı gizlilik ve sızıntı testleri'; Action='Url'; Url='https://browserleaks.com/'; Category='Test & Web Analiz'; Initial='BL'; Color='#4A7290'; IsSelected=$false },
-    [pscustomobject]@{ Name='Bufferbloat Test'; Description='Gecikme ve bufferbloat testi'; Action='Url'; Url='https://www.waveform.com/tools/bufferbloat'; Category='Test & Web Analiz'; Initial='BT'; Color='#3C7D9B'; IsSelected=$false },
-    [pscustomobject]@{ Name='Fast.com'; Description='Netflix internet hız testi'; Action='Url'; Url='https://fast.com/'; Category='Test & Web Analiz'; Initial='F'; Color='#C93838'; IsSelected=$false },
-    [pscustomobject]@{ Name='Speedtest by Ookla'; Description='İnternet hız ve gecikme testi'; Action='Url'; Url='https://www.speedtest.net/'; Category='Test & Web Analiz'; Initial='S'; Color='#2874B5'; IsSelected=$false },
-    [pscustomobject]@{ Name='Cloudflare Speed Test'; Description='Bağlantı kalitesi ve hız testi'; Action='Url'; Url='https://speed.cloudflare.com/'; Category='Test & Web Analiz'; Initial='CF'; Color='#E78B2B'; IsSelected=$false },
-    [pscustomobject]@{ Name='DNS Speed Test Online'; Description='DNS çözümleyici hız karşılaştırması'; Action='Url'; Url='https://www.dnsperf.com/dns-speed-benchmark'; Category='Test & Web Analiz'; Initial='DS'; Color='#4A78A0'; IsSelected=$false },
-
-    [pscustomobject]@{ Name='Raphi Win11Debloat'; Description='Windows 11 temizleme ve yapılandırma aracı'; Action='Url'; Url='https://github.com/Raphire/Win11Debloat'; Category='Betikler & Otomasyon'; Initial='R'; Color='#4B7B68'; IsSelected=$false },
-    [pscustomobject]@{ Name='Bibata Cursor Installer'; Description='Bibata imleç temasını kurma aracı'; Action='Url'; Url='https://github.com/ful1e5/Bibata_Cursor'; Category='Betikler & Otomasyon'; Initial='B'; Color='#765B9A'; IsSelected=$false }
-)
-
-$officialWebsiteCatalog = @{
-    '7-Zip' = 'https://7-zip.org/download.html'
-    'AIMP' = 'https://www.aimp.ru'
-    'AnyDesk' = 'https://anydesk.com/'
-    'balenaEtcher' = 'https://etcher.balena.io/'
-    'Battle.net' = 'https://download.battle.net/en-us/desktop'
-    'Bitwarden' = 'https://bitwarden.com/'
-    'BleachBit' = 'https://www.bleachbit.org/'
-    'Brave' = 'https://brave.com/download'
-    'Bulk Crap Uninstaller' = 'https://www.bcuninstaller.com/'
-    'Claude' = 'https://claude.ai/download'
-    'CopyQ' = 'https://github.com/hluk/CopyQ'
-    'CPU-Z' = 'https://www.cpuid.com/softwares/cpu-z.html'
-    'Cursor' = 'https://www.cursor.com/'
-    'DeepL Translate' = 'https://www.deepl.com/en/app'
-    'Discord' = 'https://discord.com/download'
-    'DNS Jumper' = 'https://www.sordum.org/7952/dns-jumper-v2-3/'
-    'Docker Desktop' = 'https://www.docker.com/products/docker-desktop'
-    'DriverStore Explorer' = 'https://github.com/lostindark/DriverStoreExplorer'
-    'Dropbox' = 'https://www.dropbox.com/'
-    'Epic Games Launcher' = 'https://epicgames.com/download'
-    'ESET Security' = 'https://www.eset.com/int/home/internet-security'
-    'Everything' = 'https://www.voidtools.com/'
-    'Flow Launcher' = 'https://github.com/Flow-Launcher/Flow.Launcher'
-    'foobar2000' = 'https://www.foobar2000.org/'
-    'FurMark 2' = 'https://geeks3d.com/furmark/downloads/'
-    'Git' = 'https://gitforwindows.org/'
-    'GitHub Desktop' = 'https://github.com/apps/desktop'
-    'GOG Galaxy' = 'https://www.gog.com/galaxy'
-    'GoodbyeDPI' = 'https://github.com/ValdikSS/GoodbyeDPI'
-    'Google Antigravity' = 'https://antigravity.google/'
-    'Google Chrome' = 'https://www.google.com/chrome/'
-    'Google Drive' = 'https://workspace.google.com/products/drive/'
-    'GPU-Z' = 'https://www.techpowerup.com/gpuz/'
-    'HandBrake' = 'https://handbrake.fr/'
-    'HashCheck' = 'https://github.com/gurnec/HashCheck'
-    'HWiNFO64' = 'https://www.hwinfo.com/download/'
-    'ImageGlass' = 'https://imageglass.org/'
-    'Intel Driver & Support Assistant' = 'https://www.intel.com/content/www/us/en/support/detect.html'
-    'Internet Download Manager' = 'https://www.internetdownloadmanager.com/'
-    'IPTVnator' = 'https://github.com/4gray/iptvnator'
-    'iTunes' = 'https://www.apple.com/itunes/'
-    'JDownloader 2' = 'https://jdownloader.org'
-    'K-Lite Codec Pack Full' = 'https://codecguide.com/download_k-lite_codec_pack_full.htm'
-    'LocalSend' = 'https://localsend.org/'
-    'Malwarebytes' = 'https://www.malwarebytes.com/mwb-download'
-    'Mozilla Firefox' = 'https://www.mozilla.org/firefox/'
-    'Mullvad Browser' = 'https://mullvad.net/browser'
-    'Node.js LTS' = 'https://nodejs.org/'
-    'Notepad++' = 'https://notepad-plus-plus.org/'
-    'NVIDIA App' = 'https://www.nvidia.com/en-us/software/nvidia-app/'
-    'O&O AppBuster' = 'https://www.oo-software.com/products/ooappbuster'
-    'O&O ShutUp10++' = 'https://www.oo-software.com/products/ShutUp10'
-    'OBS Studio' = 'https://obsproject.com/'
-    'OCCT' = 'https://www.ocbase.com/download'
-    'Office Tool Plus' = 'https://github.com/YerongAI/Office-Tool'
-    'OneCommander' = 'https://onecommander.com/'
-    'OpenVPN Connect' = 'https://openvpn.net/client/'
-    'PassMark PerformanceTest' = 'https://www.passmark.com/products/performancetest/download.php'
-    'Postman' = 'https://www.postman.com/downloads/'
-    'PowerShell 7' = 'https://microsoft.com/PowerShell'
-    'PowerToys' = 'https://github.com/microsoft/PowerToys'
-    'Process Lasso' = 'https://bitsum.com/'
-    'Proton VPN' = 'https://protonvpn.com/'
-    'Python 3.13' = 'https://www.python.org/'
-    'qBittorrent' = 'https://www.qbittorrent.org/'
-    'Resource Hacker' = 'https://www.angusj.com/resourcehacker/'
-    'Rufus' = 'https://rufus.ie/'
-    'Sandboxie Plus' = 'https://github.com/sandboxie-plus/Sandboxie'
-    'ShareX' = 'https://getsharex.com/'
-    'Spotify' = 'https://www.spotify.com/download/windows/'
-    'Steam' = 'https://store.steampowered.com/about/'
-    'Subtitle Edit' = 'https://github.com/SubtitleEdit/subtitleedit'
-    'TeamViewer' = 'https://www.teamviewer.com/en/download/windows/'
-    'Telegram' = 'https://desktop.telegram.org/'
-    'TeraCopy' = 'https://codesector.com/teracopy'
-    'Thunderbird' = 'https://www.thunderbird.net/'
-    'Tor Browser' = 'https://www.torproject.org/'
-    'UniGetUI' = 'https://devolutions.net/unigetui/'
-    'Ventoy' = 'https://www.ventoy.net/'
-    'VirtualBox' = 'https://www.virtualbox.org/'
-    'Visual Studio Code' = 'https://code.visualstudio.com'
-    'VLC' = 'https://www.videolan.org/vlc/'
-    'WhatsApp' = 'https://www.whatsapp.com/download'
-    'WinRAR' = 'https://www.win-rar.com/'
-    'WizTree' = 'https://diskanalyzer.com/'
-    'Zen Browser' = 'https://zen-browser.app/'
-    'Zen Privacy' = 'https://irbis.sh/zen'
-    'Zoom' = 'https://zoom.us/'
+$officialWebsiteCatalog = @{}
+foreach ($property in $catalog.OfficialWebsites.PSObject.Properties) {
+    $officialWebsiteCatalog[$property.Name] = [string]$property.Value
 }
 
 foreach ($app in $apps) {
@@ -1402,29 +1208,7 @@ foreach ($app in $apps) {
     }
 }
 
-$categoryDefinitions = @(
-    [pscustomobject]@{ Name='Web Tarayıcıları'; Display='Web Tarayıcıları'; Glyph='E774' },
-    [pscustomobject]@{ Name='Eklentiler'; Display='Eklentiler'; Glyph='E710' },
-    [pscustomobject]@{ Name='İletişim & Sosyal'; Display='İletişim & Sosyal'; Glyph='E715' },
-    [pscustomobject]@{ Name='Üretkenlik'; Display='Üretkenlik'; Glyph='E8F1' },
-    [pscustomobject]@{ Name='Multimedya'; Display='Multimedya'; Glyph='E714' },
-    [pscustomobject]@{ Name='Geliştirme'; Display='Geliştirme'; Glyph='E943' },
-    [pscustomobject]@{ Name='Yapay Zeka'; Display='Yapay Zeka'; Glyph='E945' },
-    [pscustomobject]@{ Name='Donanım & Test'; Display='Donanım & Test'; Glyph='E950' },
-    [pscustomobject]@{ Name='Ağ & Uzaktan Erişim'; Display='Ağ & Uzaktan Erişim'; Glyph='E968' },
-    [pscustomobject]@{ Name='Mobil & Araçlar'; Display='Mobil & Araçlar'; Glyph='E8EA' },
-    [pscustomobject]@{ Name='Sistem Araçları'; Display='Sistem Araçları'; Glyph='E713' },
-    [pscustomobject]@{ Name='Güvenlik'; Display='Güvenlik'; Glyph='E72E' },
-    [pscustomobject]@{ Name='Gizlilik & Ağ Ayarları'; Display='Gizlilik & Ağ Ayarları'; Glyph='E8AC' },
-    [pscustomobject]@{ Name='Oyun & Platformlar'; Display='Oyun & Platformlar'; Glyph='E7FC' },
-    [pscustomobject]@{ Name='Dosya Yönetimi'; Display='Dosya Yönetimi'; Glyph='E8B7' },
-    [pscustomobject]@{ Name='Sanallaştırma'; Display='Sanallaştırma'; Glyph='E7F8' },
-    [pscustomobject]@{ Name='İndirme Yöneticileri'; Display='İndirme Yöneticileri'; Glyph='E896' },
-    [pscustomobject]@{ Name='Film & Medya'; Display='Film & Medya'; Glyph='E8B2' },
-    [pscustomobject]@{ Name='Uygulama Arşivleri'; Display='Uygulama Arşivleri'; Glyph='E8B7' },
-    [pscustomobject]@{ Name='Test & Web Analiz'; Display='Test & Web Analiz'; Glyph='E9D9' },
-    [pscustomobject]@{ Name='Betikler & Otomasyon'; Display='Betikler & Otomasyon'; Glyph='E756' }
-)
+$categoryDefinitions = @($catalog.Categories)
 
 foreach ($category in $categoryDefinitions) {
     $count = @($apps | Where-Object Category -eq $category.Name).Count

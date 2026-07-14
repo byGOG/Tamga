@@ -30,7 +30,7 @@ PowerShell'i açın ve şu komutu çalıştırın:
 irm https://bygog.github.io/PowerHub/install.ps1 | iex
 ```
 
-Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` dizinine indirir ve uygulamayı STA modunda açar. Sisteminizde WinGet yoksa PowerHub durum kartı üzerinden Microsoft Store gerektirmeyen kurulumu başlatabilir.
+Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAPPDATA%\PowerHub` dizinine indirir, kataloğu doğrular ve uygulamayı STA modunda açar. Sisteminizde WinGet yoksa PowerHub durum kartı üzerinden Microsoft Store gerektirmeyen kurulumu başlatabilir.
 
 > [!IMPORTANT]
 > İnternetten indirilen betikleri çalıştırmadan önce incelemek iyi bir güvenlik alışkanlığıdır. Aşağıdaki [Güvenlik](#güvenlik) bölümüne bakın.
@@ -122,16 +122,17 @@ https://bygog.github.io/PowerHub/PowerHub.ps1
 
 ```text
 PowerHub/
-├─ PowerHub.ps1          # WPF arayüzü, katalog ve kurulum motoru
-├─ install.ps1           # Hafif çevrimiçi başlatıcı
-├─ logos.json            # Uygulama logo kataloğu
+├─ PowerHub.ps1          # WPF arayüzü ve paket işlem motoru
+├─ catalog.json          # Uygulamalar, kategoriler ve resmî site adresleri
+├─ install.ps1           # Kodu ve kataloğu doğrulayarak indiren başlatıcı
+├─ logos.json            # Uygulama logo varlıkları
 ├─ assets/               # README görselleri
 └─ .nojekyll             # GitHub Pages yapılandırması
 ```
 
 ### Katkıda bulunma
 
-Hata raporu, uygulama önerisi veya geliştirme fikri için [issue açabilirsiniz](https://github.com/byGOG/PowerHub/issues). Değişiklik göndermeden önce mevcut işlevleri koruduğunuzdan ve PowerShell 5.1 uyumluluğunu bozmadığınızdan emin olun.
+Hata raporu, uygulama önerisi veya geliştirme fikri için [issue açabilirsiniz](https://github.com/byGOG/PowerHub/issues). Kataloğa uygulama eklemek veya bir bağlantıyı düzeltmek için yalnızca `catalog.json` dosyasını düzenleyebilirsiniz; `SchemaVersion`, benzersiz uygulama adları ve geçerli kategori adları korunmalıdır. Kod değişikliklerinde mevcut işlevleri ve Windows PowerShell 5.1 uyumluluğunu koruyun.
 
 ---
 
@@ -147,7 +148,7 @@ Open PowerShell and run:
 irm https://bygog.github.io/PowerHub/install.ps1 | iex
 ```
 
-The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub` and launches it in STA mode. If WinGet is unavailable, PowerHub can install its Store-independent dependencies from the status card.
+The bootstrapper downloads the latest `PowerHub.ps1` and `catalog.json` to `%LOCALAPPDATA%\PowerHub`, validates the catalog, and launches the application in STA mode. If WinGet is unavailable, PowerHub can install its Store-independent dependencies from the status card.
 
 > [!IMPORTANT]
 > Review remote scripts before executing them. See the [Security](#security) section for an inspection-first workflow.
@@ -239,16 +240,17 @@ https://bygog.github.io/PowerHub/PowerHub.ps1
 
 ```text
 PowerHub/
-├─ PowerHub.ps1          # WPF interface, catalog, and installation engine
-├─ install.ps1           # Lightweight online bootstrapper
-├─ logos.json            # Application logo catalog
+├─ PowerHub.ps1          # WPF interface and package operation engine
+├─ catalog.json          # Applications, categories, and official websites
+├─ install.ps1           # Bootstrapper that validates and downloads code and catalog
+├─ logos.json            # Application logo assets
 ├─ assets/               # README media
 └─ .nojekyll             # GitHub Pages configuration
 ```
 
 ### Contributing
 
-Use [GitHub Issues](https://github.com/byGOG/PowerHub/issues) for bug reports, application requests, and improvement ideas. Please preserve existing behavior and Windows PowerShell 5.1 compatibility when proposing changes.
+Use [GitHub Issues](https://github.com/byGOG/PowerHub/issues) for bug reports, application requests, and improvement ideas. To add an application or correct a link, edit only `catalog.json`; preserve `SchemaVersion`, unique application names, and valid category names. Code changes should preserve existing behavior and Windows PowerShell 5.1 compatibility.
 
 ---
 
