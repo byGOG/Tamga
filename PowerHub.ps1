@@ -368,7 +368,7 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Button>
 
                 <Border x:Name="WingetCard" Grid.Row="5" Height="52" Background="#252525" BorderBrush="#414141" BorderThickness="1"
-                        CornerRadius="6" Padding="9" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
+                        CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid Width="183" HorizontalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
