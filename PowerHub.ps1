@@ -22,6 +22,7 @@ public static class PowerHubWindowLayout {
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
+    [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool RemoveFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, UIntPtr wParam, IntPtr lParam, uint flags, uint timeout, out UIntPtr result);
 }
 '@
@@ -37,21 +38,31 @@ function Get-PowerHubFileSha256([string]$Path) {
     }
 }
 
+function Remove-PowerHubLegacyFonts {
+    $legacyFonts = @(
+        [pscustomobject]@{ FileName='PowerHub-Outfit.ttf'; RegistryName='Outfit (TrueType)' },
+        [pscustomobject]@{ FileName='PowerHub-Poppins-Regular.ttf'; RegistryName='Poppins Regular (TrueType)' },
+        [pscustomobject]@{ FileName='PowerHub-Poppins-SemiBold.ttf'; RegistryName='Poppins SemiBold (TrueType)' },
+        [pscustomobject]@{ FileName='PowerHub-Orbitron.ttf'; RegistryName='Orbitron (TrueType)' },
+        [pscustomobject]@{ FileName='PowerHub-FiraCode.ttf'; RegistryName='Fira Code (TrueType)' }
+    )
+    $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
+    $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+    foreach ($font in $legacyFonts) {
+        $fontPath = Join-Path $fontDirectory $font.FileName
+        if (Test-Path -LiteralPath $fontPath) {
+            [void][PowerHubWindowLayout]::RemoveFontResourceEx($fontPath, 0, [IntPtr]::Zero)
+            Remove-Item -LiteralPath $fontPath -Force -ErrorAction SilentlyContinue
+        }
+        Remove-ItemProperty -Path $registryPath -Name $font.RegistryName -ErrorAction SilentlyContinue
+    }
+    Remove-Item -LiteralPath (Join-Path $env:LOCALAPPDATA 'PowerHub\font.txt') -Force -ErrorAction SilentlyContinue
+}
+
 function Install-PowerHubFonts {
     $fontDefinitions = @(
-        [pscustomobject]@{ Family='Inter'; FileName='PowerHub-Inter.ttf'; RegistryName='Inter (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf'; Sha256='29160A80FF49DDCAB2C97711247E08B1FAB27A484A329CE8B813D820DC559031' },
-        [pscustomobject]@{ Family='Outfit'; FileName='PowerHub-Outfit.ttf'; RegistryName='Outfit (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/outfit/Outfit%5Bwght%5D.ttf'; Sha256='FC7287273E66929776E2BA54F144FE699080BEC29F61BF649D70D871468AEADE' },
-        [pscustomobject]@{ Family='Poppins'; FileName='PowerHub-Poppins-Regular.ttf'; RegistryName='Poppins Regular (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/poppins/Poppins-Regular.ttf'; Sha256='7E65201E9B79159E2300267CC885E16C8DCEF2424CDFA09A29BFB0980A94A7BA' },
-        [pscustomobject]@{ Family='Poppins'; FileName='PowerHub-Poppins-SemiBold.ttf'; RegistryName='Poppins SemiBold (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/poppins/Poppins-SemiBold.ttf'; Sha256='D3BF1BDAF0550E83DA9AC0B1D1D9FE6DB086835A83AA28578E609A394B9A0286' },
-        [pscustomobject]@{ Family='Orbitron'; FileName='PowerHub-Orbitron.ttf'; RegistryName='Orbitron (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/orbitron/Orbitron%5Bwght%5D.ttf'; Sha256='F42DB2DD16E642258E35782916ECEB1DCDBEA06FB958D77AD71DC5963587E8FD' },
-        [pscustomobject]@{ Family='Fira Code'; FileName='PowerHub-FiraCode.ttf'; RegistryName='Fira Code (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/firacode/FiraCode%5Bwght%5D.ttf'; Sha256='9335B082B3C7850D98A64B584F3417F65355F3471278BB5EEB8C6C0E8657AEEB' }
+        [pscustomobject]@{ Family='Inter'; FileName='PowerHub-Inter.ttf'; RegistryName='Inter (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf'; Sha256='29160A80FF49DDCAB2C97711247E08B1FAB27A484A329CE8B813D820DC559031' }
     )
-    $requiredFamilies = @('Inter','Outfit','Poppins','Orbitron','Fira Code')
-    $installedFamilies = @([Windows.Media.Fonts]::SystemFontFamilies | ForEach-Object Source)
-    $missingFamilies = @($requiredFamilies | Where-Object { $installedFamilies -notcontains $_ })
-    if ($missingFamilies.Count -eq 0) { return @() }
-
-    Write-Host ("[PowerHub] Eksik yazı tipleri kuruluyor: {0}" -f ($missingFamilies -join ', ')) -ForegroundColor Cyan
     $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
     $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
     [IO.Directory]::CreateDirectory($fontDirectory) | Out-Null
@@ -59,7 +70,7 @@ function Install-PowerHubFonts {
     try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
     $failedFamilies = [Collections.Generic.List[string]]::new()
 
-    foreach ($font in $fontDefinitions | Where-Object { $missingFamilies -contains $_.Family }) {
+    foreach ($font in $fontDefinitions) {
         $destination = Join-Path $fontDirectory $font.FileName
         $needsDownload = $true
         if (Test-Path -LiteralPath $destination) {
@@ -67,6 +78,7 @@ function Install-PowerHubFonts {
         }
         try {
             if ($needsDownload) {
+                Write-Host '[PowerHub] Inter yazı tipi kuruluyor...' -ForegroundColor Cyan
                 $temporaryFile = Join-Path $env:TEMP ("PowerHub-{0}-{1}.tmp" -f $PID, [Guid]::NewGuid().ToString('N'))
                 try {
                     Invoke-WebRequest -Uri $font.Url -OutFile $temporaryFile -UseBasicParsing -ErrorAction Stop
@@ -90,6 +102,7 @@ function Install-PowerHubFonts {
     return @($failedFamilies)
 }
 
+Remove-PowerHubLegacyFonts
 $fontInstallFailures = @(Install-PowerHubFonts)
 if ($fontInstallFailures.Count -gt 0) {
     [Windows.MessageBox]::Show("Bazı yazı tipleri kurulamadı:`n`n$($fontInstallFailures -join ', ')`n`nİnternet bağlantınızı kontrol edip PowerHub'ı yeniden açın.", 'PowerHub', 'OK', 'Warning') | Out-Null
@@ -100,7 +113,7 @@ if ($fontInstallFailures.Count -gt 0) {
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PowerHub" Width="980" Height="900" MinWidth="860" MinHeight="700"
         WindowStartupLocation="Manual" Background="{DynamicResource PageBg}"
-        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="12" TextOptions.TextFormattingMode="Display"
+        FontFamily="Inter" FontSize="12" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.Resources>
@@ -226,67 +239,6 @@ if ($fontInstallFailures.Count -gt 0) {
                                 <Setter TargetName="IconSurface" Property="Opacity" Value="0.42"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="FontPickerItem" TargetType="ComboBoxItem">
-            <Setter Property="Foreground" Value="#EAF1F6"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="11,8"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBoxItem">
-                        <Border x:Name="ItemSurface" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}" Margin="3,1">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemSurface" Property="Background" Value="#315066"/></Trigger>
-                            <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemSurface" Property="Background" Value="#176A9E"/></Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="FontPickerStyle" TargetType="ComboBox">
-            <Setter Property="Foreground" Value="#EAF1F6"/>
-            <Setter Property="Background" Value="#20282F"/>
-            <Setter Property="BorderBrush" Value="#4B5964"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="ItemContainerStyle" Value="{StaticResource FontPickerItem}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <ToggleButton x:Name="DropDownToggle" Focusable="False" ClickMode="Press"
-                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
-                                <ToggleButton.Template>
-                                    <ControlTemplate TargetType="ToggleButton">
-                                        <Border x:Name="PickerSurface" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=ComboBox}}" CornerRadius="9">
-                                            <Grid>
-                                                <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                                  Margin="10,0,30,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="&#xE70D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="11"
-                                                           Foreground="#8ED8FA" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                            </Grid>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PickerSurface" Property="BorderBrush" Value="#278DD1"/></Trigger>
-                                            <Trigger Property="IsChecked" Value="True"><Setter TargetName="PickerSurface" Property="Background" Value="#253642"/></Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
-                                <Border Background="#20282F" BorderBrush="#4B6577" BorderThickness="1" CornerRadius="10" Margin="0,4,0,0" Padding="3" MinWidth="170">
-                                    <Border.Effect><DropShadowEffect Color="#080D11" BlurRadius="18" ShadowDepth="4" Opacity="0.55"/></Border.Effect>
-                                    <ScrollViewer MaxHeight="250"><ItemsPresenter/></ScrollViewer>
-                                </Border>
-                            </Popup>
-                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -482,12 +434,6 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#7EE2A8" FontSize="10" FontWeight="Bold"/>
                         </Grid>
-                        <Grid Margin="3,8,3,0">
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <TextBlock Text="Aa" Foreground="#65C9F5" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <ComboBox x:Name="FontPicker" Grid.Column="1" Height="32" Style="{StaticResource FontPickerStyle}"
-                                      ToolTip="Arayüz yazı tipini değiştir" AutomationProperties.Name="Yazı tipi seç"/>
-                        </Grid>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -633,36 +579,13 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','FontPicker') | ForEach-Object {
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
-
-$script:fontOptions = @('Inter','Outfit','Poppins','Orbitron','Fira Code')
-$script:settingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
-$script:fontSettingPath = Join-Path $script:settingsDirectory 'font.txt'
-$selectedFont = $script:fontOptions[0]
-try {
-    if (Test-Path -LiteralPath $script:fontSettingPath) {
-        $savedFont = (Get-Content -LiteralPath $script:fontSettingPath -Raw -ErrorAction Stop).Trim()
-        if ($script:fontOptions -contains $savedFont) { $selectedFont = $savedFont }
-    }
-} catch {}
-$controls.FontPicker.ItemsSource = $script:fontOptions
-$controls.FontPicker.SelectedItem = $selectedFont
-$window.FontFamily = [Windows.Media.FontFamily]::new($selectedFont)
-$controls.FontPicker.Add_SelectionChanged({
-    $fontName = [string]$controls.FontPicker.SelectedItem
-    if ([string]::IsNullOrWhiteSpace($fontName)) { return }
-    $window.FontFamily = [Windows.Media.FontFamily]::new($fontName)
-    try {
-        [IO.Directory]::CreateDirectory($script:settingsDirectory) | Out-Null
-        Set-Content -LiteralPath $script:fontSettingPath -Value $fontName -Encoding UTF8 -Force
-    } catch {}
-})
 
 function Resolve-WingetExecutable {
     $command = Get-Command winget.exe -ErrorAction SilentlyContinue
