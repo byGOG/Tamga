@@ -14,6 +14,7 @@ PowerHub, Windows uygulamalarını seçip `winget` üzerinden toplu ve sessiz bi
 - Tüm uygulamalar için önbelleğe alınan marka logoları
 - Arama, kategori filtreleme ve toplu seçim
 - Canlı terminal günlükleri ve kurulum ilerlemesi
+- Winget eksikse durum kartından otomatik App Installer kurulumu
 - Winget paketi bulunmayan seçili araçlar için resmî indirme sayfası
 
 ### Hızlı çalıştırma
@@ -57,6 +58,7 @@ PowerHub is a modern PowerShell/WPF interface for selecting and silently install
 - Cached brand logos for every application
 - Search, category filtering, and bulk selection
 - Live terminal logs and installation progress
+- Automatic App Installer setup from the status card when winget is missing
 - Official download pages for selected tools not packaged by winget
 
 ### Quick start

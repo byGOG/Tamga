@@ -193,7 +193,7 @@ public static class PowerHubWindowLayout {
                     </Border>
                 </Grid>
 
-                <Border Grid.Row="3" BorderBrush="#545A61" BorderThickness="1" CornerRadius="14" Padding="10">
+                <Border x:Name="WingetCard" Grid.Row="3" BorderBrush="#545A61" BorderThickness="1" CornerRadius="14" Padding="10">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="#3B3F44" Offset="0"/>
@@ -394,7 +394,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -957,30 +957,143 @@ $controls.InstallButton.Add_Click({
     Start-NextInstall
 })
 
+function Set-WingetCardState {
+    param([ValidateSet('Ready','Missing','Installing','Store')][string]$State)
+
+    switch ($State) {
+        'Ready' {
+            $script:wingetReady = $true
+            $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Arrow
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#545A61'
+            $controls.WingetIconBox.Background = New-ColorBrush '#214B35'
+            $controls.WingetIcon.Text = '✓'
+            $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
+            $controls.WingetStatus.Text = 'winget hazır'
+            $controls.WingetDetail.Text = 'Paket yöneticisi çevrimiçi'
+            $controls.WingetBadge.Background = New-ColorBrush '#204A32'
+            $controls.WingetBadgeText.Text = 'AKTİF'
+            $controls.WingetBadgeText.Foreground = New-ColorBrush '#7EE2A8'
+        }
+        'Missing' {
+            $script:wingetReady = $false
+            $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Hand
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
+            $controls.WingetIconBox.Background = New-ColorBrush '#594523'
+            $controls.WingetIcon.Text = '↓'
+            $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
+            $controls.WingetStatus.Text = 'winget kur'
+            $controls.WingetDetail.Text = 'Otomatik kurmak için tıklayın'
+            $controls.WingetBadge.Background = New-ColorBrush '#58441F'
+            $controls.WingetBadgeText.Text = 'KUR'
+            $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFD58A'
+        }
+        'Installing' {
+            $script:wingetReady = $false
+            $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Wait
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#278DD1'
+            $controls.WingetIconBox.Background = New-ColorBrush '#174C70'
+            $controls.WingetIcon.Text = '…'
+            $controls.WingetIcon.Foreground = New-ColorBrush '#BEE7FF'
+            $controls.WingetStatus.Text = 'winget kuruluyor'
+            $controls.WingetDetail.Text = 'App Installer indiriliyor'
+            $controls.WingetBadge.Background = New-ColorBrush '#174C70'
+            $controls.WingetBadgeText.Text = 'BEKLE'
+            $controls.WingetBadgeText.Foreground = New-ColorBrush '#BEE7FF'
+        }
+        'Store' {
+            $script:wingetReady = $false
+            $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Hand
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
+            $controls.WingetIconBox.Background = New-ColorBrush '#594523'
+            $controls.WingetIcon.Text = '↗'
+            $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
+            $controls.WingetStatus.Text = 'App Installer gerekli'
+            $controls.WingetDetail.Text = 'Microsoft Store sayfasını açmak için tıklayın'
+            $controls.WingetBadge.Background = New-ColorBrush '#58441F'
+            $controls.WingetBadgeText.Text = 'STORE'
+            $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFD58A'
+        }
+    }
+    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
+}
+
+$script:wingetReady = $false
+$script:wingetInstallProcess = $null
+$script:wingetInstallTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:wingetInstallTimer.Interval = [TimeSpan]::FromMilliseconds(500)
+
+$script:wingetInstallTimer.Add_Tick({
+    if (-not $script:wingetInstallProcess) { return }
+    $script:wingetInstallProcess.Refresh()
+    if (-not $script:wingetInstallProcess.HasExited) { return }
+
+    $script:wingetInstallTimer.Stop()
+    $script:wingetInstallProcess.WaitForExit()
+    $exitCode = [int]$script:wingetInstallProcess.ExitCode
+    $script:wingetInstallProcess.Dispose()
+    $script:wingetInstallProcess = $null
+    $wingetCommand = Get-Command winget.exe -ErrorAction SilentlyContinue
+
+    if ($exitCode -eq 0 -and $wingetCommand) {
+        Write-PowerHubLog -Message "winget başarıyla kuruldu: $($wingetCommand.Source)" -Color Green
+        $controls.ActivityText.Text = 'winget başarıyla kuruldu. Uygulamalar kurulabilir.'
+        Set-WingetCardState -State Ready
+        Update-SelectionStatus
+    } else {
+        Write-PowerHubLog -Message "Otomatik winget kurulumu tamamlanamadı (kod: $exitCode). Microsoft Store açılıyor." -Color Yellow
+        $controls.ActivityText.Text = 'Otomatik kurulum tamamlanamadı. Microsoft Store açıldı.'
+        Set-WingetCardState -State Store
+        Start-Process 'ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1'
+    }
+})
+
+$controls.WingetCard.Add_MouseLeftButtonUp({
+    if ($script:wingetReady -or $script:wingetInstallProcess) { return }
+
+    Set-WingetCardState -State Installing
+    $controls.ActivityText.Text = 'Microsoft App Installer indiriliyor ve winget kuruluyor...'
+    Write-PowerHubLog -Message 'winget otomatik kurulumu başlatıldı.' -Color Cyan
+
+    $installerScript = @'
+$ErrorActionPreference = 'Stop'
+Write-Host '[PowerHub] Microsoft App Installer denetleniyor...' -ForegroundColor Cyan
+try {
+    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe -ErrorAction Stop
+    Start-Sleep -Seconds 2
+} catch {}
+if (Get-Command winget.exe -ErrorAction SilentlyContinue) { exit 0 }
+$packagePath = Join-Path $env:TEMP 'Microsoft.DesktopAppInstaller.msixbundle'
+Write-Host '[PowerHub] Resmî winget paketi indiriliyor...' -ForegroundColor Cyan
+Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/getwinget' -OutFile $packagePath
+Write-Host '[PowerHub] App Installer kuruluyor...' -ForegroundColor Cyan
+Add-AppxPackage -Path $packagePath -ForceApplicationShutdown
+Remove-Item -LiteralPath $packagePath -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 2
+if (Get-Command winget.exe -ErrorAction SilentlyContinue) { exit 0 }
+exit 1
+'@
+    $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($installerScript))
+    try {
+        $script:wingetInstallProcess = Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoProfile','-ExecutionPolicy','Bypass','-OutputFormat','Text','-EncodedCommand',$encodedCommand
+        ) -PassThru -NoNewWindow
+        $script:wingetInstallTimer.Start()
+    } catch {
+        Write-PowerHubLog -Message "winget kurulumu başlatılamadı: $($_.Exception.Message)" -Color Red
+        $controls.ActivityText.Text = 'Otomatik kurulum başlatılamadı. Microsoft Store açıldı.'
+        Set-WingetCardState -State Store
+        Start-Process 'ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1'
+    }
+})
+
 $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
 if ($winget) {
     Write-PowerHubLog -Message "winget hazır: $($winget.Source)" -Color Green
-    $controls.WingetIconBox.Background = New-ColorBrush '#214B35'
-    $controls.WingetIcon.Text = '✓'
-    $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
-    $controls.WingetStatus.Text = 'winget hazır'
-    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
-    $controls.WingetDetail.Text = 'Paket yöneticisi çevrimiçi'
-    $controls.WingetBadge.Background = New-ColorBrush '#204A32'
-    $controls.WingetBadgeText.Text = 'AKTİF'
-    $controls.WingetBadgeText.Foreground = New-ColorBrush '#7EE2A8'
+    Set-WingetCardState -State Ready
 } else {
-    Write-PowerHubLog -Message 'winget bulunamadı. Microsoft App Installer gerekli.' -Color Red
-    $controls.WingetIconBox.Background = New-ColorBrush '#512D32'
-    $controls.WingetIcon.Text = '!'
-    $controls.WingetIcon.Foreground = New-ColorBrush '#FF9B9B'
-    $controls.WingetStatus.Text = 'winget bulunamadı'
-    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
-    $controls.WingetDetail.Text = 'App Installer gerekli'
-    $controls.WingetBadge.Background = New-ColorBrush '#512D32'
-    $controls.WingetBadgeText.Text = 'EKSİK'
-    $controls.WingetBadgeText.Foreground = New-ColorBrush '#FF9B9B'
-    $controls.ActivityText.Text = 'Microsoft App Installer (winget) gerekli.'
+    Write-PowerHubLog -Message 'winget bulunamadı. Kurulum için durum kartına tıklayın.' -Color Yellow
+    Set-WingetCardState -State Missing
+    $controls.ActivityText.Text = 'winget kurmak için sol alttaki durum kartına tıklayın.'
 }
 
 Update-AppList
