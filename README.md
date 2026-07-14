@@ -11,6 +11,7 @@
 PowerHub, Windows uygulamalarını seçip `winget` üzerinden toplu ve sessiz biçimde kurmak için hazırlanmış modern bir PowerShell/WPF arayüzüdür.
 
 - 14 kategoride 65 uygulama
+- Tüm uygulamalar için önbelleğe alınan marka logoları
 - Arama, kategori filtreleme ve toplu seçim
 - Canlı terminal günlükleri ve kurulum ilerlemesi
 - Winget paketi bulunmayan seçili araçlar için resmî indirme sayfası
@@ -53,6 +54,7 @@ https://bygog.github.io/PowerHub/PowerHub.ps1
 PowerHub is a modern PowerShell/WPF interface for selecting and silently installing multiple Windows applications through `winget`.
 
 - 65 applications across 14 categories
+- Cached brand logos for every application
 - Search, category filtering, and bulk selection
 - Live terminal logs and installation progress
 - Official download pages for selected tools not packaged by winget

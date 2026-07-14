@@ -413,6 +413,41 @@ function ConvertFrom-Base64Image([string]$base64) {
     return $bitmap
 }
 
+function Get-PowerHubLogoCatalog {
+    $cacheDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
+    $cachePath = Join-Path $cacheDirectory 'logos.json'
+    $developmentPath = Join-Path $PSScriptRoot 'PowerHub\logos.json'
+    $catalogPath = @(
+        (Join-Path $PSScriptRoot 'logos.json'),
+        $developmentPath,
+        $cachePath
+    ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+
+    try {
+        if (-not $catalogPath) {
+            [IO.Directory]::CreateDirectory($cacheDirectory) | Out-Null
+            $response = Invoke-WebRequest -UseBasicParsing -Uri 'https://bygog.github.io/PowerHub/logos.json' -TimeoutSec 15
+            $json = if ($response.Content -is [byte[]]) {
+                [Text.Encoding]::UTF8.GetString([byte[]]$response.Content)
+            } else {
+                [string]$response.Content
+            }
+            [IO.File]::WriteAllText($cachePath, $json, [Text.UTF8Encoding]::new($false))
+            $catalogPath = $cachePath
+        }
+
+        $catalogObject = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $catalog = @{}
+        foreach ($property in $catalogObject.PSObject.Properties) {
+            $catalog[$property.Name] = [string]$property.Value
+        }
+        return $catalog
+    } catch {
+        Write-PowerHubLog -Message "Logo kataloğu yüklenemedi: $($_.Exception.Message)" -Color Yellow
+        return @{}
+    }
+}
+
 $sevenZipLogo = ConvertFrom-Base64Image 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACpSURBVFhH7Y5RCsRACEPn/pfufpRCSKJVFmYo+CDQmphxrWFY6zosGezW/bGbOSA9AMyyusCuFnB5RV1gVwu4vKIusKsFbhbRySLfOCCSy/K/k9trHxDl3IwV7KZmpUA8JMrAPDXflq3/kPngaYDLuz5nHOBriMv/8SMgo0Eu7/hu5oCchrm847uZA3Ia5vKKKrvBG6lZVmU3eEPNHcwBcsBByWC3hrP8ADYDp7tNKATcAAAAAElFTkSuQmCC'
 
 function Set-PowerHubWindowLayout {
@@ -544,6 +579,18 @@ foreach ($app in $apps) {
     }
     if (-not $app.PSObject.Properties['InitialOpacity']) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
+    }
+}
+
+$logoCatalog = Get-PowerHubLogoCatalog
+foreach ($app in $apps) {
+    if ($logoCatalog.ContainsKey($app.Name)) {
+        try {
+            $app.Logo = ConvertFrom-Base64Image $logoCatalog[$app.Name]
+            $app.InitialOpacity = 0.0
+        } catch {
+            Write-PowerHubLog -Message "Logo okunamadı: $($app.Name)" -Color DarkYellow
+        }
     }
 }
 
