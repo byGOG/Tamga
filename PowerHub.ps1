@@ -762,6 +762,49 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
+        <Grid x:Name="UninstallConfirmOverlay" Grid.ColumnSpan="2" Panel.ZIndex="120" Visibility="Collapsed" Background="#E6080A0C">
+            <Border x:Name="UninstallConfirmBackdrop" Background="Transparent"/>
+            <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#202020"
+                    BorderBrush="#4A4A4A" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="28" ShadowDepth="8" Opacity="0.7"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="#292929" BorderBrush="#444444" BorderThickness="0,0,0,1" Padding="20,18">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Height="2" VerticalAlignment="Top" Margin="-20,-18,-20,0">
+                                <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#E85D5D" Offset="0"/><GradientStop Color="#B43B55" Offset="1"/></LinearGradientBrush></Border.Background>
+                            </Border>
+                            <Border Width="40" Height="40" CornerRadius="6" Background="#542E32" BorderBrush="#8B454C" BorderThickness="1">
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFAAAA" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="POWERHUB  /  KALDIRMA" Foreground="#FF969E" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="Uygulamayı kaldır" Foreground="White" FontSize="21" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Row="1" Margin="20,18,20,18">
+                        <TextBlock x:Name="UninstallConfirmAppName" Text="Uygulama" Foreground="#F2F2F2" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="UninstallConfirmDetail" Text="Bu uygulama bilgisayarınızdan kaldırılacak." Foreground="#A7B0B7" FontSize="12" Margin="0,7,0,0" TextWrapping="Wrap"/>
+                        <Border Background="#312729" BorderBrush="#5A3A3E" BorderThickness="1" CornerRadius="5" Padding="12,10" Margin="0,16,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="&#xE7BA;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFB0B0" FontSize="14" VerticalAlignment="Top"/>
+                                <TextBlock Grid.Column="1" Text="Uygulama ayarları ve yerel verileri kaldırma programının kurallarına göre etkilenebilir." Foreground="#D3B7BA" FontSize="10.5" TextWrapping="Wrap"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                    <Border Grid.Row="2" Background="#292929" BorderBrush="#444444" BorderThickness="0,1,0,0" Padding="20,14">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="UninstallCancelButton" Content="Vazgeç" Background="#363636" Foreground="#D8E0E5" Margin="0,0,9,0" MinWidth="96"/>
+                            <Button x:Name="UninstallConfirmButton" Content="Kaldır  →" Background="#A8444C" Foreground="White" MinWidth="112"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
         <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="#E6080A0C">
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
             <Border x:Name="AboutCard" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -835,7 +878,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
-  'AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+  'UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1929,6 +1972,11 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
 $window.Add_PreviewKeyDown({
     param($sender, $eventArgs)
 
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.UninstallConfirmOverlay.Visibility -eq [Windows.Visibility]::Visible) {
+        Close-UninstallConfirmation
+        $eventArgs.Handled = $true
+        return
+    }
     if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.InstallQueueOverlay.Visibility -eq [Windows.Visibility]::Visible) {
         Set-InstallQueueVisibility $false
         $eventArgs.Handled = $true
@@ -2316,23 +2364,33 @@ function Start-InstallQueueExecution {
     Start-NextInstall
 }
 
+$script:pendingUninstallApp = $null
+function Close-UninstallConfirmation {
+    $controls.UninstallConfirmOverlay.Visibility = [Windows.Visibility]::Collapsed
+    $script:pendingUninstallApp = $null
+}
+
 function Request-AppUninstall {
     param($App)
     if (-not $App -or $script:isInstalling -or $App.InstallState -notin @('Installed','UpdateAvailable')) { return }
-    $answer = [Windows.MessageBox]::Show(
-        $window,
-        "'$($App.Name)' bilgisayarınızdan kaldırılacak.`n`nDevam etmek istiyor musunuz?",
-        'PowerHub • Uygulamayı kaldır',
-        [Windows.MessageBoxButton]::YesNo,
-        [Windows.MessageBoxImage]::Warning,
-        [Windows.MessageBoxResult]::No
-    )
-    if ($answer -ne [Windows.MessageBoxResult]::Yes) { return }
-    $App.IsSelected = $false
-    $entry = New-InstallQueueEntry -App $App -OperationOverride Uninstall
+    $script:pendingUninstallApp = $App
+    $controls.UninstallConfirmAppName.Text = $App.Name
+    $controls.UninstallConfirmDetail.Text = "'$($App.Name)' bilgisayarınızdan ve WinGet paket listesinden kaldırılacak."
+    $controls.UninstallConfirmOverlay.Visibility = [Windows.Visibility]::Visible
+    $controls.UninstallCancelButton.Focus() | Out-Null
+}
+
+$controls.UninstallCancelButton.Add_Click({ Close-UninstallConfirmation })
+$controls.UninstallConfirmBackdrop.Add_MouseLeftButtonUp({ Close-UninstallConfirmation })
+$controls.UninstallConfirmButton.Add_Click({
+    $appToRemove = $script:pendingUninstallApp
+    if (-not $appToRemove) { Close-UninstallConfirmation; return }
+    Close-UninstallConfirmation
+    $appToRemove.IsSelected = $false
+    $entry = New-InstallQueueEntry -App $appToRemove -OperationOverride Uninstall
     Initialize-InstallQueue -Entries @($entry)
     Start-InstallQueueExecution
-}
+})
 
 $controls.InstallButton.Add_Click({
     $entries = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' } | ForEach-Object { New-InstallQueueEntry -App $_ })
