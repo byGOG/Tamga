@@ -384,8 +384,12 @@ public static class PowerHubWindowLayout {
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="43"/><ColumnDefinition Width="*"/><ColumnDefinition Width="25"/></Grid.ColumnDefinitions>
                                     <Border Width="36" Height="36" Background="{Binding Color}" CornerRadius="10" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
-                                        <TextBlock Text="{Binding Initial}" Foreground="White" FontWeight="Bold" FontSize="14"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Grid>
+                                            <Image Source="{Binding Logo}" Width="27" Height="27" Stretch="Uniform"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="White" FontWeight="Bold" FontSize="14"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="1,0,6,0">
                                         <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="13"
@@ -436,6 +440,21 @@ $controls = @{}
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
+
+function ConvertFrom-Base64Image([string]$base64) {
+    $bytes = [Convert]::FromBase64String($base64)
+    $stream = [IO.MemoryStream]::new($bytes)
+    $bitmap = [Windows.Media.Imaging.BitmapImage]::new()
+    $bitmap.BeginInit()
+    $bitmap.CacheOption = [Windows.Media.Imaging.BitmapCacheOption]::OnLoad
+    $bitmap.StreamSource = $stream
+    $bitmap.EndInit()
+    $bitmap.Freeze()
+    $stream.Dispose()
+    return $bitmap
+}
+
+$sevenZipLogo = ConvertFrom-Base64Image 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACpSURBVFhH7Y5RCsRACEPn/pfufpRCSKJVFmYo+CDQmphxrWFY6zosGezW/bGbOSA9AMyyusCuFnB5RV1gVwu4vKIusKsFbhbRySLfOCCSy/K/k9trHxDl3IwV7KZmpUA8JMrAPDXflq3/kPngaYDLuz5nHOBriMv/8SMgo0Eu7/hu5oCchrm847uZA3Ia5vKKKrvBG6lZVmU3eEPNHcwBcsBByWC3hrP8ADYDp7tNKATcAAAAAElFTkSuQmCC'
 
 function Set-PowerHubWindowLayout {
     $workArea = [Windows.SystemParameters]::WorkArea
@@ -492,11 +511,20 @@ $apps = [Collections.ArrayList]@(
     [pscustomobject]@{ Name='Visual Studio Code'; Description='Modern kod editörü'; Id='Microsoft.VisualStudioCode'; Category='Geliştirme'; Initial='VS'; Color='#007ACC'; IsSelected=$false },
     [pscustomobject]@{ Name='Git'; Description='Sürüm kontrol sistemi'; Id='Git.Git'; Category='Geliştirme'; Initial='G'; Color='#F05032'; IsSelected=$false },
     [pscustomobject]@{ Name='Node.js LTS'; Description='JavaScript çalışma ortamı'; Id='OpenJS.NodeJS.LTS'; Category='Geliştirme'; Initial='N'; Color='#339933'; IsSelected=$false },
-    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Araçlar'; Initial='7'; Color='#6B7280'; IsSelected=$false },
+    [pscustomobject]@{ Name='7-Zip'; Description='Hafif arşiv yöneticisi'; Id='7zip.7zip'; InstallArguments=@('install','-e','--id','7zip.7zip'); Category='Araçlar'; Initial='7'; InitialOpacity=0.0; Logo=$sevenZipLogo; Color='#6B7280'; IsSelected=$false },
     [pscustomobject]@{ Name='PowerToys'; Description='Windows üretkenlik araçları'; Id='Microsoft.PowerToys'; Category='Araçlar'; Initial='P'; Color='#735DD0'; IsSelected=$false },
     [pscustomobject]@{ Name='Everything'; Description='Anında dosya arama'; Id='voidtools.Everything'; Category='Araçlar'; Initial='E'; Color='#F97316'; IsSelected=$false },
     [pscustomobject]@{ Name='Notepad++'; Description='Hızlı metin editörü'; Id='Notepad++.Notepad++'; Category='Araçlar'; Initial='N+'; Color='#73B53E'; IsSelected=$false }
 )
+
+foreach ($app in $apps) {
+    if (-not $app.PSObject.Properties['Logo']) {
+        $app | Add-Member -NotePropertyName Logo -NotePropertyValue $null
+    }
+    if (-not $app.PSObject.Properties['InitialOpacity']) {
+        $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
+    }
+}
 
 $script:activeCategory = 'Tümü'
 $script:isInstalling = $false
