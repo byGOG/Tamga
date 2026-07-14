@@ -2108,7 +2108,7 @@ function Set-WingetCardState {
             $controls.WingetIconBox.BorderBrush = New-ColorBrush '#346A4D'
             $controls.WingetIcon.Text = '✓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#7EE2A8'
-            $controls.WingetStatus.Text = 'winget hazır'
+            $controls.WingetStatus.Text = 'WinGet'
             $controls.WingetDetail.Text = 'Paket yöneticisi çevrimiçi'
             $controls.WingetBadge.Background = New-ColorBrush '#204A32'
             $controls.WingetBadge.BorderBrush = New-ColorBrush '#346A4D'
