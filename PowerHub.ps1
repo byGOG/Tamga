@@ -432,6 +432,20 @@ function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
 
+function Resolve-WingetExecutable {
+    $command = Get-Command winget.exe -ErrorAction SilentlyContinue
+    if ($command) { return $command.Source }
+
+    $package = Get-AppxPackage -Name Microsoft.DesktopAppInstaller -ErrorAction SilentlyContinue |
+        Sort-Object Version -Descending |
+        Select-Object -First 1
+    if ($package) {
+        $packagedExecutable = Join-Path $package.InstallLocation 'winget.exe'
+        if (Test-Path -LiteralPath $packagedExecutable) { return $packagedExecutable }
+    }
+    return $null
+}
+
 function ConvertFrom-Base64Image([string]$base64) {
     $bytes = [Convert]::FromBase64String($base64)
     $stream = [IO.MemoryStream]::new($bytes)
@@ -827,7 +841,8 @@ function Update-SelectionStatus {
         $controls.SelectionText.Text = "{0} uygulama kurulacak" -f $selected.Count
         if (-not $script:isInstalling) { $controls.ActivityText.Text = ($selected.Name -join ', ') }
     }
-    $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and (Get-Command winget.exe -ErrorAction SilentlyContinue))
+    $script:wingetExecutable = Resolve-WingetExecutable
+    $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
 }
 
 function Update-AppList {
@@ -1010,7 +1025,9 @@ function Start-NextInstall {
     try {
         Write-PowerHubLog -Message "Kuruluyor: $($item.Name)" -Color Cyan
         Write-PowerHubLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
-        $script:installProcess = Start-Process -FilePath 'winget.exe' -ArgumentList $installArguments -PassThru -NoNewWindow
+        $script:wingetExecutable = Resolve-WingetExecutable
+        if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+        $script:installProcess = Start-Process -FilePath $script:wingetExecutable -ArgumentList $installArguments -PassThru -NoNewWindow
         $script:installTimer.Start()
     } catch {
         Write-PowerHubLog -Message "Başlatma hatası ($($item.Name)): $($_.Exception.Message)" -Color Red
@@ -1067,7 +1084,7 @@ $controls.InstallButton.Add_Click({
 })
 
 function Set-WingetCardState {
-    param([ValidateSet('Ready','Missing','Installing','Store')][string]$State)
+    param([ValidateSet('Ready','Missing','Installing','Error')][string]$State)
 
     switch ($State) {
         'Ready' {
@@ -1118,21 +1135,21 @@ function Set-WingetCardState {
             $controls.WingetBadgeText.Text = 'BEKLE'
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#BEE7FF'
         }
-        'Store' {
+        'Error' {
             $script:wingetReady = $false
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Hand
-            $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
-            $controls.WingetIconBox.Background = New-ColorBrush '#594523'
-            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#8A682F'
-            $controls.WingetIcon.Text = '↗'
-            $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
-            $controls.WingetStatus.Text = 'App Installer gerekli'
-            $controls.WingetDetail.Text = 'Microsoft Store sayfasını açmak için tıklayın'
-            $controls.WingetBadge.Background = New-ColorBrush '#58441F'
-            $controls.WingetBadge.BorderBrush = New-ColorBrush '#8A682F'
-            $controls.WingetBadgeDot.Fill = New-ColorBrush '#F5BC5A'
-            $controls.WingetBadgeText.Text = 'STORE'
-            $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFD58A'
+            $controls.WingetCard.BorderBrush = New-ColorBrush '#A95454'
+            $controls.WingetIconBox.Background = New-ColorBrush '#542E32'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#A95454'
+            $controls.WingetIcon.Text = '!'
+            $controls.WingetIcon.Foreground = New-ColorBrush '#FFAAAA'
+            $controls.WingetStatus.Text = 'kurulum tamamlanamadı'
+            $controls.WingetDetail.Text = 'Store gerekmez • yeniden denemek için tıklayın'
+            $controls.WingetBadge.Background = New-ColorBrush '#542E32'
+            $controls.WingetBadge.BorderBrush = New-ColorBrush '#A95454'
+            $controls.WingetBadgeDot.Fill = New-ColorBrush '#FF7777'
+            $controls.WingetBadgeText.Text = 'TEKRAR'
+            $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFAAAA'
         }
     }
     $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
@@ -1153,18 +1170,18 @@ $script:wingetInstallTimer.Add_Tick({
     $exitCode = [int]$script:wingetInstallProcess.ExitCode
     $script:wingetInstallProcess.Dispose()
     $script:wingetInstallProcess = $null
-    $wingetCommand = Get-Command winget.exe -ErrorAction SilentlyContinue
+    $wingetCommand = Resolve-WingetExecutable
 
     if ($exitCode -eq 0 -and $wingetCommand) {
-        Write-PowerHubLog -Message "winget başarıyla kuruldu: $($wingetCommand.Source)" -Color Green
+        $script:wingetExecutable = $wingetCommand
+        Write-PowerHubLog -Message "winget başarıyla kuruldu: $wingetCommand" -Color Green
         $controls.ActivityText.Text = 'winget başarıyla kuruldu. Uygulamalar kurulabilir.'
         Set-WingetCardState -State Ready
         Update-SelectionStatus
     } else {
-        Write-PowerHubLog -Message "Otomatik winget kurulumu tamamlanamadı (kod: $exitCode). Microsoft Store açılıyor." -Color Yellow
-        $controls.ActivityText.Text = 'Otomatik kurulum tamamlanamadı. Microsoft Store açıldı.'
-        Set-WingetCardState -State Store
-        Start-Process 'ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1'
+        Write-PowerHubLog -Message "Store bağımsız winget kurulumu tamamlanamadı (kod: $exitCode)." -Color Red
+        $controls.ActivityText.Text = 'Kurulum tamamlanamadı. Ayrıntılar terminalde; durum kartından yeniden deneyin.'
+        Set-WingetCardState -State Error
     }
 })
 
@@ -1177,21 +1194,91 @@ $controls.WingetCard.Add_MouseLeftButtonUp({
 
     $installerScript = @'
 $ErrorActionPreference = 'Stop'
-Write-Host '[PowerHub] Microsoft App Installer denetleniyor...' -ForegroundColor Cyan
+$ProgressPreference = 'SilentlyContinue'
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+function Save-PowerHubFile {
+    param([string]$Uri, [string]$Destination)
+    $curl = Get-Command curl.exe -ErrorAction SilentlyContinue
+    if ($curl) {
+        & $curl.Source -L --fail --retry 3 --connect-timeout 20 --output $Destination $Uri
+        if ($LASTEXITCODE -ne 0) { throw "İndirme başarısız: $Uri" }
+    } else {
+        Invoke-WebRequest -UseBasicParsing -Uri $Uri -OutFile $Destination
+    }
+}
+
+function Confirm-PowerHubHash {
+    param([string]$FilePath, [string]$HashFile)
+    $expected = ((Get-Content -LiteralPath $HashFile -Raw).Trim() -split '\s+')[0].ToUpperInvariant()
+    $actual = (Get-FileHash -LiteralPath $FilePath -Algorithm SHA256).Hash.ToUpperInvariant()
+    if ($expected -ne $actual) { throw "SHA256 doğrulaması başarısız: $(Split-Path $FilePath -Leaf)" }
+}
+
+$nativeArchitecture = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
+$packageArchitecture = switch ($nativeArchitecture.ToUpperInvariant()) {
+    'ARM64' { 'arm64' }
+    'AMD64' { 'x64' }
+    default { 'x86' }
+}
+$workDirectory = Join-Path $env:TEMP ("PowerHub-WinGet-" + [Guid]::NewGuid().ToString('N'))
+$dependencyArchive = Join-Path $workDirectory 'DesktopAppInstaller_Dependencies.zip'
+$dependencyHash = Join-Path $workDirectory 'DesktopAppInstaller_Dependencies.txt'
+$dependencyDirectory = Join-Path $workDirectory 'Dependencies'
+$appInstallerBundle = Join-Path $workDirectory 'Microsoft.DesktopAppInstaller.msixbundle'
+$appInstallerHash = Join-Path $workDirectory 'Microsoft.DesktopAppInstaller.txt'
+$releaseBase = 'https://github.com/microsoft/winget-cli/releases/latest/download'
+$result = 1
+
+Write-Host "[PowerHub] Store bağımsız WinGet kurulumu hazırlanıyor ($packageArchitecture)..." -ForegroundColor Cyan
 try {
-    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe -ErrorAction Stop
+    New-Item -ItemType Directory -Path $workDirectory -Force | Out-Null
+
+    Write-Host '[PowerHub] Resmî bağımlılık paketi indiriliyor...' -ForegroundColor Cyan
+    Save-PowerHubFile "$releaseBase/DesktopAppInstaller_Dependencies.zip" $dependencyArchive
+    Save-PowerHubFile "$releaseBase/DesktopAppInstaller_Dependencies.txt" $dependencyHash
+    Confirm-PowerHubHash $dependencyArchive $dependencyHash
+
+    Write-Host '[PowerHub] Microsoft App Installer indiriliyor...' -ForegroundColor Cyan
+    Save-PowerHubFile "$releaseBase/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" $appInstallerBundle
+    Save-PowerHubFile "$releaseBase/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.txt" $appInstallerHash
+    Confirm-PowerHubHash $appInstallerBundle $appInstallerHash
+
+    Expand-Archive -LiteralPath $dependencyArchive -DestinationPath $dependencyDirectory -Force
+    $architectureDirectory = Join-Path $dependencyDirectory $packageArchitecture
+    $dependencyPackages = @(Get-ChildItem -LiteralPath $architectureDirectory -File | Where-Object Extension -in @('.appx','.msix'))
+    if ($dependencyPackages.Count -eq 0) { throw "Mimariye uygun bağımlılık bulunamadı: $packageArchitecture" }
+
+    foreach ($dependency in $dependencyPackages) {
+        Write-Host "[PowerHub] Bağımlılık hazır: $($dependency.BaseName)" -ForegroundColor DarkCyan
+    }
+
+    Write-Host '[PowerHub] Microsoft App Installer ve bağımlılıkları kuruluyor...' -ForegroundColor Cyan
+    Add-AppxPackage -Path $appInstallerBundle -DependencyPath @($dependencyPackages.FullName) -ForceApplicationShutdown -ErrorAction Stop
     Start-Sleep -Seconds 2
-} catch {}
-if (Get-Command winget.exe -ErrorAction SilentlyContinue) { exit 0 }
-$packagePath = Join-Path $env:TEMP 'Microsoft.DesktopAppInstaller.msixbundle'
-Write-Host '[PowerHub] Resmî winget paketi indiriliyor...' -ForegroundColor Cyan
-Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/getwinget' -OutFile $packagePath
-Write-Host '[PowerHub] App Installer kuruluyor...' -ForegroundColor Cyan
-Add-AppxPackage -Path $packagePath -ForceApplicationShutdown
-Remove-Item -LiteralPath $packagePath -Force -ErrorAction SilentlyContinue
-Start-Sleep -Seconds 2
-if (Get-Command winget.exe -ErrorAction SilentlyContinue) { exit 0 }
-exit 1
+
+    $installedPackage = Get-AppxPackage -Name Microsoft.DesktopAppInstaller |
+        Sort-Object Version -Descending |
+        Select-Object -First 1
+    $wingetPath = if ($installedPackage) { Join-Path $installedPackage.InstallLocation 'winget.exe' } else { $null }
+    if (-not $wingetPath -or -not (Test-Path -LiteralPath $wingetPath)) { throw 'winget.exe kurulum sonrasında bulunamadı.' }
+
+    Write-Host '[PowerHub] WinGet çalışması doğrulanıyor...' -ForegroundColor Cyan
+    & $wingetPath --version
+    if ($LASTEXITCODE -ne 0) { throw "winget doğrulaması başarısız (kod: $LASTEXITCODE)." }
+
+    Write-Host '[PowerHub] Paket kaynakları hazırlanıyor...' -ForegroundColor Cyan
+    & $wingetPath source reset --force
+    & $wingetPath source update
+    Write-Host '[PowerHub] WinGet ve tüm çalışma bağımlılıkları hazır.' -ForegroundColor Green
+    $result = 0
+} catch {
+    Write-Host "[PowerHub] WinGet kurulum hatası: $($_.Exception.Message)" -ForegroundColor Red
+    $result = 1
+} finally {
+    Remove-Item -LiteralPath $workDirectory -Recurse -Force -ErrorAction SilentlyContinue
+}
+exit $result
 '@
     $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($installerScript))
     try {
@@ -1201,15 +1288,15 @@ exit 1
         $script:wingetInstallTimer.Start()
     } catch {
         Write-PowerHubLog -Message "winget kurulumu başlatılamadı: $($_.Exception.Message)" -Color Red
-        $controls.ActivityText.Text = 'Otomatik kurulum başlatılamadı. Microsoft Store açıldı.'
-        Set-WingetCardState -State Store
-        Start-Process 'ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1'
+        $controls.ActivityText.Text = 'Store bağımsız kurulum başlatılamadı. Durum kartından yeniden deneyin.'
+        Set-WingetCardState -State Error
     }
 })
 
-$winget = Get-Command winget.exe -ErrorAction SilentlyContinue
+$winget = Resolve-WingetExecutable
 if ($winget) {
-    Write-PowerHubLog -Message "winget hazır: $($winget.Source)" -Color Green
+    $script:wingetExecutable = $winget
+    Write-PowerHubLog -Message "winget hazır: $winget" -Color Green
     Set-WingetCardState -State Ready
 } else {
     Write-PowerHubLog -Message 'winget bulunamadı. Kurulum için durum kartına tıklayın.' -Color Yellow
