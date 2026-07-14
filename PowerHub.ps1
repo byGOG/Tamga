@@ -374,7 +374,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="42"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="32" Height="32" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="5" VerticalAlignment="Center">
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
@@ -385,10 +385,10 @@ if ($fontInstallFailures.Count -gt 0) {
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
                                    Foreground="#91A0AF" FontSize="9.5" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
-                                CornerRadius="4" Padding="5,3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                CornerRadius="4" Padding="6,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse x:Name="WingetBadgeDot" Width="4" Height="4" Fill="#67DB95" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="8.5" FontWeight="Bold"/>
+                                <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="9" FontWeight="Bold"/>
                             </StackPanel>
                         </Border>
                     </Grid>
