@@ -1640,7 +1640,6 @@ function Update-SystemScanSummary {
 
 $script:systemScanProcess = $null
 $script:systemScanResultFile = $null
-$script:lastSystemScanAt = [DateTime]::MinValue
 $script:systemScanTimer = [Windows.Threading.DispatcherTimer]::new()
 $script:systemScanTimer.Interval = [TimeSpan]::FromMilliseconds(450)
 
@@ -1667,7 +1666,6 @@ function Complete-SystemScan {
     Update-AppList
     Update-SelectionStatus
     Update-SystemScanSummary
-    $script:lastSystemScanAt = [DateTime]::Now
     $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
     $updateCount = @($apps | Where-Object InstallState -eq 'UpdateAvailable').Count
     $controls.ActivityText.Text = "Sistem tarandı: $installedCount kurulu, $updateCount güncelleme."
@@ -2689,12 +2687,6 @@ Update-InstallQueueSummary
 Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 if ($winget) { Start-SystemScan }
-$window.Add_Activated({
-    if (-not (Resolve-WingetExecutable) -or $script:systemScanProcess -or $script:isInstalling) { return }
-    if (([DateTime]::Now - $script:lastSystemScanAt).TotalSeconds -ge 5) {
-        Start-SystemScan
-    }
-})
 $window.Add_Closed({
     $script:systemScanTimer.Stop()
     $script:updateTimer.Stop()
