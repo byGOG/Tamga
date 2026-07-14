@@ -243,6 +243,30 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="AboutNavButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="#E8F6FD"/>
+            <Setter Property="BorderBrush" Value="#365565"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="9"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="AboutSurface" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
+                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#263943" Offset="0"/><GradientStop Color="#1E303A" Offset="1"/></LinearGradientBrush></Border.Background>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="AboutSurface" Property="BorderBrush" Value="#258CC0"/><Setter TargetName="AboutSurface" Property="Background" Value="#244758"/></Trigger>
+                            <Trigger Property="IsPressed" Value="True"><Setter TargetName="AboutSurface" Property="Background" Value="#183B4E"/></Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="AboutSurface" Property="BorderBrush" Value="#69D5FF"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Width" Value="20"/>
@@ -322,9 +346,22 @@ if ($fontInstallFailures.Count -gt 0) {
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Button x:Name="AboutButton" Grid.Row="3" Content="ⓘ  PowerHub hakkında" Background="#263640" Foreground="#BFE9FF"
-                        BorderBrush="#3E5B6B" BorderThickness="1" Padding="12,10" Margin="0,4,0,0"
-                        ToolTip="PowerHub bilgilerini ve bağlantılarını göster"/>
+                <Button x:Name="AboutButton" Grid.Row="3" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                        ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
+                    <Grid Width="183">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="34" Height="34" CornerRadius="11">
+                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#18A9EA" Offset="0"/><GradientStop Color="#0875BD" Offset="1"/></LinearGradientBrush></Border.Background>
+                            <Border.Effect><DropShadowEffect Color="#087CC3" BlurRadius="10" ShadowDepth="2" Opacity="0.42"/></Border.Effect>
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
+                            <TextBlock Text="Hakkında" Foreground="#F1F8FC" FontSize="12.5" FontWeight="SemiBold"/>
+                            <TextBlock Text="PowerHub • byGOG" Foreground="#86A9BC" FontSize="9.5" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
 
                 <Border x:Name="WingetCard" Grid.Row="4" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
                         CornerRadius="15" Padding="11" Margin="0,10,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
