@@ -27,15 +27,15 @@ public static class PowerHubWindowLayout {
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PowerHub" Width="780" Height="900" MinWidth="700" MinHeight="700"
+        Title="PowerHub" Width="980" Height="900" MinWidth="860" MinHeight="700"
         WindowStartupLocation="Manual" Background="{DynamicResource PageBg}"
-        FontFamily="Segoe UI Variable, Segoe UI" TextOptions.TextFormattingMode="Display"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="12" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.Resources>
         <SolidColorBrush x:Key="Primary" Color="#0078D4"/>
-        <SolidColorBrush x:Key="Ink" Color="#F0F3F5"/>
-        <SolidColorBrush x:Key="Muted" Color="#AAB3BC"/>
+        <SolidColorBrush x:Key="Ink" Color="#F7F9FA"/>
+        <SolidColorBrush x:Key="Muted" Color="#BCC5CE"/>
         <SolidColorBrush x:Key="PageBg" Color="#252A30"/>
         <SolidColorBrush x:Key="CardBg" Color="#30363D"/>
         <SolidColorBrush x:Key="CardBorder" Color="#454D56"/>
@@ -45,6 +45,7 @@ public static class PowerHubWindowLayout {
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="16,10"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -129,7 +130,7 @@ public static class PowerHubWindowLayout {
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="245"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -140,7 +141,7 @@ public static class PowerHubWindowLayout {
                     <GradientStop Color="#35393E" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <Grid Margin="18,24">
+            <Grid Margin="20,24">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -148,7 +149,7 @@ public static class PowerHubWindowLayout {
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Border Width="40" Height="40" CornerRadius="12">
+                    <Border Width="44" Height="44" CornerRadius="13">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="#0EA5E9" Offset="0"/>
@@ -156,17 +157,17 @@ public static class PowerHubWindowLayout {
                             </LinearGradientBrush>
                         </Border.Background>
                         <Border.Effect><DropShadowEffect Color="#071A29" BlurRadius="14" ShadowDepth="3" Opacity="0.48"/></Border.Effect>
-                        <TextBlock Text="P" Foreground="White" FontSize="20" FontWeight="Bold"
+                        <TextBlock Text="P" Foreground="White" FontSize="21" FontWeight="Bold"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel Margin="11,0,0,0">
-                        <TextBlock Text="PowerHub" Foreground="White" FontWeight="Bold" FontSize="17"/>
-                        <TextBlock Text="Uygulama merkezi" Foreground="#9CB1C2" FontSize="10" Margin="0,2,0,0"/>
+                        <TextBlock Text="PowerHub" Foreground="White" FontWeight="Bold" FontSize="19"/>
+                        <TextBlock Text="Uygulama merkezi" Foreground="#AEC0CF" FontSize="11.5" Margin="0,3,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Margin="8,0,8,8">
-                    <TextBlock Text="KATEGORİLER" Foreground="#7F94A6" FontSize="9" FontWeight="Bold"/>
+                    <TextBlock Text="KATEGORİLER" Foreground="#9AAEBD" FontSize="10.5" FontWeight="Bold"/>
                     <Border Height="1" Background="#485058" Margin="78,6,0,0"/>
                 </Grid>
                 <Grid Grid.Row="2">
@@ -185,8 +186,8 @@ public static class PowerHubWindowLayout {
                                 <TextBlock Text="⚡" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Tek tıkla kurulum" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
-                                <TextBlock Text="Sessiz • Güvenli • Güncel" Foreground="#9DD5F2" FontSize="8" Margin="0,3,0,0"/>
+                                <TextBlock Text="Tek tıkla kurulum" Foreground="White" FontSize="12.5" FontWeight="SemiBold"/>
+                                <TextBlock Text="Sessiz • Güvenli • Güncel" Foreground="#B3DFF6" FontSize="9.5" Margin="0,3,0,0"/>
                             </StackPanel>
                             <TextBlock Grid.Column="2" Text="›" Foreground="#8FD8FF" FontSize="20" VerticalAlignment="Center"/>
                         </Grid>
@@ -212,21 +213,21 @@ public static class PowerHubWindowLayout {
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock x:Name="WingetStatus" Text="winget kontrol ediliyor" Foreground="White"
-                                       FontSize="11" FontWeight="SemiBold"/>
+                                       FontSize="12.5" FontWeight="SemiBold"/>
                             <TextBlock x:Name="WingetDetail" Text="Kurulum motoru" Foreground="#91A0AF"
-                                       FontSize="9" Margin="0,2,0,0"/>
+                                       FontSize="10.5" Margin="0,2,0,0"/>
                         </StackPanel>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" CornerRadius="8"
                                 Padding="6,4" VerticalAlignment="Center">
                             <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8"
-                                       FontSize="8" FontWeight="Bold"/>
+                                       FontSize="9" FontWeight="Bold"/>
                         </Border>
                     </Grid>
                 </Border>
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="22,20,22,18">
+        <Grid Grid.Column="1" Margin="26,22,26,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -234,16 +235,16 @@ public static class PowerHubWindowLayout {
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="HeaderBanner" CornerRadius="18" Padding="20,17" Background="{DynamicResource CardBg}"
+            <Border x:Name="HeaderBanner" CornerRadius="18" Padding="22,19" Background="{DynamicResource CardBg}"
                     BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
                 <Border.Effect><DropShadowEffect Color="#0E1114" BlurRadius="18" ShadowDepth="3" Opacity="0.30"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="58"/>
+                        <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="210"/>
+                        <ColumnDefinition Width="260"/>
                     </Grid.ColumnDefinitions>
-                    <Border Width="46" Height="46" Background="{DynamicResource Primary}" CornerRadius="14"
+                    <Border Width="50" Height="50" Background="{DynamicResource Primary}" CornerRadius="15"
                             VerticalAlignment="Top" HorizontalAlignment="Left">
                         <Border.Effect><DropShadowEffect Color="#0078D4" BlurRadius="12" ShadowDepth="2" Opacity="0.30"/></Border.Effect>
                         <Grid>
@@ -253,40 +254,40 @@ public static class PowerHubWindowLayout {
                         </Grid>
                     </Border>
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="Paket merkezi" FontSize="25" FontWeight="Bold" Foreground="{DynamicResource Ink}"/>
+                        <TextBlock Text="Paket merkezi" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource Ink}"/>
                         <TextBlock Text="Seç, kur ve devam et."
-                                   Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,4,0,0"/>
+                                   Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
-                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="11" FontWeight="SemiBold"/>
                             </Border>
                             <Border Background="#203B2C" CornerRadius="9" Padding="9,4">
-                                <TextBlock Text="●  Sistem hazır" Foreground="#70D596" FontSize="10" FontWeight="SemiBold"/>
+                                <TextBlock Text="●  Sistem hazır" Foreground="#7EE2A8" FontSize="11" FontWeight="SemiBold"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <Border Background="#292F35" BorderBrush="{DynamicResource CardBorder}"
-                                BorderThickness="1" CornerRadius="11" Height="42">
+                                BorderThickness="1" CornerRadius="11" Height="46">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <TextBlock Text="⌕" FontSize="22" Foreground="#AAB3BC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
-                                         VerticalContentAlignment="Center" FontSize="13" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
+                                         VerticalContentAlignment="Center" FontSize="14" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
                                          ToolTip="Uygulama ara..." Margin="0,0,8,0"/>
                             </Grid>
                         </Border>
                         <Grid Margin="3,9,3,0">
-                            <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold"/>
-                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#70D596" FontSize="9" FontWeight="Bold"/>
+                            <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#7EE2A8" FontSize="10" FontWeight="Bold"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
             </Border>
 
             <Grid Grid.Row="1" Margin="0,18,0,12">
-                <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
-                <TextBlock x:Name="ResultCount" HorizontalAlignment="Right" Foreground="{StaticResource Muted}" FontSize="12"/>
+                <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
+                <TextBlock x:Name="ResultCount" HorizontalAlignment="Right" Foreground="{StaticResource Muted}" FontSize="13"/>
             </Grid>
 
             <ListBox x:Name="AppList" Grid.Row="2" BorderThickness="0" Background="Transparent"
@@ -327,7 +328,7 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,8"/>
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,10"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Template">
                             <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
@@ -336,27 +337,27 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Height="70" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                        <Border Height="82" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
                                 CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
                             <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="{Binding Color}"/>
-                                <Grid Grid.Column="1" Margin="11,7,10,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="43"/><ColumnDefinition Width="*"/><ColumnDefinition Width="25"/></Grid.ColumnDefinitions>
-                                    <Border Width="36" Height="36" Background="{Binding Color}" CornerRadius="10" VerticalAlignment="Center">
+                                <Grid Grid.Column="1" Margin="14,9,13,9">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="30"/></Grid.ColumnDefinitions>
+                                    <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
                                         <Grid>
-                                            <Image Source="{Binding Logo}" Width="27" Height="27" Stretch="Uniform"
+                                            <Image Source="{Binding Logo}" Width="34" Height="34" Stretch="Uniform"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
-                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="White" FontWeight="Bold" FontSize="14"
+                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="White" FontWeight="Bold" FontSize="15"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
                                     </Border>
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="1,0,6,0">
-                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="13"
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,8,0">
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="15"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,2,0,0"
+                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                     <CheckBox Grid.Column="2" IsChecked="{Binding IsSelected, Mode=TwoWay}"
@@ -374,8 +375,8 @@ public static class PowerHubWindowLayout {
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,3,0,0"/>
+                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"/>
                         <ProgressBar x:Name="InstallProgress" Height="4" Margin="0,8,18,0" Minimum="0" Maximum="100"
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
@@ -468,7 +469,7 @@ $sevenZipLogo = ConvertFrom-Base64Image 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAAB
 function Set-PowerHubWindowLayout {
     $workArea = [Windows.SystemParameters]::WorkArea
     $margin = 16
-    $window.Width = 780
+    $window.Width = 980
     $window.Height = [Math]::Max($window.MinHeight, $workArea.Height - ($margin * 2))
     $window.Left = $workArea.Right - $window.Width - $margin
     $window.Top = $workArea.Top + $margin
@@ -725,8 +726,8 @@ foreach ($category in $categoryDefinitions) {
     $button.Style = $window.Resources['NavButton']
     $button.Tag = $category.Name
     $button.ToolTip = $category.Display
-    $button.Margin = [Windows.Thickness]::new(0,1,0,1)
-    $button.Padding = [Windows.Thickness]::new(7,4,7,4)
+    $button.Margin = [Windows.Thickness]::new(0,2,0,2)
+    $button.Padding = [Windows.Thickness]::new(9,6,9,6)
     if ($category.Name -eq 'Tümü') {
         $button.Background = New-ColorBrush '#174C70'
         $button.BorderBrush = New-ColorBrush '#278DD1'
@@ -734,21 +735,21 @@ foreach ($category in $categoryDefinitions) {
 
     $grid = [Windows.Controls.Grid]::new()
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
-    $grid.ColumnDefinitions[0].Width = [Windows.GridLength]::new(30)
+    $grid.ColumnDefinitions[0].Width = [Windows.GridLength]::new(38)
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
     $grid.ColumnDefinitions[1].Width = [Windows.GridLength]::new(1, [Windows.GridUnitType]::Star)
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
     $grid.ColumnDefinitions[2].Width = [Windows.GridLength]::Auto
 
     $iconBox = [Windows.Controls.Border]::new()
-    $iconBox.Width = 24
-    $iconBox.Height = 24
-    $iconBox.CornerRadius = [Windows.CornerRadius]::new(7)
+    $iconBox.Width = 30
+    $iconBox.Height = 30
+    $iconBox.CornerRadius = [Windows.CornerRadius]::new(9)
     $iconBox.Background = New-ColorBrush $category.Background
     $icon = [Windows.Controls.TextBlock]::new()
     $icon.Text = $category.Icon
     $icon.Foreground = New-ColorBrush $category.Foreground
-    $icon.FontSize = if ($category.Icon -eq '</>') { 8 } else { 11 }
+    $icon.FontSize = if ($category.Icon -eq '</>') { 9.5 } else { 13 }
     $icon.FontWeight = [Windows.FontWeights]::SemiBold
     $icon.HorizontalAlignment = 'Center'
     $icon.VerticalAlignment = 'Center'
@@ -757,7 +758,7 @@ foreach ($category in $categoryDefinitions) {
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
     $label.Foreground = New-ColorBrush '#E7EDF3'
-    $label.FontSize = 9.5
+    $label.FontSize = 11.5
     $label.FontWeight = if ($category.Name -eq 'Tümü') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
     $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
@@ -765,8 +766,8 @@ foreach ($category in $categoryDefinitions) {
 
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush '#8FA2B2'
-    $countText.FontSize = 8
+    $countText.Foreground = New-ColorBrush '#AFC0CE'
+    $countText.FontSize = 10
     $countText.VerticalAlignment = 'Center'
     $countText.Margin = [Windows.Thickness]::new(4,0,3,0)
     [Windows.Controls.Grid]::SetColumn($countText, 2)
