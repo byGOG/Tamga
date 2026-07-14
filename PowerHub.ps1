@@ -681,74 +681,65 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
-        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed">
-            <Grid.Background>
-                <RadialGradientBrush Center="0.5,0.44" GradientOrigin="0.5,0.44" RadiusX="0.78" RadiusY="0.78">
-                    <GradientStop Color="#C8172B38" Offset="0"/><GradientStop Color="#E3080C10" Offset="0.68"/><GradientStop Color="#F205080B" Offset="1"/>
-                </RadialGradientBrush>
-            </Grid.Background>
+        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="#E6080A0C">
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
-            <Border x:Name="AboutCard" Width="560" MaxHeight="740" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    BorderBrush="#4B6574" BorderThickness="1" CornerRadius="24" ClipToBounds="True">
-                <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#182128" Offset="0"/><GradientStop Color="#12181E" Offset="1"/></LinearGradientBrush></Border.Background>
-                <Border.Effect><DropShadowEffect Color="#010304" BlurRadius="52" ShadowDepth="12" Opacity="0.86"/></Border.Effect>
+            <Border x:Name="AboutCard" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="#202020" BorderBrush="#464646" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="28" ShadowDepth="8" Opacity="0.68"/></Border.Effect>
                 <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="184"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <Border Grid.Row="0">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#163B4E" Offset="0"/><GradientStop Color="#102936" Offset="0.45"/><GradientStop Color="#111821" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Grid ClipToBounds="True">
-                            <Border Height="2" VerticalAlignment="Top" HorizontalAlignment="Stretch"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#19BDF0" Offset="0"/><GradientStop Color="#4ED7F7" Offset="0.5"/><GradientStop Color="#745CE8" Offset="1"/></LinearGradientBrush></Border.Background></Border>
-                            <Ellipse Width="260" Height="260" Stroke="#2A91BE" StrokeThickness="2" Opacity="0.23" HorizontalAlignment="Right" Margin="0,-72,30,0"/>
-                            <Ellipse Width="170" Height="170" Stroke="#52D5F2" StrokeThickness="1.5" Opacity="0.24" HorizontalAlignment="Right" Margin="0,-18,82,0"/>
-                            <Ellipse Width="82" Height="82" Fill="#173F52" Stroke="#48CFF2" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,126,0">
-                                <Ellipse.Effect><DropShadowEffect Color="#30BCE8" BlurRadius="30" ShadowDepth="0" Opacity="0.58"/></Ellipse.Effect>
-                            </Ellipse>
-                            <Path Data="M 300 145 L 390 70 L 485 118 M 330 25 L 420 105 L 535 42" Stroke="#3BBDE4" StrokeThickness="1.4" Opacity="0.32"/>
-                            <Border Width="58" Height="58" CornerRadius="18" Background="#078AD5" BorderBrush="#49C9F3" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="28,0,0,28">
-                                <Border.Effect><DropShadowEffect Color="#078AD5" BlurRadius="20" ShadowDepth="3" Opacity="0.58"/></Border.Effect>
-                                <TextBlock Text="P" Foreground="White" FontSize="27" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="101,0,0,31">
-                                <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="Bold"/>
-                                <TextBlock Text="Windows uygulama merkezi" Foreground="#8FCBE7" FontSize="11.5" Margin="0,3,0,0"/>
-                            </StackPanel>
-                            <Button x:Name="AboutCloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="&#xE711;" Width="34" Height="34"
-                                    Padding="0" Margin="0,16,16,0" Background="#25323A" Foreground="#C6DCE8" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" ToolTip="Kapat (Esc)"/>
+                    <Grid.RowDefinitions><RowDefinition Height="132"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="#282828" BorderBrush="#414141" BorderThickness="0,0,0,1">
+                        <Grid Margin="24,0">
+                            <Border Height="2" VerticalAlignment="Top" Margin="-24,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#18A7E0" Offset="0"/><GradientStop Color="#18A7E0" Offset="0.64"/><GradientStop Color="#765DE8" Offset="1"/></LinearGradientBrush></Border.Background></Border>
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="62"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <Border Width="48" Height="48" CornerRadius="7" Background="#087EBD">
+                                    <TextBlock Text="P" Foreground="White" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="POWERHUB  /  HAKKINDA" Foreground="#55C8F3" FontSize="9.5" FontWeight="Bold"/>
+                                    <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                    <TextBlock Text="Windows uygulama merkezi" Foreground="#98A6B1" FontSize="11.5" Margin="0,3,0,0"/>
+                                </StackPanel>
+                                <Button x:Name="AboutCloseButton" Grid.Column="2" Content="&#xE711;" Width="34" Height="34" Padding="0"
+                                        Background="#303030" BorderBrush="#484848" BorderThickness="1" Foreground="#C8D3DA"
+                                        FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" ToolTip="Kapat (Esc)"/>
+                            </Grid>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Row="1" Margin="29,24,29,26">
-                        <TextBlock Text="POWERHUB  /  HAKKINDA" Foreground="#62CFF5" FontSize="9.5" FontWeight="Bold"/>
-                        <TextBlock Text="Uygulamaların için tek merkez." Foreground="White" FontSize="21" FontWeight="SemiBold" Margin="0,6,0,0"/>
+                    <StackPanel Grid.Row="1" Margin="24,22,24,24">
+                        <TextBlock Text="Uygulamaların için tek merkez." Foreground="White" FontSize="20" FontWeight="SemiBold"/>
                         <TextBlock Text="PowerHub, Windows uygulamalarını keşfetmek, resmî kaynaklara ulaşmak ve güvenli paket kurulumlarını tek merkezden yönetmek için geliştirildi."
-                                   Foreground="#AEBBC5" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,10,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                            <Border Background="#193344" CornerRadius="9" Padding="10,6" Margin="0,0,7,0"><TextBlock Text="✓  WinGet destekli" Foreground="#79D8FA" FontSize="10" FontWeight="SemiBold"/></Border>
-                            <Border Background="#21362D" CornerRadius="9" Padding="10,6" Margin="0,0,7,0"><TextBlock Text="●  Güvenli kaynaklar" Foreground="#82DBA5" FontSize="10" FontWeight="SemiBold"/></Border>
-                            <Border Background="#302D43" CornerRadius="9" Padding="10,6"><TextBlock Text="◇  Açık kaynak" Foreground="#B9AFFF" FontSize="10" FontWeight="SemiBold"/></Border>
-                        </StackPanel>
-                        <Border CornerRadius="13" Padding="16,14" Margin="0,17,0,0" BorderBrush="#2D424E" BorderThickness="1">
-                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#1D2931" Offset="0"/><GradientStop Color="#192127" Offset="1"/></LinearGradientBrush></Border.Background>
+                                   Foreground="#AEB8C0" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,9,0,0"/>
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="#282828" BorderBrush="#414141" BorderThickness="1" CornerRadius="5" Padding="12,10">
+                                <StackPanel><TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#55C8F3" FontSize="15"/><TextBlock Text="WinGet destekli" Foreground="#E8EEF2" FontSize="10.5" FontWeight="SemiBold" Margin="0,7,0,0"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="#282828" BorderBrush="#414141" BorderThickness="1" CornerRadius="5" Padding="12,10">
+                                <StackPanel><TextBlock Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#71D69A" FontSize="15"/><TextBlock Text="Güvenli kaynaklar" Foreground="#E8EEF2" FontSize="10.5" FontWeight="SemiBold" Margin="0,7,0,0"/></StackPanel>
+                            </Border>
+                            <Border Grid.Column="4" Background="#282828" BorderBrush="#414141" BorderThickness="1" CornerRadius="5" Padding="12,10">
+                                <StackPanel><TextBlock Text="&#xE943;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#B9AFFF" FontSize="15"/><TextBlock Text="Açık kaynak" Foreground="#E8EEF2" FontSize="10.5" FontWeight="SemiBold" Margin="0,7,0,0"/></StackPanel>
+                            </Border>
+                        </Grid>
+                        <Border Background="#282828" CornerRadius="5" Padding="15,13" Margin="0,14,0,0" BorderBrush="#414141" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="3"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border Background="#26B9E8" CornerRadius="2"/>
-                                <TextBlock Grid.Column="1" Foreground="#91A7B5" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="13,0,0,0">
-                                    <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#69D5FF" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
+                                <Border Background="#18A7E0" CornerRadius="2"/>
+                                <TextBlock Grid.Column="1" Foreground="#9EABB4" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="12,0,0,0">
+                                    <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#55C8F3" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
                                 </TextBlock>
                             </Grid>
                         </Border>
-                        <Grid Margin="0,20,0,0">
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="⚡  byGOG" Background="#202F38" Foreground="#DFF5FF"
-                                    BorderBrush="#365365" BorderThickness="1" Padding="13,10" ToolTip="byGOG GitHub profilini aç"/>
-                            <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="↗  GitHub projesi" Background="#17384A" Foreground="#8EDBFF"
-                                    BorderBrush="#2D6079" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
+                        <Grid Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="byGOG" Background="#303030" Foreground="#E1E9EE"
+                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG GitHub profilini aç"/>
+                            <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="#174A63" Foreground="#A9E5FF"
+                                    BorderBrush="#286783" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
                         </Grid>
-                        <TextBlock Text="© 2026 byGOG  •  PowerShell ile açık kaynak" Foreground="#6D7E89" FontSize="9.5"
-                                   HorizontalAlignment="Center" Margin="0,18,0,0"/>
+                        <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="#75828B" FontSize="9.5" HorizontalAlignment="Center" Margin="0,16,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
