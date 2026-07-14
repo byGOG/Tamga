@@ -159,6 +159,67 @@ public static class PowerHubWindowLayout {
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="FontPickerItem" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#EAF1F6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemSurface" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}" Margin="3,1">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemSurface" Property="Background" Value="#315066"/></Trigger>
+                            <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemSurface" Property="Background" Value="#176A9E"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="FontPickerStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#EAF1F6"/>
+            <Setter Property="Background" Value="#20282F"/>
+            <Setter Property="BorderBrush" Value="#4B5964"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource FontPickerItem}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="DropDownToggle" Focusable="False" ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="PickerSurface" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=ComboBox}}" CornerRadius="9">
+                                            <Grid>
+                                                <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                                                  Margin="10,0,30,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="&#xE70D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="11"
+                                                           Foreground="#8ED8FA" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PickerSurface" Property="BorderBrush" Value="#278DD1"/></Trigger>
+                                            <Trigger Property="IsChecked" Value="True"><Setter TargetName="PickerSurface" Property="Background" Value="#253642"/></Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                                <Border Background="#20282F" BorderBrush="#4B6577" BorderThickness="1" CornerRadius="10" Margin="0,4,0,0" Padding="3" MinWidth="170">
+                                    <Border.Effect><DropShadowEffect Color="#080D11" BlurRadius="18" ShadowDepth="4" Opacity="0.55"/></Border.Effect>
+                                    <ScrollViewer MaxHeight="250"><ItemsPresenter/></ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="CheckBox">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Width" Value="20"/>
@@ -350,6 +411,12 @@ public static class PowerHubWindowLayout {
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#7EE2A8" FontSize="10" FontWeight="Bold"/>
                         </Grid>
+                        <Grid Margin="3,8,3,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="Aa" Foreground="#65C9F5" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <ComboBox x:Name="FontPicker" Grid.Column="1" Height="32" Style="{StaticResource FontPickerStyle}"
+                                      ToolTip="Arayüz yazı tipini değiştir" AutomationProperties.Name="Yazı tipi seç"/>
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -495,13 +562,36 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','FontPicker') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
+
+$script:fontOptions = @('Segoe UI Variable Text','Bahnschrift','Calibri','Verdana','Trebuchet MS')
+$script:settingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
+$script:fontSettingPath = Join-Path $script:settingsDirectory 'font.txt'
+$selectedFont = $script:fontOptions[0]
+try {
+    if (Test-Path -LiteralPath $script:fontSettingPath) {
+        $savedFont = (Get-Content -LiteralPath $script:fontSettingPath -Raw -ErrorAction Stop).Trim()
+        if ($script:fontOptions -contains $savedFont) { $selectedFont = $savedFont }
+    }
+} catch {}
+$controls.FontPicker.ItemsSource = $script:fontOptions
+$controls.FontPicker.SelectedItem = $selectedFont
+$window.FontFamily = [Windows.Media.FontFamily]::new($selectedFont)
+$controls.FontPicker.Add_SelectionChanged({
+    $fontName = [string]$controls.FontPicker.SelectedItem
+    if ([string]::IsNullOrWhiteSpace($fontName)) { return }
+    $window.FontFamily = [Windows.Media.FontFamily]::new($fontName)
+    try {
+        [IO.Directory]::CreateDirectory($script:settingsDirectory) | Out-Null
+        Set-Content -LiteralPath $script:fontSettingPath -Value $fontName -Encoding UTF8 -Force
+    } catch {}
+})
 
 function Resolve-WingetExecutable {
     $command = Get-Command winget.exe -ErrorAction SilentlyContinue
