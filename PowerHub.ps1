@@ -315,6 +315,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
                     <Border Width="40" Height="40" CornerRadius="7" Background="#087EBD">
@@ -336,7 +337,22 @@ if ($fontInstallFailures.Count -gt 0) {
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Button x:Name="AboutButton" Grid.Row="3" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                <Button x:Name="UpdateCenterButton" Grid.Row="3" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                        ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
+                    <Grid Width="183">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="32" Height="32" CornerRadius="5" Background="#8A5B17" BorderBrush="#B9822B" BorderThickness="1">
+                            <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
+                            <TextBlock Text="Güncelleme Merkezi" Foreground="#F1F8FC" FontSize="11" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#B99B6D" FontSize="9.5" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="AboutButton" Grid.Row="4" Style="{StaticResource AboutNavButton}" Margin="0,7,0,0"
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -351,7 +367,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="4" Background="#252525" BorderBrush="#414141" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="5" Background="#252525" BorderBrush="#414141" BorderThickness="1"
                         CornerRadius="6" Padding="10" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -381,7 +397,7 @@ if ($fontInstallFailures.Count -gt 0) {
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="24,18,24,18">
+        <Grid x:Name="MainWorkspace" Grid.Column="1" Margin="24,18,24,18">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -570,6 +586,101 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
+        <Grid x:Name="UpdateCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#202020" Visibility="Collapsed" Panel.ZIndex="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="7" Padding="18,15" Background="#282828" BorderBrush="#414141" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
+                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#E4A23A" Offset="0"/><GradientStop Color="#168FC6" Offset="1"/></LinearGradientBrush></Border.Background>
+                    </Border>
+                    <Border Width="42" Height="42" CornerRadius="6" Background="#704A16" BorderBrush="#A97529" BorderThickness="1">
+                        <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="POWERHUB  /  WINGET" FontSize="9.5" FontWeight="Bold" Foreground="#E9B55D"/>
+                        <TextBlock Text="Güncelleme Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
+                        <TextBlock Text="Yüklü paketleri denetle, seç ve güvenle güncelle." Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="UpdateBackButton" Content="←  Paket merkezi" Background="#333333" Foreground="#C8D6E0" Margin="0,0,8,0" ToolTip="Uygulama kataloğuna dön"/>
+                        <Button x:Name="UpdateRefreshButton" Content="↻  Yeniden tara" Background="#704A16" Foreground="#FFE0A8" ToolTip="Güncellemeleri yeniden denetle"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1" Margin="0,15,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Kullanılabilir güncellemeler" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
+                    <Border x:Name="UpdateCountBadge" Background="#574422" BorderBrush="#7D632F" BorderThickness="1" CornerRadius="5" Padding="9,4" Margin="12,0,0,0">
+                        <TextBlock x:Name="UpdateCountText" Text="Taranıyor" Foreground="#FFD58A" FontSize="11" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock x:Name="UpdateLastScanText" Text="Paket verileri hazırlanıyor..." Foreground="#8D9AA5" FontSize="10.5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Border x:Name="UpdateEmptyState" Background="#252525" BorderBrush="#3F3F3F" BorderThickness="1" CornerRadius="7" Visibility="Collapsed">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border Width="54" Height="54" CornerRadius="27" Background="#203B2C" BorderBrush="#346A4D" BorderThickness="1">
+                            <TextBlock Text="✓" Foreground="#7EE2A8" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Tüm paketler güncel" Foreground="White" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+                        <TextBlock Text="WinGet yeni bir sürüm bulamadı." Foreground="#909CA6" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+                <ListBox x:Name="UpdateList" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,7"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="UpdateCard" Height="72" Background="#2B2B2B" BorderBrush="#454545" BorderThickness="1" CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
+                                    <Border Background="#D09335"/>
+                                    <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
+                                        <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
+                                    </StackPanel>
+                                    <Border Grid.Column="3" Background="#263F52" CornerRadius="4" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Source}" Foreground="#82CEFF" FontSize="9.5" FontWeight="Bold"/>
+                                    </Border>
+                                    <CheckBox Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}" AutomationProperties.Name="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter TargetName="UpdateCard" Property="Background" Value="#333333"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Border Grid.Row="3" Background="#292929" BorderBrush="#454545" BorderThickness="1" CornerRadius="6" Padding="15,11" Margin="0,8,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="UpdateSelectionText" Text="Güncelleme taraması bekleniyor" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="UpdateActivityText" Text="WinGet paketleri denetlenecek." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"/>
+                        <ProgressBar x:Name="UpdateProgress" Height="3" Margin="0,9,18,0" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" Foreground="#D09335" Background="#3B3326"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="UpdateSelectAllButton" Content="Tümünü seç" Background="#333333" Foreground="#FFD58A" Margin="0,0,9,0" IsEnabled="False"/>
+                        <Button x:Name="UpdateInstallButton" Content="Seçilenleri güncelle  →" Background="#B8781E" Foreground="White" IsEnabled="False"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
         <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed">
             <Grid.Background>
                 <RadialGradientBrush Center="0.5,0.44" GradientOrigin="0.5,0.44" RadiusX="0.78" RadiusY="0.78">
@@ -650,8 +761,9 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
+  'AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1173,6 +1285,111 @@ $controls.CategoryBadgeText.Text = "{0} kategori" -f $categoryDefinitions.Count
 $script:activeCategory = 'Web Tarayıcıları'
 $script:isInstalling = $false
 $script:visibleApps = @()
+$script:updatePackages = [Collections.ObjectModel.ObservableCollection[object]]::new()
+$script:updateScanCompleted = $false
+$controls.UpdateList.ItemsSource = $script:updatePackages
+
+function ConvertFrom-WingetUpgradeOutput {
+    param([AllowEmptyString()][string]$Output)
+
+    if ([string]::IsNullOrWhiteSpace($Output)) { return @() }
+    $ansiPattern = ([string][char]27) + '\[[0-9;?]*[ -/]*[@-~]'
+    $cleanOutput = [Regex]::Replace($Output, $ansiPattern, '')
+    $lines = @($cleanOutput -split "\r?\n")
+    $separatorIndex = -1
+    $columnMatches = $null
+    for ($index = 0; $index -lt $lines.Count; $index++) {
+        $matches = [Regex]::Matches($lines[$index], '-{3,}')
+        if ($matches.Count -ge 4) {
+            $separatorIndex = $index
+            $columnMatches = $matches
+            break
+        }
+    }
+    if ($separatorIndex -lt 0) { return @() }
+
+    $starts = @($columnMatches | ForEach-Object Index)
+    $packages = [Collections.ArrayList]::new()
+    for ($index = $separatorIndex + 1; $index -lt $lines.Count; $index++) {
+        $line = [string]$lines[$index]
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        if ($line -match '^\s*\d+\s+package' -or $line -match '^\s*No installed package') { break }
+        if ($line.Length -le $starts[1]) { continue }
+
+        $values = for ($column = 0; $column -lt $starts.Count; $column++) {
+            $start = $starts[$column]
+            if ($start -ge $line.Length) { ''; continue }
+            $end = if ($column + 1 -lt $starts.Count) { [Math]::Min($line.Length, $starts[$column + 1]) } else { $line.Length }
+            $line.Substring($start, [Math]::Max(0, $end - $start)).Trim()
+        }
+        if ($values.Count -lt 4) { continue }
+        $name = [string]$values[0]
+        $id = [string]$values[1]
+        $current = [string]$values[2]
+        $available = [string]$values[3]
+        $source = if ($values.Count -ge 5 -and $values[4]) { [string]$values[4] } else { 'winget' }
+        if ([string]::IsNullOrWhiteSpace($id) -or [string]::IsNullOrWhiteSpace($available)) { continue }
+        [void]$packages.Add([pscustomobject]@{
+            Name = $name
+            Id = $id
+            CurrentVersion = $current
+            AvailableVersion = $available
+            Source = $source
+            IsSelected = $false
+        })
+    }
+    return @($packages)
+}
+
+function Update-UpdateCenterSelectionStatus {
+    $selected = @($script:updatePackages | Where-Object IsSelected)
+    $count = $script:updatePackages.Count
+    $controls.UpdateCountText.Text = if ($count -eq 1) { '1 güncelleme' } else { "$count güncelleme" }
+    $controls.UpdateCountBadge.Background = New-ColorBrush $(if ($count -gt 0) { '#574422' } else { '#203B2C' })
+    $controls.UpdateCountBadge.BorderBrush = New-ColorBrush $(if ($count -gt 0) { '#7D632F' } else { '#346A4D' })
+    $controls.UpdateCountText.Foreground = New-ColorBrush $(if ($count -gt 0) { '#FFD58A' } else { '#7EE2A8' })
+    $controls.UpdateSelectionText.Text = if ($selected.Count -gt 0) { "$($selected.Count) paket güncellenecek" } elseif ($script:updateScanCompleted) { 'Henüz paket seçilmedi' } else { 'Güncelleme taraması bekleniyor' }
+    if (-not $script:isInstalling) {
+        $controls.UpdateActivityText.Text = if ($count -eq 0 -and $script:updateScanCompleted) { 'Sisteminizde bekleyen WinGet güncellemesi yok.' } elseif ($selected.Count -gt 0) { ($selected.Name -join ', ') } else { 'Güncellemek istediğiniz paketleri seçin.' }
+    }
+    $wingetReady = [bool](Resolve-WingetExecutable)
+    $controls.UpdateSelectAllButton.IsEnabled = ($count -gt 0 -and -not $script:isInstalling)
+    $controls.UpdateInstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $wingetReady)
+    $controls.UpdateSelectAllButton.Content = if ($count -gt 0 -and @($script:updatePackages | Where-Object { -not $_.IsSelected }).Count -eq 0) { 'Seçimi kaldır' } else { 'Tümünü seç' }
+}
+
+function Set-UpdateCenterPackages {
+    param([AllowEmptyString()][string]$UpgradeOutput)
+
+    $script:updatePackages.Clear()
+    foreach ($package in @(ConvertFrom-WingetUpgradeOutput -Output $UpgradeOutput)) { $script:updatePackages.Add($package) }
+    $script:updateScanCompleted = $true
+    $controls.UpdateList.Visibility = if ($script:updatePackages.Count -gt 0) { 'Visible' } else { 'Collapsed' }
+    $controls.UpdateEmptyState.Visibility = if ($script:updatePackages.Count -eq 0) { 'Visible' } else { 'Collapsed' }
+    $controls.UpdateLastScanText.Text = "Son kontrol: $([DateTime]::Now.ToString('HH:mm:ss'))"
+    $controls.UpdateCenterNavDetail.Text = if ($script:updatePackages.Count -gt 0) { "$($script:updatePackages.Count) güncelleme hazır" } else { 'Tüm paketler güncel' }
+    Update-UpdateCenterSelectionStatus
+}
+
+function Set-UpdateCenterVisibility {
+    param([bool]$Visible)
+    $controls.UpdateCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
+    $controls.MainWorkspace.Visibility = if ($Visible) { 'Collapsed' } else { 'Visible' }
+    $controls.UpdateCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.UpdateCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#D09335' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.UpdateCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
+    if ($Visible) {
+        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
+            $nav.Background = [Windows.Media.Brushes]::Transparent
+            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $nav.BorderThickness = [Windows.Thickness]::new(0)
+            $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
+            $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
+            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
+        }
+    }
+    if ($Visible -and -not $script:updateScanCompleted -and -not $script:systemScanProcess) { Start-SystemScan }
+}
 
 function Update-SelectionStatus {
     $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' })
@@ -1314,6 +1531,7 @@ function Complete-SystemScan {
 
     $installedOutput = [string]$ScanResult.InstalledOutput
     $upgradeOutput = [string]$ScanResult.UpgradeOutput
+    Set-UpdateCenterPackages -UpgradeOutput $upgradeOutput
     foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) {
         if (Test-WingetOutputContainsId -Output $upgradeOutput -Id $app.Id) {
             Set-AppInstallState -App $app -State UpdateAvailable
@@ -1348,6 +1566,7 @@ $script:systemScanTimer.Add_Tick({
         }
         $scanResult = Get-Content -LiteralPath $script:systemScanResultFile -Raw -Encoding UTF8 | ConvertFrom-Json
         Complete-SystemScan -ScanResult $scanResult
+        $controls.UpdateRefreshButton.IsEnabled = $true
     } catch {
         foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Unknown }
         Update-AppList
@@ -1357,6 +1576,10 @@ $script:systemScanTimer.Add_Tick({
         $controls.SystemScanBadgeText.Text = '●  Tarama başarısız'
         $controls.SystemScanBadge.ToolTip = $_.Exception.Message
         $controls.ActivityText.Text = 'Sistem taraması tamamlanamadı; uygulamalar yine de kurulabilir.'
+        $controls.UpdateCountText.Text = 'Tarama hatası'
+        $controls.UpdateLastScanText.Text = 'WinGet güncelleme listesi alınamadı'
+        $controls.UpdateActivityText.Text = $_.Exception.Message
+        $controls.UpdateRefreshButton.IsEnabled = $true
         Write-PowerHubLog -Message "Akıllı tarama hatası: $($_.Exception.Message)" -Color Red
     } finally {
         if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
@@ -1378,6 +1601,11 @@ function Start-SystemScan {
     $controls.SystemScanBadgeText.Text = '◌  Sistem taranıyor'
     $controls.SystemScanBadge.ToolTip = 'Kurulu uygulamalar ve güncellemeler denetleniyor'
     $controls.ActivityText.Text = 'Kurulu uygulamalar ve güncellemeler taranıyor...'
+    $controls.UpdateCountText.Text = 'Taranıyor'
+    $controls.UpdateLastScanText.Text = 'WinGet paketleri denetleniyor...'
+    $controls.UpdateEmptyState.Visibility = 'Collapsed'
+    $controls.UpdateList.Visibility = 'Visible'
+    $controls.UpdateRefreshButton.IsEnabled = $false
     Write-PowerHubLog -Message 'Akıllı sistem taraması başlatıldı.' -Color Cyan
 
     $script:systemScanResultFile = Join-Path $env:TEMP ("PowerHub-scan-{0}.json" -f [Guid]::NewGuid().ToString('N'))
@@ -1391,7 +1619,7 @@ $result = [ordered]@{ InstalledExitCode=1; UpgradeExitCode=1; InstalledOutput=''
 try {
     $result.InstalledOutput = (& $payload.Winget list --accept-source-agreements --disable-interactivity 2>&1 | Out-String)
     $result.InstalledExitCode = [int]$LASTEXITCODE
-    $result.UpgradeOutput = (& $payload.Winget list --upgrade-available --accept-source-agreements --disable-interactivity 2>&1 | Out-String)
+    $result.UpgradeOutput = (& $payload.Winget list --upgrade-available --include-unknown --accept-source-agreements --disable-interactivity 2>&1 | Out-String)
     $result.UpgradeExitCode = [int]$LASTEXITCODE
 } catch {
     $result.InstalledOutput = $_.Exception.Message
@@ -1411,6 +1639,7 @@ try {
         $script:systemScanResultFile = $null
         foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Unknown }
         Update-AppList
+        $controls.UpdateRefreshButton.IsEnabled = $true
         Write-PowerHubLog -Message "Akıllı tarama başlatılamadı: $($_.Exception.Message)" -Color Red
     }
 }
@@ -1435,6 +1664,7 @@ function Set-ActiveCategory {
     param([Parameter(Mandatory)][string]$CategoryName)
 
     $script:activeCategory = $CategoryName
+    Set-UpdateCenterVisibility $false
     $targetButton = $null
     foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
         $nav.Background = [Windows.Media.Brushes]::Transparent
@@ -1489,6 +1719,21 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
         Update-AppList
     })
 }
+
+$controls.UpdateCenterButton.Add_Click({ Set-UpdateCenterVisibility $true })
+$controls.UpdateBackButton.Add_Click({
+    Set-ActiveCategory -CategoryName $script:activeCategory
+    Update-AppList
+})
+$controls.UpdateRefreshButton.Add_Click({ Start-SystemScan })
+$controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
+$controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
+$controls.UpdateSelectAllButton.Add_Click({
+    $allSelected = $script:updatePackages.Count -gt 0 -and @($script:updatePackages | Where-Object { -not $_.IsSelected }).Count -eq 0
+    foreach ($package in $script:updatePackages) { $package.IsSelected = -not $allSelected }
+    $controls.UpdateList.Items.Refresh()
+    Update-UpdateCenterSelectionStatus
+})
 
 $controls.SearchBox.Add_TextChanged({
     Update-SearchChrome
@@ -1630,6 +1875,100 @@ $controls.SelectAllButton.Add_Click({
     foreach ($app in $installableApps) { $app.IsSelected = -not $allSelected }
     Update-AppList
     Update-SelectionStatus
+})
+
+$script:updateQueue = @()
+$script:updateIndex = 0
+$script:updateResults = [Collections.ArrayList]::new()
+$script:updateProcess = $null
+$script:updateTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:updateTimer.Interval = [TimeSpan]::FromMilliseconds(400)
+
+function Complete-UpdateQueue {
+    $script:updateTimer.Stop()
+    $script:isInstalling = $false
+    $controls.UpdateProgress.Value = 100
+    $controls.UpdateRefreshButton.IsEnabled = $true
+    $failed = @($script:updateResults | Where-Object { -not $_.Success })
+    $successCount = @($script:updateResults | Where-Object Success).Count
+    $controls.UpdateSelectionText.Text = "Güncelleme işlemi tamamlandı"
+    $controls.UpdateActivityText.Text = if ($failed.Count -eq 0) { "$successCount paket başarıyla güncellendi." } else { "$successCount başarılı, $($failed.Count) başarısız." }
+    Write-PowerHubLog -Message "Güncelleme Merkezi tamamlandı: $successCount başarılı, $($failed.Count) başarısız." -Color $(if ($failed.Count -eq 0) { 'Green' } else { 'Yellow' })
+    foreach ($package in $script:updatePackages) { $package.IsSelected = $false }
+    $controls.UpdateList.Items.Refresh()
+    Update-UpdateCenterSelectionStatus
+    Start-SystemScan
+}
+
+function Start-NextUpdate {
+    if ($script:updateIndex -ge $script:updateQueue.Count) {
+        Complete-UpdateQueue
+        return
+    }
+
+    $package = $script:updateQueue[$script:updateIndex]
+    $controls.UpdateProgress.Value = [int](($script:updateIndex / $script:updateQueue.Count) * 100)
+    $controls.UpdateSelectionText.Text = "Güncelleniyor: $($package.Name)"
+    $controls.UpdateActivityText.Text = "$($package.CurrentVersion) → $($package.AvailableVersion)"
+    $arguments = @('upgrade','--id',$package.Id,'--exact')
+    if (-not [string]::IsNullOrWhiteSpace($package.Source)) { $arguments += @('--source',$package.Source) }
+    $arguments += @('--include-unknown','--silent','--accept-package-agreements','--accept-source-agreements','--disable-interactivity')
+
+    try {
+        $winget = Resolve-WingetExecutable
+        if (-not $winget) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+        Write-PowerHubLog -Message "Güncelleniyor: $($package.Name) ($($package.Id))" -Color Cyan
+        Write-PowerHubLog -Message "Komut: winget $($arguments -join ' ')" -Color DarkGray
+        $script:updateProcess = Start-Process -FilePath $winget -ArgumentList $arguments -PassThru -NoNewWindow
+        $script:updateTimer.Start()
+    } catch {
+        Write-PowerHubLog -Message "Güncelleme başlatılamadı ($($package.Name)): $($_.Exception.Message)" -Color Red
+        [void]$script:updateResults.Add([pscustomobject]@{ Name=$package.Name; Success=$false; Code=-1 })
+        $script:updateIndex++
+        Start-NextUpdate
+    }
+}
+
+$script:updateTimer.Add_Tick({
+    if (-not $script:updateProcess) { return }
+    $script:updateProcess.Refresh()
+    if (-not $script:updateProcess.HasExited) { return }
+
+    $script:updateTimer.Stop()
+    $package = $script:updateQueue[$script:updateIndex]
+    $script:updateProcess.WaitForExit()
+    $exitCode = [int]$script:updateProcess.ExitCode
+    $script:updateProcess.Dispose()
+    $script:updateProcess = $null
+    [void]$script:updateResults.Add([pscustomobject]@{ Name=$package.Name; Success=($exitCode -eq 0); Code=$exitCode })
+    Write-PowerHubLog -Message $(if ($exitCode -eq 0) { "Güncellendi: $($package.Name)" } else { "Güncellenemedi: $($package.Name), kod: $exitCode" }) -Color $(if ($exitCode -eq 0) { 'Green' } else { 'Red' })
+    $script:updateIndex++
+    Start-NextUpdate
+})
+
+$controls.UpdateInstallButton.Add_Click({
+    $script:updateQueue = @($script:updatePackages | Where-Object IsSelected | ForEach-Object {
+        [pscustomobject]@{
+            Name = $_.Name
+            Id = $_.Id
+            CurrentVersion = $_.CurrentVersion
+            AvailableVersion = $_.AvailableVersion
+            Source = $_.Source
+        }
+    })
+    if ($script:updateQueue.Count -eq 0 -or $script:isInstalling) { return }
+
+    $script:updateIndex = 0
+    $script:updateResults = [Collections.ArrayList]::new()
+    $script:isInstalling = $true
+    $controls.UpdateInstallButton.IsEnabled = $false
+    $controls.UpdateSelectAllButton.IsEnabled = $false
+    $controls.UpdateRefreshButton.IsEnabled = $false
+    $controls.UpdateProgress.Visibility = 'Visible'
+    $controls.UpdateProgress.Value = 0
+    Write-Host ''
+    Write-PowerHubLog -Message "$($script:updateQueue.Count) paketlik güncelleme kuyruğu başlatıldı." -Color White
+    Start-NextUpdate
 })
 
 $script:installQueue = @()
@@ -2017,14 +2356,19 @@ if ($winget) {
 
 Update-AppList
 Update-SelectionStatus
+Update-UpdateCenterSelectionStatus
 Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 if ($winget) { Start-SystemScan }
 $window.Add_Closed({
     $script:systemScanTimer.Stop()
+    $script:updateTimer.Stop()
     if ($script:systemScanProcess -and -not $script:systemScanProcess.HasExited) {
         Stop-Process -Id $script:systemScanProcess.Id -Force -ErrorAction SilentlyContinue
     }
     if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
+    if ($script:updateProcess -and -not $script:updateProcess.HasExited) {
+        Stop-Process -Id $script:updateProcess.Id -Force -ErrorAction SilentlyContinue
+    }
 })
 $window.ShowDialog() | Out-Null
