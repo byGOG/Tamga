@@ -117,14 +117,14 @@ if ($fontInstallFailures.Count -gt 0) {
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
     <Window.Resources>
-        <SolidColorBrush x:Key="Primary" Color="#0F8AD8"/>
-        <SolidColorBrush x:Key="Ink" Color="#F4F7F9"/>
-        <SolidColorBrush x:Key="Muted" Color="#AEBAC4"/>
-        <SolidColorBrush x:Key="PageBg" Color="#20262C"/>
-        <SolidColorBrush x:Key="CardBg" Color="#2B333B"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#3E4A55"/>
-        <SolidColorBrush x:Key="SoftBg" Color="#233C4E"/>
-        <SolidColorBrush x:Key="SoftText" Color="#79CEFA"/>
+        <SolidColorBrush x:Key="Primary" Color="#138AC2"/>
+        <SolidColorBrush x:Key="Ink" Color="#F2F2F2"/>
+        <SolidColorBrush x:Key="Muted" Color="#A7A7A7"/>
+        <SolidColorBrush x:Key="PageBg" Color="#202020"/>
+        <SolidColorBrush x:Key="CardBg" Color="#2B2B2B"/>
+        <SolidColorBrush x:Key="CardBorder" Color="#414141"/>
+        <SolidColorBrush x:Key="SoftBg" Color="#303030"/>
+        <SolidColorBrush x:Key="SoftText" Color="#8CCFEA"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
             <Setter Property="Width" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -138,7 +138,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                     <Thumb>
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Background="#596572" CornerRadius="5" Margin="3,1"/>
+                                                <Border Background="#656565" CornerRadius="2" Margin="3,1"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
@@ -160,7 +160,7 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
-                                CornerRadius="9" Padding="{TemplateBinding Padding}">
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -176,7 +176,7 @@ if ($fontInstallFailures.Count -gt 0) {
             </Setter>
         </Style>
         <Style x:Key="NavButton" TargetType="Button">
-            <Setter Property="Foreground" Value="#BBC7D0"/>
+            <Setter Property="Foreground" Value="#C8C8C8"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -190,16 +190,16 @@ if ($fontInstallFailures.Count -gt 0) {
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="NavBorder" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#2D3942"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="#2A2A2A"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#203F52"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="#303A40"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
                                 <Setter TargetName="NavBorder" Property="BorderBrush" Value="#5BCDF7"/>
@@ -216,21 +216,21 @@ if ($fontInstallFailures.Count -gt 0) {
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="#263A46"/>
-            <Setter Property="BorderBrush" Value="#3D5968"/>
+            <Setter Property="Background" Value="#303030"/>
+            <Setter Property="BorderBrush" Value="#4A4A4A"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="#7FD5FF"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="IconSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="IconSurface" Property="Background" Value="#174C70"/>
-                                <Setter TargetName="IconSurface" Property="BorderBrush" Value="#278DD1"/>
+                                <Setter TargetName="IconSurface" Property="Background" Value="#263E49"/>
+                                <Setter TargetName="IconSurface" Property="BorderBrush" Value="#168FC6"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="IconSurface" Property="Background" Value="#0D659E"/>
@@ -258,8 +258,7 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="AboutSurface" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="14" Padding="{TemplateBinding Padding}">
-                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#263943" Offset="0"/><GradientStop Color="#1E303A" Offset="1"/></LinearGradientBrush></Border.Background>
+                                CornerRadius="6" Padding="{TemplateBinding Padding}" Background="#292929">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -279,8 +278,8 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
                         <Grid Width="20" Height="20">
-                            <Border x:Name="CheckBorder" Background="#292F35" BorderBrush="#7B8792"
-                                    BorderThickness="1.2" CornerRadius="5"/>
+                            <Border x:Name="CheckBorder" Background="#292929" BorderBrush="#777777"
+                                    BorderThickness="1" CornerRadius="2"/>
                             <Path x:Name="CheckMark" Data="M 4 10 L 8 14 L 16 6" Stroke="White"
                                   StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                   Visibility="Collapsed"/>
@@ -308,14 +307,8 @@ if ($fontInstallFailures.Count -gt 0) {
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="Sidebar" Grid.Column="0" BorderThickness="0">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#1C2228" Offset="0"/>
-                    <GradientStop Color="#293139" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-            <Grid Margin="20,24">
+        <Border x:Name="Sidebar" Grid.Column="0" BorderBrush="#343434" BorderThickness="0,0,1,0" Background="#1B1B1B">
+            <Grid Margin="18,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -324,26 +317,19 @@ if ($fontInstallFailures.Count -gt 0) {
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Border Width="44" Height="44" CornerRadius="13">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#0EA5E9" Offset="0"/>
-                                <GradientStop Color="#0067C0" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.Effect><DropShadowEffect Color="#071A29" BlurRadius="14" ShadowDepth="3" Opacity="0.48"/></Border.Effect>
+                    <Border Width="40" Height="40" CornerRadius="7" Background="#087EBD">
                         <TextBlock Text="P" Foreground="White" FontSize="21" FontWeight="Bold"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel Margin="11,0,0,0">
-                        <TextBlock Text="PowerHub" Foreground="White" FontWeight="Bold" FontSize="19"/>
-                        <TextBlock Text="Uygulama merkezi" Foreground="#AEC0CF" FontSize="11.5" Margin="0,3,0,0"/>
+                        <TextBlock Text="PowerHub" Foreground="White" FontWeight="SemiBold" FontSize="18"/>
+                        <TextBlock Text="Uygulama merkezi" Foreground="#9F9F9F" FontSize="11" Margin="0,2,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Margin="8,0,8,8">
                     <TextBlock Text="KATEGORİLER" Foreground="#9AAEBD" FontSize="10.5" FontWeight="Bold"/>
-                    <Border Height="1" Background="#485058" Margin="78,6,0,0"/>
+                    <Border Height="1" Background="#404040" Margin="78,6,0,0"/>
                 </Grid>
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,8">
                     <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
@@ -354,9 +340,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border Width="34" Height="34" CornerRadius="11">
-                            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#18A9EA" Offset="0"/><GradientStop Color="#0875BD" Offset="1"/></LinearGradientBrush></Border.Background>
-                            <Border.Effect><DropShadowEffect Color="#087CC3" BlurRadius="10" ShadowDepth="2" Opacity="0.42"/></Border.Effect>
+                        <Border Width="32" Height="32" CornerRadius="5" Background="#087EBD">
                             <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
@@ -367,9 +351,8 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="4" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
-                        CornerRadius="15" Padding="11" Margin="0,10,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
-                    <Border.Effect><DropShadowEffect Color="#11161A" BlurRadius="10" ShadowDepth="1" Opacity="0.24"/></Border.Effect>
+                <Border x:Name="WingetCard" Grid.Row="4" Background="#252525" BorderBrush="#414141" BorderThickness="1"
+                        CornerRadius="6" Padding="10" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -377,14 +360,14 @@ if ($fontInstallFailures.Count -gt 0) {
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Width="30" Height="30" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="10">
+                        <Border x:Name="WingetIconBox" Width="30" Height="30" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="5">
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="White"
                                    FontSize="12.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
-                                CornerRadius="9" Padding="7,4" VerticalAlignment="Center">
+                                CornerRadius="4" Padding="7,4" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse x:Name="WingetBadgeDot" Width="5" Height="5" Fill="#67DB95" VerticalAlignment="Center" Margin="0,0,5,0"/>
                                 <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="9" FontWeight="Bold"/>
@@ -398,7 +381,7 @@ if ($fontInstallFailures.Count -gt 0) {
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="26,22,26,20">
+        <Grid Grid.Column="1" Margin="24,18,24,18">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -406,38 +389,16 @@ if ($fontInstallFailures.Count -gt 0) {
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="HeaderBanner" CornerRadius="20" Padding="22,19" BorderBrush="#46545F" BorderThickness="1">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#303A44" Offset="0"/>
-                        <GradientStop Color="#283038" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Border.Effect><DropShadowEffect Color="#0B1116" BlurRadius="22" ShadowDepth="4" Opacity="0.34"/></Border.Effect>
+            <Border x:Name="HeaderBanner" CornerRadius="7" Padding="18,15" Background="#282828" BorderBrush="#414141" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="260"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.ColumnSpan="3" Height="3" VerticalAlignment="Top" Margin="-22,-19,-22,0" CornerRadius="20,20,2,2">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#0F8AD8" Offset="0"/>
-                                <GradientStop Color="#51C5EF" Offset="0.48"/>
-                                <GradientStop Color="#7565E8" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                    </Border>
-                    <Border Width="50" Height="50" CornerRadius="16"
+                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0" Background="#168FC6"/>
+                    <Border Width="44" Height="44" CornerRadius="6" Background="#087EBD"
                             VerticalAlignment="Top" HorizontalAlignment="Left">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#159CE8" Offset="0"/>
-                                <GradientStop Color="#086CB5" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.Effect><DropShadowEffect Color="#0879C5" BlurRadius="14" ShadowDepth="3" Opacity="0.38"/></Border.Effect>
                         <Grid>
                             <Rectangle Width="21" Height="17" Fill="Transparent" Stroke="White" StrokeThickness="1.8" RadiusX="3" RadiusY="3"/>
                             <Path Data="M 15 17 L 23 17 M 19 13 L 19 21" Stroke="White" StrokeThickness="1.8"
@@ -446,7 +407,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Border>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="POWERHUB  /  WINGET" FontSize="9.5" FontWeight="Bold" Foreground="#65C9F5" Margin="0,0,0,3"/>
-                        <TextBlock Text="Paket merkezi" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource Ink}"/>
+                        <TextBlock Text="Paket merkezi" FontSize="25" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
                         <TextBlock Text="Keşfet, seç ve tek akışta kur."
                                    Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
@@ -462,8 +423,8 @@ if ($fontInstallFailures.Count -gt 0) {
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="#20282F" BorderBrush="#4B5964"
-                                BorderThickness="1" CornerRadius="13" Height="46">
+                        <Border Background="#333333" BorderBrush="#4B4B4B"
+                                BorderThickness="1" CornerRadius="4" Height="40">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                 <TextBlock Text="⌕" FontSize="22" Foreground="#AAB3BC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -484,9 +445,9 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1" Margin="0,19,0,12">
+            <Grid Grid.Row="1" Margin="0,15,0,10">
                 <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
-                <Border HorizontalAlignment="Right" Background="#29343D" BorderBrush="#3E4D58" BorderThickness="1" CornerRadius="9" Padding="9,4">
+                <Border HorizontalAlignment="Right" Background="#2D2D2D" BorderBrush="#454545" BorderThickness="1" CornerRadius="4" Padding="9,4">
                     <TextBlock x:Name="ResultCount" Foreground="#B8C6D1" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
             </Grid>
@@ -500,7 +461,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ScrollBar">
-                                    <Grid Background="#252A30">
+                                    <Grid Background="#252525">
                                         <Track x:Name="PART_Track" IsDirectionReversed="True">
                                             <Track.DecreaseRepeatButton>
                                                 <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/>
@@ -509,7 +470,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                                 <Thumb>
                                                     <Thumb.Template>
                                                         <ControlTemplate TargetType="Thumb">
-                                                            <Border Background="#5A6570" CornerRadius="4" Margin="2,0"/>
+                                                            <Border Background="#656565" CornerRadius="2" Margin="2,0"/>
                                                         </ControlTemplate>
                                                     </Thumb.Template>
                                                 </Thumb>
@@ -529,7 +490,7 @@ if ($fontInstallFailures.Count -gt 0) {
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,9"/>
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,6"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Template">
                             <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
@@ -538,29 +499,28 @@ if ($fontInstallFailures.Count -gt 0) {
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border x:Name="CardBorder" Height="80" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
-                                CornerRadius="14" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
-                            <Border.Effect><DropShadowEffect Color="#0C1115" BlurRadius="11" ShadowDepth="2" Opacity="0.25"/></Border.Effect>
+                        <Border x:Name="CardBorder" Height="68" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                                CornerRadius="5" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
-                                <Grid Grid.Column="1" Margin="14,9,13,9">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="36"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
-                                    <Border Width="44" Height="44" Background="Transparent" VerticalAlignment="Center">
+                                <Grid Grid.Column="1" Margin="12,7,11,7">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
-                                            <Image Source="{Binding Logo}" Width="42" Height="42" Stretch="Uniform"
+                                            <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
                                             <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="17"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,8,0">
-                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="15"
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="14"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
+                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="11.5" Margin="0,3,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
-                                    <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="8" Padding="8,4" Margin="8,0,8,0"
+                                    <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="4" Padding="7,4" Margin="8,0,7,0"
                                             VerticalAlignment="Center" ToolTip="{Binding StatusDetail}">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
@@ -578,12 +538,12 @@ if ($fontInstallFailures.Count -gt 0) {
                         </Border>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background" Value="#323D46"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#557184"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="#333333"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#595959"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsChecked, ElementName=AppCheck}" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background" Value="#293F50"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#278DD1"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="#283840"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#168FC6"/>
                                 <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5"/>
                             </DataTrigger>
                         </DataTemplate.Triggers>
@@ -591,14 +551,7 @@ if ($fontInstallFailures.Count -gt 0) {
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="3" BorderBrush="#46545F" BorderThickness="1" CornerRadius="16" Padding="17,13" Margin="0,9,0,0">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#2B343C" Offset="0"/>
-                        <GradientStop Color="#28323A" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Border.Effect><DropShadowEffect Color="#0A0F13" BlurRadius="18" ShadowDepth="3" Opacity="0.32"/></Border.Effect>
+            <Border Grid.Row="3" Background="#292929" BorderBrush="#454545" BorderThickness="1" CornerRadius="6" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -608,9 +561,9 @@ if ($fontInstallFailures.Count -gt 0) {
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#29485C" Foreground="#8EDBFF"
+                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#333333" Foreground="#9EDBF3"
                                 Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)"/>
-                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#0F8AD8" Foreground="White"
+                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#087EBD" Foreground="White"
                                 IsEnabled="False" ToolTip="Seçilenleri kur (Enter)"/>
                     </StackPanel>
                 </Grid>
@@ -669,7 +622,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Border CornerRadius="13" Padding="16,14" Margin="0,17,0,0" BorderBrush="#2D424E" BorderThickness="1">
                             <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#1D2931" Offset="0"/><GradientStop Color="#192127" Offset="1"/></LinearGradientBrush></Border.Background>
                             <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="3"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="#26B9E8" CornerRadius="2"/>
                                 <TextBlock Grid.Column="1" Foreground="#91A7B5" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="13,0,0,0">
                                     <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#69D5FF" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
@@ -1151,8 +1104,8 @@ foreach ($category in $categoryDefinitions) {
     $button.Padding = [Windows.Thickness]::new(9,7,7,7)
     [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
     if ($category.Name -eq 'Tümü') {
-        $button.Background = New-ColorBrush '#203D4D'
-        $button.BorderBrush = New-ColorBrush '#35BDF0'
+        $button.Background = New-ColorBrush '#2D2D2D'
+        $button.BorderBrush = New-ColorBrush '#168FC6'
         $button.BorderThickness = [Windows.Thickness]::new(3,0,0,0)
     }
 
@@ -1167,14 +1120,14 @@ foreach ($category in $categoryDefinitions) {
     $icon = [Windows.Controls.TextBlock]::new()
     $icon.Text = [string][char][Convert]::ToInt32($category.Glyph, 16)
     $icon.FontFamily = [Windows.Media.FontFamily]::new('Segoe Fluent Icons, Segoe MDL2 Assets')
-    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#61D5FF' } else { '#8B9AA6' })
+    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#55BCE8' } else { '#9B9B9B' })
     $icon.FontSize = 15
     $icon.HorizontalAlignment = 'Left'
     $icon.VerticalAlignment = 'Center'
 
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
-    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#F3FAFD' } else { '#BDC8D0' })
+    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#FFFFFF' } else { '#C8C8C8' })
     $label.FontSize = 11.5
     $label.FontWeight = if ($category.Name -eq 'Tümü') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
@@ -1182,8 +1135,8 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($label, 1)
 
     $countBadge = [Windows.Controls.Border]::new()
-    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#173E52' } else { '#1D252B' })
-    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#2D7898' } else { '#39454D' })
+    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#25343B' } else { '#242424' })
+    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#366072' } else { '#444444' })
     $countBadge.BorderThickness = [Windows.Thickness]::new(1)
     $countBadge.CornerRadius = [Windows.CornerRadius]::new(7)
     $countBadge.Padding = [Windows.Thickness]::new(6,3,6,3)
@@ -1193,7 +1146,7 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($countBadge, 2)
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#78DDFF' } else { '#9EAFBA' })
+    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#8DD7F4' } else { '#A0A0A0' })
     $countText.FontSize = 9
     $countText.HorizontalAlignment = 'Center'
     $countBadge.Child = $countText
@@ -1466,22 +1419,22 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
             $nav.Background = [Windows.Media.Brushes]::Transparent
             $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
             $nav.BorderThickness = [Windows.Thickness]::new(0)
-            $nav.IconElement.Foreground = New-ColorBrush '#8B9AA6'
-            $nav.LabelElement.Foreground = New-ColorBrush '#BDC8D0'
+            $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
+            $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
             $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-            $nav.CountBadge.Background = New-ColorBrush '#1D252B'
-            $nav.CountBadge.BorderBrush = New-ColorBrush '#39454D'
-            $nav.CountElement.Foreground = New-ColorBrush '#9EAFBA'
+            $nav.CountBadge.Background = New-ColorBrush '#242424'
+            $nav.CountBadge.BorderBrush = New-ColorBrush '#444444'
+            $nav.CountElement.Foreground = New-ColorBrush '#A0A0A0'
         }
-        $sender.Background = New-ColorBrush '#203D4D'
-        $sender.BorderBrush = New-ColorBrush '#35BDF0'
+        $sender.Background = New-ColorBrush '#2D2D2D'
+        $sender.BorderBrush = New-ColorBrush '#168FC6'
         $sender.BorderThickness = [Windows.Thickness]::new(3, 0, 0, 0)
-        $sender.IconElement.Foreground = New-ColorBrush '#61D5FF'
-        $sender.LabelElement.Foreground = New-ColorBrush '#F3FAFD'
+        $sender.IconElement.Foreground = New-ColorBrush '#55BCE8'
+        $sender.LabelElement.Foreground = New-ColorBrush '#FFFFFF'
         $sender.LabelElement.FontWeight = [Windows.FontWeights]::SemiBold
-        $sender.CountBadge.Background = New-ColorBrush '#173E52'
-        $sender.CountBadge.BorderBrush = New-ColorBrush '#2D7898'
-        $sender.CountElement.Foreground = New-ColorBrush '#78DDFF'
+        $sender.CountBadge.Background = New-ColorBrush '#25343B'
+        $sender.CountBadge.BorderBrush = New-ColorBrush '#366072'
+        $sender.CountElement.Foreground = New-ColorBrush '#8DD7F4'
         Update-AppList
     })
 }
