@@ -316,6 +316,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
                     <Border Width="40" Height="40" CornerRadius="7" Background="#087EBD">
@@ -352,7 +353,22 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="4" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="SecurityCenterButton" Grid.Row="4" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                        ToolTip="Sistem ve PowerHub güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
+                    <Grid Width="183">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="32" Height="32" CornerRadius="5" Background="#174B39" BorderBrush="#2E7658" BorderThickness="1">
+                            <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#7EE2A8" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
+                            <TextBlock Text="Güvenlik Merkezi" Foreground="#F1F8FC" FontSize="11.5" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#78B99A" FontSize="9.5" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#7EE2A8" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="AboutButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -367,7 +383,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="5" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="6" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
                         CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -861,6 +877,87 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
+        <Grid x:Name="SecurityCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#202020" Visibility="Collapsed" Panel.ZIndex="22">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="7" Padding="18,15" Background="#282828" BorderBrush="#414141" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
+                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#39C77A" Offset="0"/><GradientStop Color="#168FC6" Offset="0.58"/><GradientStop Color="#765DE8" Offset="1"/></LinearGradientBrush></Border.Background>
+                    </Border>
+                    <Border Width="42" Height="42" CornerRadius="6" Background="#174B39" BorderBrush="#2E7658" BorderThickness="1">
+                        <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#7EE2A8" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="POWERHUB  /  GÜVENLİK" FontSize="9.5" FontWeight="Bold" Foreground="#67D69B"/>
+                        <TextBlock Text="Güvenlik Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
+                        <TextBlock Text="Sistem korumasını, paket kaynaklarını ve katalog bütünlüğünü denetle." Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="SecurityBackButton" Content="←  Paket merkezi" Background="#333333" Foreground="#C8D6E0" Margin="0,0,8,0"/>
+                        <Button x:Name="SecurityRefreshButton" Content="↻  Yeniden denetle" Background="#174B39" Foreground="#A3F0C2"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Background="#252525" BorderBrush="#414141" BorderThickness="1" CornerRadius="7" Padding="16,13" Margin="0,14,0,10">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="74"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <Border x:Name="SecurityScoreBadge" Width="58" Height="58" CornerRadius="29" Background="#203B2C" BorderBrush="#346A4D" BorderThickness="2">
+                        <TextBlock x:Name="SecurityScoreText" Text="—" Foreground="#7EE2A8" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="SecuritySummaryText" Text="Güvenlik denetimi başlatılmaya hazır" Foreground="White" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="SecuritySummaryDetail" Text="Windows koruması ve PowerHub yapılandırması kontrol edilecek." Foreground="#929FA8" FontSize="11" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <TextBlock x:Name="SecurityLastScanText" Grid.Column="2" Text="Henüz denetlenmedi" Foreground="#84939E" FontSize="10.5" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <ListBox x:Name="SecurityCheckList" Grid.Row="2" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,7"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="IsHitTestVisible" Value="False"/>
+                        <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Height="68" Background="#292929" BorderBrush="#434343" BorderThickness="1" CornerRadius="6">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="130"/></Grid.ColumnDefinitions>
+                                <Border Background="{Binding Accent}"/>
+                                <Border Grid.Column="1" Width="34" Height="34" CornerRadius="17" Background="{Binding IconBackground}" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Icon}" Foreground="{Binding Foreground}" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" Foreground="White" FontSize="13.5" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Detail}" Foreground="#929FA8" FontSize="10.5" Margin="0,4,12,0" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                                <Border Grid.Column="3" Background="{Binding StatusBackground}" BorderBrush="{Binding StatusBorder}" BorderThickness="1" CornerRadius="4" Padding="9,5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding StatusLabel}" Foreground="{Binding Foreground}" FontSize="9" FontWeight="Bold"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Border Grid.Row="3" Background="#292929" BorderBrush="#454545" BorderThickness="1" CornerRadius="6" Padding="15,11" Margin="0,8,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Savunma katmanlarını güncel tutun" Foreground="{DynamicResource Ink}" FontSize="13.5" FontWeight="SemiBold"/>
+                        <TextBlock Text="PowerHub yalnızca durumu raporlar; güvenlik ayarlarını izinsiz değiştirmez." Foreground="{DynamicResource Muted}" FontSize="10.5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="OpenWindowsSecurityButton" Grid.Column="1" Content="Windows Güvenliği  ↗" Background="#174B39" Foreground="#A3F0C2" ToolTip="Windows Güvenliği uygulamasını aç"/>
+                </Grid>
+            </Border>
+        </Grid>
+
         <Grid x:Name="UninstallConfirmOverlay" Grid.ColumnSpan="2" Panel.ZIndex="120" Visibility="Collapsed" Background="#E6080A0C">
             <Border x:Name="UninstallConfirmBackdrop" Background="Transparent"/>
             <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#202020"
@@ -976,7 +1073,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1373,11 +1470,15 @@ function Set-UpdateCenterPackages {
 function Set-UpdateCenterVisibility {
     param([bool]$Visible)
     $controls.UpdateCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
-    $controls.MainWorkspace.Visibility = if ($Visible) { 'Collapsed' } else { 'Visible' }
+    if ($Visible) { $controls.SecurityCenterView.Visibility = 'Collapsed' }
+    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.SecurityCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
     $controls.UpdateCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
     $controls.UpdateCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#D09335' } else { [Windows.Media.Brushes]::Transparent }
     $controls.UpdateCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
     if ($Visible) {
+        $controls.SecurityCenterButton.Background = [Windows.Media.Brushes]::Transparent
+        $controls.SecurityCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
+        $controls.SecurityCenterButton.BorderThickness = [Windows.Thickness]::new(0)
         foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
             $nav.Background = [Windows.Media.Brushes]::Transparent
             $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
@@ -1388,6 +1489,201 @@ function Set-UpdateCenterVisibility {
         }
     }
     if ($Visible -and -not $script:updateScanCompleted -and -not $script:systemScanProcess) { Start-SystemScan }
+}
+
+$script:securityChecks = [Collections.ArrayList]::new()
+$script:securityScanProcess = $null
+$script:securityScanResultFile = $null
+$script:securityScanCompleted = $false
+$script:securityScanTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:securityScanTimer.Interval = [TimeSpan]::FromMilliseconds(350)
+
+function New-SecurityCheckViewModel {
+    param([string]$Name, [string]$Detail, [ValidateSet('Pass','Warning','Fail','Scanning')][string]$Status)
+    $appearance = switch ($Status) {
+        'Pass'     { @{ Icon='✓'; Label='GÜVENLİ'; Accent='#39C77A'; Background='#203B2C'; Border='#346A4D'; Foreground='#7EE2A8' } }
+        'Warning'  { @{ Icon='!'; Label='DİKKAT'; Accent='#D09335'; Background='#574422'; Border='#7D632F'; Foreground='#FFD58A' } }
+        'Fail'     { @{ Icon='×'; Label='RİSK'; Accent='#D85A63'; Background='#543136'; Border='#7D4449'; Foreground='#FFAAAA' } }
+        default    { @{ Icon='…'; Label='DENETLENİYOR'; Accent='#168FC6'; Background='#263F52'; Border='#36596E'; Foreground='#82CEFF' } }
+    }
+    [pscustomobject]@{
+        Name=$Name; Detail=$Detail; Status=$Status; Icon=$appearance.Icon; StatusLabel=$appearance.Label
+        Accent=$appearance.Accent; IconBackground=$appearance.Background; StatusBackground=$appearance.Background
+        StatusBorder=$appearance.Border; Foreground=$appearance.Foreground
+    }
+}
+
+function Show-SecurityScanPlaceholder {
+    $script:securityChecks.Clear()
+    foreach ($name in @('Windows koruması','WinGet ve paket kaynakları','Yetki kapsamı','Execution Policy','Katalog bütünlüğü','Güncelleme durumu')) {
+        [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name $name -Detail 'Denetim sürüyor...' -Status Scanning))
+    }
+    $controls.SecurityCheckList.ItemsSource = @($script:securityChecks)
+    $controls.SecurityScoreText.Text = '…'
+    $controls.SecuritySummaryText.Text = 'Güvenlik denetimi yapılıyor'
+    $controls.SecuritySummaryDetail.Text = 'Windows ve PowerHub yapılandırması okunuyor.'
+    $controls.SecurityScoreBadge.Background = New-ColorBrush '#263F52'
+    $controls.SecurityScoreBadge.BorderBrush = New-ColorBrush '#36596E'
+}
+
+function Complete-SecurityScan {
+    param($Result)
+    $script:securityChecks.Clear()
+    foreach ($check in @($Result.Checks)) {
+        [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name ([string]$check.Name) -Detail ([string]$check.Detail) -Status ([string]$check.Status)))
+    }
+
+    $duplicateNames = @($apps | Group-Object Name | Where-Object Count -gt 1).Count
+    $categoryNames = @($catalog.Categories | ForEach-Object Name)
+    $invalidCategories = @($apps | Where-Object { $_.Category -notin $categoryNames }).Count
+    $insecureWebResources = @($apps | Where-Object { $_.IsWebResource -and $_.Url -and $_.Url -notmatch '^https://' }).Count
+    $insecureOfficialSites = @($catalog.OfficialWebsites.PSObject.Properties | Where-Object { [string]$_.Value -notmatch '^https://' }).Count
+    $insecureLinks = $insecureWebResources + $insecureOfficialSites
+    $catalogStatus = if ($duplicateNames -eq 0 -and $invalidCategories -eq 0 -and $insecureLinks -eq 0) { 'Pass' } else { 'Warning' }
+    $catalogDetail = if ($catalogStatus -eq 'Pass') { "$($apps.Count) kayıt, $($categoryNames.Count) kategori ve HTTPS web kaynakları doğrulandı." } else { "$duplicateNames yinelenen ad, $invalidCategories geçersiz kategori, $insecureLinks güvenli olmayan bağlantı." }
+    [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name 'Katalog bütünlüğü' -Detail $catalogDetail -Status $catalogStatus))
+
+    $updateCount = @($script:updatePackages).Count
+    $updateStatus = if (-not $script:updateScanCompleted -or $updateCount -gt 0) { 'Warning' } else { 'Pass' }
+    $updateDetail = if (-not $script:updateScanCompleted) { 'WinGet güncelleme taraması henüz tamamlanmadı.' } elseif ($updateCount -eq 0) { 'Taranan WinGet paketlerinde bekleyen güncelleme yok.' } else { "$updateCount paket için güncelleme bekliyor." }
+    [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name 'Güncelleme durumu' -Detail $updateDetail -Status $updateStatus))
+
+    $controls.SecurityCheckList.ItemsSource = $null
+    $controls.SecurityCheckList.ItemsSource = @($script:securityChecks)
+    $passCount = @($script:securityChecks | Where-Object Status -eq 'Pass').Count
+    $warningCount = @($script:securityChecks | Where-Object Status -eq 'Warning').Count
+    $failCount = @($script:securityChecks | Where-Object Status -eq 'Fail').Count
+    $total = [Math]::Max(1, $script:securityChecks.Count)
+    $score = [int][Math]::Round((($passCount * 100) + ($warningCount * 65)) / $total)
+    $controls.SecurityScoreText.Text = "$score"
+    $controls.SecurityLastScanText.Text = "Son denetim: $([DateTime]::Now.ToString('HH:mm:ss'))"
+    $controls.SecurityCenterNavDetail.Text = if ($failCount -gt 0) { "$failCount risk bulundu" } elseif ($warningCount -gt 0) { "$warningCount uyarı var" } else { 'Koruma durumu iyi' }
+    if ($failCount -gt 0) {
+        $controls.SecuritySummaryText.Text = "$failCount güvenlik riski incelenmeli"
+        $controls.SecuritySummaryDetail.Text = 'Kırmızı durumları gözden geçirip yeniden denetleyin.'
+        $controls.SecurityScoreBadge.Background = New-ColorBrush '#543136'
+        $controls.SecurityScoreBadge.BorderBrush = New-ColorBrush '#7D4449'
+        $controls.SecurityScoreText.Foreground = New-ColorBrush '#FFAAAA'
+    } elseif ($warningCount -gt 0) {
+        $controls.SecuritySummaryText.Text = "Koruma etkin, $warningCount öneri mevcut"
+        $controls.SecuritySummaryDetail.Text = 'Sistem kullanılabilir durumda; sarı maddeler iyileştirilebilir.'
+        $controls.SecurityScoreBadge.Background = New-ColorBrush '#574422'
+        $controls.SecurityScoreBadge.BorderBrush = New-ColorBrush '#7D632F'
+        $controls.SecurityScoreText.Foreground = New-ColorBrush '#FFD58A'
+    } else {
+        $controls.SecuritySummaryText.Text = 'Tüm güvenlik denetimleri başarılı'
+        $controls.SecuritySummaryDetail.Text = 'PowerHub ve Windows koruma katmanları beklenen durumda.'
+        $controls.SecurityScoreBadge.Background = New-ColorBrush '#203B2C'
+        $controls.SecurityScoreBadge.BorderBrush = New-ColorBrush '#346A4D'
+        $controls.SecurityScoreText.Foreground = New-ColorBrush '#7EE2A8'
+    }
+    $script:securityScanCompleted = $true
+    Write-PowerHubLog -Message "Güvenlik denetimi tamamlandı: $passCount güvenli, $warningCount uyarı, $failCount risk." -Color $(if ($failCount -gt 0) { 'Red' } elseif ($warningCount -gt 0) { 'Yellow' } else { 'Green' })
+}
+
+$script:securityScanTimer.Add_Tick({
+    if (-not $script:securityScanProcess) { return }
+    $script:securityScanProcess.Refresh()
+    if (-not $script:securityScanProcess.HasExited) { return }
+    $script:securityScanTimer.Stop()
+    $script:securityScanProcess.Dispose()
+    $script:securityScanProcess = $null
+    try {
+        if (-not $script:securityScanResultFile -or -not (Test-Path -LiteralPath $script:securityScanResultFile)) { throw 'Güvenlik denetimi sonucu oluşturulamadı.' }
+        $result = Get-Content -LiteralPath $script:securityScanResultFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        Complete-SecurityScan -Result $result
+    } catch {
+        $controls.SecuritySummaryText.Text = 'Güvenlik denetimi tamamlanamadı'
+        $controls.SecuritySummaryDetail.Text = $_.Exception.Message
+        $controls.SecurityCenterNavDetail.Text = 'Denetim hatası'
+        Write-PowerHubLog -Message "Güvenlik denetimi hatası: $($_.Exception.Message)" -Color Red
+    } finally {
+        $controls.SecurityRefreshButton.IsEnabled = $true
+        if ($script:securityScanResultFile) { Remove-Item -LiteralPath $script:securityScanResultFile -Force -ErrorAction SilentlyContinue }
+        $script:securityScanResultFile = $null
+    }
+})
+
+function Start-SecurityScan {
+    if ($script:securityScanProcess) { return }
+    Show-SecurityScanPlaceholder
+    $controls.SecurityRefreshButton.IsEnabled = $false
+    $controls.SecurityLastScanText.Text = 'Denetleniyor...'
+    Write-PowerHubLog -Message 'Güvenlik Merkezi denetimi başlatıldı.' -Color Cyan
+    $script:securityScanResultFile = Join-Path $env:TEMP ("PowerHub-security-{0}.json" -f [Guid]::NewGuid().ToString('N'))
+    $payload = @{ Winget=(Resolve-WingetExecutable); ResultFile=$script:securityScanResultFile } | ConvertTo-Json -Compress
+    $payloadBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($payload))
+    $worker = @'
+$ErrorActionPreference = 'SilentlyContinue'
+$payload = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('__PAYLOAD__')) | ConvertFrom-Json
+$checks = [Collections.ArrayList]::new()
+function Add-Check([string]$Name,[string]$Detail,[string]$Status) { [void]$checks.Add([pscustomobject]@{Name=$Name;Detail=$Detail;Status=$Status}) }
+
+$products = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
+$defender = Get-MpComputerStatus -ErrorAction SilentlyContinue
+if ($defender -and $defender.AntivirusEnabled -and $defender.RealTimeProtectionEnabled) {
+    $age = if ($defender.AntivirusSignatureLastUpdated) { [int]((Get-Date) - [datetime]$defender.AntivirusSignatureLastUpdated).TotalDays } else { -1 }
+    $status = if ($age -gt 7) { 'Warning' } else { 'Pass' }
+    $detail = if ($age -ge 0) { "Microsoft Defender gerçek zamanlı koruması açık; imzalar $age günlük." } else { 'Microsoft Defender gerçek zamanlı koruması açık.' }
+    Add-Check 'Windows koruması' $detail $status
+} elseif ($products.Count -gt 0) {
+    Add-Check 'Windows koruması' ("Kayıtlı güvenlik ürünü: " + (($products.DisplayName | Select-Object -Unique) -join ', ')) 'Warning'
+} else {
+    Add-Check 'Windows koruması' 'Etkin bir antivirüs veya gerçek zamanlı koruma algılanamadı.' 'Fail'
+}
+
+if ($payload.Winget) {
+    $version = (& $payload.Winget --version 2>&1 | Out-String).Trim()
+    $sourceOutput = (& $payload.Winget source list 2>&1 | Out-String)
+    $sourceOk = $LASTEXITCODE -eq 0 -and $sourceOutput -match '(?im)^winget\s+'
+    Add-Check 'WinGet ve paket kaynakları' $(if ($sourceOk) { "WinGet $version hazır; resmî winget kaynağı etkin." } else { "WinGet $version hazır ancak kaynak listesi doğrulanamadı." }) $(if ($sourceOk) { 'Pass' } else { 'Warning' })
+} else {
+    Add-Check 'WinGet ve paket kaynakları' 'WinGet bulunamadı; paket doğrulama ve kurulum motoru kullanılamıyor.' 'Fail'
+}
+
+$principal = [Security.Principal.WindowsPrincipal]::new([Security.Principal.WindowsIdentity]::GetCurrent())
+$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+Add-Check 'Yetki kapsamı' $(if ($isAdmin) { 'PowerHub yönetici yetkisiyle çalışıyor; yalnızca gerektiğinde yükseltilmiş oturum kullanın.' } else { 'PowerHub standart kullanıcı yetkisiyle çalışıyor.' }) $(if ($isAdmin) { 'Warning' } else { 'Pass' })
+
+$policies = Get-ExecutionPolicy -List
+$persistentUnsafe = @($policies | Where-Object { $_.Scope -in @('CurrentUser','LocalMachine') -and $_.ExecutionPolicy -in @('Bypass','Unrestricted') })
+Add-Check 'Execution Policy' $(if ($persistentUnsafe.Count -eq 0) { 'Kalıcı kullanıcı ve makine ilkelerinde Bypass/Unrestricted bulunmuyor.' } else { 'Kalıcı Execution Policy gevşetilmiş: ' + (($persistentUnsafe | ForEach-Object { "$($_.Scope)=$($_.ExecutionPolicy)" }) -join ', ') }) $(if ($persistentUnsafe.Count -eq 0) { 'Pass' } else { 'Warning' })
+
+Add-Check 'Kurulum güvenliği' 'Tam paket kimliği, exact eşleşme ve WinGet kaynak kısıtlaması kullanılıyor.' 'Pass'
+[IO.File]::WriteAllText($payload.ResultFile, (@{Checks=@($checks)} | ConvertTo-Json -Depth 5 -Compress), [Text.UTF8Encoding]::new($false))
+'@.Replace('__PAYLOAD__',$payloadBase64)
+    $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($worker))
+    try {
+        $script:securityScanProcess = Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-EncodedCommand',$encoded) -WindowStyle Hidden -PassThru
+        $script:securityScanTimer.Start()
+    } catch {
+        $controls.SecurityRefreshButton.IsEnabled = $true
+        Write-PowerHubLog -Message "Güvenlik denetimi başlatılamadı: $($_.Exception.Message)" -Color Red
+    }
+}
+
+function Set-SecurityCenterVisibility {
+    param([bool]$Visible)
+    $controls.SecurityCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
+    if ($Visible) { $controls.UpdateCenterView.Visibility = 'Collapsed' }
+    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.UpdateCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
+    $controls.SecurityCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.SecurityCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#39C77A' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.SecurityCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
+    if ($Visible) {
+        $controls.UpdateCenterButton.Background = [Windows.Media.Brushes]::Transparent
+        $controls.UpdateCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
+        $controls.UpdateCenterButton.BorderThickness = [Windows.Thickness]::new(0)
+        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
+            $nav.Background = [Windows.Media.Brushes]::Transparent
+            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $nav.BorderThickness = [Windows.Thickness]::new(0)
+            $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
+            $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
+            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
+        }
+        if (-not $script:securityScanCompleted) { Start-SecurityScan }
+    }
 }
 
 function Update-SelectionStatus {
@@ -1672,6 +1968,7 @@ function Set-ActiveCategory {
 
     $script:activeCategory = $CategoryName
     Set-UpdateCenterVisibility $false
+    Set-SecurityCenterVisibility $false
     $targetButton = $null
     foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
         $nav.Background = [Windows.Media.Brushes]::Transparent
@@ -1733,6 +2030,15 @@ $controls.UpdateBackButton.Add_Click({
     Update-AppList
 })
 $controls.UpdateRefreshButton.Add_Click({ Start-SystemScan })
+$controls.SecurityCenterButton.Add_Click({ Set-SecurityCenterVisibility $true })
+$controls.SecurityBackButton.Add_Click({
+    Set-ActiveCategory -CategoryName $script:activeCategory
+    Update-AppList
+})
+$controls.SecurityRefreshButton.Add_Click({ Start-SecurityScan })
+$controls.OpenWindowsSecurityButton.Add_Click({
+    try { Start-Process -FilePath 'windowsdefender:' } catch { Write-PowerHubLog -Message "Windows Güvenliği açılamadı: $($_.Exception.Message)" -Color Red }
+})
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
 $controls.UpdateSelectAllButton.Add_Click({
@@ -2105,6 +2411,12 @@ $window.Add_PreviewKeyDown({
     }
     if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.AboutOverlay.Visibility -eq [Windows.Visibility]::Visible) {
         Set-PowerHubAboutVisibility $false
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible -or $controls.UpdateCenterView.Visibility -eq [Windows.Visibility]::Visible)) {
+        Set-ActiveCategory -CategoryName $script:activeCategory
+        Update-AppList
         $eventArgs.Handled = $true
         return
     }
@@ -2815,12 +3127,17 @@ if ($winget) { Start-SystemScan }
 $window.Add_Closed({
     Stop-AppDetailMetadataLoad
     $script:systemScanTimer.Stop()
+    $script:securityScanTimer.Stop()
     $script:updateTimer.Stop()
     $script:installTimer.Stop()
     if ($script:systemScanProcess -and -not $script:systemScanProcess.HasExited) {
         Stop-Process -Id $script:systemScanProcess.Id -Force -ErrorAction SilentlyContinue
     }
     if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
+    if ($script:securityScanProcess -and -not $script:securityScanProcess.HasExited) {
+        Stop-Process -Id $script:securityScanProcess.Id -Force -ErrorAction SilentlyContinue
+    }
+    if ($script:securityScanResultFile) { Remove-Item -LiteralPath $script:securityScanResultFile -Force -ErrorAction SilentlyContinue }
     if ($script:updateProcess -and -not $script:updateProcess.HasExited) {
         Stop-Process -Id $script:updateProcess.Id -Force -ErrorAction SilentlyContinue
     }

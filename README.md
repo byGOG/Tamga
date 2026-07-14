@@ -43,6 +43,7 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 | **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir web kaynağı |
 | **Akıllı sistem taraması** | Kurulu uygulamaları ve bekleyen WinGet güncellemelerini arka planda denetleme |
 | **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
+| **Güvenlik Merkezi** | Windows koruması, WinGet kaynakları, yetki kapsamı, Execution Policy, katalog bütünlüğü ve bekleyen güncellemeler için puanlı denetim |
 | **Birleşik işlem kuyruğu** | Kurulum, güncelleme ve kaldırma için paket bazlı canlı durum, güvenli iptal ve başarısızları yeniden deneme |
 | **Güvenli kaldırma** | Kurulu WinGet uygulamalarını kart üzerindeki kaldırma düğmesi, açık onay ve otomatik yeniden tarama ile kaldırma |
 | **Uygulama detay çekmecesi** | Logo, açıklama, durum, kurulu/katalog sürümü, yayıncı, geliştirici, lisans, kurucu türü, etiketler ve bağlama uygun hızlı işlemler |
@@ -161,6 +162,7 @@ The bootstrapper downloads the latest `PowerHub.ps1` and `catalog.json` to `%LOC
 | **Application catalog** | 132 applications and trusted web resources across 21 categories |
 | **Smart system scan** | Background detection of installed applications and pending WinGet updates |
 | **Update Center** | Version comparison, individual or bulk selection, and live update progress |
+| **Security Center** | Scored checks for Windows protection, WinGet sources, privilege scope, execution policy, catalog integrity, and pending updates |
 | **Unified operation queue** | Per-package live status, safe cancellation, and failed-item retry for installs, upgrades, and removals |
 | **Safe uninstall** | Remove installed WinGet applications from their cards with explicit confirmation and automatic rescanning |
 | **Application detail drawer** | View branding, status, installed/catalog versions, publisher, author, license, installer type, tags, official site, and context-aware actions |
