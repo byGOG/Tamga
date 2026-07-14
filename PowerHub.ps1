@@ -124,6 +124,7 @@ public static class PowerHubWindowLayout {
         </Style>
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="Padding" Value="0"/>
@@ -145,6 +146,10 @@ public static class PowerHubWindowLayout {
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="IconSurface" Property="Background" Value="#0D659E"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="IconSurface" Property="BorderBrush" Value="#69D2FF"/>
+                                <Setter TargetName="IconSurface" Property="BorderThickness" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="IconSurface" Property="Opacity" Value="0.42"/>
@@ -433,11 +438,8 @@ public static class PowerHubWindowLayout {
                                     <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Top" HorizontalAlignment="Center">
-                                        <Grid Width="16" Height="16">
-                                            <Path Data="M 3,7 L 3,13 L 9,13" Stroke="#85D9FF" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                                            <Path Data="M 7,3 L 13,3 L 13,9 M 13,3 L 6,10" Stroke="#85D9FF" StrokeThickness="1.5"
-                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                                        </Grid>
+                                        <TextBlock Text="&#xE8A7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                                   Foreground="#8CDBFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name}"
