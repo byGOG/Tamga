@@ -21,8 +21,79 @@ public static class PowerHubWindowLayout {
     [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+    [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, UIntPtr wParam, IntPtr lParam, uint flags, uint timeout, out UIntPtr result);
 }
 '@
+
+function Get-PowerHubFileSha256([string]$Path) {
+    $stream = [IO.File]::OpenRead($Path)
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        return ([BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-', '')
+    } finally {
+        $sha256.Dispose()
+        $stream.Dispose()
+    }
+}
+
+function Install-PowerHubFonts {
+    $fontDefinitions = @(
+        [pscustomobject]@{ Family='Inter'; FileName='PowerHub-Inter.ttf'; RegistryName='Inter (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf'; Sha256='29160A80FF49DDCAB2C97711247E08B1FAB27A484A329CE8B813D820DC559031' },
+        [pscustomobject]@{ Family='Outfit'; FileName='PowerHub-Outfit.ttf'; RegistryName='Outfit (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/outfit/Outfit%5Bwght%5D.ttf'; Sha256='FC7287273E66929776E2BA54F144FE699080BEC29F61BF649D70D871468AEADE' },
+        [pscustomobject]@{ Family='Poppins'; FileName='PowerHub-Poppins-Regular.ttf'; RegistryName='Poppins Regular (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/poppins/Poppins-Regular.ttf'; Sha256='7E65201E9B79159E2300267CC885E16C8DCEF2424CDFA09A29BFB0980A94A7BA' },
+        [pscustomobject]@{ Family='Poppins'; FileName='PowerHub-Poppins-SemiBold.ttf'; RegistryName='Poppins SemiBold (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/poppins/Poppins-SemiBold.ttf'; Sha256='D3BF1BDAF0550E83DA9AC0B1D1D9FE6DB086835A83AA28578E609A394B9A0286' },
+        [pscustomobject]@{ Family='Orbitron'; FileName='PowerHub-Orbitron.ttf'; RegistryName='Orbitron (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/orbitron/Orbitron%5Bwght%5D.ttf'; Sha256='F42DB2DD16E642258E35782916ECEB1DCDBEA06FB958D77AD71DC5963587E8FD' },
+        [pscustomobject]@{ Family='Fira Code'; FileName='PowerHub-FiraCode.ttf'; RegistryName='Fira Code (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/firacode/FiraCode%5Bwght%5D.ttf'; Sha256='9335B082B3C7850D98A64B584F3417F65355F3471278BB5EEB8C6C0E8657AEEB' }
+    )
+    $requiredFamilies = @('Inter','Outfit','Poppins','Orbitron','Fira Code')
+    $installedFamilies = @([Windows.Media.Fonts]::SystemFontFamilies | ForEach-Object Source)
+    $missingFamilies = @($requiredFamilies | Where-Object { $installedFamilies -notcontains $_ })
+    if ($missingFamilies.Count -eq 0) { return @() }
+
+    Write-Host ("[PowerHub] Eksik yazı tipleri kuruluyor: {0}" -f ($missingFamilies -join ', ')) -ForegroundColor Cyan
+    $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
+    $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+    [IO.Directory]::CreateDirectory($fontDirectory) | Out-Null
+    if (-not (Test-Path -LiteralPath $registryPath)) { New-Item -Path $registryPath -Force | Out-Null }
+    try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
+    $failedFamilies = [Collections.Generic.List[string]]::new()
+
+    foreach ($font in $fontDefinitions | Where-Object { $missingFamilies -contains $_.Family }) {
+        $destination = Join-Path $fontDirectory $font.FileName
+        $needsDownload = $true
+        if (Test-Path -LiteralPath $destination) {
+            try { $needsDownload = ((Get-PowerHubFileSha256 -Path $destination) -ne $font.Sha256) } catch {}
+        }
+        try {
+            if ($needsDownload) {
+                $temporaryFile = Join-Path $env:TEMP ("PowerHub-{0}-{1}.tmp" -f $PID, [Guid]::NewGuid().ToString('N'))
+                try {
+                    Invoke-WebRequest -Uri $font.Url -OutFile $temporaryFile -UseBasicParsing -ErrorAction Stop
+                    $downloadHash = Get-PowerHubFileSha256 -Path $temporaryFile
+                    if ($downloadHash -ne $font.Sha256) { throw "SHA-256 doğrulaması başarısız: $($font.Family)" }
+                    Move-Item -LiteralPath $temporaryFile -Destination $destination -Force
+                } finally {
+                    if ($temporaryFile -and (Test-Path -LiteralPath $temporaryFile)) { Remove-Item -LiteralPath $temporaryFile -Force -ErrorAction SilentlyContinue }
+                }
+            }
+            New-ItemProperty -Path $registryPath -Name $font.RegistryName -Value $destination -PropertyType String -Force | Out-Null
+            [void][PowerHubWindowLayout]::AddFontResourceEx($destination, 0, [IntPtr]::Zero)
+            Write-Host ("[PowerHub] Yazı tipi hazır: {0}" -f $font.Family) -ForegroundColor Green
+        } catch {
+            if (-not $failedFamilies.Contains($font.Family)) { $failedFamilies.Add($font.Family) }
+            Write-Host ("[PowerHub] Yazı tipi kurulamadı: {0} - {1}" -f $font.Family, $_.Exception.Message) -ForegroundColor Red
+        }
+    }
+    $broadcastResult = [UIntPtr]::Zero
+    [void][PowerHubWindowLayout]::SendMessageTimeout([IntPtr]0xFFFF, 0x001D, [UIntPtr]::Zero, [IntPtr]::Zero, 2, 2000, [ref]$broadcastResult)
+    return @($failedFamilies)
+}
+
+$fontInstallFailures = @(Install-PowerHubFonts)
+if ($fontInstallFailures.Count -gt 0) {
+    [Windows.MessageBox]::Show("Bazı yazı tipleri kurulamadı:`n`n$($fontInstallFailures -join ', ')`n`nİnternet bağlantınızı kontrol edip PowerHub'ı yeniden açın.", 'PowerHub', 'OK', 'Warning') | Out-Null
+}
 
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -570,7 +641,7 @@ function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
 
-$script:fontOptions = @('Segoe UI Variable Text','Bahnschrift','Calibri','Verdana','Trebuchet MS')
+$script:fontOptions = @('Inter','Outfit','Poppins','Orbitron','Fira Code')
 $script:settingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
 $script:fontSettingPath = Join-Path $script:settingsDirectory 'font.txt'
 $selectedFont = $script:fontOptions[0]
