@@ -41,6 +41,31 @@ public static class PowerHubWindowLayout {
         <SolidColorBrush x:Key="CardBorder" Color="#454D56"/>
         <SolidColorBrush x:Key="SoftBg" Color="#263F52"/>
         <SolidColorBrush x:Key="SoftText" Color="#82CEFF"/>
+        <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton><RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/></Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#596572" CornerRadius="5" Margin="3,1"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton><RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/></Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -173,6 +198,7 @@ public static class PowerHubWindowLayout {
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,8">
+                        <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
                         <StackPanel x:Name="CategoryPanel"/>
                     </ScrollViewer>
                     <Border Grid.Row="1" BorderBrush="#2E769F" BorderThickness="1" CornerRadius="14" Padding="11" Margin="0,8,0,0">
@@ -264,17 +290,24 @@ public static class PowerHubWindowLayout {
                             <Border Background="#203B2C" CornerRadius="9" Padding="9,4">
                                 <TextBlock Text="●  Sistem hazır" Foreground="#7EE2A8" FontSize="11" FontWeight="SemiBold"/>
                             </Border>
+                            <Border Background="#343A45" CornerRadius="9" Padding="9,4" Margin="7,0,0,0">
+                                <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="#C5D1DC" FontSize="11" FontWeight="SemiBold"/>
+                            </Border>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <Border Background="#292F35" BorderBrush="{DynamicResource CardBorder}"
                                 BorderThickness="1" CornerRadius="11" Height="46">
                             <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                 <TextBlock Text="⌕" FontSize="22" Foreground="#AAB3BC" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="SearchPlaceholder" Grid.Column="1" Text="Uygulama veya kaynak ara..." Foreground="#7F8A95"
+                                           FontSize="13" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center" FontSize="14" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
                                          ToolTip="Uygulama ara..." Margin="0,0,8,0"/>
+                                <Button x:Name="SearchClearButton" Grid.Column="2" Content="×" Width="26" Height="26" Padding="0"
+                                        Background="Transparent" Foreground="#AEB9C4" FontSize="18" ToolTip="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
                         <Grid Margin="3,9,3,0">
@@ -337,14 +370,14 @@ public static class PowerHubWindowLayout {
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Height="82" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
+                        <Border x:Name="CardBorder" Height="82" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
                                 CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
                             <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border Background="{Binding Color}"/>
+                                <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="14,9,13,9">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="30"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                     <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
                                         <Grid>
@@ -360,11 +393,26 @@ public static class PowerHubWindowLayout {
                                         <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
-                                    <CheckBox Grid.Column="2" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                    <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="8" Padding="8,4" Margin="8,0,10,0"
+                                            VerticalAlignment="Center" ToolTip="Kurulum kaynağı">
+                                        <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
+                                    </Border>
+                                    <CheckBox x:Name="AppCheck" Grid.Column="3" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Grid>
                         </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                <Setter TargetName="CardBorder" Property="Background" Value="#363E47"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#5A6876"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=AppCheck}" Value="True">
+                                <Setter TargetName="CardBorder" Property="Background" Value="#293F50"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#278DD1"/>
+                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -381,8 +429,10 @@ public static class PowerHubWindowLayout {
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}" Margin="0,0,9,0"/>
-                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="{DynamicResource Primary}" Foreground="White" IsEnabled="False"/>
+                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                                Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)"/>
+                        <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="{DynamicResource Primary}" Foreground="White"
+                                IsEnabled="False" ToolTip="Seçilenleri kur (Enter)"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -395,7 +445,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','SearchBox','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -681,6 +731,10 @@ foreach ($app in $apps) {
     if (-not $app.PSObject.Properties['InitialOpacity']) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
+    $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -eq 'Url'
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'WINGET' }) -Force
+    $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
+    $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#82CEFF' }) -Force
 }
 
 $logoCatalog = Get-PowerHubLogoCatalog
@@ -780,6 +834,7 @@ foreach ($category in $categoryDefinitions) {
 }
 
 $controls.TotalAppBadgeText.Text = "{0} uygulama" -f $apps.Count
+$controls.CategoryBadgeText.Text = "{0} kategori" -f ($categoryDefinitions.Count - 1)
 
 $script:activeCategory = 'Tümü'
 $script:isInstalling = $false
@@ -809,6 +864,28 @@ function Update-AppList {
     $controls.SectionTitle.Text = if ($script:activeCategory -eq 'Tümü') { 'Tüm uygulamalar' } else { $script:activeCategory }
 }
 
+function Update-SearchChrome {
+    $hasSearch = -not [string]::IsNullOrWhiteSpace($controls.SearchBox.Text)
+    $controls.SearchPlaceholder.Visibility = if ($hasSearch) { 'Collapsed' } else { 'Visible' }
+    $controls.SearchClearButton.Visibility = if ($hasSearch) { 'Visible' } else { 'Collapsed' }
+}
+
+function Find-VisualChild {
+    param(
+        [Windows.DependencyObject]$Parent,
+        [Type]$ChildType
+    )
+
+    if (-not $Parent) { return $null }
+    for ($index = 0; $index -lt [Windows.Media.VisualTreeHelper]::GetChildrenCount($Parent); $index++) {
+        $child = [Windows.Media.VisualTreeHelper]::GetChild($Parent, $index)
+        if ($ChildType.IsInstanceOfType($child)) { return $child }
+        $match = Find-VisualChild -Parent $child -ChildType $ChildType
+        if ($match) { return $match }
+    }
+    return $null
+}
+
 $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] } | ForEach-Object {
     $button = $_
     $button.Add_Click({
@@ -824,9 +901,62 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
     })
 }
 
-$controls.SearchBox.Add_TextChanged({ Update-AppList })
+$controls.SearchBox.Add_TextChanged({
+    Update-SearchChrome
+    Update-AppList
+})
+$controls.SearchClearButton.Add_Click({
+    $controls.SearchBox.Clear()
+    $controls.SearchBox.Focus() | Out-Null
+})
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
+$controls.AppList.Add_PreviewMouseLeftButtonUp({
+    param($sender, $eventArgs)
+
+    $source = $eventArgs.OriginalSource
+    $node = $source
+    while ($node) {
+        if ($node -is [Windows.Controls.CheckBox]) { return }
+        try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+    }
+
+    $container = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $source)
+    if (-not $container) { return }
+    $checkBox = Find-VisualChild -Parent $container -ChildType ([Windows.Controls.CheckBox])
+    if ($checkBox) {
+        $checkBox.IsChecked = -not [bool]$checkBox.IsChecked
+        $eventArgs.Handled = $true
+    }
+})
+
+$window.Add_PreviewKeyDown({
+    param($sender, $eventArgs)
+
+    $controlDown = ([Windows.Input.Keyboard]::Modifiers -band [Windows.Input.ModifierKeys]::Control) -ne 0
+    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::F) {
+        $controls.SearchBox.Focus() | Out-Null
+        $controls.SearchBox.SelectAll()
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and -not [string]::IsNullOrWhiteSpace($controls.SearchBox.Text)) {
+        $controls.SearchBox.Clear()
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::A -and -not $controls.SearchBox.IsKeyboardFocusWithin) {
+        foreach ($app in $script:visibleApps) { $app.IsSelected = $true }
+        Update-AppList
+        Update-SelectionStatus
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Enter -and -not $controls.SearchBox.IsKeyboardFocusWithin -and $controls.InstallButton.IsEnabled) {
+        $controls.InstallButton.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        $eventArgs.Handled = $true
+    }
+})
 
 $controls.SelectAllButton.Add_Click({
     $allSelected = $script:visibleApps.Count -gt 0 -and @($script:visibleApps | Where-Object { -not $_.IsSelected }).Count -eq 0
