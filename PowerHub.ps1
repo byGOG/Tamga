@@ -349,7 +349,7 @@ public static class PowerHubWindowLayout {
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border x:Name="CardBorder" Height="82" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
-                                CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True">
+                                CornerRadius="11" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
                             <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -376,7 +376,12 @@ public static class PowerHubWindowLayout {
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
                                     <CheckBox x:Name="AppCheck" Grid.Column="3" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                              VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                              Visibility="{Binding CheckVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <Border Grid.Column="3" Width="28" Height="28" Background="#344550" CornerRadius="9"
+                                            Visibility="{Binding LinkVisibility}" ToolTip="Siteyi aç" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Text="↗" Foreground="#79CFF7" FontSize="15" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -724,6 +729,10 @@ foreach ($app in $apps) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
     $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -eq 'Url'
+    $app | Add-Member -NotePropertyName IsWebResource -NotePropertyValue $isWebResource -Force
+    $app | Add-Member -NotePropertyName CheckVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }) -Force
+    $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
+    if ($isWebResource) { $app.IsSelected = $false }
     $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'WINGET' }) -Force
     $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
     $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#82CEFF' }) -Force
@@ -833,7 +842,7 @@ $script:isInstalling = $false
 $script:visibleApps = @()
 
 function Update-SelectionStatus {
-    $selected = @($apps | Where-Object IsSelected)
+    $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource })
     if ($selected.Count -eq 0) {
         $controls.SelectionText.Text = 'Henüz uygulama seçilmedi'
         $controls.ActivityText.Text = 'Kurulacak uygulamaları işaretleyin.'
@@ -855,6 +864,10 @@ function Update-AppList {
     $controls.AppList.ItemsSource = $script:visibleApps
     $controls.ResultCount.Text = "{0} uygulama" -f $script:visibleApps.Count
     $controls.SectionTitle.Text = if ($script:activeCategory -eq 'Tümü') { 'Tüm uygulamalar' } else { $script:activeCategory }
+    $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource }).Count -gt 0
+    if (-not $script:isInstalling) { $controls.SelectAllButton.IsEnabled = $hasInstallableApps }
+    $controls.SelectAllButton.Content = if ($hasInstallableApps) { 'Görünenleri seç' } else { 'Karttan siteyi aç' }
+    $controls.SelectAllButton.ToolTip = if ($hasInstallableApps) { 'Görünen kurulabilir uygulamaları seç veya seçimi kaldır (Ctrl+A)' } else { 'WEB kartına tıklayarak siteyi açın' }
 }
 
 function Update-SearchChrome {
@@ -908,14 +921,29 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     param($sender, $eventArgs)
 
     $source = $eventArgs.OriginalSource
+    $container = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $source)
+    if (-not $container) { return }
+    $item = $container.DataContext
+
+    if ($item.IsWebResource) {
+        try {
+            Start-Process -FilePath $item.Url
+            $controls.ActivityText.Text = "Site açıldı: $($item.Name)"
+            Write-PowerHubLog -Message "Web kaynağı açıldı: $($item.Name) — $($item.Url)" -Color Cyan
+        } catch {
+            $controls.ActivityText.Text = "Site açılamadı: $($item.Name)"
+            Write-PowerHubLog -Message "Web kaynağı açılamadı ($($item.Name)): $($_.Exception.Message)" -Color Red
+        }
+        $eventArgs.Handled = $true
+        return
+    }
+
     $node = $source
     while ($node) {
         if ($node -is [Windows.Controls.CheckBox]) { return }
         try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
     }
 
-    $container = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $source)
-    if (-not $container) { return }
     $checkBox = Find-VisualChild -Parent $container -ChildType ([Windows.Controls.CheckBox])
     if ($checkBox) {
         $checkBox.IsChecked = -not [bool]$checkBox.IsChecked
@@ -939,7 +967,7 @@ $window.Add_PreviewKeyDown({
         return
     }
     if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::A -and -not $controls.SearchBox.IsKeyboardFocusWithin) {
-        foreach ($app in $script:visibleApps) { $app.IsSelected = $true }
+        foreach ($app in @($script:visibleApps | Where-Object { -not $_.IsWebResource })) { $app.IsSelected = $true }
         Update-AppList
         Update-SelectionStatus
         $eventArgs.Handled = $true
@@ -952,8 +980,9 @@ $window.Add_PreviewKeyDown({
 })
 
 $controls.SelectAllButton.Add_Click({
-    $allSelected = $script:visibleApps.Count -gt 0 -and @($script:visibleApps | Where-Object { -not $_.IsSelected }).Count -eq 0
-    foreach ($app in $script:visibleApps) { $app.IsSelected = -not $allSelected }
+    $installableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource })
+    $allSelected = $installableApps.Count -gt 0 -and @($installableApps | Where-Object { -not $_.IsSelected }).Count -eq 0
+    foreach ($app in $installableApps) { $app.IsSelected = -not $allSelected }
     Update-AppList
     Update-SelectionStatus
 })
@@ -968,7 +997,7 @@ $script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
 function Complete-InstallQueue {
     $script:installTimer.Stop()
     $script:isInstalling = $false
-    $controls.SelectAllButton.IsEnabled = $true
+    $controls.SelectAllButton.IsEnabled = @($script:visibleApps | Where-Object { -not $_.IsWebResource }).Count -gt 0
     $controls.InstallButton.IsEnabled = $true
     $controls.InstallProgress.Value = 100
 
@@ -1059,7 +1088,7 @@ $script:installTimer.Add_Tick({
 })
 
 $controls.InstallButton.Add_Click({
-    $script:installQueue = @($apps | Where-Object IsSelected | ForEach-Object {
+    $script:installQueue = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource } | ForEach-Object {
         [pscustomobject]@{
             Name = $_.Name
             Id = $_.Id
