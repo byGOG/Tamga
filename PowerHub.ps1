@@ -293,6 +293,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
                     <Border Width="44" Height="44" CornerRadius="13">
@@ -321,7 +322,11 @@ if ($fontInstallFailures.Count -gt 0) {
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Border x:Name="WingetCard" Grid.Row="3" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
+                <Button x:Name="AboutButton" Grid.Row="3" Content="ⓘ  PowerHub hakkında" Background="#263640" Foreground="#BFE9FF"
+                        BorderBrush="#3E5B6B" BorderThickness="1" Padding="12,10" Margin="0,4,0,0"
+                        ToolTip="PowerHub bilgilerini ve bağlantılarını göster"/>
+
+                <Border x:Name="WingetCard" Grid.Row="4" Background="#2B3035" BorderBrush="#46515A" BorderThickness="1"
                         CornerRadius="15" Padding="11" Margin="0,10,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Border.Effect><DropShadowEffect Color="#11161A" BlurRadius="10" ShadowDepth="1" Opacity="0.24"/></Border.Effect>
                     <Grid>
@@ -570,6 +575,68 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Grid>
             </Border>
         </Grid>
+
+        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Background="#DC080C10" Visibility="Collapsed">
+            <Border x:Name="AboutBackdrop" Background="Transparent"/>
+            <Border x:Name="AboutCard" Width="540" MaxHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="#151B21" BorderBrush="#40515D" BorderThickness="1" CornerRadius="22" ClipToBounds="True">
+                <Border.Effect><DropShadowEffect Color="#020507" BlurRadius="42" ShadowDepth="10" Opacity="0.78"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="170"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#163B4E" Offset="0"/><GradientStop Color="#102936" Offset="0.45"/><GradientStop Color="#111821" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid ClipToBounds="True">
+                            <Ellipse Width="260" Height="260" Stroke="#2A91BE" StrokeThickness="2" Opacity="0.23" HorizontalAlignment="Right" Margin="0,-72,30,0"/>
+                            <Ellipse Width="170" Height="170" Stroke="#52D5F2" StrokeThickness="1.5" Opacity="0.24" HorizontalAlignment="Right" Margin="0,-18,82,0"/>
+                            <Ellipse Width="82" Height="82" Fill="#173F52" Stroke="#48CFF2" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,126,0">
+                                <Ellipse.Effect><DropShadowEffect Color="#30BCE8" BlurRadius="30" ShadowDepth="0" Opacity="0.58"/></Ellipse.Effect>
+                            </Ellipse>
+                            <Path Data="M 300 145 L 390 70 L 485 118 M 330 25 L 420 105 L 535 42" Stroke="#3BBDE4" StrokeThickness="1.4" Opacity="0.32"/>
+                            <Border Width="56" Height="56" CornerRadius="17" Background="#078AD5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="26,0,0,26">
+                                <Border.Effect><DropShadowEffect Color="#078AD5" BlurRadius="20" ShadowDepth="3" Opacity="0.58"/></Border.Effect>
+                                <TextBlock Text="P" Foreground="White" FontSize="27" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="96,0,0,29">
+                                <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="Bold"/>
+                                <TextBlock Text="Windows uygulama merkezi" Foreground="#8FCBE7" FontSize="11.5" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <Border HorizontalAlignment="Right" VerticalAlignment="Top" Background="#163848" BorderBrush="#2E6A83" BorderThickness="1"
+                                    CornerRadius="10" Padding="9,5" Margin="0,18,58,0">
+                                <TextBlock Text="STABLE • 2026" Foreground="#75D9FA" FontSize="9" FontWeight="Bold"/>
+                            </Border>
+                            <Button x:Name="AboutCloseButton" HorizontalAlignment="Right" VerticalAlignment="Top" Content="×" Width="32" Height="32"
+                                    Padding="0" Margin="0,15,15,0" Background="#26323A" Foreground="#C6D4DD" FontSize="19" ToolTip="Kapat (Esc)"/>
+                        </Grid>
+                    </Border>
+                    <StackPanel Grid.Row="1" Margin="27,22,27,25">
+                        <TextBlock Text="Hakkında" Foreground="White" FontSize="19" FontWeight="SemiBold"/>
+                        <TextBlock Text="PowerHub, Windows uygulamalarını keşfetmek, resmî kaynaklara ulaşmak ve güvenli paket kurulumlarını tek merkezden yönetmek için geliştirildi."
+                                   Foreground="#AEBBC5" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,9,0,0"/>
+                        <Border Background="#1D252C" BorderBrush="#2B3E49" BorderThickness="0,0,0,0" CornerRadius="12" Padding="15,13" Margin="0,17,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <Border Background="#26B9E8" CornerRadius="2"/>
+                                <TextBlock Grid.Column="1" Text="Sade arayüz, doğrulanmış kaynaklar ve kullanıcı kontrolü. PowerHub gereksiz reklam veya yönlendirme içermez."
+                                           Foreground="#91A7B5" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="13,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <Grid Margin="0,20,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="⚡  BYGOG" Background="#202C34" Foreground="#DFF5FF"
+                                    BorderBrush="#365365" BorderThickness="1" Padding="13,10" ToolTip="byGOG GitHub profilini aç"/>
+                            <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="↗  GitHub projesi" Background="#17384A" Foreground="#8EDBFF"
+                                    BorderBrush="#2D6079" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
+                        </Grid>
+                        <TextBlock Text="© 2026 byGOG  •  Açık kaynak PowerShell projesi" Foreground="#63737E" FontSize="9.5"
+                                   HorizontalAlignment="Center" Margin="0,18,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
 '@
@@ -579,7 +646,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton') | ForEach-Object {
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1159,6 +1226,19 @@ $controls.SearchClearButton.Add_Click({
     $controls.SearchBox.Clear()
     $controls.SearchBox.Focus() | Out-Null
 })
+function Set-PowerHubAboutVisibility([bool]$Visible) {
+    $controls.AboutOverlay.Visibility = if ($Visible) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+    if ($Visible) { $controls.AboutCloseButton.Focus() | Out-Null }
+}
+$controls.AboutButton.Add_Click({ Set-PowerHubAboutVisibility $true })
+$controls.AboutCloseButton.Add_Click({ Set-PowerHubAboutVisibility $false })
+$controls.AboutBackdrop.Add_MouseLeftButtonUp({ Set-PowerHubAboutVisibility $false })
+$controls.AboutByGogButton.Add_Click({
+    try { Start-Process -FilePath 'https://github.com/byGOG' } catch { Write-PowerHubLog -Message "byGOG profili açılamadı: $($_.Exception.Message)" -Color Red }
+})
+$controls.AboutGitHubButton.Add_Click({
+    try { Start-Process -FilePath 'https://github.com/byGOG/PowerHub' } catch { Write-PowerHubLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
+})
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 function Open-PowerHubWebsite {
@@ -1235,6 +1315,11 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
 $window.Add_PreviewKeyDown({
     param($sender, $eventArgs)
 
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.AboutOverlay.Visibility -eq [Windows.Visibility]::Visible) {
+        Set-PowerHubAboutVisibility $false
+        $eventArgs.Handled = $true
+        return
+    }
     $controlDown = ([Windows.Input.Keyboard]::Modifiers -band [Windows.Input.ModifierKeys]::Control) -ne 0
     if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::F) {
         $controls.SearchBox.Focus() | Out-Null
