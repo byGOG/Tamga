@@ -1327,6 +1327,9 @@ function Start-NextInstall {
     } else {
         @('install','--id',$item.Id,'--exact')
     }
+    if ($installArguments -notcontains '--source') {
+        $installArguments += @('--source','winget')
+    }
     $installArguments += @(
         '--silent',
         '--accept-package-agreements','--accept-source-agreements','--disable-interactivity'
