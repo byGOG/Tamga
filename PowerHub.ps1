@@ -620,8 +620,9 @@ if ($fontInstallFailures.Count -gt 0) {
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border Background="#26B9E8" CornerRadius="2"/>
-                                <TextBlock Grid.Column="1" Text="Sade arayüz, doğrulanmış kaynaklar ve kullanıcı kontrolü. PowerHub gereksiz reklam veya yönlendirme içermez."
-                                           Foreground="#91A7B5" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="13,0,0,0"/>
+                                <TextBlock Grid.Column="1" Foreground="#91A7B5" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="13,0,0,0">
+                                    <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#69D5FF" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
+                                </TextBlock>
                             </Grid>
                         </Border>
                         <Grid Margin="0,20,0,0">
@@ -646,7 +647,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton') | ForEach-Object {
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1238,6 +1239,11 @@ $controls.AboutByGogButton.Add_Click({
 })
 $controls.AboutGitHubButton.Add_Click({
     try { Start-Process -FilePath 'https://github.com/byGOG/PowerHub' } catch { Write-PowerHubLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
+})
+$controls.SordumLink.Add_RequestNavigate({
+    param($sender, $eventArgs)
+    try { Start-Process -FilePath $eventArgs.Uri.AbsoluteUri } catch { Write-PowerHubLog -Message "Sordum.net açılamadı: $($_.Exception.Message)" -Color Red }
+    $eventArgs.Handled = $true
 })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
