@@ -1009,21 +1009,20 @@ $controls.SearchClearButton.Add_Click({
 })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
-$controls.AppList.AddHandler([Windows.Controls.Button]::ClickEvent, [Windows.RoutedEventHandler]{
-    param($sender, $eventArgs)
-    $button = $eventArgs.Source -as [Windows.Controls.Button]
-    if (-not $button -or [string]::IsNullOrWhiteSpace([string]$button.Tag)) { return }
+function Open-PowerHubWebsite {
+    param($Item, [string]$Url, [switch]$WebResource)
+    if ([string]::IsNullOrWhiteSpace($Url)) { return }
     try {
-        Start-Process -FilePath ([string]$button.Tag)
-        $item = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $button).DataContext
-        $controls.ActivityText.Text = "Resmî site açıldı: $($item.Name)"
-        Write-PowerHubLog -Message "Resmî site açıldı: $($item.Name) — $($button.Tag)" -Color Cyan
+        Start-Process -FilePath $Url
+        $label = if ($WebResource) { 'Site açıldı' } else { 'Resmî site açıldı' }
+        $controls.ActivityText.Text = "$label`: $($Item.Name)"
+        Write-PowerHubLog -Message "$label`: $($Item.Name) — $Url" -Color Cyan
     } catch {
-        $controls.ActivityText.Text = 'Resmî site açılamadı.'
-        Write-PowerHubLog -Message "Resmî site açılamadı: $($_.Exception.Message)" -Color Red
+        $controls.ActivityText.Text = "Site açılamadı: $($Item.Name)"
+        Write-PowerHubLog -Message "Site açılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
     }
-    $eventArgs.Handled = $true
-})
+}
+
 $controls.AppList.Add_PreviewMouseLeftButtonUp({
     param($sender, $eventArgs)
 
@@ -1032,24 +1031,21 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     if (-not $container) { return }
     $item = $container.DataContext
 
-    if ($item.IsWebResource) {
-        try {
-            Start-Process -FilePath $item.Url
-            $controls.ActivityText.Text = "Site açıldı: $($item.Name)"
-            Write-PowerHubLog -Message "Web kaynağı açıldı: $($item.Name) — $($item.Url)" -Color Cyan
-        } catch {
-            $controls.ActivityText.Text = "Site açılamadı: $($item.Name)"
-            Write-PowerHubLog -Message "Web kaynağı açılamadı ($($item.Name)): $($_.Exception.Message)" -Color Red
-        }
-        $eventArgs.Handled = $true
-        return
-    }
-
     $node = $source
     while ($node) {
-        if ($node -is [Windows.Controls.Button]) { return }
+        if ($node -is [Windows.Controls.Button]) {
+            Open-PowerHubWebsite -Item $item -Url ([string]$node.Tag) -WebResource:$item.IsWebResource
+            $eventArgs.Handled = $true
+            return
+        }
         if ($node -is [Windows.Controls.CheckBox]) { return }
         try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+    }
+
+    if ($item.IsWebResource) {
+        Open-PowerHubWebsite -Item $item -Url $item.Url -WebResource
+        $eventArgs.Handled = $true
+        return
     }
 
     $checkBox = Find-VisualChild -Parent $container -ChildType ([Windows.Controls.CheckBox])
