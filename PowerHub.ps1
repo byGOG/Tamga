@@ -416,12 +416,11 @@ public static class PowerHubWindowLayout {
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="14,9,13,9">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="36"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
-                                    <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="13" VerticalAlignment="Center">
-                                        <Border.Effect><DropShadowEffect Color="#101820" BlurRadius="8" ShadowDepth="2" Opacity="0.34"/></Border.Effect>
+                                    <Border Width="44" Height="44" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
-                                            <Image Source="{Binding Logo}" Width="34" Height="34" Stretch="Uniform"
+                                            <Image Source="{Binding Logo}" Width="42" Height="42" Stretch="Uniform"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
-                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="White" FontWeight="Bold" FontSize="15"
+                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="17"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
                                     </Border>
