@@ -43,7 +43,7 @@ Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` diz
 | **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir web kaynağı |
 | **Akıllı sistem taraması** | Kurulu uygulamaları ve bekleyen WinGet güncellemelerini arka planda denetleme |
 | **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
-| **Toplu kurulum** | Seçilen paketleri sessiz ve sıralı biçimde kurma; sonuçları terminalde izleme |
+| **Güçlü kurulum kuyruğu** | Paket bazlı canlı durum, güvenli iptal, ilerleme takibi ve başarısızları yeniden deneme |
 | **Resmî kaynaklar** | Uygulama kartından resmî siteye doğrudan erişim; web kaynaklarını kurulumdan ayırma |
 | **Sandbox desteği** | Boş Windows Sandbox ortamında WinGet ve gerekli bağımlılıkları hazırlama |
 | **Marka logoları** | Önbelleğe alınan uygulama logoları ve ağ sorunu durumunda güvenli yedek görünüm |
@@ -158,7 +158,7 @@ The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub
 | **Application catalog** | 132 applications and trusted web resources across 21 categories |
 | **Smart system scan** | Background detection of installed applications and pending WinGet updates |
 | **Update Center** | Version comparison, individual or bulk selection, and live update progress |
-| **Bulk installation** | Silent sequential installation with visible terminal results |
+| **Powerful install queue** | Per-package live status, safe cancellation, progress tracking, and failed-item retry |
 | **Official sources** | Direct access to official sites while keeping web resources out of install queues |
 | **Sandbox support** | Store-independent WinGet and dependency setup for clean Windows Sandbox sessions |
 | **Brand assets** | Cached application logos with a safe fallback when the network is unavailable |

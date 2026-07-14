@@ -576,11 +576,87 @@ if ($fontInstallFailures.Count -gt 0) {
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="QueueViewButton" Content="Kuyruk" Background="#2C3B45" Foreground="#9EDBF3"
+                                Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster"/>
                         <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#333333" Foreground="#9EDBF3"
                                 Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)"/>
                         <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#087EBD" Foreground="White"
                                 IsEnabled="False" ToolTip="Seçilenleri kur (Enter)"/>
                     </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="#A8080A0C">
+            <Border x:Name="QueueBackdrop" Background="Transparent"/>
+            <Border Width="430" HorizontalAlignment="Right" Background="#242424" BorderBrush="#474747" BorderThickness="1" CornerRadius="7">
+                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.6"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="#2B2B2B" BorderBrush="#444444" BorderThickness="0,0,0,1" Padding="18,15">
+                        <Grid>
+                            <Border Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#18A7E0" Offset="0"/><GradientStop Color="#765DE8" Offset="1"/></LinearGradientBrush></Border.Background></Border>
+                            <StackPanel>
+                                <TextBlock Text="POWERHUB  /  KURULUM" Foreground="#55C8F3" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="Kurulum kuyruğu" Foreground="White" FontSize="22" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                <TextBlock Text="Paketleri ve işlem durumlarını tek ekrandan izleyin." Foreground="#9DA9B1" FontSize="11.5" Margin="0,4,48,0"/>
+                            </StackPanel>
+                            <Button x:Name="QueueCloseButton" Content="&#xE711;" Width="34" Height="34" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Background="#333333" BorderBrush="#4B4B4B" BorderThickness="1" Foreground="#C9D4DA"
+                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" ToolTip="Kuyruğu kapat"/>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Margin="16,14,16,10" Background="#292929" BorderBrush="#414141" BorderThickness="1" CornerRadius="5" Padding="13,10">
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock x:Name="QueueSummaryText" Text="Kuyruk henüz boş" Foreground="#F1F6F9" FontSize="13.5" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="QueueDetailText" Text="Kurulacak uygulamaları seçip işlemi başlatın." Foreground="#96A3AC" FontSize="10.5" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="#263F52" CornerRadius="4" Padding="8,4">
+                                <TextBlock x:Name="QueueCountText" Text="0 PAKET" Foreground="#82CEFF" FontSize="9" FontWeight="Bold"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <ListBox x:Name="InstallQueueList" Grid.Row="2" Margin="16,0,16,0" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,7"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#2B2B2B" BorderBrush="#444444" BorderThickness="1" CornerRadius="5" Padding="12,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <Border Width="20" Height="20" CornerRadius="10" Background="{Binding StatusBackground}" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding StatusIcon}" Foreground="{Binding StatusForeground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Detail}" Foreground="#929FA8" FontSize="10" Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <Border Grid.Column="2" Background="{Binding StatusBackground}" CornerRadius="4" Padding="7,4" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding StatusLabel}" Foreground="{Binding StatusForeground}" FontSize="8.5" FontWeight="Bold"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Border Grid.Row="3" Background="#292929" BorderBrush="#444444" BorderThickness="0,1,0,0" Padding="16,13">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="QueueFooterText" Text="Kuyruk beklemede" Foreground="#E4EBEF" FontSize="11.5" FontWeight="SemiBold"/>
+                                <ProgressBar x:Name="QueueProgress" Height="3" Margin="0,8,16,0" Minimum="0" Maximum="100" Value="0" Foreground="#18A7E0" Background="#3A3A3A"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button x:Name="QueueRetryButton" Content="Başarısızları dene" Background="#574422" Foreground="#FFD58A" Margin="0,0,8,0" IsEnabled="False"/>
+                                <Button x:Name="QueueCancelButton" Content="İptal et" Background="#543136" Foreground="#FFB0B0" IsEnabled="False"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
@@ -752,7 +828,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton',
   'AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1829,6 +1905,11 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
 $window.Add_PreviewKeyDown({
     param($sender, $eventArgs)
 
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.InstallQueueOverlay.Visibility -eq [Windows.Visibility]::Visible) {
+        Set-InstallQueueVisibility $false
+        $eventArgs.Handled = $true
+        return
+    }
     if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.AboutOverlay.Visibility -eq [Windows.Visibility]::Visible) {
         Set-PowerHubAboutVisibility $false
         $eventArgs.Handled = $true
@@ -1965,8 +2046,108 @@ $script:installQueue = @()
 $script:installIndex = 0
 $script:installResults = [Collections.ArrayList]::new()
 $script:installProcess = $null
+$script:installCancelled = $false
+$script:installQueueItems = [Collections.ObjectModel.ObservableCollection[object]]::new()
+$controls.InstallQueueList.ItemsSource = $script:installQueueItems
 $script:installTimer = [Windows.Threading.DispatcherTimer]::new()
 $script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
+
+function Set-InstallQueueVisibility {
+    param([bool]$Visible)
+    $controls.InstallQueueOverlay.Visibility = if ($Visible) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+}
+
+function Set-InstallQueueEntryState {
+    param($Entry, [ValidateSet('Waiting','Running','Success','Failed','Manual','Cancelled')][string]$State, [string]$Detail, [int]$Code = 0)
+
+    $Entry.Status = $State
+    $Entry.Code = $Code
+    if ($Detail) { $Entry.Detail = $Detail }
+    switch ($State) {
+        'Waiting'   { $Entry.StatusLabel='BEKLİYOR';    $Entry.StatusIcon='…'; $Entry.StatusBackground='#3A3F45'; $Entry.StatusForeground='#C2CBD1' }
+        'Running'   { $Entry.StatusLabel='İŞLENİYOR';   $Entry.StatusIcon='↻'; $Entry.StatusBackground='#263F52'; $Entry.StatusForeground='#82CEFF' }
+        'Success'   { $Entry.StatusLabel='TAMAMLANDI';  $Entry.StatusIcon='✓'; $Entry.StatusBackground='#214B35'; $Entry.StatusForeground='#7EE2A8' }
+        'Failed'    { $Entry.StatusLabel='BAŞARISIZ';   $Entry.StatusIcon='!'; $Entry.StatusBackground='#543136'; $Entry.StatusForeground='#FFAAAA' }
+        'Manual'    { $Entry.StatusLabel='SAYFA AÇILDI';$Entry.StatusIcon='↗'; $Entry.StatusBackground='#40365A'; $Entry.StatusForeground='#C6B7FF' }
+        'Cancelled' { $Entry.StatusLabel='İPTAL';       $Entry.StatusIcon='×'; $Entry.StatusBackground='#3A3A3A'; $Entry.StatusForeground='#AEB7BD' }
+    }
+    $controls.InstallQueueList.Items.Refresh()
+}
+
+function Update-InstallQueueSummary {
+    $total = $script:installQueueItems.Count
+    $running = @($script:installQueueItems | Where-Object Status -eq 'Running')
+    $waiting = @($script:installQueueItems | Where-Object Status -eq 'Waiting').Count
+    $success = @($script:installQueueItems | Where-Object { $_.Status -in @('Success','Manual') }).Count
+    $failed = @($script:installQueueItems | Where-Object Status -eq 'Failed').Count
+    $cancelled = @($script:installQueueItems | Where-Object Status -eq 'Cancelled').Count
+    $completed = $success + $failed + $cancelled
+
+    $controls.QueueCountText.Text = "$total PAKET"
+    $controls.QueueViewButton.Content = if ($total -gt 0) { "Kuyruk ($total)" } else { 'Kuyruk' }
+    $controls.QueueViewButton.IsEnabled = ($total -gt 0)
+    $controls.QueueProgress.Value = if ($total -gt 0) { [int](($completed / $total) * 100) } else { 0 }
+    $controls.QueueRetryButton.IsEnabled = (-not $script:isInstalling -and $failed -gt 0)
+    $controls.QueueCancelButton.IsEnabled = [bool]$script:isInstalling
+
+    if ($total -eq 0) {
+        $controls.QueueSummaryText.Text = 'Kuyruk henüz boş'
+        $controls.QueueDetailText.Text = 'Kurulacak uygulamaları seçip işlemi başlatın.'
+        $controls.QueueFooterText.Text = 'Kuyruk beklemede'
+    } elseif ($script:isInstalling -and $running.Count -gt 0) {
+        $controls.QueueSummaryText.Text = "$($script:installIndex + 1) / $total paket işleniyor"
+        $controls.QueueDetailText.Text = $running[0].Name
+        $controls.QueueFooterText.Text = "$success tamamlandı • $waiting bekliyor"
+    } elseif ($script:isInstalling) {
+        $controls.QueueSummaryText.Text = "$total paketlik kuyruk hazırlanıyor"
+        $controls.QueueDetailText.Text = 'İlk paket başlatılıyor...'
+        $controls.QueueFooterText.Text = "$waiting paket bekliyor"
+    } elseif ($script:installCancelled) {
+        $controls.QueueSummaryText.Text = 'Kuyruk iptal edildi'
+        $controls.QueueDetailText.Text = "$success tamamlandı • $cancelled iptal edildi"
+        $controls.QueueFooterText.Text = 'İşlem kullanıcı tarafından durduruldu'
+    } else {
+        $controls.QueueSummaryText.Text = 'Kurulum kuyruğu tamamlandı'
+        $controls.QueueDetailText.Text = "$success tamamlandı • $failed başarısız"
+        $controls.QueueFooterText.Text = if ($failed -gt 0) { 'Başarısız paketler yeniden denenebilir' } else { 'Tüm işlemler tamamlandı' }
+    }
+}
+
+function New-InstallQueueEntry {
+    param($App)
+    $sourceIndex = if ($App.PSObject.Properties['InstallArguments']) { [Array]::IndexOf([object[]]@($App.InstallArguments), '--source') } else { -1 }
+    $packageSource = if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt @($App.InstallArguments).Count) { @($App.InstallArguments)[$sourceIndex + 1] } else { 'winget' }
+    [pscustomobject]@{
+        Name = $App.Name
+        Id = $App.Id
+        Action = if ($App.PSObject.Properties['Action']) { $App.Action } else { 'Winget' }
+        Url = if ($App.PSObject.Properties['Url']) { $App.Url } else { $null }
+        InstallArguments = if ($App.PSObject.Properties['InstallArguments']) { @($App.InstallArguments) } else { $null }
+        Operation = $App.Operation
+        PackageSource = $packageSource
+        Status = 'Waiting'
+        StatusLabel = 'BEKLİYOR'
+        StatusIcon = '…'
+        StatusBackground = '#3A3F45'
+        StatusForeground = '#C2CBD1'
+        Detail = if ($App.Operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
+        Code = 0
+    }
+}
+
+function Initialize-InstallQueue {
+    param([object[]]$Entries)
+    $script:installQueueItems.Clear()
+    foreach ($entry in $Entries) {
+        Set-InstallQueueEntryState -Entry $entry -State Waiting -Detail $entry.Detail
+        [void]$script:installQueueItems.Add($entry)
+    }
+    $script:installQueue = @($Entries)
+    $script:installIndex = 0
+    $script:installResults = [Collections.ArrayList]::new()
+    $script:installCancelled = $false
+    Update-InstallQueueSummary
+}
 
 function Complete-InstallQueue {
     $script:installTimer.Stop()
@@ -1985,13 +2166,14 @@ function Complete-InstallQueue {
     } else {
         Write-PowerHubLog -Message "İşlem tamamlandı: $summary, $($failed.Count) başarısız." -Color Yellow
         $controls.ActivityText.Text = "$summary, $($failed.Count) başarısız."
-        $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
-        [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
     }
+    Update-InstallQueueSummary
+    Update-SelectionStatus
     Start-SystemScan
 }
 
 function Start-NextInstall {
+    if ($script:installCancelled) { return }
     if ($script:installIndex -ge $script:installQueue.Count) {
         Complete-InstallQueue
         return
@@ -1999,6 +2181,8 @@ function Start-NextInstall {
 
     $item = $script:installQueue[$script:installIndex]
     $controls.InstallProgress.Value = [int](($script:installIndex / $script:installQueue.Count) * 100)
+    Set-InstallQueueEntryState -Entry $item -State Running -Detail $(if ($item.Action -eq 'Url') { 'Resmî indirme sayfası açılıyor' } elseif ($item.Operation -eq 'Upgrade') { 'Paket güncelleniyor' } else { 'Paket kuruluyor' })
+    Update-InstallQueueSummary
 
     if ($item.Action -eq 'Url') {
         try {
@@ -2006,11 +2190,14 @@ function Start-NextInstall {
             Write-PowerHubLog -Message "Resmî indirme sayfası açılıyor: $($item.Name)" -Color Cyan
             Start-Process -FilePath $item.Url
             [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$true; Manual=$true; Code=0 })
+            Set-InstallQueueEntryState -Entry $item -State Manual -Detail 'Resmî indirme sayfası açıldı'
         } catch {
             Write-PowerHubLog -Message "Sayfa açılamadı ($($item.Name)): $($_.Exception.Message)" -Color Red
             [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$true; Code=-1 })
+            Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'İndirme sayfası açılamadı' -Code -1
         }
         $script:installIndex++
+        Update-InstallQueueSummary
         Start-NextInstall
         return
     }
@@ -2041,7 +2228,9 @@ function Start-NextInstall {
     } catch {
         Write-PowerHubLog -Message "Başlatma hatası ($($item.Name)): $($_.Exception.Message)" -Color Red
         [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=-1 })
+        Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'İşlem başlatılamadı' -Code -1
         $script:installIndex++
+        Update-InstallQueueSummary
         Start-NextInstall
     }
 }
@@ -2057,43 +2246,77 @@ $script:installTimer.Add_Tick({
     $exitCode = [int]$script:installProcess.ExitCode
     if ($exitCode -eq 0) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
+        Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
+        Set-InstallQueueEntryState -Entry $item -State Failed -Detail "WinGet çıkış kodu: $exitCode" -Code $exitCode
     }
     [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Manual=$false; Code=$exitCode })
     $script:installProcess.Dispose()
     $script:installProcess = $null
     $script:installIndex++
+    Update-InstallQueueSummary
     Start-NextInstall
 })
 
-$controls.InstallButton.Add_Click({
-    $script:installQueue = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' } | ForEach-Object {
-        $sourceIndex = if ($_.PSObject.Properties['InstallArguments']) { [Array]::IndexOf([object[]]@($_.InstallArguments), '--source') } else { -1 }
-        $packageSource = if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt @($_.InstallArguments).Count) { @($_.InstallArguments)[$sourceIndex + 1] } else { 'winget' }
-        [pscustomobject]@{
-            Name = $_.Name
-            Id = $_.Id
-            Action = if ($_.PSObject.Properties['Action']) { $_.Action } else { 'Winget' }
-            Url = if ($_.PSObject.Properties['Url']) { $_.Url } else { $null }
-            InstallArguments = if ($_.PSObject.Properties['InstallArguments']) { @($_.InstallArguments) } else { $null }
-            Operation = $_.Operation
-            PackageSource = $packageSource
-        }
-    })
+function Start-InstallQueueExecution {
     if ($script:installQueue.Count -eq 0) { return }
-
     Write-Host ''
     Write-PowerHubLog -Message "$($script:installQueue.Count) uygulamalık kurulum kuyruğu başlatıldı." -Color White
     $script:installIndex = 0
     $script:installResults = [Collections.ArrayList]::new()
+    $script:installCancelled = $false
     $script:isInstalling = $true
     $controls.InstallButton.IsEnabled = $false
     $controls.SelectAllButton.IsEnabled = $false
     $controls.InstallProgress.Visibility = 'Visible'
     $controls.InstallProgress.Value = 0
     $controls.ActivityText.Text = 'Kurulum hazırlanıyor...'
+    Set-InstallQueueVisibility $true
+    Update-InstallQueueSummary
     Start-NextInstall
+}
+
+$controls.InstallButton.Add_Click({
+    $entries = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' } | ForEach-Object { New-InstallQueueEntry -App $_ })
+    if ($entries.Count -eq 0) { return }
+    Initialize-InstallQueue -Entries $entries
+    Start-InstallQueueExecution
+})
+
+$controls.QueueViewButton.Add_Click({ Set-InstallQueueVisibility $true })
+$controls.QueueCloseButton.Add_Click({ Set-InstallQueueVisibility $false })
+$controls.QueueBackdrop.Add_MouseLeftButtonUp({ Set-InstallQueueVisibility $false })
+$controls.QueueCancelButton.Add_Click({
+    if (-not $script:isInstalling) { return }
+    $script:installCancelled = $true
+    $script:installTimer.Stop()
+    if ($script:installProcess) {
+        if (-not $script:installProcess.HasExited) {
+            Stop-Process -Id $script:installProcess.Id -Force -ErrorAction SilentlyContinue
+        }
+        $script:installProcess.Dispose()
+        $script:installProcess = $null
+    }
+    foreach ($entry in @($script:installQueueItems | Where-Object { $_.Status -in @('Waiting','Running') })) {
+        Set-InstallQueueEntryState -Entry $entry -State Cancelled -Detail 'Kuyruk iptal edildi' -Code -2
+    }
+    $script:isInstalling = $false
+    $controls.InstallButton.IsEnabled = $true
+    $controls.SelectAllButton.IsEnabled = $true
+    $controls.InstallProgress.Value = 0
+    $controls.ActivityText.Text = 'Kurulum kuyruğu iptal edildi.'
+    Write-PowerHubLog -Message 'Kurulum kuyruğu kullanıcı tarafından iptal edildi.' -Color Yellow
+    Update-InstallQueueSummary
+})
+$controls.QueueRetryButton.Add_Click({
+    $failedEntries = @($script:installQueueItems | Where-Object Status -eq 'Failed')
+    if ($failedEntries.Count -eq 0 -or $script:isInstalling) { return }
+    foreach ($entry in $failedEntries) {
+        Set-InstallQueueEntryState -Entry $entry -State Waiting -Detail $(if ($entry.Operation -eq 'Upgrade') { 'Güncelleme için yeniden sırada' } else { 'Kurulum için yeniden sırada' })
+    }
+    Initialize-InstallQueue -Entries $failedEntries
+    Start-InstallQueueExecution
 })
 
 function Set-WingetCardState {
@@ -2347,18 +2570,23 @@ if ($winget) {
 Update-AppList
 Update-SelectionStatus
 Update-UpdateCenterSelectionStatus
+Update-InstallQueueSummary
 Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 if ($winget) { Start-SystemScan }
 $window.Add_Closed({
     $script:systemScanTimer.Stop()
     $script:updateTimer.Stop()
+    $script:installTimer.Stop()
     if ($script:systemScanProcess -and -not $script:systemScanProcess.HasExited) {
         Stop-Process -Id $script:systemScanProcess.Id -Force -ErrorAction SilentlyContinue
     }
     if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
     if ($script:updateProcess -and -not $script:updateProcess.HasExited) {
         Stop-Process -Id $script:updateProcess.Id -Force -ErrorAction SilentlyContinue
+    }
+    if ($script:installProcess -and -not $script:installProcess.HasExited) {
+        Stop-Process -Id $script:installProcess.Id -Force -ErrorAction SilentlyContinue
     }
 })
 $window.ShowDialog() | Out-Null
