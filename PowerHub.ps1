@@ -370,25 +370,25 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Border x:Name="WingetCard" Grid.Row="5" Background="#252525" BorderBrush="#414141" BorderThickness="1"
                         CornerRadius="6" Padding="10" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid>
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="38"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Grid.RowSpan="3" Width="30" Height="30" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="5" VerticalAlignment="Center">
+                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="30" Height="30" Background="#214B35" BorderBrush="#346A4D" BorderThickness="1" CornerRadius="5" VerticalAlignment="Center">
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#7EE2A8" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock x:Name="WingetStatus" Grid.Column="1" Grid.ColumnSpan="2" Text="winget kontrol ediliyor" Foreground="White"
-                                   FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="White"
+                                   FontSize="11.5" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,6,0"/>
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
-                                   Foreground="#91A0AF" FontSize="9" Margin="0,4,0,0" VerticalAlignment="Center"/>
-                        <Border x:Name="WingetBadge" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
-                                CornerRadius="4" Padding="6,3" Margin="0,5,0,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                   Foreground="#91A0AF" FontSize="9" Margin="0,4,0,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxHeight="26"/>
+                        <Border x:Name="WingetBadge" Grid.Column="2" Background="#204A32" BorderBrush="#346A4D" BorderThickness="1"
+                                CornerRadius="4" Padding="5,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
-                                <Ellipse x:Name="WingetBadgeDot" Width="5" Height="5" Fill="#67DB95" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="9" FontWeight="Bold"/>
+                                <Ellipse x:Name="WingetBadgeDot" Width="4" Height="4" Fill="#67DB95" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                <TextBlock x:Name="WingetBadgeText" Text="AKTİF" Foreground="#7EE2A8" FontSize="8.5" FontWeight="Bold"/>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -2156,8 +2156,8 @@ function Set-WingetCardState {
             $controls.WingetIconBox.BorderBrush = New-ColorBrush '#A95454'
             $controls.WingetIcon.Text = '!'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFAAAA'
-            $controls.WingetStatus.Text = 'kurulum tamamlanamadı'
-            $controls.WingetDetail.Text = 'Store gerekmez • yeniden denemek için tıklayın'
+            $controls.WingetStatus.Text = 'winget hatası'
+            $controls.WingetDetail.Text = 'Kurulum tamamlanamadı • yeniden denemek için tıklayın'
             $controls.WingetBadge.Background = New-ColorBrush '#542E32'
             $controls.WingetBadge.BorderBrush = New-ColorBrush '#A95454'
             $controls.WingetBadgeDot.Fill = New-ColorBrush '#FF7777'
