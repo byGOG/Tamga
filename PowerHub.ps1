@@ -1194,13 +1194,13 @@ function Update-AppList {
     $search = $controls.SearchBox.Text.Trim()
     $isSearching = -not [string]::IsNullOrWhiteSpace($search)
     $script:visibleApps = @($apps | Where-Object {
-        ($isSearching -or $_.Category -eq $script:activeCategory) -and
-        (-not $isSearching -or $_.Name -like "*$search*" -or $_.Description -like "*$search*")
+        $_.Category -eq $script:activeCategory -and
+        (-not $isSearching -or $_.Name -like "*$search*" -or $_.Description -like "*$search*" -or $_.Category -like "*$search*")
     })
     $controls.AppList.ItemsSource = $null
     $controls.AppList.ItemsSource = $script:visibleApps
     $controls.ResultCount.Text = "{0} uygulama" -f $script:visibleApps.Count
-    $controls.SectionTitle.Text = if ($isSearching) { 'Arama sonuçları' } else { $script:activeCategory }
+    $controls.SectionTitle.Text = $script:activeCategory
     $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' }).Count -gt 0
     if (-not $script:isInstalling) { $controls.SelectAllButton.IsEnabled = $hasInstallableApps }
     $controls.SelectAllButton.Content = if ($hasInstallableApps) { 'Görünenleri seç' } else { 'Karttan siteyi aç' }
@@ -1410,37 +1410,69 @@ function Find-VisualChild {
     return $null
 }
 
+function Set-ActiveCategory {
+    param([Parameter(Mandatory)][string]$CategoryName)
+
+    $script:activeCategory = $CategoryName
+    $targetButton = $null
+    foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
+        $nav.Background = [Windows.Media.Brushes]::Transparent
+        $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
+        $nav.BorderThickness = [Windows.Thickness]::new(0)
+        $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
+        $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
+        $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
+        $nav.CountBadge.Background = New-ColorBrush '#242424'
+        $nav.CountBadge.BorderBrush = New-ColorBrush '#444444'
+        $nav.CountElement.Foreground = New-ColorBrush '#A0A0A0'
+        if ([string]$nav.Tag -eq $CategoryName) { $targetButton = $nav }
+    }
+    if ($targetButton) {
+        $targetButton.Background = New-ColorBrush '#2D2D2D'
+        $targetButton.BorderBrush = New-ColorBrush '#168FC6'
+        $targetButton.BorderThickness = [Windows.Thickness]::new(3, 0, 0, 0)
+        $targetButton.IconElement.Foreground = New-ColorBrush '#55BCE8'
+        $targetButton.LabelElement.Foreground = New-ColorBrush '#FFFFFF'
+        $targetButton.LabelElement.FontWeight = [Windows.FontWeights]::SemiBold
+        $targetButton.CountBadge.Background = New-ColorBrush '#25343B'
+        $targetButton.CountBadge.BorderBrush = New-ColorBrush '#366072'
+        $targetButton.CountElement.Foreground = New-ColorBrush '#8DD7F4'
+        $targetButton.BringIntoView()
+    }
+}
+
+function Find-BestSearchCategory {
+    param([string]$Query)
+    if ([string]::IsNullOrWhiteSpace($Query)) { return $null }
+
+    $ranked = foreach ($app in $apps) {
+        $score = if ($app.Name -eq $Query) { 1000 }
+            elseif ($app.Name -like "$Query*") { 800 }
+            elseif ($app.Name -like "*$Query*") { 600 }
+            elseif ($app.Category -eq $Query) { 500 }
+            elseif ($app.Category -like "*$Query*") { 400 }
+            elseif ($app.Description -like "*$Query*") { 200 }
+            else { 0 }
+        if ($score -gt 0) { [pscustomobject]@{ App=$app; Score=$score } }
+    }
+    $best = $ranked | Sort-Object @{ Expression='Score'; Descending=$true }, @{ Expression={ $_.App.Name.Length }; Ascending=$true } | Select-Object -First 1
+    if ($best) { return [string]$best.App.Category }
+    return $null
+}
+
 $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] } | ForEach-Object {
     $button = $_
     $button.Add_Click({
         param($sender, $eventArgs)
-        $script:activeCategory = [string]$sender.Tag
-        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
-            $nav.Background = [Windows.Media.Brushes]::Transparent
-            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
-            $nav.BorderThickness = [Windows.Thickness]::new(0)
-            $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
-            $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
-            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-            $nav.CountBadge.Background = New-ColorBrush '#242424'
-            $nav.CountBadge.BorderBrush = New-ColorBrush '#444444'
-            $nav.CountElement.Foreground = New-ColorBrush '#A0A0A0'
-        }
-        $sender.Background = New-ColorBrush '#2D2D2D'
-        $sender.BorderBrush = New-ColorBrush '#168FC6'
-        $sender.BorderThickness = [Windows.Thickness]::new(3, 0, 0, 0)
-        $sender.IconElement.Foreground = New-ColorBrush '#55BCE8'
-        $sender.LabelElement.Foreground = New-ColorBrush '#FFFFFF'
-        $sender.LabelElement.FontWeight = [Windows.FontWeights]::SemiBold
-        $sender.CountBadge.Background = New-ColorBrush '#25343B'
-        $sender.CountBadge.BorderBrush = New-ColorBrush '#366072'
-        $sender.CountElement.Foreground = New-ColorBrush '#8DD7F4'
+        Set-ActiveCategory -CategoryName ([string]$sender.Tag)
         Update-AppList
     })
 }
 
 $controls.SearchBox.Add_TextChanged({
     Update-SearchChrome
+    $searchCategory = Find-BestSearchCategory -Query $controls.SearchBox.Text.Trim()
+    if ($searchCategory) { Set-ActiveCategory -CategoryName $searchCategory }
     Update-AppList
 })
 $controls.SearchClearButton.Add_Click({
