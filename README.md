@@ -43,7 +43,8 @@ Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` diz
 | **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir web kaynağı |
 | **Akıllı sistem taraması** | Kurulu uygulamaları ve bekleyen WinGet güncellemelerini arka planda denetleme |
 | **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
-| **Güçlü kurulum kuyruğu** | Paket bazlı canlı durum, güvenli iptal, ilerleme takibi ve başarısızları yeniden deneme |
+| **Birleşik işlem kuyruğu** | Kurulum, güncelleme ve kaldırma için paket bazlı canlı durum, güvenli iptal ve başarısızları yeniden deneme |
+| **Güvenli kaldırma** | Kurulu WinGet uygulamalarını kart üzerindeki kaldırma düğmesi, açık onay ve otomatik yeniden tarama ile kaldırma |
 | **Resmî kaynaklar** | Uygulama kartından resmî siteye doğrudan erişim; web kaynaklarını kurulumdan ayırma |
 | **Sandbox desteği** | Boş Windows Sandbox ortamında WinGet ve gerekli bağımlılıkları hazırlama |
 | **Marka logoları** | Önbelleğe alınan uygulama logoları ve ağ sorunu durumunda güvenli yedek görünüm |
@@ -52,7 +53,7 @@ Başlatıcı en güncel `PowerHub.ps1` dosyasını `%LOCALAPPDATA%\PowerHub` diz
 
 1. PowerHub açılışta WinGet durumunu ve kurulu paketleri denetler.
 2. Arama veya kategori menüsüyle istediğiniz uygulamaya odaklanırsınız.
-3. Uygulamaları seçer, resmî sitelerini açar ya da toplu kurulumu başlatırsınız.
+3. Uygulamaları seçer, resmî sitelerini açar, toplu kurulum başlatır veya kurulu paketleri karttan kaldırırsınız.
 4. Güncelleme Merkezi, mevcut ve yeni sürümleri karşılaştırarak seçili paketleri yükseltir.
 5. Tüm komutlar ve sonuçlar görünür terminal günlüğüne yazılır.
 
@@ -158,7 +159,8 @@ The bootstrapper downloads the latest `PowerHub.ps1` to `%LOCALAPPDATA%\PowerHub
 | **Application catalog** | 132 applications and trusted web resources across 21 categories |
 | **Smart system scan** | Background detection of installed applications and pending WinGet updates |
 | **Update Center** | Version comparison, individual or bulk selection, and live update progress |
-| **Powerful install queue** | Per-package live status, safe cancellation, progress tracking, and failed-item retry |
+| **Unified operation queue** | Per-package live status, safe cancellation, and failed-item retry for installs, upgrades, and removals |
+| **Safe uninstall** | Remove installed WinGet applications from their cards with explicit confirmation and automatic rescanning |
 | **Official sources** | Direct access to official sites while keeping web resources out of install queues |
 | **Sandbox support** | Store-independent WinGet and dependency setup for clean Windows Sandbox sessions |
 | **Brand assets** | Cached application logos with a safe fallback when the network is unavailable |

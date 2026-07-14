@@ -520,7 +520,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="12,7,11,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
@@ -545,7 +545,13 @@ if ($fontInstallFailures.Count -gt 0) {
                                         <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
                                                    Foreground="#8CDBFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <CheckBox x:Name="AppCheck" Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                    <Button x:Name="UninstallButton" Grid.Column="4" Style="{StaticResource IconButton}"
+                                            Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
+                                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                                                   Foreground="#FF9B9B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <CheckBox x:Name="AppCheck" Grid.Column="5" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
@@ -597,8 +603,8 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Grid>
                             <Border Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#18A7E0" Offset="0"/><GradientStop Color="#765DE8" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <StackPanel>
-                                <TextBlock Text="POWERHUB  /  KURULUM" Foreground="#55C8F3" FontSize="9.5" FontWeight="Bold"/>
-                                <TextBlock Text="Kurulum kuyruğu" Foreground="White" FontSize="22" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                <TextBlock Text="POWERHUB  /  PAKET İŞLEMLERİ" Foreground="#55C8F3" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="İşlem kuyruğu" Foreground="White" FontSize="22" FontWeight="SemiBold" Margin="0,4,0,0"/>
                                 <TextBlock Text="Paketleri ve işlem durumlarını tek ekrandan izleyin." Foreground="#9DA9B1" FontSize="11.5" Margin="0,4,48,0"/>
                             </StackPanel>
                             <Button x:Name="QueueCloseButton" Content="&#xE711;" Width="34" Height="34" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"
@@ -1231,6 +1237,7 @@ foreach ($app in $apps) {
     $app | Add-Member -NotePropertyName WebsiteUrl -NotePropertyValue $websiteUrl -Force
     $app | Add-Member -NotePropertyName WebsiteVisibility -NotePropertyValue $(if ($websiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     $app | Add-Member -NotePropertyName CheckVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }) -Force
+    $app | Add-Member -NotePropertyName UninstallVisibility -NotePropertyValue ([Windows.Visibility]::Collapsed) -Force
     $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     if ($isWebResource) { $app.IsSelected = $false }
     $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isWebResource) { 'Web' } else { 'Pending' }) -Force
@@ -1515,6 +1522,7 @@ function Set-AppInstallState {
             $App.Operation = 'None'
             $App.IsSelected = $false
             $App.CheckVisibility = [Windows.Visibility]::Collapsed
+            $App.UninstallVisibility = [Windows.Visibility]::Collapsed
         }
         'NotInstalled' {
             $App.SourceLabel = 'KURULU DEĞİL'
@@ -1523,6 +1531,7 @@ function Set-AppInstallState {
             $App.StatusDetail = 'Bu uygulama bilgisayarda kurulu değil'
             $App.Operation = 'Install'
             $App.CheckVisibility = [Windows.Visibility]::Visible
+            $App.UninstallVisibility = [Windows.Visibility]::Collapsed
         }
         'Installed' {
             $App.SourceLabel = 'KURULU'
@@ -1532,6 +1541,7 @@ function Set-AppInstallState {
             $App.Operation = 'None'
             $App.IsSelected = $false
             $App.CheckVisibility = [Windows.Visibility]::Collapsed
+            $App.UninstallVisibility = [Windows.Visibility]::Visible
         }
         'UpdateAvailable' {
             $App.SourceLabel = 'GÜNCELLEME'
@@ -1540,6 +1550,7 @@ function Set-AppInstallState {
             $App.StatusDetail = 'Yeni sürüm mevcut; seçerek güncelleyebilirsiniz'
             $App.Operation = 'Upgrade'
             $App.CheckVisibility = [Windows.Visibility]::Visible
+            $App.UninstallVisibility = [Windows.Visibility]::Visible
         }
         'Unknown' {
             $App.SourceLabel = 'DURUM YOK'
@@ -1548,6 +1559,7 @@ function Set-AppInstallState {
             $App.StatusDetail = 'Kurulum durumu belirlenemedi; uygulama yine de kurulabilir'
             $App.Operation = 'Install'
             $App.CheckVisibility = [Windows.Visibility]::Visible
+            $App.UninstallVisibility = [Windows.Visibility]::Collapsed
         }
     }
 }
@@ -1863,7 +1875,13 @@ $websiteClickHandler = [Windows.RoutedEventHandler]{
         }
         $button = $node -as [Windows.Controls.Button]
     }
-    if (-not $button -or [string]::IsNullOrWhiteSpace([string]$button.Tag)) { return }
+    if (-not $button) { return }
+    if ($button.Name -eq 'UninstallButton') {
+        Request-AppUninstall -App $button.DataContext
+        $eventArgs.Handled = $true
+        return
+    }
+    if ([string]::IsNullOrWhiteSpace([string]$button.Tag)) { return }
     $container = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $button)
     if (-not $container) { return }
     $item = $container.DataContext
@@ -1883,6 +1901,7 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     $node = $source
     while ($node) {
         if ($node -is [Windows.Controls.Button]) {
+            if ($node.Name -eq 'UninstallButton') { return }
             Open-PowerHubWebsite -Item $item -Url ([string]$node.Tag) -WebResource:$item.IsWebResource
             $eventArgs.Handled = $true
             return
@@ -2094,7 +2113,7 @@ function Update-InstallQueueSummary {
 
     if ($total -eq 0) {
         $controls.QueueSummaryText.Text = 'Kuyruk henüz boş'
-        $controls.QueueDetailText.Text = 'Kurulacak uygulamaları seçip işlemi başlatın.'
+        $controls.QueueDetailText.Text = 'Kurulum, güncelleme ve kaldırma işlemleri burada görünür.'
         $controls.QueueFooterText.Text = 'Kuyruk beklemede'
     } elseif ($script:isInstalling -and $running.Count -gt 0) {
         $controls.QueueSummaryText.Text = "$($script:installIndex + 1) / $total paket işleniyor"
@@ -2109,30 +2128,31 @@ function Update-InstallQueueSummary {
         $controls.QueueDetailText.Text = "$success tamamlandı • $cancelled iptal edildi"
         $controls.QueueFooterText.Text = 'İşlem kullanıcı tarafından durduruldu'
     } else {
-        $controls.QueueSummaryText.Text = 'Kurulum kuyruğu tamamlandı'
+        $controls.QueueSummaryText.Text = 'İşlem kuyruğu tamamlandı'
         $controls.QueueDetailText.Text = "$success tamamlandı • $failed başarısız"
         $controls.QueueFooterText.Text = if ($failed -gt 0) { 'Başarısız paketler yeniden denenebilir' } else { 'Tüm işlemler tamamlandı' }
     }
 }
 
 function New-InstallQueueEntry {
-    param($App)
+    param($App, [ValidateSet('Install','Upgrade','Uninstall')][string]$OperationOverride)
     $sourceIndex = if ($App.PSObject.Properties['InstallArguments']) { [Array]::IndexOf([object[]]@($App.InstallArguments), '--source') } else { -1 }
     $packageSource = if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt @($App.InstallArguments).Count) { @($App.InstallArguments)[$sourceIndex + 1] } else { 'winget' }
+    $operation = if ($OperationOverride) { $OperationOverride } else { $App.Operation }
     [pscustomobject]@{
         Name = $App.Name
         Id = $App.Id
         Action = if ($App.PSObject.Properties['Action']) { $App.Action } else { 'Winget' }
         Url = if ($App.PSObject.Properties['Url']) { $App.Url } else { $null }
         InstallArguments = if ($App.PSObject.Properties['InstallArguments']) { @($App.InstallArguments) } else { $null }
-        Operation = $App.Operation
+        Operation = $operation
         PackageSource = $packageSource
         Status = 'Waiting'
         StatusLabel = 'BEKLİYOR'
         StatusIcon = '…'
         StatusBackground = '#3A3F45'
         StatusForeground = '#C2CBD1'
-        Detail = if ($App.Operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
+        Detail = if ($operation -eq 'Uninstall') { 'Kaldırma için sırada' } elseif ($operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
         Code = 0
     }
 }
@@ -2161,7 +2181,13 @@ function Complete-InstallQueue {
     $failed = @($script:installResults | Where-Object { -not $_.Success })
     $manualCount = @($script:installResults | Where-Object Manual).Count
     $successCount = @($script:installResults | Where-Object { $_.Success -and -not $_.Manual }).Count
-    $summary = if ($manualCount -gt 0) { "$successCount kuruldu, $manualCount indirme sayfası açıldı" } else { "$successCount başarılı" }
+    $removedCount = @($script:installQueueItems | Where-Object { $_.Status -eq 'Success' -and $_.Operation -eq 'Uninstall' }).Count
+    $changedCount = [Math]::Max(0, $successCount - $removedCount)
+    $summaryParts = @()
+    if ($changedCount -gt 0) { $summaryParts += "$changedCount kuruldu veya güncellendi" }
+    if ($removedCount -gt 0) { $summaryParts += "$removedCount kaldırıldı" }
+    if ($manualCount -gt 0) { $summaryParts += "$manualCount indirme sayfası açıldı" }
+    $summary = if ($summaryParts.Count -gt 0) { $summaryParts -join ', ' } else { 'İşlem tamamlandı' }
     if ($failed.Count -eq 0) {
         Write-PowerHubLog -Message "İşlem tamamlandı: $summary." -Color Green
         $controls.ActivityText.Text = "$summary."
@@ -2183,7 +2209,7 @@ function Start-NextInstall {
 
     $item = $script:installQueue[$script:installIndex]
     $controls.InstallProgress.Value = [int](($script:installIndex / $script:installQueue.Count) * 100)
-    Set-InstallQueueEntryState -Entry $item -State Running -Detail $(if ($item.Action -eq 'Url') { 'Resmî indirme sayfası açılıyor' } elseif ($item.Operation -eq 'Upgrade') { 'Paket güncelleniyor' } else { 'Paket kuruluyor' })
+    Set-InstallQueueEntryState -Entry $item -State Running -Detail $(if ($item.Action -eq 'Url') { 'Resmî indirme sayfası açılıyor' } elseif ($item.Operation -eq 'Uninstall') { 'Paket kaldırılıyor' } elseif ($item.Operation -eq 'Upgrade') { 'Paket güncelleniyor' } else { 'Paket kuruluyor' })
     Update-InstallQueueSummary
 
     if ($item.Action -eq 'Url') {
@@ -2204,24 +2230,24 @@ function Start-NextInstall {
         return
     }
 
-    $controls.ActivityText.Text = "Kuruluyor: $($item.Name)"
-    $installArguments = if ($item.Operation -eq 'Upgrade') {
+    $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
+    $installArguments = if ($item.Operation -eq 'Uninstall') {
+        @('uninstall','--id',$item.Id,'--exact')
+    } elseif ($item.Operation -eq 'Upgrade') {
         @('upgrade','--id',$item.Id,'--exact','--source',$item.PackageSource)
     } elseif ($item.InstallArguments) {
         @($item.InstallArguments)
     } else {
         @('install','--id',$item.Id,'--exact')
     }
-    if ($installArguments -notcontains '--source') {
+    if ($item.Operation -ne 'Uninstall' -and $installArguments -notcontains '--source') {
         $installArguments += @('--source','winget')
     }
-    $installArguments += @(
-        '--silent',
-        '--accept-package-agreements','--accept-source-agreements','--disable-interactivity'
-    )
+    $installArguments += @('--silent','--accept-source-agreements','--disable-interactivity')
+    if ($item.Operation -ne 'Uninstall') { $installArguments += '--accept-package-agreements' }
 
     try {
-        Write-PowerHubLog -Message "Kuruluyor: $($item.Name)" -Color Cyan
+        Write-PowerHubLog -Message $(if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }) -Color Cyan
         Write-PowerHubLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
         $script:wingetExecutable = Resolve-WingetExecutable
         if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
@@ -2248,7 +2274,7 @@ $script:installTimer.Add_Tick({
     $exitCode = [int]$script:installProcess.ExitCode
     if ($exitCode -eq 0) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
-        Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
+        Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
         Set-InstallQueueEntryState -Entry $item -State Failed -Detail "WinGet çıkış kodu: $exitCode" -Code $exitCode
@@ -2264,7 +2290,8 @@ $script:installTimer.Add_Tick({
 function Start-InstallQueueExecution {
     if ($script:installQueue.Count -eq 0) { return }
     Write-Host ''
-    Write-PowerHubLog -Message "$($script:installQueue.Count) uygulamalık kurulum kuyruğu başlatıldı." -Color White
+    $queueAction = if (@($script:installQueue | Where-Object Operation -eq 'Uninstall').Count -eq $script:installQueue.Count) { 'kaldırma' } else { 'paket işlemi' }
+    Write-PowerHubLog -Message "$($script:installQueue.Count) uygulamalık $queueAction kuyruğu başlatıldı." -Color White
     $script:installIndex = 0
     $script:installResults = [Collections.ArrayList]::new()
     $script:installCancelled = $false
@@ -2273,10 +2300,28 @@ function Start-InstallQueueExecution {
     $controls.SelectAllButton.IsEnabled = $false
     $controls.InstallProgress.Visibility = 'Visible'
     $controls.InstallProgress.Value = 0
-    $controls.ActivityText.Text = 'Kurulum hazırlanıyor...'
+    $controls.ActivityText.Text = if ($queueAction -eq 'kaldırma') { 'Kaldırma hazırlanıyor...' } else { 'Paket işlemleri hazırlanıyor...' }
     Set-InstallQueueVisibility $true
     Update-InstallQueueSummary
     Start-NextInstall
+}
+
+function Request-AppUninstall {
+    param($App)
+    if (-not $App -or $script:isInstalling -or $App.InstallState -notin @('Installed','UpdateAvailable')) { return }
+    $answer = [Windows.MessageBox]::Show(
+        $window,
+        "'$($App.Name)' bilgisayarınızdan kaldırılacak.`n`nDevam etmek istiyor musunuz?",
+        'PowerHub • Uygulamayı kaldır',
+        [Windows.MessageBoxButton]::YesNo,
+        [Windows.MessageBoxImage]::Warning,
+        [Windows.MessageBoxResult]::No
+    )
+    if ($answer -ne [Windows.MessageBoxResult]::Yes) { return }
+    $App.IsSelected = $false
+    $entry = New-InstallQueueEntry -App $App -OperationOverride Uninstall
+    Initialize-InstallQueue -Entries @($entry)
+    Start-InstallQueueExecution
 }
 
 $controls.InstallButton.Add_Click({
@@ -2307,15 +2352,15 @@ $controls.QueueCancelButton.Add_Click({
     $controls.InstallButton.IsEnabled = $true
     $controls.SelectAllButton.IsEnabled = $true
     $controls.InstallProgress.Value = 0
-    $controls.ActivityText.Text = 'Kurulum kuyruğu iptal edildi.'
-    Write-PowerHubLog -Message 'Kurulum kuyruğu kullanıcı tarafından iptal edildi.' -Color Yellow
+    $controls.ActivityText.Text = 'İşlem kuyruğu iptal edildi.'
+    Write-PowerHubLog -Message 'İşlem kuyruğu kullanıcı tarafından iptal edildi.' -Color Yellow
     Update-InstallQueueSummary
 })
 $controls.QueueRetryButton.Add_Click({
     $failedEntries = @($script:installQueueItems | Where-Object Status -eq 'Failed')
     if ($failedEntries.Count -eq 0 -or $script:isInstalling) { return }
     foreach ($entry in $failedEntries) {
-        Set-InstallQueueEntryState -Entry $entry -State Waiting -Detail $(if ($entry.Operation -eq 'Upgrade') { 'Güncelleme için yeniden sırada' } else { 'Kurulum için yeniden sırada' })
+        Set-InstallQueueEntryState -Entry $entry -State Waiting -Detail $(if ($entry.Operation -eq 'Uninstall') { 'Kaldırma için yeniden sırada' } elseif ($entry.Operation -eq 'Upgrade') { 'Güncelleme için yeniden sırada' } else { 'Kurulum için yeniden sırada' })
     }
     Initialize-InstallQueue -Entries $failedEntries
     Start-InstallQueueExecution
