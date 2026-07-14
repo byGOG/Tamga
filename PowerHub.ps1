@@ -355,7 +355,7 @@ public static class PowerHubWindowLayout {
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="14,9,13,9">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="36"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                     <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
                                         <Grid>
@@ -375,13 +375,11 @@ public static class PowerHubWindowLayout {
                                             VerticalAlignment="Center" ToolTip="Kurulum kaynağı">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
-                                    <CheckBox x:Name="AppCheck" Grid.Column="3" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                    <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Content="↗" Width="28" Height="28" Padding="0"
+                                            Background="#344550" BorderBrush="#465D69" BorderThickness="1" Foreground="#79CFF7" FontSize="15"
+                                            Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                    <CheckBox x:Name="AppCheck" Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    <Border Grid.Column="3" Width="28" Height="28" Background="#344550" CornerRadius="9"
-                                            Visibility="{Binding LinkVisibility}" ToolTip="Siteyi aç" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="↗" Foreground="#79CFF7" FontSize="15" FontWeight="SemiBold"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -721,6 +719,97 @@ $apps = [Collections.ArrayList]@(
     [pscustomobject]@{ Name='Bibata Cursor Installer'; Description='Bibata imleç temasını kurma aracı'; Action='Url'; Url='https://github.com/ful1e5/Bibata_Cursor'; Category='Betikler & Otomasyon'; Initial='B'; Color='#765B9A'; IsSelected=$false }
 )
 
+$officialWebsiteCatalog = @{
+    '7-Zip' = 'https://7-zip.org/download.html'
+    'AIMP' = 'https://www.aimp.ru'
+    'AnyDesk' = 'https://anydesk.com/'
+    'balenaEtcher' = 'https://etcher.balena.io/'
+    'Battle.net' = 'https://download.battle.net/en-us/desktop'
+    'Bitwarden' = 'https://bitwarden.com/'
+    'BleachBit' = 'https://www.bleachbit.org/'
+    'Brave' = 'https://brave.com/download'
+    'Bulk Crap Uninstaller' = 'https://www.bcuninstaller.com/'
+    'Claude' = 'https://claude.ai/download'
+    'CopyQ' = 'https://github.com/hluk/CopyQ'
+    'CPU-Z' = 'https://www.cpuid.com/softwares/cpu-z.html'
+    'Cursor' = 'https://www.cursor.com/'
+    'DeepL Translate' = 'https://www.deepl.com/en/app'
+    'Discord' = 'https://discord.com/download'
+    'DNS Jumper' = 'https://www.sordum.org/7952/dns-jumper-v2-3/'
+    'Docker Desktop' = 'https://www.docker.com/products/docker-desktop'
+    'DriverStore Explorer' = 'https://github.com/lostindark/DriverStoreExplorer'
+    'Dropbox' = 'https://www.dropbox.com/'
+    'Epic Games Launcher' = 'https://epicgames.com/download'
+    'ESET Security' = 'https://www.eset.com/int/home/internet-security'
+    'Everything' = 'https://www.voidtools.com/'
+    'Flow Launcher' = 'https://github.com/Flow-Launcher/Flow.Launcher'
+    'foobar2000' = 'https://www.foobar2000.org/'
+    'FurMark 2' = 'https://geeks3d.com/furmark/downloads/'
+    'Git' = 'https://gitforwindows.org/'
+    'GitHub Desktop' = 'https://github.com/apps/desktop'
+    'GOG Galaxy' = 'https://www.gog.com/galaxy'
+    'GoodbyeDPI' = 'https://github.com/ValdikSS/GoodbyeDPI'
+    'Google Antigravity' = 'https://antigravity.google/'
+    'Google Chrome' = 'https://www.google.com/chrome/'
+    'Google Drive' = 'https://workspace.google.com/products/drive/'
+    'GPU-Z' = 'https://www.techpowerup.com/gpuz/'
+    'HandBrake' = 'https://handbrake.fr/'
+    'HashCheck' = 'https://github.com/gurnec/HashCheck'
+    'HWiNFO64' = 'https://www.hwinfo.com/download/'
+    'ImageGlass' = 'https://imageglass.org/'
+    'Intel Driver & Support Assistant' = 'https://www.intel.com/content/www/us/en/support/detect.html'
+    'Internet Download Manager' = 'https://www.internetdownloadmanager.com/'
+    'IPTVnator' = 'https://github.com/4gray/iptvnator'
+    'iTunes' = 'https://www.apple.com/itunes/'
+    'JDownloader 2' = 'https://jdownloader.org'
+    'K-Lite Codec Pack Full' = 'https://codecguide.com/download_k-lite_codec_pack_full.htm'
+    'LocalSend' = 'https://localsend.org/'
+    'Malwarebytes' = 'https://www.malwarebytes.com/mwb-download'
+    'Mozilla Firefox' = 'https://www.mozilla.org/firefox/'
+    'Mullvad Browser' = 'https://mullvad.net/browser'
+    'Node.js LTS' = 'https://nodejs.org/'
+    'Notepad++' = 'https://notepad-plus-plus.org/'
+    'NVIDIA App' = 'https://www.nvidia.com/en-us/software/nvidia-app/'
+    'O&O AppBuster' = 'https://www.oo-software.com/products/ooappbuster'
+    'O&O ShutUp10++' = 'https://www.oo-software.com/products/ShutUp10'
+    'OBS Studio' = 'https://obsproject.com/'
+    'OCCT' = 'https://www.ocbase.com/download'
+    'Office Tool Plus' = 'https://github.com/YerongAI/Office-Tool'
+    'OneCommander' = 'https://onecommander.com/'
+    'OpenVPN Connect' = 'https://openvpn.net/client/'
+    'PassMark PerformanceTest' = 'https://www.passmark.com/products/performancetest/download.php'
+    'Postman' = 'https://www.postman.com/downloads/'
+    'PowerShell 7' = 'https://microsoft.com/PowerShell'
+    'PowerToys' = 'https://github.com/microsoft/PowerToys'
+    'Process Lasso' = 'https://bitsum.com/'
+    'Proton VPN' = 'https://protonvpn.com/'
+    'Python 3.13' = 'https://www.python.org/'
+    'qBittorrent' = 'https://www.qbittorrent.org/'
+    'Resource Hacker' = 'https://www.angusj.com/resourcehacker/'
+    'Rufus' = 'https://rufus.ie/'
+    'Sandboxie Plus' = 'https://github.com/sandboxie-plus/Sandboxie'
+    'ShareX' = 'https://getsharex.com/'
+    'Spotify' = 'https://www.spotify.com/download/windows/'
+    'Steam' = 'https://store.steampowered.com/about/'
+    'Subtitle Edit' = 'https://github.com/SubtitleEdit/subtitleedit'
+    'TeamViewer' = 'https://www.teamviewer.com/en/download/windows/'
+    'Telegram' = 'https://desktop.telegram.org/'
+    'TeraCopy' = 'https://codesector.com/teracopy'
+    'Thunderbird' = 'https://www.thunderbird.net/'
+    'Tor Browser' = 'https://www.torproject.org/'
+    'UniGetUI' = 'https://devolutions.net/unigetui/'
+    'Ventoy' = 'https://www.ventoy.net/'
+    'VirtualBox' = 'https://www.virtualbox.org/'
+    'Visual Studio Code' = 'https://code.visualstudio.com'
+    'VLC' = 'https://www.videolan.org/vlc/'
+    'WhatsApp' = 'https://www.whatsapp.com/download'
+    'WinRAR' = 'https://www.win-rar.com/'
+    'WizTree' = 'https://diskanalyzer.com/'
+    'Zen Browser' = 'https://zen-browser.app/'
+    'Zen Privacy' = 'https://irbis.sh/zen'
+    'Zoom' = 'https://zoom.us/'
+}
+
 foreach ($app in $apps) {
     if (-not $app.PSObject.Properties['Logo']) {
         $app | Add-Member -NotePropertyName Logo -NotePropertyValue $null
@@ -730,6 +819,9 @@ foreach ($app in $apps) {
     }
     $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -eq 'Url'
     $app | Add-Member -NotePropertyName IsWebResource -NotePropertyValue $isWebResource -Force
+    $websiteUrl = if ($isWebResource) { $app.Url } else { $officialWebsiteCatalog[$app.Name] }
+    $app | Add-Member -NotePropertyName WebsiteUrl -NotePropertyValue $websiteUrl -Force
+    $app | Add-Member -NotePropertyName WebsiteVisibility -NotePropertyValue $(if ($websiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     $app | Add-Member -NotePropertyName CheckVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }) -Force
     $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     if ($isWebResource) { $app.IsSelected = $false }
@@ -917,6 +1009,21 @@ $controls.SearchClearButton.Add_Click({
 })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
+$controls.AppList.AddHandler([Windows.Controls.Button]::ClickEvent, [Windows.RoutedEventHandler]{
+    param($sender, $eventArgs)
+    $button = $eventArgs.Source -as [Windows.Controls.Button]
+    if (-not $button -or [string]::IsNullOrWhiteSpace([string]$button.Tag)) { return }
+    try {
+        Start-Process -FilePath ([string]$button.Tag)
+        $item = [Windows.Controls.ItemsControl]::ContainerFromElement($controls.AppList, $button).DataContext
+        $controls.ActivityText.Text = "Resmî site açıldı: $($item.Name)"
+        Write-PowerHubLog -Message "Resmî site açıldı: $($item.Name) — $($button.Tag)" -Color Cyan
+    } catch {
+        $controls.ActivityText.Text = 'Resmî site açılamadı.'
+        Write-PowerHubLog -Message "Resmî site açılamadı: $($_.Exception.Message)" -Color Red
+    }
+    $eventArgs.Handled = $true
+})
 $controls.AppList.Add_PreviewMouseLeftButtonUp({
     param($sender, $eventArgs)
 
@@ -940,6 +1047,7 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
 
     $node = $source
     while ($node) {
+        if ($node -is [Windows.Controls.Button]) { return }
         if ($node -is [Windows.Controls.CheckBox]) { return }
         try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
     }

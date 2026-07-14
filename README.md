@@ -14,6 +14,7 @@ PowerHub, Windows uygulamalarını seçip `winget` üzerinden toplu ve sessiz bi
 - Tüm uygulamalar için önbelleğe alınan marka logoları
 - Canlı arama, kategori filtreleme, kaynak rozetleri ve kartın tamamından seçim
 - WEB kaynaklarında doğrudan site açma; web kartları kurulum seçimine dahil edilmez
+- Kurulabilir uygulama kartlarında seçimi değiştirmeden açılan resmî site düğmesi
 - Klavye kısayolları: `Ctrl+F` ara, `Ctrl+A` görünenleri seç, `Esc` temizle, `Enter` kurulumu başlat
 - Canlı terminal günlükleri ve kurulum ilerlemesi
 - Winget eksikse durum kartından Microsoft Store gerektirmeyen otomatik kurulum
@@ -61,6 +62,7 @@ PowerHub is a modern PowerShell/WPF interface for selecting and silently install
 - Cached brand logos for every application
 - Live search, category filtering, source badges, and full-card selection
 - Direct site launching for WEB resources; web cards are excluded from installation selection
+- Official website button on installable app cards without changing selection
 - Keyboard shortcuts: `Ctrl+F` search, `Ctrl+A` select visible, `Esc` clear, `Enter` install
 - Live terminal logs and installation progress
 - Store-independent App Installer setup from the status card when winget is missing
