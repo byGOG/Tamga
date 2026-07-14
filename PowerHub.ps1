@@ -176,30 +176,34 @@ if ($fontInstallFailures.Count -gt 0) {
             </Setter>
         </Style>
         <Style x:Key="NavButton" TargetType="Button">
-            <Setter Property="Foreground" Value="#D7DEF0"/>
+            <Setter Property="Foreground" Value="#BBC7D0"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="Margin" Value="0,1"/>
             <Setter Property="Padding" Value="8,7"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="NavBorder" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="11" Padding="{TemplateBinding Padding}">
+                                CornerRadius="8" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#394149"/>
-                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="#526270"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="#2D3942"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#174C70"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="#203F52"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="NavBorder" Property="BorderBrush" Value="#5BCDF7"/>
+                                <Setter TargetName="NavBorder" Property="BorderThickness" Value="1"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -1110,28 +1114,28 @@ foreach ($app in $apps) {
 }
 
 $categoryDefinitions = @(
-    [pscustomobject]@{ Name='Tümü'; Display='Tüm uygulamalar'; Icon='▦'; Background='#087BBE'; Foreground='#FFFFFF' },
-    [pscustomobject]@{ Name='Web Tarayıcıları'; Display='Web Tarayıcıları'; Icon='◎'; Background='#334D5E'; Foreground='#7DD3FC' },
-    [pscustomobject]@{ Name='Eklentiler'; Display='Eklentiler'; Icon='+'; Background='#4B465D'; Foreground='#D8C7FF' },
-    [pscustomobject]@{ Name='İletişim & Sosyal'; Display='İletişim & Sosyal'; Icon='✉'; Background='#433C59'; Foreground='#C4B5FD' },
-    [pscustomobject]@{ Name='Üretkenlik'; Display='Üretkenlik'; Icon='◆'; Background='#3D5258'; Foreground='#9ED5D8' },
-    [pscustomobject]@{ Name='Multimedya'; Display='Multimedya'; Icon='▷'; Background='#574632'; Foreground='#FCD34D' },
-    [pscustomobject]@{ Name='Geliştirme'; Display='Geliştirme'; Icon='</>'; Background='#284B47'; Foreground='#6EE7B7' },
-    [pscustomobject]@{ Name='Yapay Zeka'; Display='Yapay Zeka'; Icon='✦'; Background='#51405E'; Foreground='#D8B4FE' },
-    [pscustomobject]@{ Name='Donanım & Test'; Display='Donanım & Test'; Icon='◫'; Background='#55473D'; Foreground='#F5C59B' },
-    [pscustomobject]@{ Name='Ağ & Uzaktan Erişim'; Display='Ağ & Uzaktan Erişim'; Icon='⌁'; Background='#34545B'; Foreground='#8FE3E8' },
-    [pscustomobject]@{ Name='Mobil & Araçlar'; Display='Mobil & Araçlar'; Icon='▯'; Background='#42536A'; Foreground='#A9CCF4' },
-    [pscustomobject]@{ Name='Sistem Araçları'; Display='Sistem Araçları'; Icon='⚙'; Background='#3B485A'; Foreground='#93C5FD' },
-    [pscustomobject]@{ Name='Güvenlik'; Display='Güvenlik'; Icon='◇'; Background='#563C43'; Foreground='#FDA4AF' },
-    [pscustomobject]@{ Name='Gizlilik & Ağ Ayarları'; Display='Gizlilik & Ağ Ayarları'; Icon='◇'; Background='#34545B'; Foreground='#8FE3E8' },
-    [pscustomobject]@{ Name='Oyun & Platformlar'; Display='Oyun & Platformlar'; Icon='◈'; Background='#40533B'; Foreground='#B7E39B' },
-    [pscustomobject]@{ Name='Dosya Yönetimi'; Display='Dosya Yönetimi'; Icon='▤'; Background='#56503D'; Foreground='#E8D897' },
-    [pscustomobject]@{ Name='Sanallaştırma'; Display='Sanallaştırma'; Icon='⬡'; Background='#444A68'; Foreground='#B8C2FF' },
-    [pscustomobject]@{ Name='İndirme Yöneticileri'; Display='İndirme Yöneticileri'; Icon='↓'; Background='#3E526A'; Foreground='#A8D3F5' },
-    [pscustomobject]@{ Name='Film & Medya'; Display='Film & Medya'; Icon='▶'; Background='#55455E'; Foreground='#E2B5EF' },
-    [pscustomobject]@{ Name='Uygulama Arşivleri'; Display='Uygulama Arşivleri'; Icon='▦'; Background='#4D543D'; Foreground='#D5E5A2' },
-    [pscustomobject]@{ Name='Test & Web Analiz'; Display='Test & Web Analiz'; Icon='◉'; Background='#3E5360'; Foreground='#A9D8E8' },
-    [pscustomobject]@{ Name='Betikler & Otomasyon'; Display='Betikler & Otomasyon'; Icon='⚡'; Background='#55435B'; Foreground='#E8B8F3' }
+    [pscustomobject]@{ Name='Tümü'; Display='Tüm uygulamalar'; Glyph='E80A' },
+    [pscustomobject]@{ Name='Web Tarayıcıları'; Display='Web Tarayıcıları'; Glyph='E774' },
+    [pscustomobject]@{ Name='Eklentiler'; Display='Eklentiler'; Glyph='E710' },
+    [pscustomobject]@{ Name='İletişim & Sosyal'; Display='İletişim & Sosyal'; Glyph='E715' },
+    [pscustomobject]@{ Name='Üretkenlik'; Display='Üretkenlik'; Glyph='E8F1' },
+    [pscustomobject]@{ Name='Multimedya'; Display='Multimedya'; Glyph='E714' },
+    [pscustomobject]@{ Name='Geliştirme'; Display='Geliştirme'; Glyph='E943' },
+    [pscustomobject]@{ Name='Yapay Zeka'; Display='Yapay Zeka'; Glyph='E945' },
+    [pscustomobject]@{ Name='Donanım & Test'; Display='Donanım & Test'; Glyph='E950' },
+    [pscustomobject]@{ Name='Ağ & Uzaktan Erişim'; Display='Ağ & Uzaktan Erişim'; Glyph='E968' },
+    [pscustomobject]@{ Name='Mobil & Araçlar'; Display='Mobil & Araçlar'; Glyph='E8EA' },
+    [pscustomobject]@{ Name='Sistem Araçları'; Display='Sistem Araçları'; Glyph='E713' },
+    [pscustomobject]@{ Name='Güvenlik'; Display='Güvenlik'; Glyph='E72E' },
+    [pscustomobject]@{ Name='Gizlilik & Ağ Ayarları'; Display='Gizlilik & Ağ Ayarları'; Glyph='E8AC' },
+    [pscustomobject]@{ Name='Oyun & Platformlar'; Display='Oyun & Platformlar'; Glyph='E7FC' },
+    [pscustomobject]@{ Name='Dosya Yönetimi'; Display='Dosya Yönetimi'; Glyph='E8B7' },
+    [pscustomobject]@{ Name='Sanallaştırma'; Display='Sanallaştırma'; Glyph='E7F8' },
+    [pscustomobject]@{ Name='İndirme Yöneticileri'; Display='İndirme Yöneticileri'; Glyph='E896' },
+    [pscustomobject]@{ Name='Film & Medya'; Display='Film & Medya'; Glyph='E8B2' },
+    [pscustomobject]@{ Name='Uygulama Arşivleri'; Display='Uygulama Arşivleri'; Glyph='E8B7' },
+    [pscustomobject]@{ Name='Test & Web Analiz'; Display='Test & Web Analiz'; Glyph='E9D9' },
+    [pscustomobject]@{ Name='Betikler & Otomasyon'; Display='Betikler & Otomasyon'; Glyph='E756' }
 )
 
 foreach ($category in $categoryDefinitions) {
@@ -1140,55 +1144,64 @@ foreach ($category in $categoryDefinitions) {
     $button.Style = $window.Resources['NavButton']
     $button.Tag = $category.Name
     $button.ToolTip = $category.Display
-    $button.Margin = [Windows.Thickness]::new(0,2,0,2)
-    $button.Padding = [Windows.Thickness]::new(9,6,9,6)
+    $button.Margin = [Windows.Thickness]::new(0,1,0,1)
+    $button.Padding = [Windows.Thickness]::new(9,7,7,7)
+    [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
     if ($category.Name -eq 'Tümü') {
-        $button.Background = New-ColorBrush '#174C70'
-        $button.BorderBrush = New-ColorBrush '#278DD1'
+        $button.Background = New-ColorBrush '#203D4D'
+        $button.BorderBrush = New-ColorBrush '#35BDF0'
+        $button.BorderThickness = [Windows.Thickness]::new(3,0,0,0)
     }
 
     $grid = [Windows.Controls.Grid]::new()
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
-    $grid.ColumnDefinitions[0].Width = [Windows.GridLength]::new(38)
+    $grid.ColumnDefinitions[0].Width = [Windows.GridLength]::new(30)
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
     $grid.ColumnDefinitions[1].Width = [Windows.GridLength]::new(1, [Windows.GridUnitType]::Star)
     $grid.ColumnDefinitions.Add([Windows.Controls.ColumnDefinition]::new())
     $grid.ColumnDefinitions[2].Width = [Windows.GridLength]::Auto
 
-    $iconBox = [Windows.Controls.Border]::new()
-    $iconBox.Width = 30
-    $iconBox.Height = 30
-    $iconBox.CornerRadius = [Windows.CornerRadius]::new(9)
-    $iconBox.Background = New-ColorBrush $category.Background
     $icon = [Windows.Controls.TextBlock]::new()
-    $icon.Text = $category.Icon
-    $icon.Foreground = New-ColorBrush $category.Foreground
-    $icon.FontSize = if ($category.Icon -eq '</>') { 9.5 } else { 13 }
-    $icon.FontWeight = [Windows.FontWeights]::SemiBold
-    $icon.HorizontalAlignment = 'Center'
+    $icon.Text = [string][char][Convert]::ToInt32($category.Glyph, 16)
+    $icon.FontFamily = [Windows.Media.FontFamily]::new('Segoe Fluent Icons, Segoe MDL2 Assets')
+    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#61D5FF' } else { '#8B9AA6' })
+    $icon.FontSize = 15
+    $icon.HorizontalAlignment = 'Left'
     $icon.VerticalAlignment = 'Center'
-    $iconBox.Child = $icon
 
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
-    $label.Foreground = New-ColorBrush '#E7EDF3'
+    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#F3FAFD' } else { '#BDC8D0' })
     $label.FontSize = 11.5
     $label.FontWeight = if ($category.Name -eq 'Tümü') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
     $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
     [Windows.Controls.Grid]::SetColumn($label, 1)
 
+    $countBadge = [Windows.Controls.Border]::new()
+    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#173E52' } else { '#1D252B' })
+    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#2D7898' } else { '#39454D' })
+    $countBadge.BorderThickness = [Windows.Thickness]::new(1)
+    $countBadge.CornerRadius = [Windows.CornerRadius]::new(7)
+    $countBadge.Padding = [Windows.Thickness]::new(6,3,6,3)
+    $countBadge.MinWidth = 24
+    $countBadge.VerticalAlignment = 'Center'
+    $countBadge.HorizontalAlignment = 'Right'
+    [Windows.Controls.Grid]::SetColumn($countBadge, 2)
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush '#AFC0CE'
-    $countText.FontSize = 10
-    $countText.VerticalAlignment = 'Center'
-    $countText.Margin = [Windows.Thickness]::new(4,0,3,0)
-    [Windows.Controls.Grid]::SetColumn($countText, 2)
+    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Tümü') { '#78DDFF' } else { '#9EAFBA' })
+    $countText.FontSize = 9
+    $countText.HorizontalAlignment = 'Center'
+    $countBadge.Child = $countText
 
-    [void]$grid.Children.Add($iconBox)
+    [void]$grid.Children.Add($icon)
     [void]$grid.Children.Add($label)
-    [void]$grid.Children.Add($countText)
+    [void]$grid.Children.Add($countBadge)
+    $button | Add-Member -NotePropertyName IconElement -NotePropertyValue $icon
+    $button | Add-Member -NotePropertyName LabelElement -NotePropertyValue $label
+    $button | Add-Member -NotePropertyName CountBadge -NotePropertyValue $countBadge
+    $button | Add-Member -NotePropertyName CountElement -NotePropertyValue $countText
     $button.Content = $grid
     [void]$controls.CategoryPanel.Children.Add($button)
 }
@@ -1259,9 +1272,23 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
         foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
             $nav.Background = [Windows.Media.Brushes]::Transparent
             $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $nav.BorderThickness = [Windows.Thickness]::new(0)
+            $nav.IconElement.Foreground = New-ColorBrush '#8B9AA6'
+            $nav.LabelElement.Foreground = New-ColorBrush '#BDC8D0'
+            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
+            $nav.CountBadge.Background = New-ColorBrush '#1D252B'
+            $nav.CountBadge.BorderBrush = New-ColorBrush '#39454D'
+            $nav.CountElement.Foreground = New-ColorBrush '#9EAFBA'
         }
-        $sender.Background = New-ColorBrush '#174C70'
-        $sender.BorderBrush = New-ColorBrush '#278DD1'
+        $sender.Background = New-ColorBrush '#203D4D'
+        $sender.BorderBrush = New-ColorBrush '#35BDF0'
+        $sender.BorderThickness = [Windows.Thickness]::new(3, 0, 0, 0)
+        $sender.IconElement.Foreground = New-ColorBrush '#61D5FF'
+        $sender.LabelElement.Foreground = New-ColorBrush '#F3FAFD'
+        $sender.LabelElement.FontWeight = [Windows.FontWeights]::SemiBold
+        $sender.CountBadge.Background = New-ColorBrush '#173E52'
+        $sender.CountBadge.BorderBrush = New-ColorBrush '#2D7898'
+        $sender.CountElement.Foreground = New-ColorBrush '#78DDFF'
         Update-AppList
     })
 }
