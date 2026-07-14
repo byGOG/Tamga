@@ -453,8 +453,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
                                 <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="11" FontWeight="SemiBold"/>
                             </Border>
-                            <Border Background="#203B2C" CornerRadius="9" Padding="9,4">
-                                <TextBlock Text="●  Sistem hazır" Foreground="#7EE2A8" FontSize="11" FontWeight="SemiBold"/>
+                            <Border x:Name="SystemScanBadge" Background="#203B2C" CornerRadius="9" Padding="9,4">
+                                <TextBlock x:Name="SystemScanBadgeText" Text="●  Sistem hazır" Foreground="#7EE2A8" FontSize="11" FontWeight="SemiBold"/>
                             </Border>
                             <Border Background="#343A45" CornerRadius="9" Padding="9,4" Margin="7,0,0,0">
                                 <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="#C5D1DC" FontSize="11" FontWeight="SemiBold"/>
@@ -561,7 +561,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                     <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="8" Padding="8,4" Margin="8,0,8,0"
-                                            VerticalAlignment="Center" ToolTip="Kurulum kaynağı">
+                                            VerticalAlignment="Center" ToolTip="{Binding StatusDetail}">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
                                     <Button x:Name="WebsiteButton" Grid.Column="3" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
@@ -697,7 +697,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1096,7 +1096,10 @@ foreach ($app in $apps) {
     $app | Add-Member -NotePropertyName CheckVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }) -Force
     $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     if ($isWebResource) { $app.IsSelected = $false }
-    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'WINGET' }) -Force
+    $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isWebResource) { 'Web' } else { 'Pending' }) -Force
+    $app | Add-Member -NotePropertyName Operation -NotePropertyValue 'Install' -Force
+    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isWebResource) { 'Resmî web kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'BEKLİYOR' }) -Force
     $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
     $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#82CEFF' }) -Force
 }
@@ -1214,16 +1217,25 @@ $script:isInstalling = $false
 $script:visibleApps = @()
 
 function Update-SelectionStatus {
-    $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource })
+    $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' })
     if ($selected.Count -eq 0) {
         $controls.SelectionText.Text = 'Henüz uygulama seçilmedi'
         $controls.ActivityText.Text = 'Kurulacak uygulamaları işaretleyin.'
     } else {
-        $controls.SelectionText.Text = "{0} uygulama kurulacak" -f $selected.Count
+        $upgradeCount = @($selected | Where-Object Operation -eq 'Upgrade').Count
+        $installCount = $selected.Count - $upgradeCount
+        $controls.SelectionText.Text = if ($upgradeCount -gt 0 -and $installCount -gt 0) {
+            "$installCount kurulum • $upgradeCount güncelleme"
+        } elseif ($upgradeCount -gt 0) {
+            "$upgradeCount uygulama güncellenecek"
+        } else {
+            "$installCount uygulama kurulacak"
+        }
         if (-not $script:isInstalling) { $controls.ActivityText.Text = ($selected.Name -join ', ') }
     }
     $script:wingetExecutable = Resolve-WingetExecutable
     $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
+    $controls.InstallButton.Content = if (@($selected | Where-Object Operation -eq 'Upgrade').Count -gt 0) { 'İşlemi başlat  →' } else { 'Kurulumu başlat  →' }
 }
 
 function Update-AppList {
@@ -1236,7 +1248,7 @@ function Update-AppList {
     $controls.AppList.ItemsSource = $script:visibleApps
     $controls.ResultCount.Text = "{0} uygulama" -f $script:visibleApps.Count
     $controls.SectionTitle.Text = if ($script:activeCategory -eq 'Tümü') { 'Tüm uygulamalar' } else { $script:activeCategory }
-    $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource }).Count -gt 0
+    $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' }).Count -gt 0
     if (-not $script:isInstalling) { $controls.SelectAllButton.IsEnabled = $hasInstallableApps }
     $controls.SelectAllButton.Content = if ($hasInstallableApps) { 'Görünenleri seç' } else { 'Karttan siteyi aç' }
     $controls.SelectAllButton.ToolTip = if ($hasInstallableApps) { 'Görünen kurulabilir uygulamaları seç veya seçimi kaldır (Ctrl+A)' } else { 'WEB kartına tıklayarak siteyi açın' }
@@ -1246,6 +1258,187 @@ function Update-SearchChrome {
     $hasSearch = -not [string]::IsNullOrWhiteSpace($controls.SearchBox.Text)
     $controls.SearchPlaceholder.Visibility = if ($hasSearch) { 'Collapsed' } else { 'Visible' }
     $controls.SearchClearButton.Visibility = if ($hasSearch) { 'Visible' } else { 'Collapsed' }
+}
+
+function Set-AppInstallState {
+    param($App, [ValidateSet('Pending','NotInstalled','Installed','UpdateAvailable','Unknown')][string]$State)
+
+    $App.InstallState = $State
+    switch ($State) {
+        'Pending' {
+            $App.SourceLabel = 'TARANIYOR'
+            $App.SourceBackground = '#263F52'
+            $App.SourceForeground = '#82CEFF'
+            $App.StatusDetail = 'Sistemde kurulu olup olmadığı denetleniyor'
+            $App.Operation = 'None'
+            $App.IsSelected = $false
+            $App.CheckVisibility = [Windows.Visibility]::Collapsed
+        }
+        'NotInstalled' {
+            $App.SourceLabel = 'KURULU DEĞİL'
+            $App.SourceBackground = '#263F52'
+            $App.SourceForeground = '#82CEFF'
+            $App.StatusDetail = 'Bu uygulama bilgisayarda kurulu değil'
+            $App.Operation = 'Install'
+            $App.CheckVisibility = [Windows.Visibility]::Visible
+        }
+        'Installed' {
+            $App.SourceLabel = 'KURULU'
+            $App.SourceBackground = '#214B35'
+            $App.SourceForeground = '#7EE2A8'
+            $App.StatusDetail = 'Uygulama kurulu ve güncel'
+            $App.Operation = 'None'
+            $App.IsSelected = $false
+            $App.CheckVisibility = [Windows.Visibility]::Collapsed
+        }
+        'UpdateAvailable' {
+            $App.SourceLabel = 'GÜNCELLEME'
+            $App.SourceBackground = '#574422'
+            $App.SourceForeground = '#FFD58A'
+            $App.StatusDetail = 'Yeni sürüm mevcut; seçerek güncelleyebilirsiniz'
+            $App.Operation = 'Upgrade'
+            $App.CheckVisibility = [Windows.Visibility]::Visible
+        }
+        'Unknown' {
+            $App.SourceLabel = 'DURUM YOK'
+            $App.SourceBackground = '#3A3F45'
+            $App.SourceForeground = '#B9C2C9'
+            $App.StatusDetail = 'Kurulum durumu belirlenemedi; uygulama yine de kurulabilir'
+            $App.Operation = 'Install'
+            $App.CheckVisibility = [Windows.Visibility]::Visible
+        }
+    }
+}
+
+function Test-WingetOutputContainsId {
+    param([AllowEmptyString()][string]$Output, [string]$Id)
+    if ([string]::IsNullOrWhiteSpace($Output) -or [string]::IsNullOrWhiteSpace($Id)) { return $false }
+    $pattern = '(?im)(?<![A-Za-z0-9._-])' + [Regex]::Escape($Id) + '(?=\s|$)'
+    return [Regex]::IsMatch($Output, $pattern)
+}
+
+function Update-SystemScanSummary {
+    $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
+    $updateCount = @($apps | Where-Object InstallState -eq 'UpdateAvailable').Count
+    $controls.SystemScanBadge.Background = New-ColorBrush $(if ($updateCount -gt 0) { '#574422' } else { '#203B2C' })
+    $controls.SystemScanBadgeText.Foreground = New-ColorBrush $(if ($updateCount -gt 0) { '#FFD58A' } else { '#7EE2A8' })
+    $controls.SystemScanBadgeText.Text = if ($updateCount -gt 0) { "●  $installedCount kurulu • $updateCount yeni" } else { "●  $installedCount kurulu" }
+    $controls.SystemScanBadge.ToolTip = if ($updateCount -gt 0) { "$updateCount uygulama için güncelleme var" } else { 'Taranan uygulamalar güncel' }
+}
+
+$script:systemScanProcess = $null
+$script:systemScanResultFile = $null
+$script:systemScanTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:systemScanTimer.Interval = [TimeSpan]::FromMilliseconds(450)
+
+function Complete-SystemScan {
+    param($ScanResult)
+
+    if (-not $ScanResult -or [int]$ScanResult.InstalledExitCode -ne 0) {
+        throw 'WinGet kurulu uygulama listesini döndüremedi.'
+    }
+
+    $installedOutput = [string]$ScanResult.InstalledOutput
+    $upgradeOutput = [string]$ScanResult.UpgradeOutput
+    foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) {
+        if (Test-WingetOutputContainsId -Output $upgradeOutput -Id $app.Id) {
+            Set-AppInstallState -App $app -State UpdateAvailable
+        } elseif (Test-WingetOutputContainsId -Output $installedOutput -Id $app.Id) {
+            Set-AppInstallState -App $app -State Installed
+        } else {
+            Set-AppInstallState -App $app -State NotInstalled
+        }
+    }
+
+    Update-AppList
+    Update-SelectionStatus
+    Update-SystemScanSummary
+    $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
+    $updateCount = @($apps | Where-Object InstallState -eq 'UpdateAvailable').Count
+    $controls.ActivityText.Text = "Sistem tarandı: $installedCount kurulu, $updateCount güncelleme."
+    Write-PowerHubLog -Message "Akıllı tarama tamamlandı: $installedCount kurulu, $updateCount güncelleme." -Color Green
+}
+
+$script:systemScanTimer.Add_Tick({
+    if (-not $script:systemScanProcess) { return }
+    $script:systemScanProcess.Refresh()
+    if (-not $script:systemScanProcess.HasExited) { return }
+
+    $script:systemScanTimer.Stop()
+    $script:systemScanProcess.WaitForExit()
+    $script:systemScanProcess.Dispose()
+    $script:systemScanProcess = $null
+    try {
+        if (-not $script:systemScanResultFile -or -not (Test-Path -LiteralPath $script:systemScanResultFile)) {
+            throw 'Tarama sonucu oluşturulamadı.'
+        }
+        $scanResult = Get-Content -LiteralPath $script:systemScanResultFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        Complete-SystemScan -ScanResult $scanResult
+    } catch {
+        foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Unknown }
+        Update-AppList
+        Update-SelectionStatus
+        $controls.SystemScanBadge.Background = New-ColorBrush '#543136'
+        $controls.SystemScanBadgeText.Foreground = New-ColorBrush '#FFAAAA'
+        $controls.SystemScanBadgeText.Text = '●  Tarama başarısız'
+        $controls.SystemScanBadge.ToolTip = $_.Exception.Message
+        $controls.ActivityText.Text = 'Sistem taraması tamamlanamadı; uygulamalar yine de kurulabilir.'
+        Write-PowerHubLog -Message "Akıllı tarama hatası: $($_.Exception.Message)" -Color Red
+    } finally {
+        if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
+        $script:systemScanResultFile = $null
+    }
+})
+
+function Start-SystemScan {
+    if ($script:systemScanProcess -or $script:isInstalling) { return }
+    $winget = Resolve-WingetExecutable
+    if (-not $winget) { return }
+
+    foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Pending }
+    Update-AppList
+    Update-SelectionStatus
+    $controls.SelectAllButton.IsEnabled = $false
+    $controls.SystemScanBadge.Background = New-ColorBrush '#263F52'
+    $controls.SystemScanBadgeText.Foreground = New-ColorBrush '#82CEFF'
+    $controls.SystemScanBadgeText.Text = '◌  Sistem taranıyor'
+    $controls.SystemScanBadge.ToolTip = 'Kurulu uygulamalar ve güncellemeler denetleniyor'
+    $controls.ActivityText.Text = 'Kurulu uygulamalar ve güncellemeler taranıyor...'
+    Write-PowerHubLog -Message 'Akıllı sistem taraması başlatıldı.' -Color Cyan
+
+    $script:systemScanResultFile = Join-Path $env:TEMP ("PowerHub-scan-{0}.json" -f [Guid]::NewGuid().ToString('N'))
+    $payloadJson = @{ Winget=$winget; ResultFile=$script:systemScanResultFile } | ConvertTo-Json -Compress
+    $payloadBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($payloadJson))
+    $scanWorker = @'
+$ErrorActionPreference = 'Stop'
+$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)
+$payload = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('__PAYLOAD__')) | ConvertFrom-Json
+$result = [ordered]@{ InstalledExitCode=1; UpgradeExitCode=1; InstalledOutput=''; UpgradeOutput='' }
+try {
+    $result.InstalledOutput = (& $payload.Winget list --accept-source-agreements --disable-interactivity 2>&1 | Out-String)
+    $result.InstalledExitCode = [int]$LASTEXITCODE
+    $result.UpgradeOutput = (& $payload.Winget list --upgrade-available --accept-source-agreements --disable-interactivity 2>&1 | Out-String)
+    $result.UpgradeExitCode = [int]$LASTEXITCODE
+} catch {
+    $result.InstalledOutput = $_.Exception.Message
+} finally {
+    [IO.File]::WriteAllText($payload.ResultFile, ($result | ConvertTo-Json -Compress), [Text.UTF8Encoding]::new($false))
+}
+'@.Replace('__PAYLOAD__', $payloadBase64)
+    $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($scanWorker))
+    try {
+        $script:systemScanProcess = Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoProfile','-ExecutionPolicy','Bypass','-OutputFormat','Text','-EncodedCommand',$encodedCommand
+        ) -PassThru -NoNewWindow
+        $script:systemScanTimer.Start()
+    } catch {
+        $script:systemScanProcess = $null
+        if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
+        $script:systemScanResultFile = $null
+        foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Unknown }
+        Update-AppList
+        Write-PowerHubLog -Message "Akıllı tarama başlatılamadı: $($_.Exception.Message)" -Color Red
+    }
 }
 
 function Find-VisualChild {
@@ -1386,7 +1579,7 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     }
 
     $checkBox = Find-VisualChild -Parent $container -ChildType ([Windows.Controls.CheckBox])
-    if ($checkBox) {
+    if ($checkBox -and $item.Operation -ne 'None' -and $checkBox.Visibility -eq [Windows.Visibility]::Visible) {
         $checkBox.IsChecked = -not [bool]$checkBox.IsChecked
         $eventArgs.Handled = $true
     }
@@ -1413,7 +1606,7 @@ $window.Add_PreviewKeyDown({
         return
     }
     if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::A -and -not $controls.SearchBox.IsKeyboardFocusWithin) {
-        foreach ($app in @($script:visibleApps | Where-Object { -not $_.IsWebResource })) { $app.IsSelected = $true }
+        foreach ($app in @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' })) { $app.IsSelected = $true }
         Update-AppList
         Update-SelectionStatus
         $eventArgs.Handled = $true
@@ -1426,7 +1619,7 @@ $window.Add_PreviewKeyDown({
 })
 
 $controls.SelectAllButton.Add_Click({
-    $installableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource })
+    $installableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' })
     $allSelected = $installableApps.Count -gt 0 -and @($installableApps | Where-Object { -not $_.IsSelected }).Count -eq 0
     foreach ($app in $installableApps) { $app.IsSelected = -not $allSelected }
     Update-AppList
@@ -1443,7 +1636,7 @@ $script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
 function Complete-InstallQueue {
     $script:installTimer.Stop()
     $script:isInstalling = $false
-    $controls.SelectAllButton.IsEnabled = @($script:visibleApps | Where-Object { -not $_.IsWebResource }).Count -gt 0
+    $controls.SelectAllButton.IsEnabled = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' }).Count -gt 0
     $controls.InstallButton.IsEnabled = $true
     $controls.InstallProgress.Value = 100
 
@@ -1460,6 +1653,7 @@ function Complete-InstallQueue {
         $failedText = ($failed | ForEach-Object { "• $($_.Name) (kod: $($_.Code))" }) -join "`n"
         [Windows.MessageBox]::Show($window, "Bazı kurulumlar tamamlanamadı:`n`n$failedText", 'PowerHub', 'OK', 'Warning') | Out-Null
     }
+    Start-SystemScan
 }
 
 function Start-NextInstall {
@@ -1487,7 +1681,9 @@ function Start-NextInstall {
     }
 
     $controls.ActivityText.Text = "Kuruluyor: $($item.Name)"
-    $installArguments = if ($item.InstallArguments) {
+    $installArguments = if ($item.Operation -eq 'Upgrade') {
+        @('upgrade','--id',$item.Id,'--exact','--source',$item.PackageSource)
+    } elseif ($item.InstallArguments) {
         @($item.InstallArguments)
     } else {
         @('install','--id',$item.Id,'--exact')
@@ -1537,13 +1733,17 @@ $script:installTimer.Add_Tick({
 })
 
 $controls.InstallButton.Add_Click({
-    $script:installQueue = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource } | ForEach-Object {
+    $script:installQueue = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' } | ForEach-Object {
+        $sourceIndex = if ($_.PSObject.Properties['InstallArguments']) { [Array]::IndexOf([object[]]@($_.InstallArguments), '--source') } else { -1 }
+        $packageSource = if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt @($_.InstallArguments).Count) { @($_.InstallArguments)[$sourceIndex + 1] } else { 'winget' }
         [pscustomobject]@{
             Name = $_.Name
             Id = $_.Id
             Action = if ($_.PSObject.Properties['Action']) { $_.Action } else { 'Winget' }
             Url = if ($_.PSObject.Properties['Url']) { $_.Url } else { $null }
             InstallArguments = if ($_.PSObject.Properties['InstallArguments']) { @($_.InstallArguments) } else { $null }
+            Operation = $_.Operation
+            PackageSource = $packageSource
         }
     })
     if ($script:installQueue.Count -eq 0) { return }
@@ -1663,6 +1863,7 @@ $script:wingetInstallTimer.Add_Tick({
         $controls.ActivityText.Text = 'winget başarıyla kuruldu. Uygulamalar kurulabilir.'
         Set-WingetCardState -State Ready
         Update-SelectionStatus
+        Start-SystemScan
     } else {
         Write-PowerHubLog -Message "Store bağımsız winget kurulumu tamamlanamadı (kod: $exitCode)." -Color Red
         $controls.ActivityText.Text = 'Kurulum tamamlanamadı. Ayrıntılar terminalde; durum kartından yeniden deneyin.'
@@ -1800,6 +2001,11 @@ if ($winget) {
 } else {
     Write-PowerHubLog -Message 'winget bulunamadı. Kurulum için durum kartına tıklayın.' -Color Yellow
     Set-WingetCardState -State Missing
+    foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Unknown }
+    $controls.SystemScanBadge.Background = New-ColorBrush '#574422'
+    $controls.SystemScanBadgeText.Foreground = New-ColorBrush '#FFD58A'
+    $controls.SystemScanBadgeText.Text = '●  Tarama bekliyor'
+    $controls.SystemScanBadge.ToolTip = 'Akıllı tarama için önce WinGet kurulmalıdır'
     $controls.ActivityText.Text = 'winget kurmak için sol alttaki durum kartına tıklayın.'
 }
 
@@ -1807,4 +2013,12 @@ Update-AppList
 Update-SelectionStatus
 Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
+if ($winget) { Start-SystemScan }
+$window.Add_Closed({
+    $script:systemScanTimer.Stop()
+    if ($script:systemScanProcess -and -not $script:systemScanProcess.HasExited) {
+        Stop-Process -Id $script:systemScanProcess.Id -Force -ErrorAction SilentlyContinue
+    }
+    if ($script:systemScanResultFile) { Remove-Item -LiteralPath $script:systemScanResultFile -Force -ErrorAction SilentlyContinue }
+})
 $window.ShowDialog() | Out-Null
