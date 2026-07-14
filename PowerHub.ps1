@@ -353,8 +353,8 @@ public static class PowerHubWindowLayout {
                             <Border.Effect><DropShadowEffect Color="#101419" BlurRadius="9" ShadowDepth="1" Opacity="0.28"/></Border.Effect>
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border x:Name="AccentBar" Background="{Binding Color}"/>
-                                <Grid Grid.Column="1" Margin="14,9,13,9">
+                                <Border x:Name="AccentBar" Background="{Binding Color}" Visibility="{Binding CheckVisibility}"/>
+                                <Grid x:Name="InstallCardLayout" Grid.Column="1" Margin="14,9,13,9" Visibility="{Binding CheckVisibility}">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
                                     <Border Width="44" Height="44" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Center">
                                         <Border.Effect><DropShadowEffect Color="#687078" BlurRadius="7" ShadowDepth="1" Opacity="0.22"/></Border.Effect>
@@ -376,12 +376,34 @@ public static class PowerHubWindowLayout {
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
                                     <CheckBox x:Name="AppCheck" Grid.Column="3" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                              Visibility="{Binding CheckVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    <Border Grid.Column="3" Width="28" Height="28" Background="#344550" CornerRadius="9"
-                                            Visibility="{Binding LinkVisibility}" ToolTip="Siteyi aç" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="↗" Foreground="#79CFF7" FontSize="15" FontWeight="SemiBold"
+                                              VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                                <Grid x:Name="WebCardLayout" Grid.Column="1" Margin="17,13,14,13" Visibility="{Binding LinkVisibility}">
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="52"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/></Grid.ColumnDefinitions>
+                                    <Border Width="42" Height="42" Background="{Binding Color}" CornerRadius="12" VerticalAlignment="Top">
+                                        <Border.Effect><DropShadowEffect Color="#08151D" BlurRadius="8" ShadowDepth="2" Opacity="0.42"/></Border.Effect>
+                                        <Grid>
+                                            <Image Source="{Binding Logo}" Width="34" Height="34" Stretch="Uniform"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                                            <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="White" FontWeight="Bold" FontSize="14"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="1,0,8,0" VerticalAlignment="Top">
+                                        <TextBlock Text="{Binding Name}" Foreground="#F2F6F9" FontWeight="SemiBold" FontSize="15"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <Border Background="#3C3B53" CornerRadius="5" Padding="6,2" Margin="0,6,0,0" HorizontalAlignment="Left">
+                                            <TextBlock Text="WEB" Foreground="#CFC6F4" FontSize="8.5" FontWeight="Bold"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <Border Grid.Column="2" Width="29" Height="29" Background="#1B303C" BorderBrush="#2C4655" BorderThickness="1"
+                                            CornerRadius="9" ToolTip="Siteyi aç" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                        <TextBlock Text="↗" Foreground="#7FA7BB" FontSize="15" FontWeight="SemiBold"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Description}" Foreground="#AEBBC4"
+                                               FontSize="12" Margin="1,8,0,0" TextTrimming="CharacterEllipsis" VerticalAlignment="Top"/>
                                 </Grid>
                             </Grid>
                         </Border>
@@ -395,6 +417,20 @@ public static class PowerHubWindowLayout {
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="#278DD1"/>
                                 <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding IsWebResource}" Value="True">
+                                <Setter TargetName="CardBorder" Property="Height" Value="108"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="#112631"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#28404D"/>
+                                <Setter TargetName="CardBorder" Property="CornerRadius" Value="16"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsWebResource}" Value="True"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="CardBorder" Property="Background" Value="#17313E"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#356077"/>
+                            </MultiDataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
