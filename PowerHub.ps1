@@ -1,7 +1,7 @@
-﻿#requires -Version 5.1
+#requires -Version 5.1
 
 <#
-    PowerHub - simple, modern bulk application installer for Windows.
+    PowerHub - Windows için sade ve modern toplu uygulama kurucusu.
     Uses the built-in Windows Package Manager (winget).
 #>
 
@@ -503,9 +503,6 @@ if ($fontInstallFailures.Count -gt 0) {
                         </Border>
                         <Grid Margin="3,9,3,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
-                            <Button x:Name="KeyboardHelpButton" Content="⌨  KLAVYE  F1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    Background="Transparent" Foreground="#8CCFEA" FontSize="9.5" Padding="7,2" ToolTip="Klavye kısayollarını göster"
-                                    AutomationProperties.Name="Klavye kısayollarını göster"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#7EE2A8" FontSize="10" FontWeight="Bold"/>
                         </Grid>
                     </StackPanel>
@@ -514,6 +511,9 @@ if ($fontInstallFailures.Count -gt 0) {
 
             <Grid Grid.Row="1" Margin="0,15,0,10">
                 <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
+                <Button x:Name="KeyboardHelpButton" Content="⌨  F1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,104,0"
+                        Background="#292929" BorderBrush="#454545" BorderThickness="1" Foreground="#8CCFEA" FontSize="10" Padding="8,4"
+                        ToolTip="Klavye kısayollarını göster" AutomationProperties.Name="Klavye kısayollarını göster"/>
                 <Border HorizontalAlignment="Right" Background="#2D2D2D" BorderBrush="#454545" BorderThickness="1" CornerRadius="4" Padding="9,4">
                     <TextBlock x:Name="ResultCount" Foreground="#B8C6D1" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
@@ -1254,7 +1254,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <Grid Margin="0,16,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                             <Button x:Name="AboutByGogButton" Grid.Column="0" Content="byGOG" Background="#303030" Foreground="#E1E9EE"
-                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG web sitesini aç"/>
+                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG internet sitesini aç"/>
                             <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="#174A63" Foreground="#A9E5FF"
                                     BorderBrush="#286783" BorderThickness="1" Padding="13,10" ToolTip="PowerHub GitHub sayfasını aç"/>
                         </Grid>
@@ -1548,11 +1548,11 @@ foreach ($app in $apps) {
     if ($isWebResource) { $app.IsSelected = $false }
     $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isWebResource) { 'Web' } else { 'Pending' }) -Force
     $app | Add-Member -NotePropertyName Operation -NotePropertyValue 'Install' -Force
-    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isWebResource) { 'Resmî web kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
-    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'BEKLİYOR' }) -Force
+    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
     $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
     $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#82CEFF' }) -Force
-    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isWebResource) { 'Web kaynağı' } else { 'Paket durumu taranıyor' })) -Force
+    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
 }
 
 $logoCatalog = Get-PowerHubLogoCatalog
@@ -1580,7 +1580,7 @@ foreach ($category in $categoryDefinitions) {
     $button.Padding = [Windows.Thickness]::new(9,7,7,7)
     [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
     [Windows.Automation.AutomationProperties]::SetHelpText($button, 'Kategoriyi açmak için Enter veya Boşluk tuşuna basın')
-    if ($category.Name -eq 'Web Tarayıcıları') {
+    if ($category.Name -eq 'İnternet Tarayıcıları') {
         $button.Background = New-ColorBrush '#2D2D2D'
         $button.BorderBrush = New-ColorBrush '#168FC6'
         $button.BorderThickness = [Windows.Thickness]::new(3,0,0,0)
@@ -1597,23 +1597,23 @@ foreach ($category in $categoryDefinitions) {
     $icon = [Windows.Controls.TextBlock]::new()
     $icon.Text = [string][char][Convert]::ToInt32($category.Glyph, 16)
     $icon.FontFamily = [Windows.Media.FontFamily]::new('Segoe Fluent Icons, Segoe MDL2 Assets')
-    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#55BCE8' } else { '#9B9B9B' })
+    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#55BCE8' } else { '#9B9B9B' })
     $icon.FontSize = 15
     $icon.HorizontalAlignment = 'Left'
     $icon.VerticalAlignment = 'Center'
 
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
-    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#FFFFFF' } else { '#C8C8C8' })
+    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#FFFFFF' } else { '#C8C8C8' })
     $label.FontSize = 11.5
-    $label.FontWeight = if ($category.Name -eq 'Web Tarayıcıları') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
+    $label.FontWeight = if ($category.Name -eq 'İnternet Tarayıcıları') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
     $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
     [Windows.Controls.Grid]::SetColumn($label, 1)
 
     $countBadge = [Windows.Controls.Border]::new()
-    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#25343B' } else { '#242424' })
-    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#366072' } else { '#444444' })
+    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#25343B' } else { '#242424' })
+    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#366072' } else { '#444444' })
     $countBadge.BorderThickness = [Windows.Thickness]::new(1)
     $countBadge.CornerRadius = [Windows.CornerRadius]::new(7)
     $countBadge.Padding = [Windows.Thickness]::new(6,3,6,3)
@@ -1623,7 +1623,7 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($countBadge, 2)
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'Web Tarayıcıları') { '#8DD7F4' } else { '#A0A0A0' })
+    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#8DD7F4' } else { '#A0A0A0' })
     $countText.FontSize = 9
     $countText.HorizontalAlignment = 'Center'
     $countBadge.Child = $countText
@@ -1642,7 +1642,7 @@ foreach ($category in $categoryDefinitions) {
 $controls.TotalAppBadgeText.Text = "{0} uygulama" -f $apps.Count
 $controls.CategoryBadgeText.Text = "{0} kategori" -f $categoryDefinitions.Count
 
-$script:activeCategory = 'Web Tarayıcıları'
+$script:activeCategory = 'İnternet Tarayıcıları'
 $script:isInstalling = $false
 $script:visibleApps = @()
 $script:updatePackages = [Collections.ObjectModel.ObservableCollection[object]]::new()
@@ -1805,7 +1805,7 @@ function New-SecurityCheckViewModel {
 
 function Show-SecurityScanPlaceholder {
     $script:securityChecks.Clear()
-    foreach ($name in @('Windows koruması','WinGet ve paket kaynakları','Yetki kapsamı','Execution Policy','Katalog bütünlüğü','Güncelleme durumu')) {
+    foreach ($name in @('Windows koruması','WinGet ve paket kaynakları','Yetki kapsamı','Betik çalıştırma ilkesi','Katalog bütünlüğü','Güncelleme durumu')) {
         [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name $name -Detail 'Denetim sürüyor...' -Status Scanning))
     }
     $controls.SecurityCheckList.ItemsSource = @($script:securityChecks)
@@ -1830,7 +1830,7 @@ function Complete-SecurityScan {
     $insecureOfficialSites = @($catalog.OfficialWebsites.PSObject.Properties | Where-Object { [string]$_.Value -notmatch '^https://' }).Count
     $insecureLinks = $insecureWebResources + $insecureOfficialSites
     $catalogStatus = if ($duplicateNames -eq 0 -and $invalidCategories -eq 0 -and $insecureLinks -eq 0) { 'Pass' } else { 'Warning' }
-    $catalogDetail = if ($catalogStatus -eq 'Pass') { "$($apps.Count) kayıt, $($categoryNames.Count) kategori ve HTTPS web kaynakları doğrulandı." } else { "$duplicateNames yinelenen ad, $invalidCategories geçersiz kategori, $insecureLinks güvenli olmayan bağlantı." }
+    $catalogDetail = if ($catalogStatus -eq 'Pass') { "$($apps.Count) kayıt, $($categoryNames.Count) kategori ve HTTPS internet kaynakları doğrulandı." } else { "$duplicateNames yinelenen ad, $invalidCategories geçersiz kategori, $insecureLinks güvenli olmayan bağlantı." }
     [void]$script:securityChecks.Add((New-SecurityCheckViewModel -Name 'Katalog bütünlüğü' -Detail $catalogDetail -Status $catalogStatus))
 
     $updateCount = @($script:updatePackages).Count
@@ -1937,7 +1937,7 @@ Add-Check 'Yetki kapsamı' $(if ($isAdmin) { 'PowerHub yönetici yetkisiyle çal
 
 $policies = Get-ExecutionPolicy -List
 $persistentUnsafe = @($policies | Where-Object { $_.Scope -in @('CurrentUser','LocalMachine') -and $_.ExecutionPolicy -in @('Bypass','Unrestricted') })
-Add-Check 'Execution Policy' $(if ($persistentUnsafe.Count -eq 0) { 'Kalıcı kullanıcı ve makine ilkelerinde Bypass/Unrestricted bulunmuyor.' } else { 'Kalıcı Execution Policy gevşetilmiş: ' + (($persistentUnsafe | ForEach-Object { "$($_.Scope)=$($_.ExecutionPolicy)" }) -join ', ') }) $(if ($persistentUnsafe.Count -eq 0) { 'Pass' } else { 'Warning' })
+Add-Check 'Betik çalıştırma ilkesi' $(if ($persistentUnsafe.Count -eq 0) { 'Kalıcı kullanıcı ve makine ilkelerinde sınırsız ya da atlatılmış çalışma izni bulunmuyor.' } else { 'Kalıcı betik çalıştırma ilkesi gevşetilmiş: ' + (($persistentUnsafe | ForEach-Object { "$($_.Scope)=$($_.ExecutionPolicy)" }) -join ', ') }) $(if ($persistentUnsafe.Count -eq 0) { 'Pass' } else { 'Warning' })
 
 Add-Check 'Kurulum güvenliği' 'Tam paket kimliği, exact eşleşme ve WinGet kaynak kısıtlaması kullanılıyor.' 'Pass'
 [IO.File]::WriteAllText($payload.ResultFile, (@{Checks=@($checks)} | ConvertTo-Json -Depth 5 -Compress), [Text.UTF8Encoding]::new($false))
@@ -2020,7 +2020,7 @@ function Update-AppList {
     $hasInstallableApps = @($script:visibleApps | Where-Object { -not $_.IsWebResource -and $_.Operation -ne 'None' }).Count -gt 0
     if (-not $script:isInstalling) { $controls.SelectAllButton.IsEnabled = $hasInstallableApps }
     $controls.SelectAllButton.Content = if ($hasInstallableApps) { 'Görünenleri seç' } else { 'Karttan siteyi aç' }
-    $controls.SelectAllButton.ToolTip = if ($hasInstallableApps) { 'Görünen kurulabilir uygulamaları seç veya seçimi kaldır (Ctrl+A)' } else { 'WEB kartına tıklayarak siteyi açın' }
+    $controls.SelectAllButton.ToolTip = if ($hasInstallableApps) { 'Görünen kurulabilir uygulamaları seç veya seçimi kaldır (Ctrl+A)' } else { 'Site kartına tıklayarak resmî sayfayı açın' }
 }
 
 function Update-SearchChrome {
@@ -2437,7 +2437,7 @@ $controls.AboutButton.Add_Click({ Set-PowerHubAboutVisibility $true })
 $controls.AboutCloseButton.Add_Click({ Set-PowerHubAboutVisibility $false })
 $controls.AboutBackdrop.Add_MouseLeftButtonUp({ Set-PowerHubAboutVisibility $false })
 $controls.AboutByGogButton.Add_Click({
-    try { Start-Process -FilePath 'https://bygog.github.io/' } catch { Write-PowerHubLog -Message "byGOG web sitesi açılamadı: $($_.Exception.Message)" -Color Red }
+    try { Start-Process -FilePath 'https://bygog.github.io/' } catch { Write-PowerHubLog -Message "byGOG internet sitesi açılamadı: $($_.Exception.Message)" -Color Red }
 })
 $controls.AboutGitHubButton.Add_Click({
     try { Start-Process -FilePath 'https://github.com/byGOG/PowerHub' } catch { Write-PowerHubLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
@@ -2577,7 +2577,7 @@ function Start-AppDetailMetadataLoad {
     Stop-AppDetailMetadataLoad
     if ($App.IsWebResource) {
         Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-            InstalledVersion='Gerekmez'; CatalogVersion='Web'; Publisher='Resmî web kaynağı'; Author='—'; License='Siteye göre'; InstallerType='Web bağlantısı'; Tags='Web  •  Kaynak'; State='Web kaynağı • kurulum gerektirmez'
+            InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; State='İnternet kaynağı • kurulum gerektirmez'
         })
         return
     }
@@ -2594,7 +2594,7 @@ function Start-AppDetailMetadataLoad {
         $sourceIndex = [Array]::IndexOf([object[]]$arguments, '--source')
         if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt $arguments.Count) { $source = [string]$arguments[$sourceIndex + 1] }
     }
-    $controls.AppDetailSource.Text = if ($source -eq 'msstore') { 'Microsoft Store' } else { 'WinGet Community' }
+    $controls.AppDetailSource.Text = if ($source -eq 'msstore') { 'Microsoft Mağazası' } else { 'WinGet topluluk kaynağı' }
     $script:detailMetadataResultFile = Join-Path $env:TEMP ("PowerHub-detail-{0}.json" -f [Guid]::NewGuid().ToString('N'))
     $payloadJson = @{ Winget=(Resolve-WingetExecutable); Id=$App.Id; Source=$source; ResultFile=$script:detailMetadataResultFile } | ConvertTo-Json -Compress
     $payloadBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($payloadJson))
@@ -2638,8 +2638,8 @@ function Show-AppDetail {
     $controls.AppDetailName.Text = $App.Name
     $controls.AppDetailCategory.Text = $App.Category
     $controls.AppDetailDescription.Text = $App.Description
-    $controls.AppDetailId.Text = if ($App.IsWebResource) { 'Web kaynağı' } else { $App.Id }
-    $controls.AppDetailSource.Text = if ($App.IsWebResource) { 'Resmî web kaynağı' } else { 'WinGet' }
+    $controls.AppDetailId.Text = if ($App.IsWebResource) { 'İnternet kaynağı' } else { $App.Id }
+    $controls.AppDetailSource.Text = if ($App.IsWebResource) { 'Resmî internet kaynağı' } else { 'WinGet' }
     $controls.AppDetailMetaCategory.Text = $App.Category
     $controls.AppDetailLogo.Source = $App.Logo
     $controls.AppDetailInitial.Text = $App.Initial
@@ -2933,7 +2933,7 @@ function Add-FailedOperation {
     if ($existing) { [void]$script:failedOperations.Remove($existing) }
     $websiteFallback = if ($Item.PSObject.Properties['Url']) { [string]$Item.Url } else { '' }
     $website = Get-AppOfficialWebsite -Name $name -Fallback $websiteFallback
-    $operationLabel = switch ($Operation) { 'Install' {'Kurulum'} 'Upgrade' {'Güncelleme'} 'Uninstall' {'Kaldırma'} default {'Web sayfası'} }
+    $operationLabel = switch ($Operation) { 'Install' {'Kurulum'} 'Upgrade' {'Güncelleme'} 'Uninstall' {'Kaldırma'} default {'İnternet sayfası'} }
     $time = [DateTime]::Now
     $entry = [pscustomobject]@{
         Name = $name

@@ -3,8 +3,8 @@
   "UpdatedAt": "2026-07-14",
   "Categories": [
     {
-      "Name": "Web Tarayıcıları",
-      "Display": "Web Tarayıcıları",
+      "Name": "İnternet Tarayıcıları",
+      "Display": "İnternet Tarayıcıları",
       "Glyph": "E774"
     },
     {
@@ -98,8 +98,8 @@
       "Glyph": "E8B7"
     },
     {
-      "Name": "Test & Web Analiz",
-      "Display": "Test & Web Analiz",
+      "Name": "İnternet Testleri",
+      "Display": "İnternet Testleri",
       "Glyph": "E9D9"
     },
     {
@@ -111,9 +111,9 @@
   "Applications": [
     {
       "Name": "Google Chrome",
-      "Description": "Hızlı web tarayıcısı",
+      "Description": "Hızlı internet tarayıcısı",
       "Id": "Google.Chrome",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "G",
       "Color": "#4285F4"
     },
@@ -121,7 +121,7 @@
       "Name": "Mozilla Firefox",
       "Description": "Özgür ve gizlilik odaklı",
       "Id": "Mozilla.Firefox",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "F",
       "Color": "#FF7139"
     },
@@ -129,7 +129,7 @@
       "Name": "Brave",
       "Description": "Reklam engelleyici tarayıcı",
       "Id": "Brave.Brave",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "B",
       "Color": "#FB542B"
     },
@@ -137,7 +137,7 @@
       "Name": "Zen Browser",
       "Description": "Sade ve modern tarayıcı",
       "Id": "Zen-Team.Zen-Browser",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "Z",
       "Color": "#6B7CFF"
     },
@@ -145,7 +145,7 @@
       "Name": "Tor Browser",
       "Description": "Anonimlik odaklı tarayıcı",
       "Id": "TorProject.TorBrowser",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "T",
       "Color": "#7D4698"
     },
@@ -153,7 +153,7 @@
       "Name": "Mullvad Browser",
       "Description": "Parmak izi korumalı tarayıcı",
       "Id": "MullvadVPN.MullvadBrowser",
-      "Category": "Web Tarayıcıları",
+      "Category": "İnternet Tarayıcıları",
       "Initial": "M",
       "Color": "#D29422"
     },
@@ -626,7 +626,7 @@
     },
     {
       "Name": "Dark Reader",
-      "Description": "Web siteleri için karanlık tema",
+      "Description": "İnternet siteleri için karanlık tema",
       "Action": "Url",
       "Url": "https://darkreader.org/",
       "Category": "Eklentiler",
@@ -653,7 +653,7 @@
     },
     {
       "Name": "TWP Translate Web Pages",
-      "Description": "Web sayfası çeviri eklentisi",
+      "Description": "İnternet sayfası çeviri eklentisi",
       "Action": "Url",
       "Url": "https://github.com/FilipePS/Traduzir-paginas-web",
       "Category": "Eklentiler",
@@ -680,7 +680,7 @@
     },
     {
       "Name": "Gmail",
-      "Description": "Google web posta hizmeti",
+      "Description": "Google internet posta hizmeti",
       "Action": "Url",
       "Url": "https://mail.google.com/",
       "Category": "İletişim & Sosyal",
@@ -689,7 +689,7 @@
     },
     {
       "Name": "Outlook",
-      "Description": "Microsoft web posta hizmeti",
+      "Description": "Microsoft internet posta hizmeti",
       "Action": "Url",
       "Url": "https://outlook.live.com/mail/",
       "Category": "İletişim & Sosyal",
@@ -698,7 +698,7 @@
     },
     {
       "Name": "Yahoo Mail",
-      "Description": "Yahoo web posta hizmeti",
+      "Description": "Yahoo internet posta hizmeti",
       "Action": "Url",
       "Url": "https://mail.yahoo.com/",
       "Category": "İletişim & Sosyal",
@@ -1076,7 +1076,7 @@
     },
     {
       "Name": "Microsoft Package Picker",
-      "Description": "Microsoft Store çoklu uygulama paketi",
+      "Description": "Microsoft Mağazası çoklu uygulama paketi",
       "Action": "Url",
       "Url": "https://apps.microsoft.com/",
       "Category": "Uygulama Arşivleri",
@@ -1133,7 +1133,7 @@
       "Description": "Tarayıcı gizlilik ve sızıntı testleri",
       "Action": "Url",
       "Url": "https://browserleaks.com/",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "BL",
       "Color": "#4A7290"
     },
@@ -1142,7 +1142,7 @@
       "Description": "Gecikme ve bufferbloat testi",
       "Action": "Url",
       "Url": "https://www.waveform.com/tools/bufferbloat",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "BT",
       "Color": "#3C7D9B"
     },
@@ -1151,7 +1151,7 @@
       "Description": "Netflix internet hız testi",
       "Action": "Url",
       "Url": "https://fast.com/",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "F",
       "Color": "#C93838"
     },
@@ -1160,7 +1160,7 @@
       "Description": "İnternet hız ve gecikme testi",
       "Action": "Url",
       "Url": "https://www.speedtest.net/",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "S",
       "Color": "#2874B5"
     },
@@ -1169,7 +1169,7 @@
       "Description": "Bağlantı kalitesi ve hız testi",
       "Action": "Url",
       "Url": "https://speed.cloudflare.com/",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "CF",
       "Color": "#E78B2B"
     },
@@ -1178,7 +1178,7 @@
       "Description": "DNS çözümleyici hız karşılaştırması",
       "Action": "Url",
       "Url": "https://www.dnsperf.com/dns-speed-benchmark",
-      "Category": "Test & Web Analiz",
+      "Category": "İnternet Testleri",
       "Initial": "DS",
       "Color": "#4A78A0"
     },
