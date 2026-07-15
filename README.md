@@ -39,7 +39,7 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 
 | Alan | PowerHub ne sunuyor? |
 | --- | --- |
-| **Modern arayüz** | Windows 11 ve Fluent tasarım diline uyumlu, net ve erişilebilir koyu WPF arayüzü |
+| **Fluent Aurora arayüzü** | Windows 11'in Mica uyumlu katmanları, yumuşak yükselti, modern köşe geometrisi ve sakin camgöbeği vurgularıyla net ve erişilebilir koyu WPF arayüzü |
 | **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir internet kaynağı |
 | **Akıllı sistem taraması** | Kurulu uygulamaları ve bekleyen WinGet güncellemelerini arka planda denetleme |
 | **Güncelleme Merkezi** | Sürüm karşılaştırması, tekli veya toplu seçim ve canlı güncelleme ilerlemesi |
