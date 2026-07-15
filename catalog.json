@@ -198,14 +198,6 @@
       "Color": "#0A84FF"
     },
     {
-      "Name": "Zoom",
-      "Description": "Video toplantıları",
-      "Id": "Zoom.Zoom",
-      "Category": "İletişim & Sosyal",
-      "Initial": "Z",
-      "Color": "#2D8CFF"
-    },
-    {
       "Name": "Google Drive",
       "Description": "Bulut depolama ve eşitleme",
       "Id": "Google.GoogleDrive",
@@ -302,36 +294,12 @@
       "Color": "#F05032"
     },
     {
-      "Name": "Node.js LTS",
-      "Description": "JavaScript çalışma ortamı",
-      "Id": "OpenJS.NodeJS.LTS",
-      "Category": "Geliştirme",
-      "Initial": "N",
-      "Color": "#339933"
-    },
-    {
       "Name": "Python 3.13",
       "Description": "Python geliştirme ortamı",
       "Id": "Python.Python.3.13",
       "Category": "Geliştirme",
       "Initial": "Py",
       "Color": "#3776AB"
-    },
-    {
-      "Name": "Docker Desktop",
-      "Description": "Konteyner geliştirme platformu",
-      "Id": "Docker.DockerDesktop",
-      "Category": "Geliştirme",
-      "Initial": "D",
-      "Color": "#2496ED"
-    },
-    {
-      "Name": "Postman",
-      "Description": "API geliştirme ve test aracı",
-      "Id": "Postman.Postman",
-      "Category": "Geliştirme",
-      "Initial": "P",
-      "Color": "#FF6C37"
     },
     {
       "Name": "Notepad++",
@@ -1249,7 +1217,6 @@
     "DeepL Translate": "https://www.deepl.com/",
     "Discord": "https://discord.com/",
     "DNS Jumper": "https://www.sordum.org/7952/dns-jumper-v2-3/",
-    "Docker Desktop": "https://www.docker.com/products/docker-desktop",
     "DriverStore Explorer": "https://github.com/lostindark/DriverStoreExplorer",
     "Dropbox": "https://www.dropbox.com/",
     "Epic Games Launcher": "https://epicgames.com/download",
@@ -1280,7 +1247,6 @@
     "Malwarebytes": "https://www.malwarebytes.com/mwb-download",
     "Mozilla Firefox": "https://www.firefox.com/tr/",
     "Mullvad Browser": "https://mullvad.net/tr/browser",
-    "Node.js LTS": "https://nodejs.org/",
     "Notepad++": "https://notepad-plus-plus.org/",
     "NVIDIA App": "https://www.nvidia.com/en-us/software/nvidia-app/",
     "O&O AppBuster": "https://www.oo-software.com/products/ooappbuster",
@@ -1291,7 +1257,6 @@
     "OneCommander": "https://onecommander.com/",
     "OpenVPN Connect": "https://openvpn.net/client/",
     "PassMark PerformanceTest": "https://www.passmark.com/products/performancetest/download.php",
-    "Postman": "https://www.postman.com/downloads/",
     "PowerShell 7": "https://microsoft.com/PowerShell",
     "PowerToys": "https://github.com/microsoft/PowerToys",
     "Process Lasso": "https://bitsum.com/",
@@ -1319,7 +1284,6 @@
     "WinRAR": "https://www.win-rar.com/",
     "WizTree": "https://diskanalyzer.com/",
     "Zen Browser": "https://zen-browser.app/",
-    "Zen Privacy": "https://irbis.sh/zen",
-    "Zoom": "https://zoom.us/"
+    "Zen Privacy": "https://irbis.sh/zen"
   }
 }
