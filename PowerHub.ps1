@@ -317,6 +317,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
                     <Border Width="40" Height="40" CornerRadius="7" Background="#087EBD">
@@ -368,7 +369,22 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="FailureCenterButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                        ToolTip="Başarısız paket işlemlerini incele ve yeniden dene" AutomationProperties.Name="Başarısız İşlemler Merkezi">
+                    <Grid Width="183">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="32" Height="32" CornerRadius="5" Background="#543136" BorderBrush="#7D4449" BorderThickness="1">
+                            <TextBlock Text="!" Foreground="#FFAAAA" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
+                            <TextBlock Text="Başarısız İşlemler" Foreground="#F1F8FC" FontSize="11" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="FailureCenterNavDetail" Text="Kayıt bulunmuyor" Foreground="#C68E92" FontSize="9.5" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFAAAA" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="AboutButton" Grid.Row="6" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -383,7 +399,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="6" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="7" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
                         CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
                     <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -782,6 +798,96 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
+        <Grid x:Name="FailureCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#202020" Visibility="Collapsed" Panel.ZIndex="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="7" Padding="18,15" Background="#282828" BorderBrush="#4B3B3D" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
+                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#E0525C" Offset="0"/><GradientStop Color="#D09335" Offset="0.58"/><GradientStop Color="#168FC6" Offset="1"/></LinearGradientBrush></Border.Background>
+                    </Border>
+                    <Border Width="42" Height="42" CornerRadius="6" Background="#543136" BorderBrush="#7D4449" BorderThickness="1">
+                        <TextBlock Text="!" Foreground="#FFAAAA" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="POWERHUB  /  İŞLEM GEÇMİŞİ" FontSize="9.5" FontWeight="Bold" Foreground="#FF8F97"/>
+                        <TextBlock Text="Başarısız İşlemler Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
+                        <TextBlock Text="Hataları inceleyin, güvenli biçimde yeniden veya etkileşimli deneyin." Foreground="{DynamicResource Muted}" FontSize="13" Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="FailureBackButton" Grid.Column="2" Content="←  Paket merkezi" Background="#333333" Foreground="#C8D6E0" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="0,15,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="İşlem kayıtları" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
+                    <Border Background="#543136" BorderBrush="#7D4449" BorderThickness="1" CornerRadius="5" Padding="9,4" Margin="12,0,0,0">
+                        <TextBlock x:Name="FailureCountText" Text="0 başarısız" Foreground="#FFAAAA" FontSize="11" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock x:Name="FailureLastText" Text="Henüz başarısız işlem yok" Foreground="#8D9AA5" FontSize="10.5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Border x:Name="FailureEmptyState" Background="#252525" BorderBrush="#3F3F3F" BorderThickness="1" CornerRadius="7">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border Width="54" Height="54" CornerRadius="27" Background="#203B2C" BorderBrush="#346A4D" BorderThickness="1">
+                            <TextBlock Text="✓" Foreground="#7EE2A8" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Başarısız işlem bulunmuyor" Foreground="White" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+                        <TextBlock Text="Kurulum, kaldırma ve güncelleme hataları burada saklanır." Foreground="#909CA6" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+                <ListBox x:Name="FailureList" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ListBox.Resources>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,8"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value></Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#292929" BorderBrush="#4A3D3F" BorderThickness="1" CornerRadius="6" Padding="0,11">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="50"/><ColumnDefinition Width="*"/><ColumnDefinition Width="120"/><ColumnDefinition Width="270"/></Grid.ColumnDefinitions>
+                                    <Border Background="#E0525C"/>
+                                    <Border Grid.Column="1" Width="32" Height="32" CornerRadius="16" Background="#543136" VerticalAlignment="Center">
+                                        <TextBlock Text="!" Foreground="#FFAAAA" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,0,12,0">
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="13.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Foreground="#929FA8" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"><Run Text="{Binding OperationLabel}"/><Run Text="  •  "/><Run Text="{Binding TimeText}"/><Run Text="  •  "/><Run Text="{Binding Detail}"/></TextBlock>
+                                    </StackPanel>
+                                    <Border Grid.Column="3" Background="#543136" BorderBrush="#7D4449" BorderThickness="1" CornerRadius="4" Padding="8,5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding CodeLabel}" Foreground="#FFAAAA" FontSize="9" FontWeight="Bold"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+                                        <Button x:Name="FailureWebsiteButton" Content="Site  ↗" Background="#333333" Foreground="#9EDBF3" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding HasWebsite}"/>
+                                        <Button x:Name="FailureInteractiveButton" Content="Etkileşimli" Background="#574422" Foreground="#FFD58A" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding CanInteractive}"/>
+                                        <Button x:Name="FailureRetryButton" Content="Tekrar dene  →" Background="#087EBD" Foreground="White" Padding="11,7"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <Border Grid.Row="3" Background="#292929" BorderBrush="#454545" BorderThickness="1" CornerRadius="6" Padding="15,11" Margin="0,8,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="FailureFooterTitle" Text="Hata geçmişi temiz" Foreground="{DynamicResource Ink}" FontSize="13.5" FontWeight="SemiBold"/>
+                        <TextBlock Text="Son 50 başarısız işlem yerel olarak saklanır; başarılı yeniden denemeler listeden kaldırılır." Foreground="{DynamicResource Muted}" FontSize="10.5" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="FailureClearButton" Grid.Column="1" Content="Geçmişi temizle" Background="#543136" Foreground="#FFB0B0" IsEnabled="False"/>
+                </Grid>
+            </Border>
+        </Grid>
+
         <Grid x:Name="UpdateCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#202020" Visibility="Collapsed" Panel.ZIndex="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
@@ -1076,7 +1182,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1494,8 +1600,11 @@ function Set-UpdateCenterPackages {
 function Set-UpdateCenterVisibility {
     param([bool]$Visible)
     $controls.UpdateCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
-    if ($Visible) { $controls.SecurityCenterView.Visibility = 'Collapsed' }
-    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.SecurityCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
+    if ($Visible) {
+        $controls.SecurityCenterView.Visibility = 'Collapsed'
+        $controls.FailureCenterView.Visibility = 'Collapsed'
+    }
+    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.SecurityCenterView.Visibility -eq 'Visible' -or $controls.FailureCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
     $controls.UpdateCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
     $controls.UpdateCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#D09335' } else { [Windows.Media.Brushes]::Transparent }
     $controls.UpdateCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
@@ -1503,6 +1612,9 @@ function Set-UpdateCenterVisibility {
         $controls.SecurityCenterButton.Background = [Windows.Media.Brushes]::Transparent
         $controls.SecurityCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
         $controls.SecurityCenterButton.BorderThickness = [Windows.Thickness]::new(0)
+        $controls.FailureCenterButton.Background = [Windows.Media.Brushes]::Transparent
+        $controls.FailureCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
+        $controls.FailureCenterButton.BorderThickness = [Windows.Thickness]::new(0)
         foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
             $nav.Background = [Windows.Media.Brushes]::Transparent
             $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
@@ -1689,8 +1801,11 @@ Add-Check 'Kurulum güvenliği' 'Tam paket kimliği, exact eşleşme ve WinGet k
 function Set-SecurityCenterVisibility {
     param([bool]$Visible)
     $controls.SecurityCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
-    if ($Visible) { $controls.UpdateCenterView.Visibility = 'Collapsed' }
-    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.UpdateCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
+    if ($Visible) {
+        $controls.UpdateCenterView.Visibility = 'Collapsed'
+        $controls.FailureCenterView.Visibility = 'Collapsed'
+    }
+    $controls.MainWorkspace.Visibility = if ($Visible -or $controls.UpdateCenterView.Visibility -eq 'Visible' -or $controls.FailureCenterView.Visibility -eq 'Visible') { 'Collapsed' } else { 'Visible' }
     $controls.SecurityCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
     $controls.SecurityCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#39C77A' } else { [Windows.Media.Brushes]::Transparent }
     $controls.SecurityCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
@@ -1698,6 +1813,9 @@ function Set-SecurityCenterVisibility {
         $controls.UpdateCenterButton.Background = [Windows.Media.Brushes]::Transparent
         $controls.UpdateCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
         $controls.UpdateCenterButton.BorderThickness = [Windows.Thickness]::new(0)
+        $controls.FailureCenterButton.Background = [Windows.Media.Brushes]::Transparent
+        $controls.FailureCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
+        $controls.FailureCenterButton.BorderThickness = [Windows.Thickness]::new(0)
         foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
             $nav.Background = [Windows.Media.Brushes]::Transparent
             $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
@@ -1993,6 +2111,7 @@ function Set-ActiveCategory {
     $script:activeCategory = $CategoryName
     Set-UpdateCenterVisibility $false
     Set-SecurityCenterVisibility $false
+    Set-FailureCenterVisibility $false
     $targetButton = $null
     foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
         $nav.Background = [Windows.Media.Brushes]::Transparent
@@ -2063,6 +2182,70 @@ $controls.SecurityRefreshButton.Add_Click({ Start-SecurityScan })
 $controls.OpenWindowsSecurityButton.Add_Click({
     try { Start-Process -FilePath 'windowsdefender:' } catch { Write-PowerHubLog -Message "Windows Güvenliği açılamadı: $($_.Exception.Message)" -Color Red }
 })
+$controls.FailureCenterButton.Add_Click({ Set-FailureCenterVisibility $true })
+$controls.FailureBackButton.Add_Click({
+    Set-ActiveCategory -CategoryName $script:activeCategory
+    Update-AppList
+})
+$controls.FailureClearButton.Add_Click({
+    if ($script:isInstalling) { return }
+    $script:failedOperations.Clear()
+    Save-FailedOperations
+    Update-FailureCenterSummary
+})
+$failureActionHandler = [Windows.RoutedEventHandler]{
+    param($sender, $eventArgs)
+    $button = $eventArgs.Source -as [Windows.Controls.Button]
+    if (-not $button) {
+        $node = $eventArgs.OriginalSource
+        while ($node -and -not ($node -is [Windows.Controls.Button])) {
+            try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+        }
+        $button = $node -as [Windows.Controls.Button]
+    }
+    if (-not $button -or -not $button.DataContext) { return }
+    $failure = $button.DataContext
+    switch ($button.Name) {
+        'FailureWebsiteButton' {
+            if ($failure.HasWebsite) {
+                try { Start-Process -FilePath $failure.Website } catch { Write-PowerHubLog -Message "Resmî site açılamadı: $($_.Exception.Message)" -Color Red }
+            }
+        }
+        'FailureInteractiveButton' {
+            if ($script:isInstalling -or $failure.Operation -eq 'OpenUrl') { return }
+            try {
+                $winget = Resolve-WingetExecutable
+                if (-not $winget) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+                $entry = Convert-FailureToQueueEntry -Failure $failure
+                $arguments = @(Get-PackageOperationArguments -Item $entry -Interactive)
+                $argumentText = ($arguments | ForEach-Object { "'" + ([string]$_).Replace("'","''") + "'" }) -join ' '
+                $command = "& '" + $winget.Replace("'","''") + "' " + $argumentText
+                Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoExit','-NoProfile','-ExecutionPolicy','Bypass','-Command',$command)
+                Write-PowerHubLog -Message "Etkileşimli işlem açıldı: $($failure.Name)" -Color Yellow
+            } catch {
+                Write-PowerHubLog -Message "Etkileşimli işlem açılamadı ($($failure.Name)): $($_.Exception.Message)" -Color Red
+            }
+        }
+        'FailureRetryButton' {
+            if ($script:isInstalling) { return }
+            if ($failure.Operation -eq 'OpenUrl') {
+                if ($failure.HasWebsite) {
+                    try {
+                        Start-Process -FilePath $failure.Website
+                        Resolve-FailedOperation -Id $failure.Id -Operation OpenUrl
+                    } catch { Write-PowerHubLog -Message "Site yeniden açılamadı: $($_.Exception.Message)" -Color Red }
+                }
+                return
+            }
+            $entry = Convert-FailureToQueueEntry -Failure $failure
+            Initialize-InstallQueue -Entries @($entry)
+            Set-FailureCenterVisibility $false
+            Start-InstallQueueExecution
+        }
+    }
+    $eventArgs.Handled = $true
+}
+$controls.FailureList.AddHandler([Windows.Controls.Primitives.ButtonBase]::ClickEvent, $failureActionHandler, $true)
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
 $controls.UpdateSelectAllButton.Add_Click({
@@ -2438,7 +2621,7 @@ $window.Add_PreviewKeyDown({
         $eventArgs.Handled = $true
         return
     }
-    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible -or $controls.UpdateCenterView.Visibility -eq [Windows.Visibility]::Visible)) {
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible -or $controls.UpdateCenterView.Visibility -eq [Windows.Visibility]::Visible -or $controls.FailureCenterView.Visibility -eq [Windows.Visibility]::Visible)) {
         Set-ActiveCategory -CategoryName $script:activeCategory
         Update-AppList
         $eventArgs.Handled = $true
@@ -2476,6 +2659,136 @@ $controls.SelectAllButton.Add_Click({
     Update-AppList
     Update-SelectionStatus
 })
+
+$script:failureHistoryPath = Join-Path (Join-Path $env:LOCALAPPDATA 'PowerHub') 'failed-operations.json'
+$script:failedOperations = [Collections.ObjectModel.ObservableCollection[object]]::new()
+$controls.FailureList.ItemsSource = $script:failedOperations
+
+function Get-AppOfficialWebsite {
+    param([string]$Name, [string]$Fallback)
+    if (-not [string]::IsNullOrWhiteSpace($Fallback)) { return $Fallback }
+    if ($catalog.OfficialWebsites -and $catalog.OfficialWebsites.PSObject.Properties[$Name]) {
+        return [string]$catalog.OfficialWebsites.PSObject.Properties[$Name].Value
+    }
+    return ''
+}
+
+function Save-FailedOperations {
+    try {
+        $directory = Split-Path -Parent $script:failureHistoryPath
+        if (-not (Test-Path -LiteralPath $directory)) { New-Item -ItemType Directory -Path $directory -Force | Out-Null }
+        $payload = @($script:failedOperations | Select-Object Name,Id,Operation,OperationLabel,Code,CodeLabel,Detail,Time,TimeText,Website,HasWebsite,CanInteractive,Action,InstallArguments,PackageSource)
+        $json = if ($payload.Count -eq 0) { '[]' } else { $payload | ConvertTo-Json -Depth 6 }
+        [IO.File]::WriteAllText($script:failureHistoryPath, $json, [Text.UTF8Encoding]::new($false))
+    } catch {
+        Write-PowerHubLog -Message "Başarısız işlem geçmişi kaydedilemedi: $($_.Exception.Message)" -Color DarkYellow
+    }
+}
+
+function Update-FailureCenterSummary {
+    $count = $script:failedOperations.Count
+    $controls.FailureCountText.Text = "$count başarısız"
+    $controls.FailureCenterNavDetail.Text = if ($count -gt 0) { "$count işlem incelenmeli" } else { 'Kayıt bulunmuyor' }
+    $controls.FailureEmptyState.Visibility = if ($count -eq 0) { 'Visible' } else { 'Collapsed' }
+    $controls.FailureList.Visibility = if ($count -gt 0) { 'Visible' } else { 'Collapsed' }
+    $controls.FailureClearButton.IsEnabled = ($count -gt 0)
+    $controls.FailureFooterTitle.Text = if ($count -gt 0) { "$count işlem yeniden denenebilir" } else { 'Hata geçmişi temiz' }
+    $controls.FailureLastText.Text = if ($count -gt 0) { "Son hata: $($script:failedOperations[0].TimeText)" } else { 'Henüz başarısız işlem yok' }
+}
+
+function Add-FailedOperation {
+    param(
+        [Parameter(Mandatory)]$Item,
+        [Parameter(Mandatory)][ValidateSet('Install','Upgrade','Uninstall','OpenUrl')][string]$Operation,
+        [int]$Code,
+        [string]$Detail,
+        [object[]]$Arguments
+    )
+    $name = [string]$Item.Name
+    $id = if ($Item.PSObject.Properties['Id']) { [string]$Item.Id } else { '' }
+    $existing = $script:failedOperations | Where-Object { $_.Id -eq $id -and $_.Operation -eq $Operation } | Select-Object -First 1
+    if ($existing) { [void]$script:failedOperations.Remove($existing) }
+    $websiteFallback = if ($Item.PSObject.Properties['Url']) { [string]$Item.Url } else { '' }
+    $website = Get-AppOfficialWebsite -Name $name -Fallback $websiteFallback
+    $operationLabel = switch ($Operation) { 'Install' {'Kurulum'} 'Upgrade' {'Güncelleme'} 'Uninstall' {'Kaldırma'} default {'Web sayfası'} }
+    $time = [DateTime]::Now
+    $entry = [pscustomobject]@{
+        Name = $name
+        Id = $id
+        Operation = $Operation
+        OperationLabel = $operationLabel
+        Code = $Code
+        CodeLabel = if ($Code -eq -1) { 'BAŞLATMA HATASI' } else { "KOD $Code" }
+        Detail = if ([string]::IsNullOrWhiteSpace($Detail)) { 'WinGet işlemi tamamlanamadı' } else { $Detail }
+        Time = $time.ToString('o')
+        TimeText = $time.ToString('dd.MM.yyyy HH:mm')
+        Website = $website
+        HasWebsite = -not [string]::IsNullOrWhiteSpace($website)
+        CanInteractive = ($Operation -ne 'OpenUrl')
+        Action = if ($Item.PSObject.Properties['Action']) { [string]$Item.Action } else { 'Winget' }
+        InstallArguments = if ($Arguments) { @($Arguments) } elseif ($Item.PSObject.Properties['InstallArguments']) { @($Item.InstallArguments) } else { @() }
+        PackageSource = if ($Item.PSObject.Properties['PackageSource'] -and $Item.PackageSource) { [string]$Item.PackageSource } elseif ($Item.PSObject.Properties['Source'] -and $Item.Source) { [string]$Item.Source } else { 'winget' }
+    }
+    $script:failedOperations.Insert(0, $entry)
+    while ($script:failedOperations.Count -gt 50) { $script:failedOperations.RemoveAt($script:failedOperations.Count - 1) }
+    Save-FailedOperations
+    Update-FailureCenterSummary
+}
+
+function Resolve-FailedOperation {
+    param([string]$Id, [string]$Operation)
+    $matches = @($script:failedOperations | Where-Object { $_.Id -eq $Id -and $_.Operation -eq $Operation })
+    foreach ($match in $matches) { [void]$script:failedOperations.Remove($match) }
+    if ($matches.Count -gt 0) {
+        Save-FailedOperations
+        Update-FailureCenterSummary
+    }
+}
+
+function Import-FailedOperations {
+    if (-not (Test-Path -LiteralPath $script:failureHistoryPath)) { Update-FailureCenterSummary; return }
+    try {
+        $records = @(Get-Content -LiteralPath $script:failureHistoryPath -Raw -Encoding UTF8 | ConvertFrom-Json)
+        foreach ($record in $records | Select-Object -First 50) {
+            if (-not $record.Name) { continue }
+            $record | Add-Member -NotePropertyName HasWebsite -NotePropertyValue (-not [string]::IsNullOrWhiteSpace([string]$record.Website)) -Force
+            $record | Add-Member -NotePropertyName CanInteractive -NotePropertyValue ($record.Operation -ne 'OpenUrl') -Force
+            [void]$script:failedOperations.Add($record)
+        }
+    } catch {
+        Write-PowerHubLog -Message "Başarısız işlem geçmişi okunamadı: $($_.Exception.Message)" -Color DarkYellow
+    }
+    Update-FailureCenterSummary
+}
+
+function Set-FailureCenterVisibility {
+    param([bool]$Visible)
+    $controls.FailureCenterView.Visibility = if ($Visible) { 'Visible' } else { 'Collapsed' }
+    if ($Visible) {
+        $controls.UpdateCenterView.Visibility = 'Collapsed'
+        $controls.SecurityCenterView.Visibility = 'Collapsed'
+    }
+    $otherVisible = $controls.UpdateCenterView.Visibility -eq 'Visible' -or $controls.SecurityCenterView.Visibility -eq 'Visible'
+    $controls.MainWorkspace.Visibility = if ($Visible -or $otherVisible) { 'Collapsed' } else { 'Visible' }
+    $controls.FailureCenterButton.Background = if ($Visible) { New-ColorBrush '#2D2D2D' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.FailureCenterButton.BorderBrush = if ($Visible) { New-ColorBrush '#E0525C' } else { [Windows.Media.Brushes]::Transparent }
+    $controls.FailureCenterButton.BorderThickness = if ($Visible) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
+    if ($Visible) {
+        foreach ($button in @($controls.UpdateCenterButton,$controls.SecurityCenterButton)) {
+            $button.Background = [Windows.Media.Brushes]::Transparent
+            $button.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $button.BorderThickness = [Windows.Thickness]::new(0)
+        }
+        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
+            $nav.Background = [Windows.Media.Brushes]::Transparent
+            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $nav.BorderThickness = [Windows.Thickness]::new(0)
+            $nav.IconElement.Foreground = New-ColorBrush '#9B9B9B'
+            $nav.LabelElement.Foreground = New-ColorBrush '#C8C8C8'
+            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
+        }
+    }
+}
 
 $script:updateQueue = @()
 $script:updateIndex = 0
@@ -2524,6 +2837,7 @@ function Start-NextUpdate {
     } catch {
         Write-PowerHubLog -Message "Güncelleme başlatılamadı ($($package.Name)): $($_.Exception.Message)" -Color Red
         [void]$script:updateResults.Add([pscustomobject]@{ Name=$package.Name; Success=$false; Code=-1 })
+        Add-FailedOperation -Item $package -Operation Upgrade -Code -1 -Detail $_.Exception.Message -Arguments $arguments
         $script:updateIndex++
         Start-NextUpdate
     }
@@ -2540,7 +2854,12 @@ $script:updateTimer.Add_Tick({
     $exitCode = [int]$script:updateProcess.ExitCode
     $script:updateProcess.Dispose()
     $script:updateProcess = $null
-    if ($exitCode -eq 0 -and $script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$package.Id) }
+    if ($exitCode -eq 0) {
+        if ($script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$package.Id) }
+        Resolve-FailedOperation -Id $package.Id -Operation Upgrade
+    } else {
+        Add-FailedOperation -Item $package -Operation Upgrade -Code $exitCode -Detail 'WinGet güncellemesi tamamlanamadı'
+    }
     [void]$script:updateResults.Add([pscustomobject]@{ Name=$package.Name; Success=($exitCode -eq 0); Code=$exitCode })
     Write-PowerHubLog -Message $(if ($exitCode -eq 0) { "Güncellendi: $($package.Name)" } else { "Güncellenemedi: $($package.Name), kod: $exitCode" }) -Color $(if ($exitCode -eq 0) { 'Green' } else { 'Red' })
     $script:updateIndex++
@@ -2666,6 +2985,44 @@ function New-InstallQueueEntry {
     }
 }
 
+function Convert-FailureToQueueEntry {
+    param($Failure)
+    [pscustomobject]@{
+        Name = [string]$Failure.Name
+        Id = [string]$Failure.Id
+        Action = if ($Failure.Operation -eq 'OpenUrl') { 'Url' } else { 'Winget' }
+        Url = [string]$Failure.Website
+        InstallArguments = @($Failure.InstallArguments)
+        Operation = if ($Failure.Operation -eq 'OpenUrl') { 'Install' } else { [string]$Failure.Operation }
+        PackageSource = if ($Failure.PackageSource) { [string]$Failure.PackageSource } else { 'winget' }
+        Status = 'Waiting'
+        StatusLabel = 'BEKLİYOR'
+        StatusIcon = '…'
+        StatusBackground = '#3A3F45'
+        StatusForeground = '#C2CBD1'
+        Detail = 'Başarısız İşlemler Merkezi üzerinden yeniden sırada'
+        Code = 0
+    }
+}
+
+function Get-PackageOperationArguments {
+    param($Item, [switch]$Interactive)
+    $arguments = if ($Item.Operation -eq 'Uninstall') {
+        @('uninstall','--id',$Item.Id,'--exact')
+    } elseif ($Item.Operation -eq 'Upgrade') {
+        @('upgrade','--id',$Item.Id,'--exact','--source',$Item.PackageSource,'--include-unknown')
+    } elseif ($Item.InstallArguments -and @($Item.InstallArguments).Count -gt 0) {
+        @($Item.InstallArguments)
+    } else {
+        @('install','--id',$Item.Id,'--exact')
+    }
+    if ($Item.Operation -ne 'Uninstall' -and $arguments -notcontains '--source') { $arguments += @('--source','winget') }
+    $arguments += '--accept-source-agreements'
+    if ($Item.Operation -ne 'Uninstall') { $arguments += '--accept-package-agreements' }
+    if (-not $Interactive) { $arguments += @('--silent','--disable-interactivity') }
+    return @($arguments)
+}
+
 function Initialize-InstallQueue {
     param([object[]]$Entries)
     $script:installQueueItems.Clear()
@@ -2732,6 +3089,7 @@ function Start-NextInstall {
             Write-PowerHubLog -Message "Sayfa açılamadı ($($item.Name)): $($_.Exception.Message)" -Color Red
             [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$true; Code=-1 })
             Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'İndirme sayfası açılamadı' -Code -1
+            Add-FailedOperation -Item $item -Operation OpenUrl -Code -1 -Detail $_.Exception.Message
         }
         $script:installIndex++
         Update-InstallQueueSummary
@@ -2740,20 +3098,7 @@ function Start-NextInstall {
     }
 
     $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
-    $installArguments = if ($item.Operation -eq 'Uninstall') {
-        @('uninstall','--id',$item.Id,'--exact')
-    } elseif ($item.Operation -eq 'Upgrade') {
-        @('upgrade','--id',$item.Id,'--exact','--source',$item.PackageSource)
-    } elseif ($item.InstallArguments) {
-        @($item.InstallArguments)
-    } else {
-        @('install','--id',$item.Id,'--exact')
-    }
-    if ($item.Operation -ne 'Uninstall' -and $installArguments -notcontains '--source') {
-        $installArguments += @('--source','winget')
-    }
-    $installArguments += @('--silent','--accept-source-agreements','--disable-interactivity')
-    if ($item.Operation -ne 'Uninstall') { $installArguments += '--accept-package-agreements' }
+    $installArguments = @(Get-PackageOperationArguments -Item $item)
 
     try {
         Write-PowerHubLog -Message $(if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }) -Color Cyan
@@ -2766,6 +3111,7 @@ function Start-NextInstall {
         Write-PowerHubLog -Message "Başlatma hatası ($($item.Name)): $($_.Exception.Message)" -Color Red
         [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=-1 })
         Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'İşlem başlatılamadı' -Code -1
+        Add-FailedOperation -Item $item -Operation $item.Operation -Code -1 -Detail $_.Exception.Message -Arguments $installArguments
         $script:installIndex++
         Update-InstallQueueSummary
         Start-NextInstall
@@ -2792,9 +3138,11 @@ $script:installTimer.Add_Tick({
             Update-SelectionStatus
             Update-SystemScanSummary
         }
+        Resolve-FailedOperation -Id $item.Id -Operation $item.Operation
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
         Set-InstallQueueEntryState -Entry $item -State Failed -Detail "WinGet çıkış kodu: $exitCode" -Code $exitCode
+        Add-FailedOperation -Item $item -Operation $item.Operation -Code $exitCode -Detail "WinGet işlemi tamamlanamadı" -Arguments (Get-PackageOperationArguments -Item $item)
     }
     [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Manual=$false; Code=$exitCode })
     $script:installProcess.Dispose()
@@ -3145,6 +3493,7 @@ Update-AppList
 Update-SelectionStatus
 Update-UpdateCenterSelectionStatus
 Update-InstallQueueSummary
+Import-FailedOperations
 Set-PowerHubWindowLayout
 Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 if ($winget) { Start-SystemScan }
