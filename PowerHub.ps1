@@ -1298,9 +1298,10 @@ foreach ($app in $apps) {
 
 $logoCatalog = Get-PowerHubLogoCatalog
 foreach ($app in $apps) {
-    if ($logoCatalog.ContainsKey($app.Name)) {
+    $logoKey = if ($app.PSObject.Properties['LogoKey'] -and $app.LogoKey) { [string]$app.LogoKey } else { [string]$app.Name }
+    if ($logoCatalog.ContainsKey($logoKey)) {
         try {
-            $app.Logo = ConvertFrom-Base64Image $logoCatalog[$app.Name]
+            $app.Logo = ConvertFrom-Base64Image $logoCatalog[$logoKey]
             $app.InitialOpacity = 0.0
         } catch {
             Write-PowerHubLog -Message "Logo okunamadı: $($app.Name)" -Color DarkYellow

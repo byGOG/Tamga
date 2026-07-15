@@ -294,10 +294,11 @@
       "Color": "#F05032"
     },
     {
-      "Name": "Python 3.13",
+      "Name": "Python",
       "Description": "Python geliştirme ortamı",
-      "Id": "Python.Python.3.13",
+      "Id": "Python.Python.3.14",
       "Category": "Geliştirme",
+      "LogoKey": "Python 3.13",
       "Initial": "Py",
       "Color": "#3776AB"
     },
@@ -1261,7 +1262,7 @@
     "PowerToys": "https://github.com/microsoft/PowerToys",
     "Process Lasso": "https://bitsum.com/",
     "Proton VPN": "https://protonvpn.com/",
-    "Python 3.13": "https://www.python.org/",
+    "Python": "https://www.python.org/",
     "qBittorrent": "https://www.qbittorrent.org/",
     "Resource Hacker": "https://www.angusj.com/resourcehacker/",
     "Rufus": "https://rufus.ie/",
