@@ -725,8 +725,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="PAKET BİLGİLERİ" Foreground="#7F8B94" FontSize="9" FontWeight="Bold" Margin="0,22,0,8"/>
                             <Border Background="#292929" BorderBrush="#414141" BorderThickness="1" CornerRadius="6" Padding="13,11">
                                 <Grid>
-                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="90"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="104"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <TextBlock Text="Paket kimliği" Foreground="#8D999F" FontSize="10.5"/>
                                     <TextBlock x:Name="AppDetailId" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontFamily="Cascadia Mono, Consolas" FontSize="10.5" TextWrapping="Wrap"/>
                                     <TextBlock Grid.Row="1" Text="Kaynak" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
@@ -743,6 +743,14 @@ if ($fontInstallFailures.Count -gt 0) {
                                     <TextBlock x:Name="AppDetailInstallerType" Grid.Row="6" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock Grid.Row="7" Text="Etiketler" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock x:Name="AppDetailTags" Grid.Row="7" Grid.Column="1" Text="—" Foreground="#A9C6D5" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="8" Text="Kaynak deposu" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailRepository" Grid.Row="8" Grid.Column="1" Text="—" Foreground="#82CEFF" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="9" Text="SHA-256" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailHashStatus" Grid.Row="9" Grid.Column="1" Text="—" Foreground="#7EE2A8" FontSize="10" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="10" Text="Yetki kapsamı" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailElevation" Grid.Row="10" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="11" Text="Katalog tarihi" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailCatalogUpdated" Grid.Row="11" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -1273,7 +1281,7 @@ $window = [Windows.Markup.XamlReader]::Load($reader)
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
-  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -2527,6 +2535,32 @@ function Get-AppDetailTags {
     return $(if ($tags.Count -gt 0) { $tags -join '  •  ' } else { '—' })
 }
 
+function Get-AppDetailRepository {
+    param([string]$Output)
+    foreach ($label in @('Publisher Url','Publisher URL','Homepage','Release Notes Url','Release Notes URL')) {
+        $value = Get-AppDetailWingetField -Output $Output -Labels @($label)
+        if ($value -ne '—' -and $value -match '(?i)^https://github\.com/[^/\s]+/[^/#?\s]+') {
+            return $matches[0].TrimEnd('.git')
+        }
+    }
+    return 'Belirtilmemiş'
+}
+
+function Get-AppDetailElevation {
+    param([string]$Output)
+    $value = Get-AppDetailWingetField -Output $Output -Labels @('Elevation Requirement','Yükseltme Gereksinimi','Install Scope','Installation Scope','Scope','Kapsam')
+    if ($value -eq '—') { return 'Kurucuya bağlı' }
+    if ($value -match '(?i)elevat|admin|machine') { return 'Yönetici yetkisi gerekebilir' }
+    if ($value -match '(?i)user|kullanıcı') { return 'Kullanıcı kapsamı' }
+    return $value
+}
+
+function Get-PowerHubCatalogDate {
+    $value = [string]$catalog.UpdatedAt
+    if ([string]::IsNullOrWhiteSpace($value)) { return 'Belirtilmemiş' }
+    try { return ([DateTime]::Parse($value)).ToString('dd.MM.yyyy') } catch { return $value }
+}
+
 function Set-AppDetailMetadata {
     param($Metadata)
     $installedVersion = $Metadata.InstalledVersion
@@ -2538,6 +2572,12 @@ function Set-AppDetailMetadata {
     $controls.AppDetailLicense.Text = $Metadata.License
     $controls.AppDetailInstallerType.Text = $Metadata.InstallerType
     $controls.AppDetailTags.Text = $Metadata.Tags
+    $controls.AppDetailRepository.Text = $Metadata.Repository
+    $controls.AppDetailRepository.ToolTip = $Metadata.Repository
+    $controls.AppDetailHashStatus.Text = $Metadata.HashStatus
+    $controls.AppDetailHashStatus.ToolTip = $Metadata.Hash
+    $controls.AppDetailElevation.Text = $Metadata.Elevation
+    $controls.AppDetailCatalogUpdated.Text = $Metadata.CatalogUpdated
     $controls.AppDetailMetadataState.Text = $Metadata.State
 }
 
@@ -2552,6 +2592,11 @@ $script:detailMetadataTimer.Add_Tick({
     try {
         if (-not $script:detailMetadataResultFile -or -not (Test-Path -LiteralPath $script:detailMetadataResultFile)) { throw 'Paket ayrıntısı alınamadı.' }
         $result = Get-Content -LiteralPath $script:detailMetadataResultFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        $hash = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('Installer SHA256','Installer SHA-256','Kurucu SHA256')
+        $hashStatus = if ($hash -eq '—') { 'Manifestte belirtilmemiş' } else {
+            $shortHash = if ($hash.Length -gt 24) { '{0}…{1}' -f $hash.Substring(0,12).ToUpperInvariant(),$hash.Substring($hash.Length-8).ToUpperInvariant() } else { $hash.ToUpperInvariant() }
+            "WinGet kurulumda doğrular • $shortHash"
+        }
         $metadata = [pscustomobject]@{
             InstalledVersion = Get-AppDetailInstalledVersion -Output ([string]$result.ListOutput) -Id ([string]$result.Id)
             CatalogVersion = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('Version','Sürüm')
@@ -2560,6 +2605,11 @@ $script:detailMetadataTimer.Add_Tick({
             License = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('License','Lisans')
             InstallerType = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('Installer Type','Kurucu Türü')
             Tags = Get-AppDetailTags -Output ([string]$result.ShowOutput)
+            Repository = Get-AppDetailRepository -Output ([string]$result.ShowOutput)
+            Hash = $hash
+            HashStatus = $hashStatus
+            Elevation = Get-AppDetailElevation -Output ([string]$result.ShowOutput)
+            CatalogUpdated = Get-PowerHubCatalogDate
             State = if ([int]$result.ShowExitCode -eq 0) { "WinGet ayrıntıları hazır • $([DateTime]::Now.ToString('HH:mm:ss'))" } else { 'Katalog ayrıntılarının bir bölümü alınamadı' }
         }
         $script:detailMetadataCache[[string]$result.Id] = $metadata
@@ -2577,7 +2627,7 @@ function Start-AppDetailMetadataLoad {
     Stop-AppDetailMetadataLoad
     if ($App.IsWebResource) {
         Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-            InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; State='İnternet kaynağı • kurulum gerektirmez'
+            InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; Repository=$(if ($App.WebsiteUrl) { $App.WebsiteUrl } else { 'Belirtilmemiş' }); Hash='—'; HashStatus='Uygulanamaz'; Elevation='Yetki gerekmez'; CatalogUpdated=(Get-PowerHubCatalogDate); State='İnternet kaynağı • kurulum gerektirmez'
         })
         return
     }
@@ -2586,7 +2636,7 @@ function Start-AppDetailMetadataLoad {
         return
     }
     Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-        InstalledVersion='…'; CatalogVersion='…'; Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; State='WinGet katalog ayrıntıları alınıyor...'
+        InstalledVersion='…'; CatalogVersion='…'; Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; Repository='Yükleniyor'; Hash=''; HashStatus='Denetleniyor'; Elevation='Denetleniyor'; CatalogUpdated=(Get-PowerHubCatalogDate); State='WinGet katalog ayrıntıları alınıyor...'
     })
     $source = 'winget'
     if ($App.PSObject.Properties['InstallArguments']) {

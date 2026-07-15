@@ -46,7 +46,7 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 | **Güvenlik Merkezi** | Windows koruması, WinGet kaynakları, yetki kapsamı, betik çalıştırma ilkesi, katalog bütünlüğü ve bekleyen güncellemeler için puanlı denetim |
 | **Birleşik işlem kuyruğu** | Kurulum, güncelleme ve kaldırma için paket bazlı canlı durum, güvenli iptal ve başarısızları yeniden deneme |
 | **Güvenli kaldırma** | Kurulu WinGet uygulamalarını kart üzerindeki kaldırma düğmesi, açık onay ve otomatik yeniden tarama ile kaldırma |
-| **Uygulama detay çekmecesi** | Logo, açıklama, durum, kurulu/katalog sürümü, yayıncı, geliştirici, lisans, kurucu türü, etiketler ve bağlama uygun hızlı işlemler |
+| **Uygulama detay çekmecesi** | Logo, açıklama, durum, sürümler, yayıncı, kaynak deposu, kurucu türü, SHA-256 doğrulama durumu, yetki kapsamı, katalog tarihi ve bağlama uygun hızlı işlemler |
 | **Resmî kaynaklar** | Uygulama kartından resmî siteye doğrudan erişim; internet kaynaklarını kurulumdan ayırma |
 | **Sandbox desteği** | Boş Windows Sandbox ortamında WinGet ve gerekli bağımlılıkları hazırlama |
 | **Marka logoları** | Önbelleğe alınan uygulama logoları ve ağ sorunu durumunda güvenli yedek görünüm |
