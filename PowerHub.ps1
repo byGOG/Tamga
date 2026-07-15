@@ -115,7 +115,10 @@ if ($fontInstallFailures.Count -gt 0) {
         WindowStartupLocation="Manual" Background="{DynamicResource PageBg}"
         FontFamily="Inter" FontSize="12" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
-        UseLayoutRounding="True" SnapsToDevicePixels="True">
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        AutomationProperties.Name="PowerHub uygulama ve paket merkezi"
+        AutomationProperties.HelpText="Klavye yardımı için F1 tuşuna basın"
+        KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.ControlTabNavigation="Cycle">
     <Window.Resources>
         <SolidColorBrush x:Key="Primary" Color="#138AC2"/>
         <SolidColorBrush x:Key="Ink" Color="#F2F2F2"/>
@@ -160,12 +163,17 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.88"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#69D5FF"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.45"/>
@@ -274,6 +282,7 @@ if ($fontInstallFailures.Count -gt 0) {
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Width" Value="20"/>
             <Setter Property="Height" Value="20"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="CheckBox">
@@ -293,6 +302,10 @@ if ($fontInstallFailures.Count -gt 0) {
                                 <Setter TargetName="CheckBorder" Property="Background" Value="{DynamicResource Primary}"/>
                                 <Setter TargetName="CheckBorder" Property="BorderBrush" Value="{DynamicResource Primary}"/>
                                 <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="CheckBorder" Property="BorderBrush" Value="#9DE4FF"/>
+                                <Setter TargetName="CheckBorder" Property="BorderThickness" Value="2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -400,7 +413,9 @@ if ($fontInstallFailures.Count -gt 0) {
                 </Button>
 
                 <Border x:Name="WingetCard" Grid.Row="7" Height="58" Background="#252525" BorderBrush="#414141" BorderThickness="1"
-                        CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir">
+                        CornerRadius="6" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir"
+                        Focusable="True" AutomationProperties.Name="WinGet paket yöneticisi durumu"
+                        AutomationProperties.HelpText="WinGet eksikse Enter veya Boşluk tuşuyla kurulumu başlatın">
                     <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -479,13 +494,18 @@ if ($fontInstallFailures.Count -gt 0) {
                                            FontSize="13" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center" FontSize="14" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
-                                         ToolTip="Uygulama ara..." AutomationProperties.Name="Uygulama ara" Margin="0,0,8,0"/>
+                                         ToolTip="Uygulama ara (Ctrl+F)" AutomationProperties.Name="Uygulama veya kaynak ara"
+                                         AutomationProperties.HelpText="Arama alanına gitmek için Ctrl+F kullanabilirsiniz" Margin="0,0,8,0"/>
                                 <Button x:Name="SearchClearButton" Grid.Column="2" Content="×" Width="26" Height="26" Padding="0"
-                                        Background="Transparent" Foreground="#AEB9C4" FontSize="18" ToolTip="Aramayı temizle" Visibility="Collapsed"/>
+                                        Background="Transparent" Foreground="#AEB9C4" FontSize="18" ToolTip="Aramayı temizle"
+                                        AutomationProperties.Name="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
                         <Grid Margin="3,9,3,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
+                            <Button x:Name="KeyboardHelpButton" Content="⌨  KLAVYE  F1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Background="Transparent" Foreground="#8CCFEA" FontSize="9.5" Padding="7,2" ToolTip="Klavye kısayollarını göster"
+                                    AutomationProperties.Name="Klavye kısayollarını göster"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#7EE2A8" FontSize="10" FontWeight="Bold"/>
                         </Grid>
                     </StackPanel>
@@ -500,7 +520,8 @@ if ($fontInstallFailures.Count -gt 0) {
             </Grid>
 
             <ListBox x:Name="AppList" Grid.Row="2" BorderThickness="0" Background="Transparent"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" KeyboardNavigation.TabNavigation="Once"
+                     AutomationProperties.Name="Uygulama listesi" AutomationProperties.HelpText="Ok tuşlarıyla gezinin, Boşluk ile seçin, Enter ile ayrıntıları açın">
                 <ListBox.Resources>
                     <Style TargetType="ScrollBar">
                         <Setter Property="Width" Value="9"/>
@@ -539,8 +560,22 @@ if ($fontInstallFailures.Count -gt 0) {
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,6"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Focusable" Value="True"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="AutomationProperties.Name" Value="{Binding AccessibleName}"/>
                         <Setter Property="Template">
-                            <Setter.Value><ControlTemplate TargetType="ListBoxItem"><ContentPresenter/></ControlTemplate></Setter.Value>
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="KeyboardFocusBorder" BorderBrush="Transparent" BorderThickness="2" CornerRadius="6">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                            <Setter TargetName="KeyboardFocusBorder" Property="BorderBrush" Value="#69D5FF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
@@ -589,7 +624,7 @@ if ($fontInstallFailures.Count -gt 0) {
                                                    Foreground="#FF9B9B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="6" IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                              Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name}"
+                                              Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını seç}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Grid>
@@ -613,25 +648,28 @@ if ($fontInstallFailures.Count -gt 0) {
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"
+                                   AutomationProperties.LiveSetting="Polite"/>
+                        <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
+                                   AutomationProperties.LiveSetting="Polite"/>
                         <ProgressBar x:Name="InstallProgress" Height="3" Margin="0,9,18,0" Minimum="0" Maximum="100"
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button x:Name="QueueViewButton" Content="Kuyruk" Background="#2C3B45" Foreground="#9EDBF3"
-                                Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster"/>
+                                Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster (Ctrl+Q)" AutomationProperties.Name="Kurulum kuyruğunu göster"/>
                         <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#333333" Foreground="#9EDBF3"
-                                Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)"/>
+                                Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)" AutomationProperties.Name="Görünen uygulamaları seç veya seçimi kaldır"/>
                         <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#087EBD" Foreground="White"
-                                IsEnabled="False" ToolTip="Seçilenleri kur (Enter)"/>
+                                IsEnabled="False" ToolTip="Seçilenleri kur (Ctrl+Enter)" AutomationProperties.Name="Seçilen paket işlemlerini başlat"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </Grid>
 
 
-        <Grid x:Name="AppDetailOverlay" Grid.Column="1" Panel.ZIndex="55" Visibility="Collapsed" Background="#B8080A0C">
+        <Grid x:Name="AppDetailOverlay" Grid.Column="1" Panel.ZIndex="55" Visibility="Collapsed" Background="#B8080A0C"
+              AutomationProperties.Name="Uygulama ayrıntıları" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="AppDetailBackdrop" Background="Transparent"/>
             <Border x:Name="AppDetailDrawer" Width="460" HorizontalAlignment="Right" Background="#222222" BorderBrush="#474747" BorderThickness="1,0,0,0">
                 <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.64"/></Border.Effect>
@@ -724,7 +762,8 @@ if ($fontInstallFailures.Count -gt 0) {
         </Grid>
 
 
-        <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="#A8080A0C">
+        <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="#A8080A0C"
+              AutomationProperties.Name="Kurulum kuyruğu" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="QueueBackdrop" Background="Transparent"/>
             <Border Width="430" HorizontalAlignment="Right" Background="#242424" BorderBrush="#474747" BorderThickness="1" CornerRadius="7">
                 <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.6"/></Border.Effect>
@@ -1067,7 +1106,57 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
-        <Grid x:Name="UninstallConfirmOverlay" Grid.ColumnSpan="2" Panel.ZIndex="120" Visibility="Collapsed" Background="#E6080A0C">
+        <Grid x:Name="KeyboardHelpOverlay" Grid.ColumnSpan="2" Panel.ZIndex="130" Visibility="Collapsed" Background="#E6080A0C"
+              AutomationProperties.Name="Klavye kısayolları" KeyboardNavigation.TabNavigation="Cycle">
+            <Border x:Name="KeyboardHelpBackdrop" Background="Transparent"/>
+            <Border x:Name="KeyboardHelpCard" Width="610" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="#202020" BorderBrush="#3F6678" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
+                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="30" ShadowDepth="8" Opacity="0.72"/></Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="#292929" BorderBrush="#444444" BorderThickness="0,0,0,1" Padding="20,17">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions>
+                            <Border Width="38" Height="38" CornerRadius="6" Background="#174A63" BorderBrush="#287BA0" BorderThickness="1">
+                                <TextBlock Text="⌨" Foreground="#9DE4FF" FontSize="19" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="POWERHUB  /  ERİŞİLEBİLİRLİK" Foreground="#65C9F5" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="Klavye kısayolları" Foreground="White" FontSize="21" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <Button x:Name="KeyboardHelpCloseButton" Grid.Column="2" Content="&#xE711;" Width="34" Height="34" Padding="0"
+                                    Style="{StaticResource IconButton}" ToolTip="Klavye yardımını kapat" AutomationProperties.Name="Klavye yardımını kapat"/>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="20,18">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="18"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="GEZİNME" Foreground="#8CCFEA" FontSize="10" FontWeight="Bold" Margin="0,0,0,9"/>
+                            <TextBlock Text="Tab / Shift+Tab     Denetimler arasında ilerle" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="F6                         Ana bölgeler arasında geç" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="↑  ↓                       Listelerde gezin" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Enter                    Uygulama ayrıntılarını aç" Foreground="#E4E9EC" FontSize="12"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="İŞLEMLER" Foreground="#8CCFEA" FontSize="10" FontWeight="Bold" Margin="0,0,0,9"/>
+                            <TextBlock Text="Ctrl+F / Ctrl+K       Aramaya odaklan" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Boşluk                  Uygulamayı seç / kaldır" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Ctrl+A                   Görünenlerin tümünü seç" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Ctrl+Enter             Seçilen işlemleri başlat" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Ctrl+Q                  Kurulum kuyruğunu aç" Foreground="#E4E9EC" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Esc / F1                 Kapat / bu yardımı göster" Foreground="#E4E9EC" FontSize="12"/>
+                        </StackPanel>
+                    </Grid>
+                    <Border Grid.Row="2" Background="#292929" BorderBrush="#444444" BorderThickness="0,1,0,0" Padding="20,13">
+                        <TextBlock Text="İpucu: Odaklanan denetim açık mavi çerçeveyle gösterilir. Ekran okuyucu durum mesajları otomatik duyurulur."
+                                   Foreground="#AAB7C0" FontSize="10.5" TextWrapping="Wrap"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="UninstallConfirmOverlay" Grid.ColumnSpan="2" Panel.ZIndex="120" Visibility="Collapsed" Background="#E6080A0C"
+              AutomationProperties.Name="Uygulamayı kaldırma onayı" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="UninstallConfirmBackdrop" Background="Transparent"/>
             <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#202020"
                     BorderBrush="#4A4A4A" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
@@ -1110,7 +1199,8 @@ if ($fontInstallFailures.Count -gt 0) {
             </Border>
         </Grid>
 
-        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="#E6080A0C">
+        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="#E6080A0C"
+              AutomationProperties.Name="PowerHub hakkında" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
             <Border x:Name="AboutCard" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
                     Background="#202020" BorderBrush="#464646" BorderThickness="1" CornerRadius="8" ClipToBounds="True">
@@ -1181,7 +1271,7 @@ $reader = New-Object System.Xml.XmlNodeReader $xaml
 $window = [Windows.Markup.XamlReader]::Load($reader)
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1189,6 +1279,68 @@ $controls = @{}
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
+}
+
+$script:focusHistory = [Collections.Stack]::new()
+$script:focusRegionIndex = -1
+
+function Save-PowerHubFocus {
+    $focused = [Windows.Input.Keyboard]::FocusedElement
+    if ($focused) { $script:focusHistory.Push($focused) }
+}
+
+function Restore-PowerHubFocus {
+    $focused = if ($script:focusHistory.Count -gt 0) { $script:focusHistory.Pop() } else { $null }
+    if ($focused -and $focused.PSObject.Methods['Focus']) {
+        $focused.Focus() | Out-Null
+    } else {
+        $controls.SearchBox.Focus() | Out-Null
+    }
+}
+
+function Set-KeyboardHelpVisibility([bool]$Visible) {
+    if ($Visible) {
+        Save-PowerHubFocus
+        $controls.KeyboardHelpOverlay.Visibility = [Windows.Visibility]::Visible
+        $controls.KeyboardHelpCloseButton.Focus() | Out-Null
+    } else {
+        $controls.KeyboardHelpOverlay.Visibility = [Windows.Visibility]::Collapsed
+        Restore-PowerHubFocus
+    }
+}
+
+function Focus-PowerHubRegion([bool]$Reverse = $false) {
+    $regions = [Collections.ArrayList]::new()
+    $categoryButton = @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] -and $_.IsEnabled -and $_.Visibility -eq [Windows.Visibility]::Visible -and [string]$_.Tag -eq $script:activeCategory } | Select-Object -First 1)
+    if ($categoryButton.Count -eq 0) { $categoryButton = @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] -and $_.IsEnabled -and $_.Visibility -eq [Windows.Visibility]::Visible } | Select-Object -First 1) }
+    if ($categoryButton.Count -gt 0) { [void]$regions.Add($categoryButton[0]) }
+    [void]$regions.Add($controls.SearchBox)
+    if ($controls.AppList.Items.Count -gt 0) {
+        if ($controls.AppList.SelectedIndex -lt 0) { $controls.AppList.SelectedIndex = 0 }
+        $controls.AppList.UpdateLayout()
+        $item = $controls.AppList.ItemContainerGenerator.ContainerFromIndex($controls.AppList.SelectedIndex)
+        if ($item) { [void]$regions.Add($item) }
+    }
+    $action = @(@($controls.QueueViewButton,$controls.SelectAllButton,$controls.InstallButton) | Where-Object { $_.IsEnabled -and $_.Visibility -eq [Windows.Visibility]::Visible } | Select-Object -First 1)
+    if ($action.Count -gt 0) { [void]$regions.Add($action[0]) }
+    if ($regions.Count -eq 0) { return }
+    $script:focusRegionIndex = if ($Reverse) {
+        ($script:focusRegionIndex - 1 + $regions.Count) % $regions.Count
+    } else {
+        ($script:focusRegionIndex + 1) % $regions.Count
+    }
+    $regions[$script:focusRegionIndex].Focus() | Out-Null
+}
+
+function Send-PowerHubAnnouncement([string]$Message) {
+    if ([string]::IsNullOrWhiteSpace($Message)) { return }
+    [Windows.Automation.AutomationProperties]::SetName($controls.ActivityText,$Message)
+    [Windows.Automation.AutomationProperties]::SetHelpText($controls.ActivityText,$Message)
+    try {
+        $peer = [Windows.Automation.Peers.UIElementAutomationPeer]::CreatePeerForElement($controls.ActivityText)
+        if (-not $peer) { $peer = [Windows.Automation.Peers.FrameworkElementAutomationPeer]::new($controls.ActivityText) }
+        $peer.RaiseAutomationEvent([Windows.Automation.Peers.AutomationEvents]::LiveRegionChanged)
+    } catch { }
 }
 
 function Resolve-WingetExecutable {
@@ -1400,6 +1552,7 @@ foreach ($app in $apps) {
     $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'WEB' } else { 'BEKLİYOR' }) -Force
     $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
     $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#82CEFF' }) -Force
+    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isWebResource) { 'Web kaynağı' } else { 'Paket durumu taranıyor' })) -Force
 }
 
 $logoCatalog = Get-PowerHubLogoCatalog
@@ -1426,6 +1579,7 @@ foreach ($category in $categoryDefinitions) {
     $button.Margin = [Windows.Thickness]::new(0,1,0,1)
     $button.Padding = [Windows.Thickness]::new(9,7,7,7)
     [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
+    [Windows.Automation.AutomationProperties]::SetHelpText($button, 'Kategoriyi açmak için Enter veya Boşluk tuşuna basın')
     if ($category.Name -eq 'Web Tarayıcıları') {
         $button.Background = New-ColorBrush '#2D2D2D'
         $button.BorderBrush = New-ColorBrush '#168FC6'
@@ -1829,6 +1983,7 @@ function Set-SecurityCenterVisibility {
 }
 
 function Update-SelectionStatus {
+    $previousSelectionText = [string]$controls.SelectionText.Text
     $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' })
     if ($selected.Count -eq 0) {
         $controls.SelectionText.Text = 'Henüz uygulama seçilmedi'
@@ -1848,6 +2003,7 @@ function Update-SelectionStatus {
     $script:wingetExecutable = Resolve-WingetExecutable
     $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
     $controls.InstallButton.Content = if (@($selected | Where-Object Operation -eq 'Upgrade').Count -gt 0) { 'İşlemi başlat  →' } else { 'Kurulumu başlat  →' }
+    if ($previousSelectionText -ne [string]$controls.SelectionText.Text) { Send-PowerHubAnnouncement $controls.SelectionText.Text }
 }
 
 function Update-AppList {
@@ -1926,6 +2082,7 @@ function Set-AppInstallState {
             $App.UninstallVisibility = [Windows.Visibility]::Collapsed
         }
     }
+    $App.AccessibleName = "{0}. {1}. {2}" -f $App.Name,$App.Description,$App.StatusDetail
 }
 
 $customAddonLogos = @{
@@ -1957,6 +2114,7 @@ function Update-SystemScanSummary {
     $controls.SystemScanBadgeText.Foreground = New-ColorBrush $(if ($updateCount -gt 0) { '#FFD58A' } else { '#7EE2A8' })
     $controls.SystemScanBadgeText.Text = if ($updateCount -gt 0) { "●  $installedCount kurulu • $updateCount yeni" } else { "●  $installedCount kurulu" }
     $controls.SystemScanBadge.ToolTip = if ($updateCount -gt 0) { "$updateCount uygulama için güncelleme var" } else { 'Taranan uygulamalar güncel' }
+    Send-PowerHubAnnouncement ("Sistem taraması tamamlandı. {0} uygulama kurulu, {1} güncelleme mevcut." -f $installedCount,$updateCount)
 }
 
 $script:systemScanProcess = $null
@@ -2265,9 +2423,15 @@ $controls.SearchClearButton.Add_Click({
     $controls.SearchBox.Clear()
     $controls.SearchBox.Focus() | Out-Null
 })
+$controls.KeyboardHelpButton.Add_Click({ Set-KeyboardHelpVisibility $true })
+$controls.KeyboardHelpCloseButton.Add_Click({ Set-KeyboardHelpVisibility $false })
+$controls.KeyboardHelpBackdrop.Add_MouseLeftButtonUp({ Set-KeyboardHelpVisibility $false })
 function Set-PowerHubAboutVisibility([bool]$Visible) {
+    $wasVisible = $controls.AboutOverlay.Visibility -eq [Windows.Visibility]::Visible
+    if ($Visible -and -not $wasVisible) { Save-PowerHubFocus }
     $controls.AboutOverlay.Visibility = if ($Visible) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
     if ($Visible) { $controls.AboutCloseButton.Focus() | Out-Null }
+    elseif ($wasVisible) { Restore-PowerHubFocus }
 }
 $controls.AboutButton.Add_Click({ Set-PowerHubAboutVisibility $true })
 $controls.AboutCloseButton.Add_Click({ Set-PowerHubAboutVisibility $false })
@@ -2459,14 +2623,17 @@ if ($result.ShowExitCode -ne 0) {
     }
 }
 function Close-AppDetail {
+    $wasVisible = $controls.AppDetailOverlay.Visibility -eq [Windows.Visibility]::Visible
     Stop-AppDetailMetadataLoad
     $controls.AppDetailOverlay.Visibility = [Windows.Visibility]::Collapsed
     $script:detailApp = $null
+    if ($wasVisible) { Restore-PowerHubFocus }
 }
 
 function Show-AppDetail {
     param($App)
     if (-not $App) { return }
+    if ($controls.AppDetailOverlay.Visibility -ne [Windows.Visibility]::Visible) { Save-PowerHubFocus }
     $script:detailApp = $App
     $controls.AppDetailName.Text = $App.Name
     $controls.AppDetailCategory.Text = $App.Category
@@ -2508,6 +2675,7 @@ function Show-AppDetail {
     $duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(180))
     $controls.AppDetailDrawer.BeginAnimation([Windows.UIElement]::OpacityProperty, [Windows.Media.Animation.DoubleAnimation]::new(0,1,$duration))
     $translate.BeginAnimation([Windows.Media.TranslateTransform]::XProperty, [Windows.Media.Animation.DoubleAnimation]::new(24,0,$duration))
+    $controls.AppDetailCloseButton.Focus() | Out-Null
 }
 
 $controls.AppDetailCloseButton.Add_Click({ Close-AppDetail })
@@ -2601,6 +2769,20 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
 $window.Add_PreviewKeyDown({
     param($sender, $eventArgs)
 
+    $controlDown = ([Windows.Input.Keyboard]::Modifiers -band [Windows.Input.ModifierKeys]::Control) -ne 0
+    $shiftDown = ([Windows.Input.Keyboard]::Modifiers -band [Windows.Input.ModifierKeys]::Shift) -ne 0
+
+    if ($eventArgs.Key -eq [Windows.Input.Key]::F1) {
+        $isVisible = $controls.KeyboardHelpOverlay.Visibility -eq [Windows.Visibility]::Visible
+        Set-KeyboardHelpVisibility (-not $isVisible)
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.KeyboardHelpOverlay.Visibility -eq [Windows.Visibility]::Visible) {
+        Set-KeyboardHelpVisibility $false
+        $eventArgs.Handled = $true
+        return
+    }
     if ($eventArgs.Key -eq [Windows.Input.Key]::Escape -and $controls.UninstallConfirmOverlay.Visibility -eq [Windows.Visibility]::Visible) {
         Close-UninstallConfirmation
         $eventArgs.Handled = $true
@@ -2627,10 +2809,27 @@ $window.Add_PreviewKeyDown({
         $eventArgs.Handled = $true
         return
     }
-    $controlDown = ([Windows.Input.Keyboard]::Modifiers -band [Windows.Input.ModifierKeys]::Control) -ne 0
-    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::F) {
+    $modalVisible = @(@($controls.KeyboardHelpOverlay,$controls.UninstallConfirmOverlay,$controls.AppDetailOverlay,$controls.InstallQueueOverlay,$controls.AboutOverlay) | Where-Object { $_.Visibility -eq [Windows.Visibility]::Visible }).Count -gt 0
+    if ($modalVisible) { return }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::F6) {
+        Focus-PowerHubRegion -Reverse:$shiftDown
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($controlDown -and $eventArgs.Key -in @([Windows.Input.Key]::F,[Windows.Input.Key]::K)) {
         $controls.SearchBox.Focus() | Out-Null
         $controls.SearchBox.SelectAll()
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($eventArgs.Key -eq [Windows.Input.Key]::F5) {
+        if ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible) { Start-SecurityScan } else { Start-SystemScan }
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::Q -and $script:installQueueItems.Count -gt 0) {
+        Set-InstallQueueVisibility $true
+        $controls.QueueCloseButton.Focus() | Out-Null
         $eventArgs.Handled = $true
         return
     }
@@ -2646,9 +2845,33 @@ $window.Add_PreviewKeyDown({
         $eventArgs.Handled = $true
         return
     }
-    if ($eventArgs.Key -eq [Windows.Input.Key]::Enter -and -not $controls.SearchBox.IsKeyboardFocusWithin -and $controls.InstallButton.IsEnabled) {
+
+    $focusedElement = [Windows.Input.Keyboard]::FocusedElement
+    $focusIsActionControl = $focusedElement -is [Windows.Controls.Button] -or $focusedElement -is [Windows.Controls.CheckBox]
+    if ($controls.AppList.IsKeyboardFocusWithin -and -not $focusIsActionControl -and $controls.AppList.SelectedItem) {
+        $focusedApp = $controls.AppList.SelectedItem
+        if ($eventArgs.Key -eq [Windows.Input.Key]::Space) {
+            if ($focusedApp.IsWebResource) {
+                Open-PowerHubWebsite -Item $focusedApp -Url $focusedApp.Url -WebResource
+            } elseif ($focusedApp.Operation -ne 'None') {
+                $focusedApp.IsSelected = -not [bool]$focusedApp.IsSelected
+                $controls.AppList.Items.Refresh()
+                Update-SelectionStatus
+            }
+            $eventArgs.Handled = $true
+            return
+        }
+        if ($eventArgs.Key -eq [Windows.Input.Key]::Enter) {
+            Show-AppDetail -App $focusedApp
+            $controls.AppDetailCloseButton.Focus() | Out-Null
+            $eventArgs.Handled = $true
+            return
+        }
+    }
+    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::Enter -and $controls.InstallButton.IsEnabled) {
         $controls.InstallButton.RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
         $eventArgs.Handled = $true
+        return
     }
 })
 
@@ -2903,7 +3126,11 @@ $script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
 
 function Set-InstallQueueVisibility {
     param([bool]$Visible)
+    $wasVisible = $controls.InstallQueueOverlay.Visibility -eq [Windows.Visibility]::Visible
+    if ($Visible -and -not $wasVisible) { Save-PowerHubFocus }
     $controls.InstallQueueOverlay.Visibility = if ($Visible) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+    if ($Visible) { $controls.QueueCloseButton.Focus() | Out-Null }
+    elseif ($wasVisible) { Restore-PowerHubFocus }
 }
 
 function Set-InstallQueueEntryState {
@@ -3173,14 +3400,17 @@ function Start-InstallQueueExecution {
 
 $script:pendingUninstallApp = $null
 function Close-UninstallConfirmation {
+    $wasVisible = $controls.UninstallConfirmOverlay.Visibility -eq [Windows.Visibility]::Visible
     $controls.UninstallConfirmOverlay.Visibility = [Windows.Visibility]::Collapsed
     $script:pendingUninstallApp = $null
+    if ($wasVisible) { Restore-PowerHubFocus }
 }
 
 function Request-AppUninstall {
     param($App)
     if (-not $App -or $script:isInstalling -or $App.InstallState -notin @('Installed','UpdateAvailable')) { return }
     $script:pendingUninstallApp = $App
+    Save-PowerHubFocus
     $controls.UninstallConfirmAppName.Text = $App.Name
     $controls.UninstallConfirmDetail.Text = "'$($App.Name)' bilgisayarınızdan ve WinGet paket listesinden kaldırılacak."
     $controls.UninstallConfirmOverlay.Visibility = [Windows.Visibility]::Visible
@@ -3351,6 +3581,25 @@ $script:wingetInstallTimer.Add_Tick({
     }
 })
 
+$controls.WingetCard.Add_GotKeyboardFocus({
+    $controls.WingetCard.Tag = $controls.WingetCard.BorderBrush
+    $controls.WingetCard.BorderBrush = New-ColorBrush '#69D5FF'
+    $controls.WingetCard.BorderThickness = [Windows.Thickness]::new(2)
+})
+$controls.WingetCard.Add_LostKeyboardFocus({
+    if ($controls.WingetCard.Tag) { $controls.WingetCard.BorderBrush = $controls.WingetCard.Tag }
+    $controls.WingetCard.BorderThickness = [Windows.Thickness]::new(1)
+})
+$controls.WingetCard.Add_KeyDown({
+    param($sender,$eventArgs)
+    if ($eventArgs.Key -in @([Windows.Input.Key]::Enter,[Windows.Input.Key]::Space)) {
+        $mouseArgs = [Windows.Input.MouseButtonEventArgs]::new([Windows.Input.Mouse]::PrimaryDevice,[Environment]::TickCount,[Windows.Input.MouseButton]::Left)
+        $mouseArgs.RoutedEvent = [Windows.UIElement]::MouseLeftButtonUpEvent
+        $controls.WingetCard.RaiseEvent($mouseArgs)
+        $eventArgs.Handled = $true
+    }
+})
+
 $controls.WingetCard.Add_MouseLeftButtonUp({
     if ($script:wingetReady -or $script:wingetInstallProcess) { return }
 
@@ -3517,5 +3766,9 @@ $window.Add_Closed({
     if ($script:installProcess -and -not $script:installProcess.HasExited) {
         Stop-Process -Id $script:installProcess.Id -Force -ErrorAction SilentlyContinue
     }
+})
+$window.Add_ContentRendered({
+    $activeNav = @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] -and [string]$_.Tag -eq $script:activeCategory } | Select-Object -First 1)
+    if ($activeNav.Count -gt 0) { $activeNav[0].Focus() | Out-Null } else { $controls.SearchBox.Focus() | Out-Null }
 })
 $window.ShowDialog() | Out-Null

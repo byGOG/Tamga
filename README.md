@@ -63,10 +63,17 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 
 | Kısayol | İşlev |
 | --- | --- |
-| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Arama alanına odaklan |
+| <kbd>F1</kbd> | Klavye ve erişilebilirlik yardımını aç / kapat |
+| <kbd>F6</kbd> / <kbd>Shift</kbd> + <kbd>F6</kbd> | Ana arayüz bölgeleri arasında ileri / geri geç |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> veya <kbd>Ctrl</kbd> + <kbd>K</kbd> | Arama alanına odaklan |
 | <kbd>Ctrl</kbd> + <kbd>A</kbd> | Görünen kurulabilir uygulamaları seç / seçimi kaldır |
-| <kbd>Enter</kbd> | Seçilen uygulamaların kurulumunu başlat |
-| <kbd>Esc</kbd> | Aramayı, seçimi veya açık pencereyi temizle |
+| <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Seçilen paket işlemlerini başlat |
+| <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Kurulum kuyruğunu aç |
+| <kbd>Boşluk</kbd> / <kbd>Enter</kbd> | Odaktaki uygulamayı seç / ayrıntılarını aç |
+| <kbd>F5</kbd> | Geçerli sistem veya güvenlik taramasını yenile |
+| <kbd>Esc</kbd> | Aramayı veya açık pencereyi kapat |
+
+PowerHub ayrıca görünür klavye odak halkaları, modal odak kilidi ve geri dönüşü, ekran okuyucu etiketleri ve canlı durum duyuruları sunar.
 
 ### Kurulum seçenekleri
 
@@ -182,10 +189,17 @@ The bootstrapper downloads the latest `PowerHub.ps1` and `catalog.json` to `%LOC
 
 | Shortcut | Action |
 | --- | --- |
-| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Focus search |
+| <kbd>F1</kbd> | Open or close keyboard and accessibility help |
+| <kbd>F6</kbd> / <kbd>Shift</kbd> + <kbd>F6</kbd> | Move forward or backward between primary UI regions |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> or <kbd>Ctrl</kbd> + <kbd>K</kbd> | Focus search |
 | <kbd>Ctrl</kbd> + <kbd>A</kbd> | Toggle all visible installable applications |
-| <kbd>Enter</kbd> | Install selected applications |
-| <kbd>Esc</kbd> | Clear search, selection, or the open dialog |
+| <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Start the selected package operations |
+| <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Open the installation queue |
+| <kbd>Space</kbd> / <kbd>Enter</kbd> | Toggle the focused application / open its details |
+| <kbd>F5</kbd> | Refresh the current system or security scan |
+| <kbd>Esc</kbd> | Clear search or close the active dialog |
+
+PowerHub also provides visible keyboard focus rings, modal focus trapping and restoration, screen-reader labels, and live status announcements.
 
 ### Installation options
 
