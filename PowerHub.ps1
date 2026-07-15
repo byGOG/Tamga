@@ -1396,18 +1396,38 @@ function ConvertFrom-WingetUpgradeOutput {
     $cleanOutput = [Regex]::Replace($Output, $ansiPattern, '')
     $lines = @($cleanOutput -split "\r?\n")
     $separatorIndex = -1
+    $headerIndex = -1
     $columnMatches = $null
     for ($index = 0; $index -lt $lines.Count; $index++) {
         $matches = [Regex]::Matches($lines[$index], '-{3,}')
-        if ($matches.Count -ge 4) {
+        if ($matches.Count -ge 4 -or $lines[$index] -match '^\s*-{8,}\s*$') {
             $separatorIndex = $index
             $columnMatches = $matches
+            for ($candidate = $index - 1; $candidate -ge 0; $candidate--) {
+                if (-not [string]::IsNullOrWhiteSpace($lines[$candidate])) {
+                    $headerIndex = $candidate
+                    break
+                }
+            }
             break
         }
     }
     if ($separatorIndex -lt 0) { return @() }
 
-    $starts = @($columnMatches | ForEach-Object Index)
+    $starts = @()
+    if ($columnMatches.Count -ge 4) {
+        $starts = @($columnMatches | ForEach-Object Index)
+    } elseif ($headerIndex -ge 0) {
+        $header = [string]$lines[$headerIndex]
+        $idColumn = [Regex]::Match($header, '(?i)\b(?:Id|Kimlik)\b')
+        $versionColumn = [Regex]::Match($header, '(?i)\b(?:Version|Sürüm)\b')
+        $availableColumn = [Regex]::Match($header, '(?i)\b(?:Available|Kullanılabilir|Mevcut)\b')
+        $sourceColumn = [Regex]::Match($header, '(?i)\b(?:Source|Kaynak)\b')
+        if (-not ($idColumn.Success -and $versionColumn.Success -and $availableColumn.Success)) { return @() }
+        $starts = @(0, $idColumn.Index, $versionColumn.Index, $availableColumn.Index)
+        if ($sourceColumn.Success) { $starts += $sourceColumn.Index }
+    }
+    if ($starts.Count -lt 4) { return @() }
     $packages = [Collections.ArrayList]::new()
     for ($index = $separatorIndex + 1; $index -lt $lines.Count; $index++) {
         $line = [string]$lines[$index]
@@ -1813,7 +1833,7 @@ function Test-WingetOutputContainsId {
 
 function Update-SystemScanSummary {
     $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
-    $updateCount = @($apps | Where-Object InstallState -eq 'UpdateAvailable').Count
+    $updateCount = $script:updatePackages.Count
     $controls.SystemScanBadge.Background = New-ColorBrush $(if ($updateCount -gt 0) { '#574422' } else { '#203B2C' })
     $controls.SystemScanBadgeText.Foreground = New-ColorBrush $(if ($updateCount -gt 0) { '#FFD58A' } else { '#7EE2A8' })
     $controls.SystemScanBadgeText.Text = if ($updateCount -gt 0) { "●  $installedCount kurulu • $updateCount yeni" } else { "●  $installedCount kurulu" }
@@ -1849,7 +1869,7 @@ function Complete-SystemScan {
     Update-SelectionStatus
     Update-SystemScanSummary
     $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
-    $updateCount = @($apps | Where-Object InstallState -eq 'UpdateAvailable').Count
+    $updateCount = $script:updatePackages.Count
     $controls.ActivityText.Text = "Sistem tarandı: $installedCount kurulu, $updateCount güncelleme."
     Write-PowerHubLog -Message "Akıllı tarama tamamlandı: $installedCount kurulu, $updateCount güncelleme." -Color Green
 }
