@@ -24,7 +24,11 @@ public static class PowerHubWindowLayout {
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool RemoveFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, UIntPtr wParam, IntPtr lParam, uint flags, uint timeout, out UIntPtr result);
+    [DllImport("user32.dll", SetLastError = true)] private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
     [DllImport("dwmapi.dll", PreserveSig = true)] private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int valueSize);
+    public static void EnablePerMonitorDpi() {
+        try { SetProcessDpiAwarenessContext(new IntPtr(-4)); } catch { }
+    }
     public static void ApplyFluentWindow(IntPtr hwnd) {
         if (hwnd == IntPtr.Zero) return;
         try {
@@ -38,6 +42,8 @@ public static class PowerHubWindowLayout {
     }
 }
 '@
+
+[PowerHubWindowLayout]::EnablePerMonitorDpi()
 
 function Get-PowerHubFileSha256([string]$Path) {
     $stream = [IO.File]::OpenRead($Path)
@@ -115,19 +121,16 @@ function Install-PowerHubFonts {
 }
 
 Remove-PowerHubLegacyFonts
-$fontInstallFailures = @(Install-PowerHubFonts)
-if ($fontInstallFailures.Count -gt 0) {
-    [Windows.MessageBox]::Show("Bazı yazı tipleri kurulamadı:`n`n$($fontInstallFailures -join ', ')`n`nİnternet bağlantınızı kontrol edip PowerHub'ı yeniden açın.", 'PowerHub', 'OK', 'Warning') | Out-Null
-}
+Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundColor Green
 
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PowerHub" Width="980" Height="900" MinWidth="860" MinHeight="700"
         WindowStartupLocation="Manual" Background="{DynamicResource PageBg}"
-        FontFamily="Inter" FontSize="12" TextOptions.TextFormattingMode="Display"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13" TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType" TextOptions.TextHintingMode="Fixed"
-        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        RenderOptions.ClearTypeHint="Enabled" UseLayoutRounding="True" SnapsToDevicePixels="True"
         AutomationProperties.Name="PowerHub uygulama ve paket merkezi"
         AutomationProperties.HelpText="Klavye yardımı için F1 tuşuna basın"
         KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.ControlTabNavigation="Cycle">
@@ -359,7 +362,7 @@ if ($fontInstallFailures.Count -gt 0) {
                     </Border>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="PowerHub" Foreground="White" FontWeight="SemiBold" FontSize="18"/>
-                        <TextBlock Text="Uygulama merkezi" Foreground="#94A3B8" FontSize="11" Margin="0,2,0,0"/>
+                        <TextBlock Text="Uygulama merkezi" Foreground="#B0BDCA" FontSize="12" Margin="0,2,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -380,8 +383,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Güncelleme Merkezi" Foreground="#F1F8FC" FontSize="11" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#B99B6D" FontSize="9.5" Margin="0,3,0,0"/>
+                            <TextBlock Text="Güncelleme Merkezi" Foreground="#F1F8FC" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#C8AC7F" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -395,8 +398,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Güvenlik Merkezi" Foreground="#F1F8FC" FontSize="11.5" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#78B99A" FontSize="9.5" Margin="0,3,0,0"/>
+                            <TextBlock Text="Güvenlik Merkezi" Foreground="#F1F8FC" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -410,8 +413,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="!" Foreground="#FFAAAA" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Başarısız İşlemler" Foreground="#F1F8FC" FontSize="11" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="FailureCenterNavDetail" Text="Kayıt bulunmuyor" Foreground="#C68E92" FontSize="9.5" Margin="0,3,0,0"/>
+                            <TextBlock Text="Başarısız İşlemler" Foreground="#F1F8FC" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="FailureCenterNavDetail" Text="Kayıt bulunmuyor" Foreground="#D39A9F" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFAAAA" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -425,8 +428,8 @@ if ($fontInstallFailures.Count -gt 0) {
                             <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Hakkında" Foreground="#F1F8FC" FontSize="12.5" FontWeight="SemiBold"/>
-                            <TextBlock Text="PowerHub • byGOG" Foreground="#86A9BC" FontSize="9.5" Margin="0,3,0,0"/>
+                            <TextBlock Text="Hakkında" Foreground="#F1F8FC" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="PowerHub • byGOG" Foreground="#9AB7C7" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -450,7 +453,7 @@ if ($fontInstallFailures.Count -gt 0) {
                         <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="White"
                                    FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,5,0"/>
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
-                                   Foreground="#91A0AF" FontSize="9.5" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                   Foreground="#AAB7C4" FontSize="10" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#123A2A" BorderBrush="#236747" BorderThickness="1"
                                 CornerRadius="12" Padding="6,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -621,9 +624,9 @@ if ($fontInstallFailures.Count -gt 0) {
                                         </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,8,0">
-                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="14"
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="15"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="11.5" Margin="0,3,0,0"
+                                        <TextBlock Text="{Binding Description}" Foreground="#B0BDCA" FontSize="12" Margin="0,3,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                     <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="12" Padding="7,4" Margin="8,0,7,0"
@@ -1643,7 +1646,7 @@ foreach ($category in $categoryDefinitions) {
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
     $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#FFFFFF' } else { '#CBD5E1' })
-    $label.FontSize = 11.5
+    $label.FontSize = 12
     $label.FontWeight = if ($category.Name -eq 'İnternet Tarayıcıları') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
     $label.TextTrimming = [Windows.TextTrimming]::CharacterEllipsis
@@ -1662,7 +1665,7 @@ foreach ($category in $categoryDefinitions) {
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
     $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#8DD7F4' } else { '#94A3B8' })
-    $countText.FontSize = 9
+    $countText.FontSize = 10
     $countText.HorizontalAlignment = 'Center'
     $countBadge.Child = $countText
 
