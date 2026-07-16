@@ -383,9 +383,9 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
                         <Viewbox Stretch="Uniform" Margin="5">
                             <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
-                                <Path Fill="#F8FAFC" Data="M17,11 L35,11 C47,11 54,19 54,31 C54,43 47,51 35,51 L29,51 L37,42 C43,41 46,37 46,31 C46,23 42,20 35,20 L26,20 L26,36 L17,45 Z M17,45 L26,36 L26,55 L17,55 Z"/>
-                                <Path Stroke="#22D3EE" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M24,47 L35,36 L35,29"/>
-                                <Ellipse Canvas.Left="30" Canvas.Top="21" Width="10" Height="10" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
+                                <Path Fill="#F8FAFC" Data="F0 M16,10 L35,10 C48,10 55,18 55,30 C55,42 48,49 35,49 L27,49 L27,56 L16,56 Z M27,20 L27,39 L35,39 C41,39 44,36 44,30 C44,24 41,20 35,20 Z"/>
+                                <Path Stroke="#22D3EE" StrokeThickness="4.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M22,49 L35,36 L35,29"/>
+                                <Ellipse Canvas.Left="30.5" Canvas.Top="21" Width="9" Height="9" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
                             </Canvas>
                         </Viewbox>
                     </Border>
@@ -1280,9 +1280,9 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                                     <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
                                     <Viewbox Stretch="Uniform" Margin="6">
                                         <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
-                                            <Path Fill="#F8FAFC" Data="M17,11 L35,11 C47,11 54,19 54,31 C54,43 47,51 35,51 L29,51 L37,42 C43,41 46,37 46,31 C46,23 42,20 35,20 L26,20 L26,36 L17,45 Z M17,45 L26,36 L26,55 L17,55 Z"/>
-                                            <Path Stroke="#22D3EE" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M24,47 L35,36 L35,29"/>
-                                            <Ellipse Canvas.Left="30" Canvas.Top="21" Width="10" Height="10" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
+                                            <Path Fill="#F8FAFC" Data="F0 M16,10 L35,10 C48,10 55,18 55,30 C55,42 48,49 35,49 L27,49 L27,56 L16,56 Z M27,20 L27,39 L35,39 C41,39 44,36 44,30 C44,24 41,20 35,20 Z"/>
+                                            <Path Stroke="#22D3EE" StrokeThickness="4.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M22,49 L35,36 L35,29"/>
+                                            <Ellipse Canvas.Left="30.5" Canvas.Top="21" Width="9" Height="9" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
                                         </Canvas>
                                     </Viewbox>
                                 </Border>
