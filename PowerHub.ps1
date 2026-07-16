@@ -547,8 +547,10 @@ Remove-PowerHubLegacyFonts
                                            FontSize="13" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                 <TextBox x:Name="SearchBox" Grid.Column="1" BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center" FontSize="14" Foreground="{DynamicResource Ink}" CaretBrush="{DynamicResource Primary}"
-                                         ToolTip="Uygulama ara (Ctrl+F)" AutomationProperties.Name="Uygulama veya kaynak ara"
-                                         AutomationProperties.HelpText="Arama alanına gitmek için Ctrl+F kullanabilirsiniz" Margin="0,0,8,0"/>
+                                         ToolTip="Uygulama ara (Ctrl+F). Yazdığınız sorguyu Enter ile WinGet'te ara."
+                                         AutomationProperties.Name="Uygulama veya kaynak ara"
+                                         AutomationProperties.HelpText="Arama alanına gitmek için Ctrl+F kullanın. Yazdığınız sorgu Enter ile WinGet terminal aramasında açılır."
+                                         Margin="0,0,8,0"/>
                                 <Button x:Name="SearchClearButton" Grid.Column="2" Content="×" Width="26" Height="26" Padding="0"
                                         Background="Transparent" Foreground="#94A3B8" FontSize="18" ToolTip="Aramayı temizle"
                                         AutomationProperties.Name="Aramayı temizle" Visibility="Collapsed"/>
@@ -1201,6 +1203,7 @@ Remove-PowerHubLegacyFonts
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="İŞLEMLER" Foreground="#BAE6FD" FontSize="10" FontWeight="Bold" Margin="0,0,0,9"/>
                             <TextBlock Text="Ctrl+F / Ctrl+K       Aramaya odaklan" Foreground="#E2E8F0" FontSize="12" Margin="0,0,0,9"/>
+                            <TextBlock Text="Enter                    Yazılanı WinGet'te ara" Foreground="#E2E8F0" FontSize="12" Margin="0,0,0,9"/>
                             <TextBlock Text="Boşluk                  Uygulamayı seç / kaldır" Foreground="#E2E8F0" FontSize="12" Margin="0,0,0,9"/>
                             <TextBlock Text="Ctrl+A                   Görünenlerin tümünü seç" Foreground="#E2E8F0" FontSize="12" Margin="0,0,0,9"/>
                             <TextBlock Text="Ctrl+Enter             Seçilen işlemleri başlat" Foreground="#E2E8F0" FontSize="12" Margin="0,0,0,9"/>
@@ -1668,6 +1671,49 @@ foreach ($app in $apps) {
         } catch {
             Write-PowerHubLog -Message "Logo okunamadı: $($app.Name)" -Color DarkYellow
         }
+    }
+}
+
+# PowerShell 7 uses the current official PowerShell mark bundled with PowerHub.
+# This local override also prevents an older cached logo catalog from restoring
+# the legacy Windows-style icon.
+$powerShellLogo = Import-PowerHubBrandImage -FileName 'powershell-logo.png'
+if ($powerShellLogo) {
+    $powerShellApp = $apps | Where-Object Name -eq 'PowerShell 7' | Select-Object -First 1
+    if ($powerShellApp) {
+        $powerShellApp.Logo = $powerShellLogo
+        $powerShellApp.InitialOpacity = 0.0
+    }
+}
+
+# The catalog version of the HWiNFO logo has opaque white corner pixels.
+# Use the cleaned local asset so the rounded mark blends into dark cards.
+$hwinfoLogo = Import-PowerHubBrandImage -FileName 'hwinfo-logo.png'
+if ($hwinfoLogo) {
+    $hwinfoApp = $apps | Where-Object Name -eq 'HWiNFO64' | Select-Object -First 1
+    if ($hwinfoApp) {
+        $hwinfoApp.Logo = $hwinfoLogo
+        $hwinfoApp.InitialOpacity = 0.0
+    }
+}
+
+# Prefer the vendor-provided marks for the three hardware utilities instead of
+# any stale or mismatched images from the downloadable logo catalog.
+$vendorLogoOverrides = @{
+    'CPU-Z'           = 'cpuz-logo.png'
+    'GPU-Z'           = 'gpuz-logo.png'
+    'OCCT'            = 'occt-logo.png'
+    'PerformanceTest' = 'performancetest-logo.png'
+    'BurnInTest'      = 'burnintest-logo.png'
+    'FurMark 2'       = 'furmark-logo.png'
+}
+foreach ($appName in $vendorLogoOverrides.Keys) {
+    $vendorLogo = Import-PowerHubBrandImage -FileName $vendorLogoOverrides[$appName]
+    if (-not $vendorLogo) { continue }
+    $vendorApp = $apps | Where-Object Name -eq $appName | Select-Object -First 1
+    if ($vendorApp) {
+        $vendorApp.Logo = $vendorLogo
+        $vendorApp.InitialOpacity = 0.0
     }
 }
 
@@ -2419,6 +2465,55 @@ function Find-BestSearchCategory {
     return $null
 }
 
+function Invoke-WingetSearchInTerminal {
+    param([string]$Query)
+
+    $queryText = $Query.Trim()
+    if ([string]::IsNullOrWhiteSpace($queryText)) { return }
+
+    try {
+        $winget = Resolve-WingetExecutable
+        if (-not $winget) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+
+        # Encode the command instead of concatenating user input into -Command.
+        # This keeps spaces, quotes and non-ASCII package names safe.
+        $safeWinget = $winget.Replace("'", "''")
+        $safeQuery = $queryText.Replace("'", "''")
+        $terminalCommand = @"
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch {}
+`$host.UI.RawUI.WindowTitle = 'PowerHub - WinGet araması'
+Write-Host ''
+Write-Host 'PowerHub WinGet araması' -ForegroundColor Cyan
+Write-Host 'Sorgu: $safeQuery' -ForegroundColor Gray
+Write-Host ''
+& '$safeWinget' search --query '$safeQuery'
+Write-Host ''
+if (`$LASTEXITCODE -ne 0) {
+    Write-Host "WinGet araması tamamlanamadı (kod: `$LASTEXITCODE)." -ForegroundColor Red
+} else {
+    Write-Host 'Arama tamamlandı.' -ForegroundColor Green
+    Write-Host 'Kurmak istediğiniz uygulamanın Kimlik (Id) değerini tablodan kopyalayın.' -ForegroundColor Gray
+    Write-Host 'Ardından şu komutu yazın:' -ForegroundColor Gray
+    Write-Host 'winget install --id PAKET.KIMLIGI -e' -ForegroundColor Cyan
+    Write-Host 'Örnek: winget install --id 7zip.7zip -e' -ForegroundColor DarkGray
+}
+"@
+        $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($terminalCommand))
+        Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $encodedCommand
+        ) | Out-Null
+
+        $controls.ActivityText.Text = "WinGet araması terminalde açıldı: $queryText"
+        Write-PowerHubLog -Message "Katalog dışı WinGet araması açıldı: $queryText" -Color Cyan
+        Send-PowerHubAnnouncement "WinGet araması terminalde açıldı: $queryText"
+    } catch {
+        $message = "WinGet araması açılamadı: $($_.Exception.Message)"
+        $controls.ActivityText.Text = $message
+        Write-PowerHubLog -Message $message -Color Red
+        Send-PowerHubAnnouncement $message
+    }
+}
+
 $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] } | ForEach-Object {
     $button = $_
     $button.Add_Click({
@@ -2521,6 +2616,16 @@ $controls.SearchBox.Add_TextChanged({
     $searchCategory = Find-BestSearchCategory -Query $controls.SearchBox.Text.Trim()
     if ($searchCategory) { Set-ActiveCategory -CategoryName $searchCategory }
     Update-AppList
+})
+$controls.SearchBox.Add_KeyDown({
+    param($sender, $eventArgs)
+
+    if ($eventArgs.Key -ne [Windows.Input.Key]::Enter) { return }
+    $query = $controls.SearchBox.Text.Trim()
+    if ([string]::IsNullOrWhiteSpace($query)) { return }
+
+    Invoke-WingetSearchInTerminal -Query $query
+    $eventArgs.Handled = $true
 })
 $controls.SearchClearButton.Add_Click({
     $controls.SearchBox.Clear()

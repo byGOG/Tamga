@@ -375,7 +375,7 @@
       "Color": "#B64936"
     },
     {
-      "Name": "PassMark PerformanceTest",
+      "Name": "PerformanceTest",
       "Description": "Bilgisayar performans testi",
       "Id": "PassMark.PerformanceTest",
       "Category": "Donanım & Test",
@@ -1262,7 +1262,7 @@
     "Office Tool Plus": "https://github.com/YerongAI/Office-Tool",
     "OneCommander": "https://onecommander.com/",
     "OpenVPN Connect": "https://openvpn.net/client/",
-    "PassMark PerformanceTest": "https://www.passmark.com/products/performancetest/download.php",
+    "PerformanceTest": "https://www.passmark.com/products/performancetest/download.php",
     "PowerShell 7": "https://microsoft.com/PowerShell",
     "PowerToys": "https://github.com/microsoft/PowerToys",
     "Process Lasso": "https://bitsum.com/",

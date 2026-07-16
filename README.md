@@ -66,6 +66,7 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 | <kbd>F1</kbd> | Klavye ve erişilebilirlik yardımını aç / kapat |
 | <kbd>F6</kbd> / <kbd>Shift</kbd> + <kbd>F6</kbd> | Ana arayüz bölgeleri arasında ileri / geri geç |
 | <kbd>Ctrl</kbd> + <kbd>F</kbd> veya <kbd>Ctrl</kbd> + <kbd>K</kbd> | Arama alanına odaklan |
+| <kbd>Enter</kbd> | Arama kutusundaki sorguyu yeni terminalde WinGet ile ara |
 | <kbd>Ctrl</kbd> + <kbd>A</kbd> | Görünen kurulabilir uygulamaları seç / seçimi kaldır |
 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Seçilen paket işlemlerini başlat |
 | <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Kurulum kuyruğunu aç |
