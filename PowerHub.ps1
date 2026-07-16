@@ -1592,7 +1592,7 @@ foreach ($app in $apps) {
     $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isScriptAction) { 'Script' } elseif ($isWebResource) { 'Web' } else { 'Pending' }) -Force
     $app | Add-Member -NotePropertyName Operation -NotePropertyValue 'Install' -Force
     $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isScriptAction) { 'Kart tıklandığında PowerShell aracı çalıştırılır' } elseif ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
-    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isScriptAction) { 'KOMUT' } elseif ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isScriptAction) { 'POWERSHELL' } elseif ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
     $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isScriptAction) { '#174A42' } elseif ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
     $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isScriptAction) { '#6EE7B7' } elseif ($isWebResource) { '#D8C7FF' } else { '#7DD3FC' }) -Force
     $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isScriptAction) { 'PowerShell komutu' } elseif ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
