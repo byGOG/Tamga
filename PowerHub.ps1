@@ -133,7 +133,6 @@ function Install-PowerHubFonts {
             }
             New-ItemProperty -Path $registryPath -Name $font.RegistryName -Value $destination -PropertyType String -Force | Out-Null
             [void][PowerHubWindowLayout]::AddFontResourceEx($destination, 0, [IntPtr]::Zero)
-            Write-Host ("[PowerHub] Yazı tipi hazır: {0}" -f $font.Family) -ForegroundColor Green
         } catch {
             if (-not $failedFamilies.Contains($font.Family)) { $failedFamilies.Add($font.Family) }
             Write-Host ("[PowerHub] Yazı tipi kurulamadı: {0} - {1}" -f $font.Family, $_.Exception.Message) -ForegroundColor Red
@@ -145,8 +144,6 @@ function Install-PowerHubFonts {
 }
 
 Remove-PowerHubLegacyFonts
-Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundColor Green
-
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
