@@ -3519,6 +3519,21 @@ function Start-NextInstall {
     }
 }
 
+function Test-PackageOperationApplied {
+    param($Item)
+
+    if (-not $script:wingetExecutable -or -not $Item.Id) { return $true }
+    try {
+        $listOutput = & $script:wingetExecutable list --id $Item.Id --exact --accept-source-agreements --disable-interactivity 2>&1 | Out-String
+        $packageIsInstalled = ($LASTEXITCODE -eq 0 -and $listOutput -match [regex]::Escape([string]$Item.Id))
+        if ($Item.Operation -eq 'Uninstall') { return (-not $packageIsInstalled) }
+        return $packageIsInstalled
+    } catch {
+        Write-PowerHubLog -Message "Paket durumu doğrulanamadı ($($Item.Name)): $($_.Exception.Message)" -Color DarkYellow
+        return $false
+    }
+}
+
 $script:installTimer.Add_Tick({
     if (-not $script:installProcess) { return }
     $script:installProcess.Refresh()
@@ -3528,7 +3543,15 @@ $script:installTimer.Add_Tick({
     $item = $script:installQueue[$script:installIndex]
     $script:installProcess.WaitForExit()
     $exitCode = [int]$script:installProcess.ExitCode
-    if ($exitCode -eq 0) {
+    $operationSucceeded = ($exitCode -eq 0)
+    if ($operationSucceeded -and $item.Operation -in @('Install','Uninstall')) {
+        $operationSucceeded = Test-PackageOperationApplied -Item $item
+        if (-not $operationSucceeded) {
+            $exitCode = -2
+            Write-PowerHubLog -Message "WinGet başarı bildirdi ancak işlem doğrulanamadı: $($item.Name)" -Color Red
+        }
+    }
+    if ($operationSucceeded) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
         if ($script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$item.Id) }
         Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
@@ -3542,10 +3565,11 @@ $script:installTimer.Add_Tick({
         Resolve-FailedOperation -Id $item.Id -Operation $item.Operation
     } else {
         Write-PowerHubLog -Message "Başarısız: $($item.Name), çıkış kodu: $exitCode" -Color Red
-        Set-InstallQueueEntryState -Entry $item -State Failed -Detail "WinGet çıkış kodu: $exitCode" -Code $exitCode
+        $failureDetail = if ($exitCode -eq -2) { 'Kurulum durumu doğrulanamadı' } else { "WinGet çıkış kodu: $exitCode" }
+        Set-InstallQueueEntryState -Entry $item -State Failed -Detail $failureDetail -Code $exitCode
         Add-FailedOperation -Item $item -Operation $item.Operation -Code $exitCode -Detail "WinGet işlemi tamamlanamadı" -Arguments (Get-PackageOperationArguments -Item $item)
     }
-    [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=($exitCode -eq 0); Manual=$false; Code=$exitCode })
+    [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$operationSucceeded; Manual=$false; Code=$exitCode })
     $script:installProcess.Dispose()
     $script:installProcess = $null
     $script:installIndex++
