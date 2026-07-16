@@ -434,7 +434,7 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                     </Grid>
                 </Button>
 
-                <Button x:Name="FailureCenterButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="FailureCenterButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0" Visibility="Collapsed"
                         ToolTip="Başarısız paket işlemlerini incele ve yeniden dene" AutomationProperties.Name="Başarısız İşlemler Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
