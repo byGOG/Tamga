@@ -1186,7 +1186,8 @@
     {
       "Name": "Raphi Win11Debloat",
       "Description": "Windows 11 temizleme ve yapılandırma aracı",
-      "Action": "Url",
+      "Action": "PowerShell",
+      "Command": "& ([scriptblock]::Create((irm \"https://debloat.raphi.re/\")))",
       "Url": "https://github.com/Raphire/Win11Debloat",
       "Category": "Betikler & Otomasyon",
       "Initial": "R",
@@ -1195,8 +1196,9 @@
     {
       "Name": "Bibata Cursor Installer",
       "Description": "Bibata imleç temasını kurma aracı",
-      "Action": "Url",
-      "Url": "https://github.com/ful1e5/Bibata_Cursor",
+      "Action": "PowerShell",
+      "Command": "irm https://bygog.github.io/Bibata-Cursor-Installer/install.ps1 | iex",
+      "Url": "https://github.com/byGOG/Bibata-Cursor-Installer",
       "Category": "Betikler & Otomasyon",
       "Initial": "B",
       "Color": "#765B9A"
