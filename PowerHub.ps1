@@ -355,7 +355,16 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Image x:Name="MainBrandLogo" Width="44" Height="44" Stretch="Uniform" SnapsToDevicePixels="True"/>
+                    <Border Width="44" Height="44" CornerRadius="10" SnapsToDevicePixels="True" ClipToBounds="True">
+                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
+                        <Viewbox Stretch="Uniform" Margin="5">
+                            <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
+                                <Path Fill="#F8FAFC" Data="M17,11 L35,11 C47,11 54,19 54,31 C54,43 47,51 35,51 L29,51 L37,42 C43,41 46,37 46,31 C46,23 42,20 35,20 L26,20 L26,36 L17,45 Z M17,45 L26,36 L26,55 L17,55 Z"/>
+                                <Path Stroke="#22D3EE" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M24,47 L35,36 L35,29"/>
+                                <Ellipse Canvas.Left="30" Canvas.Top="21" Width="10" Height="10" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="PowerHub" Foreground="White" FontWeight="SemiBold" FontSize="18"/>
                         <TextBlock Text="Uygulama merkezi" Foreground="#B0BDCA" FontSize="12" Margin="0,2,0,0"/>
@@ -1243,7 +1252,16 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                             <Border Height="2" VerticalAlignment="Top" Margin="-24,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#22D3EE" Offset="0.64"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="62"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <Image x:Name="AboutBrandLogo" Width="54" Height="54" Stretch="Uniform" SnapsToDevicePixels="True"/>
+                                <Border Width="54" Height="54" CornerRadius="12" SnapsToDevicePixels="True" ClipToBounds="True">
+                                    <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
+                                    <Viewbox Stretch="Uniform" Margin="6">
+                                        <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
+                                            <Path Fill="#F8FAFC" Data="M17,11 L35,11 C47,11 54,19 54,31 C54,43 47,51 35,51 L29,51 L37,42 C43,41 46,37 46,31 C46,23 42,20 35,20 L26,20 L26,36 L17,45 Z M17,45 L26,36 L26,55 L17,55 Z"/>
+                                            <Path Stroke="#22D3EE" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M24,47 L35,36 L35,29"/>
+                                            <Ellipse Canvas.Left="30" Canvas.Top="21" Width="10" Height="10" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="POWERHUB  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
                                     <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="SemiBold" Margin="0,4,0,0"/>
@@ -1306,7 +1324,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','MainBrandLogo','AboutBrandLogo','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1336,8 +1354,6 @@ function Import-PowerHubBrandImage {
 
 $brandImage = Import-PowerHubBrandImage -FileName 'powerhub-logo.png'
 if ($brandImage) {
-    $controls.MainBrandLogo.Source = $brandImage
-    $controls.AboutBrandLogo.Source = $brandImage
     $brandIcon = Import-PowerHubBrandImage -FileName 'powerhub-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
