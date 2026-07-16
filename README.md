@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/powerhub-logo.png" alt="PowerHub logosu" width="120" height="120">
+
 # PowerHub
 
 **Windows uygulamalarını keşfet, denetle, toplu kur ve güncel tut.**

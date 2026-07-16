@@ -355,11 +355,7 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Border Width="40" Height="40" CornerRadius="10">
-                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#38BDF8" Offset="0"/><GradientStop Color="#6366F1" Offset="1"/></LinearGradientBrush></Border.Background>
-                        <TextBlock Text="P" Foreground="White" FontSize="21" FontWeight="Bold"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <Image x:Name="MainBrandLogo" Width="44" Height="44" Stretch="Uniform" SnapsToDevicePixels="True"/>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="PowerHub" Foreground="White" FontWeight="SemiBold" FontSize="18"/>
                         <TextBlock Text="Uygulama merkezi" Foreground="#B0BDCA" FontSize="12" Margin="0,2,0,0"/>
@@ -1247,9 +1243,7 @@ Write-Host '[PowerHub] Yazı tipi hazır: Segoe UI Variable Text' -ForegroundCol
                             <Border Height="2" VerticalAlignment="Top" Margin="-24,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#22D3EE" Offset="0.64"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="62"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <Border Width="48" Height="48" CornerRadius="12" Background="#0EA5E9">
-                                    <TextBlock Text="P" Foreground="White" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
+                                <Image x:Name="AboutBrandLogo" Width="54" Height="54" Stretch="Uniform" SnapsToDevicePixels="True"/>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="POWERHUB  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
                                     <TextBlock Text="PowerHub" Foreground="White" FontSize="25" FontWeight="SemiBold" Margin="0,4,0,0"/>
@@ -1312,7 +1306,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','MainBrandLogo','AboutBrandLogo','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1320,6 +1314,32 @@ $controls = @{}
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
+}
+
+function Import-PowerHubBrandImage {
+    param([string]$FileName = 'powerhub-logo.png')
+    $candidates = @(
+        (Join-Path $PSScriptRoot ("assets\{0}" -f $FileName)),
+        (Join-Path $PSScriptRoot ("PowerHub\assets\{0}" -f $FileName))
+    )
+    $path = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if (-not $path) { return $null }
+    $bitmap = [Windows.Media.Imaging.BitmapImage]::new()
+    $bitmap.BeginInit()
+    $bitmap.CacheOption = [Windows.Media.Imaging.BitmapCacheOption]::OnLoad
+    $bitmap.CreateOptions = [Windows.Media.Imaging.BitmapCreateOptions]::IgnoreImageCache
+    $bitmap.UriSource = [Uri]::new([IO.Path]::GetFullPath($path))
+    $bitmap.EndInit()
+    $bitmap.Freeze()
+    return $bitmap
+}
+
+$brandImage = Import-PowerHubBrandImage -FileName 'powerhub-logo.png'
+if ($brandImage) {
+    $controls.MainBrandLogo.Source = $brandImage
+    $controls.AboutBrandLogo.Source = $brandImage
+    $brandIcon = Import-PowerHubBrandImage -FileName 'powerhub-logo.ico'
+    $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
 
 $script:focusHistory = [Collections.Stack]::new()
