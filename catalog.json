@@ -601,7 +601,9 @@
     {
       "Name": "Office Tool Plus",
       "Description": "Office dağıtım ve yönetim aracı",
-      "Id": "Yerong.OfficeToolPlus",
+      "Action": "PowerShell",
+      "Command": "irm https://officetool.plus | iex",
+      "Url": "https://github.com/YerongAI/Office-Tool",
       "Category": "Betikler & Otomasyon",
       "Initial": "O",
       "Color": "#D64A3A"
