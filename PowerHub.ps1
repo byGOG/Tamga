@@ -1578,7 +1578,9 @@ foreach ($app in $apps) {
     if (-not $app.PSObject.Properties['InitialOpacity']) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
-    $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -eq 'Url'
+    $isScriptAction = $app.PSObject.Properties['Action'] -and $app.Action -eq 'PowerShell'
+    $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -in @('Url','PowerShell')
+    $app | Add-Member -NotePropertyName IsScriptAction -NotePropertyValue $isScriptAction -Force
     $app | Add-Member -NotePropertyName IsWebResource -NotePropertyValue $isWebResource -Force
     $websiteUrl = if ($isWebResource) { $app.Url } else { $officialWebsiteCatalog[$app.Name] }
     $app | Add-Member -NotePropertyName WebsiteUrl -NotePropertyValue $websiteUrl -Force
@@ -1587,13 +1589,13 @@ foreach ($app in $apps) {
     $app | Add-Member -NotePropertyName UninstallVisibility -NotePropertyValue ([Windows.Visibility]::Collapsed) -Force
     $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     if ($isWebResource) { $app.IsSelected = $false }
-    $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isWebResource) { 'Web' } else { 'Pending' }) -Force
+    $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isScriptAction) { 'Script' } elseif ($isWebResource) { 'Web' } else { 'Pending' }) -Force
     $app | Add-Member -NotePropertyName Operation -NotePropertyValue 'Install' -Force
-    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
-    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
-    $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
-    $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isWebResource) { '#D8C7FF' } else { '#7DD3FC' }) -Force
-    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
+    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isScriptAction) { 'Kart tıklandığında PowerShell aracı çalıştırılır' } elseif ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isScriptAction) { 'KOMUT' } elseif ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
+    $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isScriptAction) { '#174A42' } elseif ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
+    $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isScriptAction) { '#6EE7B7' } elseif ($isWebResource) { '#D8C7FF' } else { '#7DD3FC' }) -Force
+    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isScriptAction) { 'PowerShell komutu' } elseif ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
 }
 
 $logoCatalog = Get-PowerHubLogoCatalog
@@ -2508,6 +2510,23 @@ function Open-PowerHubWebsite {
     }
 }
 
+function Invoke-PowerHubCatalogCommand {
+    param($Item)
+    if (-not $Item -or -not $Item.IsScriptAction -or -not $Item.PSObject.Properties['Command'] -or [string]::IsNullOrWhiteSpace([string]$Item.Command)) { return }
+    try {
+        $command = [string]$Item.Command
+        $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
+        Start-Process -FilePath 'powershell.exe' -ArgumentList @(
+            '-NoProfile','-ExecutionPolicy','Bypass','-NoExit','-EncodedCommand',$encodedCommand
+        ) | Out-Null
+        $controls.ActivityText.Text = "PowerShell aracı başlatıldı: $($Item.Name)"
+        Write-PowerHubLog -Message "PowerShell komutu çalıştırıldı: $($Item.Name) — $command" -Color Cyan
+    } catch {
+        $controls.ActivityText.Text = "PowerShell aracı başlatılamadı: $($Item.Name)"
+        Write-PowerHubLog -Message "PowerShell komutu başlatılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
+    }
+}
+
 $script:detailApp = $null
 $script:detailMetadataProcess = $null
 $script:detailMetadataResultFile = $null
@@ -2737,7 +2756,9 @@ function Show-AppDetail {
     $controls.AppDetailRemoveButton.Visibility = if ($App.InstallState -in @('Installed','UpdateAvailable')) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
     $controls.AppDetailPrimaryButton.IsEnabled = -not $script:isInstalling
     $controls.AppDetailPrimaryButton.Visibility = [Windows.Visibility]::Visible
-    if ($App.IsWebResource) {
+    if ($App.IsScriptAction) {
+        $controls.AppDetailPrimaryButton.Content = 'Aracı çalıştır  →'
+    } elseif ($App.IsWebResource) {
         $controls.AppDetailPrimaryButton.Content = 'Siteyi aç  →'
         $controls.AppDetailWebsiteButton.Visibility = [Windows.Visibility]::Collapsed
     } elseif ($App.InstallState -eq 'Installed') {
@@ -2769,7 +2790,9 @@ $controls.AppDetailWebsiteButton.Add_Click({
 $controls.AppDetailPrimaryButton.Add_Click({
     $app = $script:detailApp
     if (-not $app) { return }
-    if ($app.IsWebResource) {
+    if ($app.IsScriptAction) {
+        Invoke-PowerHubCatalogCommand -Item $app
+    } elseif ($app.IsWebResource) {
         Open-PowerHubWebsite -Item $app -Url $app.Url -WebResource
     } elseif ($app.Operation -ne 'None') {
         $app.IsSelected = $true
@@ -2834,6 +2857,12 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
         }
         if ($node -is [Windows.Controls.CheckBox]) { return }
         try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+    }
+
+    if ($item.IsScriptAction) {
+        Invoke-PowerHubCatalogCommand -Item $item
+        $eventArgs.Handled = $true
+        return
     }
 
     if ($item.IsWebResource) {
@@ -2934,7 +2963,9 @@ $window.Add_PreviewKeyDown({
     if ($controls.AppList.IsKeyboardFocusWithin -and -not $focusIsActionControl -and $controls.AppList.SelectedItem) {
         $focusedApp = $controls.AppList.SelectedItem
         if ($eventArgs.Key -eq [Windows.Input.Key]::Space) {
-            if ($focusedApp.IsWebResource) {
+            if ($focusedApp.IsScriptAction) {
+                Invoke-PowerHubCatalogCommand -Item $focusedApp
+            } elseif ($focusedApp.IsWebResource) {
                 Open-PowerHubWebsite -Item $focusedApp -Url $focusedApp.Url -WebResource
             } elseif ($focusedApp.Operation -ne 'None') {
                 $focusedApp.IsSelected = -not [bool]$focusedApp.IsSelected

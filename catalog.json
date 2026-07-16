@@ -609,7 +609,8 @@
     {
       "Name": "CTT WinUtil",
       "Description": "Windows bakım ve yapılandırma aracı",
-      "Action": "Url",
+      "Action": "PowerShell",
+      "Command": "irm https://christitus.com/win | iex",
       "Url": "https://github.com/ChrisTitusTech/winutil",
       "Category": "Betikler & Otomasyon",
       "Initial": "W",
