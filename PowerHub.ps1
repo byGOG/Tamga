@@ -24,10 +24,28 @@ public static class PowerHubWindowLayout {
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool RemoveFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, UIntPtr wParam, IntPtr lParam, uint flags, uint timeout, out UIntPtr result);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr LoadImage(IntPtr instance, string name, uint type, int width, int height, uint loadFlags);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr SendMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)] private static extern int SetCurrentProcessExplicitAppUserModelID(string appId);
     [DllImport("user32.dll", SetLastError = true)] private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
     [DllImport("dwmapi.dll", PreserveSig = true)] private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int valueSize);
     public static void EnablePerMonitorDpi() {
         try { SetProcessDpiAwarenessContext(new IntPtr(-4)); } catch { }
+    }
+    public static void ConfigureApplicationIdentity() {
+        try { SetCurrentProcessExplicitAppUserModelID("byGOG.PowerHub"); } catch { }
+    }
+    public static void ApplyWindowIcon(IntPtr hwnd, string iconPath) {
+        if (hwnd == IntPtr.Zero || String.IsNullOrWhiteSpace(iconPath)) return;
+        try {
+            const uint IMAGE_ICON = 1;
+            const uint LR_LOADFROMFILE = 0x0010;
+            const uint WM_SETICON = 0x0080;
+            IntPtr largeIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+            IntPtr smallIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+            if (largeIcon != IntPtr.Zero) SendMessage(hwnd, WM_SETICON, new IntPtr(1), largeIcon);
+            if (smallIcon != IntPtr.Zero) SendMessage(hwnd, WM_SETICON, IntPtr.Zero, smallIcon);
+        } catch { }
     }
     public static void ApplyFluentWindow(IntPtr hwnd) {
         if (hwnd == IntPtr.Zero) return;
@@ -44,6 +62,12 @@ public static class PowerHubWindowLayout {
 '@
 
 [PowerHubWindowLayout]::EnablePerMonitorDpi()
+[PowerHubWindowLayout]::ConfigureApplicationIdentity()
+
+$script:powerHubIconPath = @(
+    (Join-Path $PSScriptRoot 'assets\powerhub-logo.ico'),
+    (Join-Path $PSScriptRoot 'PowerHub\assets\powerhub-logo.ico')
+) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 
 function Get-PowerHubFileSha256([string]$Path) {
     $stream = [IO.File]::OpenRead($Path)
@@ -1320,6 +1344,9 @@ $window.Add_SourceInitialized({
     try {
         $windowHelper = [Windows.Interop.WindowInteropHelper]::new($window)
         [PowerHubWindowLayout]::ApplyFluentWindow($windowHelper.Handle)
+        if ($script:powerHubIconPath) {
+            [PowerHubWindowLayout]::ApplyWindowIcon($windowHelper.Handle, [IO.Path]::GetFullPath($script:powerHubIconPath))
+        }
     } catch { }
 })
 
