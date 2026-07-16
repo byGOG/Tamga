@@ -16,8 +16,6 @@
 
 </div>
 
-![PowerHub uygulama önizlemesi](assets/powerhub-preview.png)
-
 ---
 
 ## Genel bakış
