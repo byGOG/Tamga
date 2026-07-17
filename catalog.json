@@ -1121,6 +1121,15 @@
       "Color": "#8B36D9"
     },
     {
+      "Name": "TürkAnime İndirici",
+      "Description": "Anime izleme ve bölüm indirme aracı",
+      "Action": "Url",
+      "Url": "https://github.com/KebabLord/turkanime-indirici",
+      "Category": "Film & Medya",
+      "Initial": "TA",
+      "Color": "#F05A28"
+    },
+    {
       "Name": "Ninite",
       "Description": "Toplu uygulama kurulum hizmeti",
       "Action": "Url",
@@ -1337,6 +1346,7 @@
     "TeraCopy": "https://codesector.com/teracopy",
     "Thunderbird": "https://www.thunderbird.net/tr/",
     "Tor Browser": "https://www.torproject.org/",
+    "TürkAnime İndirici": "https://github.com/KebabLord/turkanime-indirici",
     "UniGetUI": "https://devolutions.net/unigetui/",
     "Ventoy": "https://www.ventoy.net/",
     "VirtualBox": "https://www.virtualbox.org/",
