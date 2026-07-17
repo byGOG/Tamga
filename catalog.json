@@ -776,6 +776,14 @@
       "Color": "#397D9B"
     },
     {
+      "Name": "Subloader",
+      "Description": "Film ve diziler için altyazı indirici",
+      "Id": "Valyreon.Subloader",
+      "Category": "Multimedya",
+      "Initial": "S",
+      "Color": "#6E7CE8"
+    },
+    {
       "Name": "ShareX",
       "Description": "Ekran görüntüsü ve paylaşım aracı",
       "Id": "ShareX.ShareX",
@@ -1371,6 +1379,7 @@
     "ShareX": "https://getsharex.com/",
     "Spotify": "https://open.spotify.com/intl-tr/",
     "Steam": "https://store.steampowered.com/",
+    "Subloader": "https://github.com/Valyreon/Subloader",
     "Subtitle Edit": "https://www.nikse.dk/subtitleedit",
     "TeamViewer": "https://www.teamviewer.com/tr/",
     "Telegram": "https://telegram.org/",

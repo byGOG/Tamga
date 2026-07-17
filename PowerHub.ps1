@@ -1935,6 +1935,7 @@ $vendorLogoOverrides = @{
     'Bibata Modern Ice Cursor' = 'bibata-modern-ice-logo.png'
     'AdGuard Extra'     = 'adguard-extra-logo.png'
     'Monochrome'        = 'monochrome-logo.png'
+    'Subloader'         = 'subloader-logo.png'
     'PlayTorrio'        = 'playtorrio-logo.png'
     'DPIBreak'          = 'dpibreak-logo.png'
     'Helium'            = 'helium-logo.png'
