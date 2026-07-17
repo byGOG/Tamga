@@ -1936,6 +1936,7 @@ $vendorLogoOverrides = @{
     'AdGuard Extra'     = 'adguard-extra-logo.png'
     'Monochrome'        = 'monochrome-logo.png'
     'PlayTorrio'        = 'playtorrio-logo.png'
+    'DPIBreak'          = 'dpibreak-logo.png'
     'Yahoo Mail'        = 'yahoo-mail-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'

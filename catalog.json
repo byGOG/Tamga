@@ -504,6 +504,14 @@
       "Color": "#3D7B8A"
     },
     {
+      "Name": "DPIBreak",
+      "Description": "Hızlı DPI engeli aşma aracı",
+      "Id": "Dilluti0n.DPIBreak",
+      "Category": "Gizlilik & Ağ Ayarları",
+      "Initial": "DB",
+      "Color": "#F4AE2A"
+    },
+    {
       "Name": "DNS Jumper",
       "Description": "Hızlı DNS değiştirme aracı",
       "Id": "sordum.DnsJumper",
@@ -1270,6 +1278,7 @@
     "Git": "https://gitforwindows.org/",
     "GitHub Desktop": "https://github.com/apps/desktop",
     "GOG Galaxy": "https://www.gog.com/",
+    "DPIBreak": "https://dilluti0n.com/dpibreak/",
     "GoodbyeDPI": "https://github.com/ValdikSS/GoodbyeDPI",
     "Google Antigravity": "https://antigravity.google/",
     "Google Chrome": "https://www.google.com/chrome/",
