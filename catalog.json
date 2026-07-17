@@ -678,6 +678,15 @@
       "Color": "#67B279"
     },
     {
+      "Name": "Buster CAPTCHA Solver",
+      "Description": "Ses tanıma ile CAPTCHA çözme eklentisi",
+      "Action": "Url",
+      "Url": "https://github.com/dessant/buster",
+      "Category": "Eklentiler",
+      "Initial": "B",
+      "Color": "#FF9F43"
+    },
+    {
       "Name": "Dark Reader",
       "Description": "İnternet siteleri için karanlık tema",
       "Action": "Url",
@@ -1388,6 +1397,7 @@
     "BleachBit": "https://www.bleachbit.org/",
     "Brave": "https://brave.com/tr/",
     "Bulk Crap Uninstaller": "https://www.bcuninstaller.com/",
+    "Buster CAPTCHA Solver": "https://github.com/dessant/buster",
     "Claude": "https://claude.ai/",
     "CopyQ": "https://hluk.github.io/CopyQ/",
     "CPU-Z": "https://www.cpuid.com/softwares/cpu-z.html",

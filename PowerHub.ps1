@@ -1938,6 +1938,7 @@ $vendorLogoOverrides = @{
     'DNS Speed Test Online' = 'dns-speed-test-logo.png'
     'Win11Debloat'     = 'win11debloat-logo.png'
     'Bibata Modern Ice Cursor' = 'bibata-modern-ice-logo.png'
+    'Buster CAPTCHA Solver' = 'buster-logo.png'
     'AdGuard Extra'     = 'adguard-extra-logo.png'
     'Monochrome'        = 'monochrome-logo.png'
     'Subloader'         = 'subloader-logo.png'
