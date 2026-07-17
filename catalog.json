@@ -1019,7 +1019,7 @@
     },
     {
       "Name": "BHTwitter",
-      "Description": "Twitter için gelişmiş iOS eklentisi",
+      "Description": "Özelleştirilmiş Twitter iOS IPA uygulaması",
       "Action": "Url",
       "Url": "https://github.com/BandarHL/BHTwitter",
       "Category": "Mobil & Araçlar",
@@ -1028,7 +1028,7 @@
     },
     {
       "Name": "Regram",
-      "Description": "Instagram için kapsamlı iOS eklentisi",
+      "Description": "Özelleştirilmiş Instagram iOS IPA uygulaması",
       "Action": "Url",
       "Url": "https://regram.fouadraheb.com/",
       "Category": "Mobil & Araçlar",
