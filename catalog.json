@@ -601,7 +601,7 @@
       "Name": "VMware Workstation Pro",
       "Description": "Profesyonel masaüstü sanallaştırma",
       "Action": "Url",
-      "Url": "https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion",
+      "Url": "https://www.vmware.com/",
       "Category": "Sanallaştırma",
       "Initial": "VM",
       "Color": "#E28A24"
@@ -1295,7 +1295,7 @@
     "VirtualBox": "https://www.virtualbox.org/",
     "Visual Studio Code": "https://code.visualstudio.com",
     "VLC": "https://www.videolan.org/vlc/",
-    "VMware Workstation Pro": "https://www.techspot.com/downloads/189-vmware-workstation-for-windows.html",
+    "VMware Workstation Pro": "https://www.vmware.com/",
     "WhatsApp": "https://www.whatsapp.com/",
     "WinRAR": "https://www.rarlab.com/",
     "WizTree": "https://diskanalyzer.com/",
