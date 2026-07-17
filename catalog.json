@@ -275,7 +275,15 @@
       "Id": "PeterPawlowski.foobar2000",
       "Category": "Multimedya",
       "Initial": "F",
-      "Color": "#566270"
+      "Color": "#566270",
+      "AdditionalPackages": [
+        {
+          "Name": "foobar2000 Free Encoder Pack",
+          "Id": "PeterPawlowski.foobar2000.EncoderPack",
+          "Version": "2026-01-22",
+          "Description": "Dönüştürücü bileşeni için ücretsiz kodlayıcı paketi"
+        }
+      ]
     },
     {
       "Name": "Visual Studio Code",

@@ -3687,6 +3687,7 @@ function New-InstallQueueEntry {
         Action = if ($App.PSObject.Properties['Action']) { $App.Action } else { 'Winget' }
         Url = if ($App.PSObject.Properties['Url']) { $App.Url } else { $null }
         InstallArguments = if ($App.PSObject.Properties['InstallArguments']) { @($App.InstallArguments) } else { $null }
+        AdditionalPackages = if ($App.PSObject.Properties['AdditionalPackages']) { @($App.AdditionalPackages) } else { @() }
         Operation = $operation
         PackageSource = $packageSource
         Status = 'Waiting'
@@ -3792,7 +3793,35 @@ function Test-WebView2RuntimeInstalled {
 function Add-RequiredPackageDependencies {
     param([object[]]$Entries)
 
-    $expandedEntries = @($Entries)
+    $expandedEntries = @()
+    foreach ($entry in @($Entries)) {
+        $expandedEntries += $entry
+        if ($entry.Operation -ne 'Install' -or -not $entry.PSObject.Properties['AdditionalPackages']) { continue }
+
+        foreach ($package in @($entry.AdditionalPackages)) {
+            if (-not $package.Id -or @($expandedEntries | Where-Object Id -eq $package.Id).Count -gt 0) { continue }
+            $expandedEntries += [pscustomobject]@{
+                Name = [string]$package.Name
+                Id = [string]$package.Id
+                Action = 'Winget'
+                Url = $null
+                InstallArguments = $null
+                AdditionalPackages = @()
+                Operation = 'Install'
+                PackageSource = 'winget'
+                Status = 'Waiting'
+                StatusLabel = 'BEKLİYOR'
+                StatusIcon = '…'
+                StatusBackground = '#3A3F45'
+                StatusForeground = '#C2CBD1'
+                Detail = "$($entry.Name) ile birlikte kurulacak ek paket"
+                Code = 0
+                StoreRetryCount = 0
+            }
+            Write-PowerHubLog -Message "$($entry.Name) ek paketi kuyruğa eklendi: $($package.Name)" -Color DarkCyan
+        }
+    }
+
     $requiresWebView2 = @($expandedEntries | Where-Object {
         $_.Id -eq '9NKSQGP7F2NH' -and $_.Operation -ne 'Uninstall'
     }).Count -gt 0
