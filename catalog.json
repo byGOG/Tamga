@@ -861,7 +861,7 @@
       "Name": "Windows 11 Media Creation Tool",
       "Description": "Resmî Windows 11 medya aracı",
       "Action": "Url",
-      "Url": "https://www.microsoft.com/software-download/windows11",
+      "Url": "https://www.microsoft.com/tr-tr/software-download/windows11",
       "Category": "Sistem Araçları",
       "Initial": "11",
       "Color": "#2E82C9"
