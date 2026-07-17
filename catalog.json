@@ -1115,8 +1115,7 @@
     {
       "Name": "privacy.sexy",
       "Description": "Açık kaynak gizlilik yapılandırmaları",
-      "Action": "Url",
-      "Url": "https://privacy.sexy/",
+      "Id": "undergroundwires.privacy.sexy",
       "Category": "Gizlilik & Ağ Ayarları",
       "Initial": "p",
       "Color": "#8A4EA0"
@@ -1398,6 +1397,7 @@
     "PowerToys": "https://learn.microsoft.com/tr-tr/windows/powertoys/",
     "Process Lasso": "https://bitsum.com/",
     "Proton VPN": "https://protonvpn.com/",
+    "privacy.sexy": "https://privacy.sexy/",
     "Python": "https://www.python.org/",
     "qBittorrent": "https://www.qbittorrent.org/",
     "Regram": "https://regram.fouadraheb.com/",
