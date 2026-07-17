@@ -181,6 +181,11 @@ Remove-PowerHubLegacyFonts
         <SolidColorBrush x:Key="SubtleBorder" Color="#334252"/>
         <SolidColorBrush x:Key="InputBg" Color="#15202B"/>
         <SolidColorBrush x:Key="OverlayBg" Color="#E6080A0C"/>
+        <LinearGradientBrush x:Key="HeaderBg" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1C2530" Offset="0"/>
+            <GradientStop Color="#18232F" Offset="1"/>
+        </LinearGradientBrush>
+        <DropShadowEffect x:Key="CardShadow" Color="#020617" BlurRadius="10" ShadowDepth="2" Opacity="0.16"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
             <Setter Property="Width" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -373,6 +378,17 @@ Remove-PowerHubLegacyFonts
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Canvas x:Name="ThemeVisualLayer" Grid.Column="1" IsHitTestVisible="False" ClipToBounds="True" Opacity="0">
+            <Ellipse x:Name="ThemeGlowOne" Width="420" Height="420" Canvas.Right="-115" Canvas.Top="-150" Opacity="0.28">
+                <Ellipse.Fill><RadialGradientBrush><GradientStop Color="#6DB8FF" Offset="0"/><GradientStop Color="#006DB8FF" Offset="1"/></RadialGradientBrush></Ellipse.Fill>
+                <Ellipse.Effect><BlurEffect Radius="42"/></Ellipse.Effect>
+            </Ellipse>
+            <Ellipse x:Name="ThemeGlowTwo" Width="360" Height="360" Canvas.Left="-120" Canvas.Bottom="-125" Opacity="0.2">
+                <Ellipse.Fill><RadialGradientBrush><GradientStop Color="#A78BFA" Offset="0"/><GradientStop Color="#00A78BFA" Offset="1"/></RadialGradientBrush></Ellipse.Fill>
+                <Ellipse.Effect><BlurEffect Radius="48"/></Ellipse.Effect>
+            </Ellipse>
+        </Canvas>
+
         <Border x:Name="Sidebar" Grid.Column="0" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="0,0,1,0" Background="{DynamicResource SidebarBg}">
             <Grid Margin="18,20">
                 <Grid.RowDefinitions>
@@ -510,8 +526,8 @@ Remove-PowerHubLegacyFonts
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="HeaderBanner" CornerRadius="12" Padding="20,17" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1">
-                <Border.Effect><DropShadowEffect Color="#020617" BlurRadius="18" ShadowDepth="4" Opacity="0.36"/></Border.Effect>
+            <Border x:Name="HeaderBanner" CornerRadius="14" Padding="20,17" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
+                    Effect="{DynamicResource CardShadow}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="64"/>
@@ -671,7 +687,8 @@ Remove-PowerHubLegacyFonts
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border x:Name="CardBorder" Height="72" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1"
-                                CornerRadius="10" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand">
+                                CornerRadius="12" Padding="0" ClipToBounds="True" SnapsToDevicePixels="True" Cursor="Hand"
+                                Effect="{DynamicResource CardShadow}">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
@@ -733,7 +750,8 @@ Remove-PowerHubLegacyFonts
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12" Padding="15,11" Margin="0,8,0,0"
+                    Effect="{DynamicResource CardShadow}">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -1386,7 +1404,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','ThemeVisualLayer','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ThemeButton','ThemeButtonIcon','ThemePopup','ThemeAutoButton','ThemeDarkButton','ThemeLightButton',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
@@ -1401,7 +1419,7 @@ function New-ThemeGradientBrush([string[]]$Colors) {
     $brush = [Windows.Media.LinearGradientBrush]::new()
     $brush.StartPoint = [Windows.Point]::new(0, 0)
     $brush.EndPoint = [Windows.Point]::new(1, 1)
-    $offsets = @(0.0, 0.58, 1.0)
+    $offsets = if ($Colors.Count -eq 2) { @(0.0, 1.0) } else { @(0.0, 0.58, 1.0) }
     for ($index = 0; $index -lt $Colors.Count; $index++) {
         $brush.GradientStops.Add([Windows.Media.GradientStop]::new(
             [Windows.Media.ColorConverter]::ConvertFromString($Colors[$index]),
@@ -1409,6 +1427,16 @@ function New-ThemeGradientBrush([string[]]$Colors) {
         ))
     }
     return $brush
+}
+
+function New-ThemeShadowEffect([string]$Color, [double]$BlurRadius, [double]$ShadowDepth, [double]$Opacity) {
+    $effect = [Windows.Media.Effects.DropShadowEffect]::new()
+    $effect.Color = [Windows.Media.ColorConverter]::ConvertFromString($Color)
+    $effect.BlurRadius = $BlurRadius
+    $effect.ShadowDepth = $ShadowDepth
+    $effect.Opacity = $Opacity
+    $effect.Direction = 270
+    return $effect
 }
 
 $script:themeSettingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
@@ -1472,6 +1500,19 @@ function Set-PowerHubTheme {
     $gradient = if ($dark) { @('#0B1118','#101923','#111827') } else { @('#F7FAFC','#EEF3F8','#E7EEF6') }
     $window.Resources['PageBg'] = New-ThemeGradientBrush -Colors $gradient
     foreach ($entry in $palette.GetEnumerator()) { $window.Resources[$entry.Key] = New-ColorBrush $entry.Value }
+    $window.Resources['HeaderBg'] = New-ThemeGradientBrush -Colors $(if ($dark) { @('#1C2530','#18232F') } else { @('#FFFFFF','#F4F8FF') })
+    $window.Resources['CardBg'] = if ($dark) { New-ColorBrush '#18212B' } else { New-ThemeGradientBrush -Colors @('#FFFFFF','#F8FBFF') }
+    $window.Resources['CardShadow'] = if ($dark) {
+        New-ThemeShadowEffect -Color '#020617' -BlurRadius 10 -ShadowDepth 2 -Opacity 0.16
+    } else {
+        New-ThemeShadowEffect -Color '#486580' -BlurRadius 14 -ShadowDepth 3 -Opacity 0.13
+    }
+    if ($controls.ThemeVisualLayer) {
+        $visualAnimation = [Windows.Media.Animation.DoubleAnimation]::new()
+        $visualAnimation.To = if ($dark) { 0.0 } else { 1.0 }
+        $visualAnimation.Duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(260))
+        $controls.ThemeVisualLayer.BeginAnimation([Windows.UIElement]::OpacityProperty, $visualAnimation)
+    }
     $script:themePreference = $Mode
     $script:resolvedTheme = $resolved
     Set-ThemeButtonState -Mode $Mode
