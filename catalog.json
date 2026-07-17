@@ -636,6 +636,15 @@
       "Color": "#C73535"
     },
     {
+      "Name": "AdGuard Extra",
+      "Description": "Gelişmiş reklam engelleme yardımcısı",
+      "Action": "Url",
+      "Url": "https://github.com/AdguardTeam/AdGuardExtra",
+      "Category": "Eklentiler",
+      "Initial": "AE",
+      "Color": "#67B279"
+    },
+    {
       "Name": "Dark Reader",
       "Description": "İnternet siteleri için karanlık tema",
       "Action": "Url",
