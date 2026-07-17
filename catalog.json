@@ -158,6 +158,14 @@
       "Color": "#D29422"
     },
     {
+      "Name": "Helium",
+      "Description": "Gizlilik odaklı hafif tarayıcı",
+      "Id": "ImputNet.Helium",
+      "Category": "İnternet Tarayıcıları",
+      "Initial": "H",
+      "Color": "#3450D1"
+    },
+    {
       "Name": "Discord",
       "Description": "Topluluk ve sesli sohbet",
       "Id": "Discord.Discord",
@@ -1285,6 +1293,7 @@
     "Google Drive": "https://drive.google.com/",
     "GPU-Z": "https://www.techpowerup.com/gpuz/",
     "HandBrake": "https://handbrake.fr/",
+    "Helium": "https://helium.computer/",
     "HashCheck": "https://github.com/gurnec/HashCheck",
     "HWiNFO64": "https://www.hwinfo.com/",
     "ImageGlass": "https://imageglass.org/",
