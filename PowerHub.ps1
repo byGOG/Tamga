@@ -58,6 +58,13 @@ public static class PowerHubWindowLayout {
             DwmSetWindowAttribute(hwnd, 38, ref mica, sizeof(int));
         } catch { }
     }
+    public static void ApplyDarkTitleBar(IntPtr hwnd, bool enabled) {
+        if (hwnd == IntPtr.Zero) return;
+        try {
+            int value = enabled ? 1 : 0;
+            DwmSetWindowAttribute(hwnd, 20, ref value, sizeof(int));
+        } catch { }
+    }
 }
 '@
 
@@ -171,6 +178,9 @@ Remove-PowerHubLegacyFonts
         <SolidColorBrush x:Key="CardBorder" Color="#2D3A48"/>
         <SolidColorBrush x:Key="SoftBg" Color="#202C38"/>
         <SolidColorBrush x:Key="SoftText" Color="#BAE6FD"/>
+        <SolidColorBrush x:Key="SubtleBorder" Color="#334252"/>
+        <SolidColorBrush x:Key="InputBg" Color="#15202B"/>
+        <SolidColorBrush x:Key="OverlayBg" Color="#E6080A0C"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
             <Setter Property="Width" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -227,7 +237,7 @@ Remove-PowerHubLegacyFonts
             </Setter>
         </Style>
         <Style x:Key="NavButton" TargetType="Button">
-            <Setter Property="Foreground" Value="#CBD5E1"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -247,10 +257,10 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#18232E"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="{DynamicResource SoftBg}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="NavBorder" Property="Background" Value="#1E3040"/>
+                                <Setter TargetName="NavBorder" Property="Background" Value="{DynamicResource SurfaceRaised}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
                                 <Setter TargetName="NavBorder" Property="BorderBrush" Value="#5BCDF7"/>
@@ -267,10 +277,10 @@ Remove-PowerHubLegacyFonts
             <Setter Property="Width" Value="30"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="#222D38"/>
-            <Setter Property="BorderBrush" Value="#425366"/>
+            <Setter Property="Background" Value="{DynamicResource SoftBg}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource CardBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="#BAE6FD"/>
+            <Setter Property="Foreground" Value="{DynamicResource SoftText}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -280,7 +290,7 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="IconSurface" Property="Background" Value="#263E49"/>
+                                <Setter TargetName="IconSurface" Property="Background" Value="{DynamicResource SurfaceRaised}"/>
                                 <Setter TargetName="IconSurface" Property="BorderBrush" Value="#38BDF8"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
@@ -300,8 +310,8 @@ Remove-PowerHubLegacyFonts
         </Style>
         <Style x:Key="AboutNavButton" TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Foreground" Value="#E8F6FD"/>
-            <Setter Property="BorderBrush" Value="#365565"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SubtleBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="9"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -313,8 +323,8 @@ Remove-PowerHubLegacyFonts
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="AboutSurface" Property="BorderBrush" Value="#258CC0"/><Setter TargetName="AboutSurface" Property="Background" Value="#244758"/></Trigger>
-                            <Trigger Property="IsPressed" Value="True"><Setter TargetName="AboutSurface" Property="Background" Value="#183B4E"/></Trigger>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="AboutSurface" Property="BorderBrush" Value="#258CC0"/><Setter TargetName="AboutSurface" Property="Background" Value="{DynamicResource SoftBg}"/></Trigger>
+                            <Trigger Property="IsPressed" Value="True"><Setter TargetName="AboutSurface" Property="Background" Value="{DynamicResource SurfaceRaised}"/></Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="AboutSurface" Property="BorderBrush" Value="#A5F3FC"/></Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -363,7 +373,7 @@ Remove-PowerHubLegacyFonts
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="Sidebar" Grid.Column="0" BorderBrush="#263341" BorderThickness="0,0,1,0" Background="{DynamicResource SidebarBg}">
+        <Border x:Name="Sidebar" Grid.Column="0" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="0,0,1,0" Background="{DynamicResource SidebarBg}">
             <Grid Margin="18,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -387,14 +397,14 @@ Remove-PowerHubLegacyFonts
                         </Viewbox>
                     </Border>
                     <StackPanel Margin="11,0,0,0">
-                        <TextBlock Text="PowerHub" Foreground="White" FontWeight="SemiBold" FontSize="18"/>
-                        <TextBlock Text="Uygulama merkezi" Foreground="#B0BDCA" FontSize="12" Margin="0,2,0,0"/>
+                        <TextBlock Text="PowerHub" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="18"/>
+                        <TextBlock Text="Uygulama merkezi" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,2,0,0"/>
                     </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Margin="8,0,8,8">
-                    <TextBlock Text="KATEGORİLER" Foreground="#9AAEBD" FontSize="10.5" FontWeight="Bold"/>
-                    <Border Height="1" Background="#404040" Margin="78,6,0,0"/>
+                    <TextBlock Text="KATEGORİLER" Foreground="{DynamicResource Muted}" FontSize="10.5" FontWeight="Bold"/>
+                    <Border Height="1" Background="{DynamicResource CardBorder}" Margin="78,6,0,0"/>
                 </Grid>
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,8">
                     <ScrollViewer.Resources><Style TargetType="ScrollBar" BasedOn="{StaticResource SlimScrollBar}"/></ScrollViewer.Resources>
@@ -409,7 +419,7 @@ Remove-PowerHubLegacyFonts
                             <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Güncelleme Merkezi" Foreground="#F1F8FC" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="Güncelleme Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
                             <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#C8AC7F" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -424,7 +434,7 @@ Remove-PowerHubLegacyFonts
                             <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Güvenlik Merkezi" Foreground="#F1F8FC" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="Güvenlik Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
                             <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -454,14 +464,14 @@ Remove-PowerHubLegacyFonts
                             <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Hakkında" Foreground="#F1F8FC" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
                             <TextBlock Text="PowerHub • byGOG" Foreground="#9AB7C7" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="7" Height="58" Background="#141B23" BorderBrush="#334150" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="7" Height="58" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
                         CornerRadius="10" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir"
                         Focusable="True" AutomationProperties.Name="WinGet paket yöneticisi durumu"
                         AutomationProperties.HelpText="WinGet eksikse Enter veya Boşluk tuşuyla kurulumu başlatın">
@@ -476,10 +486,10 @@ Remove-PowerHubLegacyFonts
                             <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="White"
+                        <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="{DynamicResource Ink}"
                                    FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,5,0"/>
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
-                                   Foreground="#AAB7C4" FontSize="10" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                   Foreground="{DynamicResource Muted}" FontSize="10" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#123A2A" BorderBrush="#236747" BorderThickness="1"
                                 CornerRadius="12" Padding="6,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -500,7 +510,7 @@ Remove-PowerHubLegacyFonts
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Border x:Name="HeaderBanner" CornerRadius="12" Padding="20,17" Background="{DynamicResource SurfaceRaised}" BorderBrush="#334252" BorderThickness="1">
+            <Border x:Name="HeaderBanner" CornerRadius="12" Padding="20,17" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1">
                 <Border.Effect><DropShadowEffect Color="#020617" BlurRadius="18" ShadowDepth="4" Opacity="0.36"/></Border.Effect>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -538,7 +548,7 @@ Remove-PowerHubLegacyFonts
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="#15202B" BorderBrush="#334557"
+                        <Border Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
                                 BorderThickness="1" CornerRadius="9" Height="42">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
@@ -558,8 +568,25 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <Grid Margin="3,9,3,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
+                            <Button x:Name="ThemeButton" Content="◐" Width="28" Height="23" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Padding="2" Margin="0,-3,0,0" Background="Transparent" Foreground="{DynamicResource SoftText}"
+                                    BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1" FontSize="9.5"
+                                    ToolTip="Görünüm temasını seç"
+                                    AutomationProperties.Name="Görünüm temasını seç"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#6EE7B7" FontSize="10" FontWeight="Bold"/>
                         </Grid>
+                        <Popup x:Name="ThemePopup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                            <Border Width="158" Margin="0,6,0,0" Padding="7" CornerRadius="10"
+                                    Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1">
+                                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="18" ShadowDepth="5" Opacity="0.45"/></Border.Effect>
+                                <StackPanel>
+                                    <TextBlock Text="GÖRÜNÜM" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold" Margin="8,3,8,6"/>
+                                    <Button x:Name="ThemeAutoButton" Tag="Auto" Content="◐   Otomatik" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
+                                    <Button x:Name="ThemeDarkButton" Tag="Dark" Content="☾   Koyu" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
+                                    <Button x:Name="ThemeLightButton" Tag="Light" Content="☀   Açık" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -654,7 +681,7 @@ Remove-PowerHubLegacyFonts
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,8,0">
                                         <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="15"
                                                    TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="#B0BDCA" FontSize="12" Margin="0,3,0,0"
+                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,3,0,0"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                     <Border Grid.Column="2" Background="{Binding SourceBackground}" CornerRadius="12" Padding="7,4" Margin="8,0,7,0"
@@ -686,8 +713,8 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background" Value="#202C38"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#476176"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SoftBg}"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource SubtleBorder}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsChecked, ElementName=AppCheck}" Value="True">
                                 <Setter TargetName="CardBorder" Property="Background" Value="#172F40"/>
@@ -990,7 +1017,7 @@ Remove-PowerHubLegacyFonts
             </Border>
         </Grid>
 
-        <Grid x:Name="UpdateCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#0F141A" Visibility="Collapsed" Panel.ZIndex="20">
+        <Grid x:Name="UpdateCenterView" Grid.Column="1" Margin="24,18,24,18" Background="{DynamicResource PageBg}" Visibility="Collapsed" Panel.ZIndex="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -1085,7 +1112,7 @@ Remove-PowerHubLegacyFonts
             </Border>
         </Grid>
 
-        <Grid x:Name="SecurityCenterView" Grid.Column="1" Margin="24,18,24,18" Background="#0F141A" Visibility="Collapsed" Panel.ZIndex="22">
+        <Grid x:Name="SecurityCenterView" Grid.Column="1" Margin="24,18,24,18" Background="{DynamicResource PageBg}" Visibility="Collapsed" Panel.ZIndex="22">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -1263,7 +1290,7 @@ Remove-PowerHubLegacyFonts
             </Border>
         </Grid>
 
-        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="#E6080A0C"
+        <Grid x:Name="AboutOverlay" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed" Background="{DynamicResource OverlayBg}"
               AutomationProperties.Name="PowerHub hakkında" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
             <Border x:Name="AboutCard" Width="620" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -1344,6 +1371,7 @@ $window.Add_SourceInitialized({
     try {
         $windowHelper = [Windows.Interop.WindowInteropHelper]::new($window)
         [PowerHubWindowLayout]::ApplyFluentWindow($windowHelper.Handle)
+        [PowerHubWindowLayout]::ApplyDarkTitleBar($windowHelper.Handle, ($script:resolvedTheme -ne 'Light'))
         if ($script:powerHubIconPath) {
             [PowerHubWindowLayout]::ApplyWindowIcon($windowHelper.Handle, [IO.Path]::GetFullPath($script:powerHubIconPath))
         }
@@ -1352,6 +1380,7 @@ $window.Add_SourceInitialized({
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+  'ThemeButton','ThemePopup','ThemeAutoButton','ThemeDarkButton','ThemeLightButton',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1360,6 +1389,112 @@ $controls = @{}
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
+
+function New-ThemeGradientBrush([string[]]$Colors) {
+    $brush = [Windows.Media.LinearGradientBrush]::new()
+    $brush.StartPoint = [Windows.Point]::new(0, 0)
+    $brush.EndPoint = [Windows.Point]::new(1, 1)
+    $offsets = @(0.0, 0.58, 1.0)
+    for ($index = 0; $index -lt $Colors.Count; $index++) {
+        $brush.GradientStops.Add([Windows.Media.GradientStop]::new(
+            [Windows.Media.ColorConverter]::ConvertFromString($Colors[$index]),
+            $offsets[[Math]::Min($index, $offsets.Count - 1)]
+        ))
+    }
+    return $brush
+}
+
+$script:themeSettingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
+$script:themeSettingsPath = Join-Path $script:themeSettingsDirectory 'settings.json'
+$script:themePreference = 'Auto'
+$script:resolvedTheme = $null
+
+function Get-WindowsApplicationTheme {
+    try {
+        $value = (Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' -Name AppsUseLightTheme -ErrorAction Stop).AppsUseLightTheme
+        if ([int]$value -eq 1) { return 'Light' }
+    } catch { }
+    return 'Dark'
+}
+
+function Get-SavedThemePreference {
+    if (-not (Test-Path -LiteralPath $script:themeSettingsPath)) { return 'Auto' }
+    try {
+        $settings = Get-Content -LiteralPath $script:themeSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if ([string]$settings.Theme -in @('Auto','Dark','Light')) { return [string]$settings.Theme }
+    } catch { }
+    return 'Auto'
+}
+
+function Save-ThemePreference([string]$Mode) {
+    try {
+        [IO.Directory]::CreateDirectory($script:themeSettingsDirectory) | Out-Null
+        [pscustomobject]@{ Theme = $Mode } | ConvertTo-Json | Set-Content -LiteralPath $script:themeSettingsPath -Encoding UTF8
+    } catch { }
+}
+
+function Set-ThemeButtonState([string]$Mode) {
+    $icons = @{ Auto = '◐'; Dark = '☾'; Light = '☀' }
+    $labels = @{ Auto = 'Otomatik'; Dark = 'Koyu'; Light = 'Açık' }
+    $controls.ThemeButton.Content = $icons[$Mode]
+    $controls.ThemeButton.ToolTip = "Görünüm: $($labels[$Mode])"
+    foreach ($button in @($controls.ThemeAutoButton,$controls.ThemeDarkButton,$controls.ThemeLightButton)) {
+        $selected = ([string]$button.Tag -eq $Mode)
+        $button.Background = if ($selected) { New-ColorBrush '#1A668C' } else { [Windows.Media.Brushes]::Transparent }
+        $button.Foreground = if ($selected) { New-ColorBrush '#FFFFFF' } else { $window.FindResource('Ink') }
+    }
+}
+
+function Set-PowerHubTheme {
+    param([ValidateSet('Auto','Dark','Light')][string]$Mode = 'Auto', [switch]$Save)
+    $resolved = if ($Mode -eq 'Auto') { Get-WindowsApplicationTheme } else { $Mode }
+    $dark = ($resolved -eq 'Dark')
+    $palette = if ($dark) {
+        @{
+            Primary='#38BDF8'; Ink='#F8FAFC'; Muted='#94A3B8'; SidebarBg='#0D141C'; Surface='#171E27';
+            SurfaceRaised='#1C2530'; CardBg='#18212B'; CardBorder='#2D3A48'; SoftBg='#202C38'; SoftText='#BAE6FD';
+            SubtleBorder='#334252'; InputBg='#15202B'; OverlayBg='#E6080A0C'
+        }
+    } else {
+        @{
+            Primary='#0284C7'; Ink='#0F172A'; Muted='#526273'; SidebarBg='#F4F7FB'; Surface='#F8FAFC';
+            SurfaceRaised='#FFFFFF'; CardBg='#FFFFFF'; CardBorder='#CBD5E1'; SoftBg='#E7EEF7'; SoftText='#075985';
+            SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#990F172A'
+        }
+    }
+    $gradient = if ($dark) { @('#0B1118','#101923','#111827') } else { @('#F7FAFC','#EEF3F8','#E7EEF6') }
+    $window.Resources['PageBg'] = New-ThemeGradientBrush -Colors $gradient
+    foreach ($entry in $palette.GetEnumerator()) { $window.Resources[$entry.Key] = New-ColorBrush $entry.Value }
+    $script:themePreference = $Mode
+    $script:resolvedTheme = $resolved
+    Set-ThemeButtonState -Mode $Mode
+    try {
+        $handle = [Windows.Interop.WindowInteropHelper]::new($window).Handle
+        [PowerHubWindowLayout]::ApplyDarkTitleBar($handle, $dark)
+    } catch { }
+    if ($Save) { Save-ThemePreference -Mode $Mode }
+}
+
+$controls.ThemePopup.PlacementTarget = $controls.ThemeButton
+$controls.ThemeButton.Add_Click({ $controls.ThemePopup.IsOpen = -not $controls.ThemePopup.IsOpen })
+foreach ($themeChoice in @($controls.ThemeAutoButton,$controls.ThemeDarkButton,$controls.ThemeLightButton)) {
+    $themeChoice.Add_Click({
+        param($sender,$eventArgs)
+        Set-PowerHubTheme -Mode ([string]$sender.Tag) -Save
+        $controls.ThemePopup.IsOpen = $false
+    })
+}
+$script:themePreference = Get-SavedThemePreference
+Set-PowerHubTheme -Mode $script:themePreference
+$script:themeWatchTimer = [Windows.Threading.DispatcherTimer]::new()
+$script:themeWatchTimer.Interval = [TimeSpan]::FromSeconds(2)
+$script:themeWatchTimer.Add_Tick({
+    if ($script:themePreference -eq 'Auto') {
+        $current = Get-WindowsApplicationTheme
+        if ($current -ne $script:resolvedTheme) { Set-PowerHubTheme -Mode 'Auto' }
+    }
+})
+$script:themeWatchTimer.Start()
 
 function Import-PowerHubBrandImage {
     param([string]$FileName = 'powerhub-logo.png')
@@ -4160,6 +4295,7 @@ Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde 
 if ($winget) { Start-SystemScan }
 $window.Add_Closed({
     Stop-AppDetailMetadataLoad
+    if ($script:themeWatchTimer) { $script:themeWatchTimer.Stop() }
     $script:systemScanTimer.Stop()
     $script:securityScanTimer.Stop()
     $script:updateTimer.Stop()
