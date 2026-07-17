@@ -1186,13 +1186,13 @@
       "Color": "#4A78A0"
     },
     {
-      "Name": "Raphi Win11Debloat",
+      "Name": "Win11Debloat",
       "Description": "Windows 11 temizleme ve yapılandırma aracı",
       "Action": "PowerShell",
       "Command": "& ([scriptblock]::Create((irm \"https://debloat.raphi.re/\")))",
       "Url": "https://github.com/Raphire/Win11Debloat",
       "Category": "Betikler & Otomasyon",
-      "Initial": "R",
+      "Initial": "W",
       "Color": "#4B7B68"
     },
     {
