@@ -1933,6 +1933,7 @@ $vendorLogoOverrides = @{
     'DNS Speed Test Online' = 'dns-speed-test-logo.png'
     'Win11Debloat'     = 'win11debloat-logo.png'
     'Bibata Modern Ice Cursor' = 'bibata-modern-ice-logo.png'
+    'Yahoo Mail'        = 'yahoo-mail-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
 }
