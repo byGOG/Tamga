@@ -1939,6 +1939,7 @@ $vendorLogoOverrides = @{
     'DPIBreak'          = 'dpibreak-logo.png'
     'Helium'            = 'helium-logo.png'
     'TürkAnime İndirici' = 'turkanime-indirici-logo.png'
+    'BHTwitter'         = 'bhtwitter-logo.png'
     'Yahoo Mail'        = 'yahoo-mail-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'

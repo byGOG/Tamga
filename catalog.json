@@ -992,6 +992,15 @@
       "Color": "#4E83B8"
     },
     {
+      "Name": "BHTwitter",
+      "Description": "Twitter için gelişmiş iOS eklentisi",
+      "Action": "Url",
+      "Url": "https://github.com/BandarHL/BHTwitter",
+      "Category": "Mobil & Araçlar",
+      "Initial": "BH",
+      "Color": "#1D9BF0"
+    },
+    {
       "Name": "Internet Download Manager",
       "Description": "Gelişmiş indirme yöneticisi",
       "Id": "Tonec.InternetDownloadManager",
@@ -1273,6 +1282,7 @@
     "AnyDesk": "https://anydesk.com/",
     "balenaEtcher": "https://etcher.balena.io/",
     "Battle.net": "https://battle.net/",
+    "BHTwitter": "https://github.com/BandarHL/BHTwitter",
     "Bitwarden": "https://bitwarden.com/",
     "BleachBit": "https://www.bleachbit.org/",
     "Brave": "https://brave.com/tr/",
