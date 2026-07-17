@@ -621,7 +621,7 @@
       "Description": "Windows bakım ve yapılandırma aracı",
       "Action": "PowerShell",
       "Command": "irm https://christitus.com/win | iex",
-      "Url": "https://github.com/ChrisTitusTech/winutil",
+      "Url": "https://winutil.christitus.com/",
       "Category": "Betikler & Otomasyon",
       "Initial": "W",
       "Color": "#4C8B69"
