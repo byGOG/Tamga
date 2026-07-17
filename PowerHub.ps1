@@ -536,14 +536,14 @@ Remove-PowerHubLegacyFonts
                         <TextBlock Text="Keşfet, seç ve tek akışta kur."
                                    Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
                         <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
-                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="9,4" Margin="0,0,7,0">
-                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="11" FontWeight="SemiBold"/>
+                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="0,0,5,0">
+                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
-                            <Border x:Name="SystemScanBadge" Background="#123629" CornerRadius="9" Padding="9,4">
-                                <TextBlock x:Name="SystemScanBadgeText" Text="●  Sistem hazır" Foreground="#6EE7B7" FontSize="11" FontWeight="SemiBold"/>
+                            <Border x:Name="SystemScanBadge" Background="#123629" CornerRadius="9" Padding="7,4">
+                                <TextBlock x:Name="SystemScanBadgeText" Text="●  Sistem hazır" Foreground="#6EE7B7" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
-                            <Border Background="#343A45" CornerRadius="9" Padding="9,4" Margin="7,0,0,0">
-                                <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="#CBD5E1" FontSize="11" FontWeight="SemiBold"/>
+                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="5,0,0,0">
+                                <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>
@@ -601,7 +601,7 @@ Remove-PowerHubLegacyFonts
             <Grid Grid.Row="1" Margin="0,15,0,10">
                 <TextBlock x:Name="SectionTitle" Text="Tüm uygulamalar" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" VerticalAlignment="Center"/>
                 <Button x:Name="KeyboardHelpButton" Content="⌨  F1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,104,0"
-                        Background="#1A222C" BorderBrush="#3A4958" BorderThickness="1" Foreground="#BAE6FD" FontSize="10" Padding="8,4"
+                        Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" Foreground="{DynamicResource SoftText}" FontSize="10" Padding="8,4"
                         ToolTip="Klavye kısayollarını göster" AutomationProperties.Name="Klavye kısayollarını göster"/>
                 <Border HorizontalAlignment="Right" Background="{DynamicResource Surface}" BorderBrush="#354555" BorderThickness="1" CornerRadius="12" Padding="10,5">
                     <TextBlock x:Name="ResultCount" Foreground="#CBD5E1" FontSize="11" FontWeight="SemiBold"/>
@@ -733,7 +733,7 @@ Remove-PowerHubLegacyFonts
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="3" Background="#1A222C" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -745,9 +745,9 @@ Remove-PowerHubLegacyFonts
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="QueueViewButton" Content="Kuyruk" Background="#2C3B45" Foreground="#9EDBF3"
+                        <Button x:Name="QueueViewButton" Content="Kuyruk" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster (Ctrl+Q)" AutomationProperties.Name="Kurulum kuyruğunu göster"/>
-                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="#24313D" Foreground="#9EDBF3"
+                        <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)" AutomationProperties.Name="Görünen uygulamaları seç veya seçimi kaldır"/>
                         <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#0EA5E9" Foreground="White"
                                 IsEnabled="False" ToolTip="Seçilenleri kur (Ctrl+Enter)" AutomationProperties.Name="Seçilen paket işlemlerini başlat"/>
@@ -1012,7 +1012,7 @@ Remove-PowerHubLegacyFonts
                 </ListBox>
             </Grid>
 
-            <Border Grid.Row="3" Background="#1A222C" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -1103,7 +1103,7 @@ Remove-PowerHubLegacyFonts
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Border Grid.Row="3" Background="#1A222C" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -1191,7 +1191,7 @@ Remove-PowerHubLegacyFonts
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="3" Background="#1A222C" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
+            <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
@@ -1475,6 +1475,10 @@ function Set-PowerHubTheme {
     $script:themePreference = $Mode
     $script:resolvedTheme = $resolved
     Set-ThemeButtonState -Mode $Mode
+    if (Get-Command Update-CategoryThemeAppearance -ErrorAction SilentlyContinue) {
+        $clearCategorySelection = ($controls.MainWorkspace.Visibility -ne [Windows.Visibility]::Visible)
+        Update-CategoryThemeAppearance -ClearSelection:$clearCategorySelection
+    }
     try {
         $handle = [Windows.Interop.WindowInteropHelper]::new($window).Handle
         [PowerHubWindowLayout]::ApplyDarkTitleBar($handle, $dark)
@@ -1872,8 +1876,8 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Automation.AutomationProperties]::SetName($button, "$($category.Display), $count uygulama")
     [Windows.Automation.AutomationProperties]::SetHelpText($button, 'Kategoriyi açmak için Enter veya Boşluk tuşuna basın')
     if ($category.Name -eq 'İnternet Tarayıcıları') {
-        $button.Background = New-ColorBrush '#202A35'
-        $button.BorderBrush = New-ColorBrush '#38BDF8'
+        $button.Background = $window.FindResource('SoftBg')
+        $button.BorderBrush = $window.FindResource('Primary')
         $button.BorderThickness = [Windows.Thickness]::new(3,0,0,0)
     }
 
@@ -1888,14 +1892,14 @@ foreach ($category in $categoryDefinitions) {
     $icon = [Windows.Controls.TextBlock]::new()
     $icon.Text = [string][char][Convert]::ToInt32($category.Glyph, 16)
     $icon.FontFamily = [Windows.Media.FontFamily]::new('Segoe Fluent Icons, Segoe MDL2 Assets')
-    $icon.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#67E8F9' } else { '#94A3B8' })
+    $icon.Foreground = $(if ($category.Name -eq 'İnternet Tarayıcıları') { $window.FindResource('Primary') } else { $window.FindResource('Muted') })
     $icon.FontSize = 15
     $icon.HorizontalAlignment = 'Left'
     $icon.VerticalAlignment = 'Center'
 
     $label = [Windows.Controls.TextBlock]::new()
     $label.Text = $category.Display
-    $label.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#FFFFFF' } else { '#CBD5E1' })
+    $label.Foreground = $window.FindResource('Ink')
     $label.FontSize = 12
     $label.FontWeight = if ($category.Name -eq 'İnternet Tarayıcıları') { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
     $label.VerticalAlignment = 'Center'
@@ -1903,8 +1907,8 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($label, 1)
 
     $countBadge = [Windows.Controls.Border]::new()
-    $countBadge.Background = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#25343B' } else { '#131A22' })
-    $countBadge.BorderBrush = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#366072' } else { '#374655' })
+    $countBadge.Background = $window.FindResource('InputBg')
+    $countBadge.BorderBrush = $window.FindResource('CardBorder')
     $countBadge.BorderThickness = [Windows.Thickness]::new(1)
     $countBadge.CornerRadius = [Windows.CornerRadius]::new(7)
     $countBadge.Padding = [Windows.Thickness]::new(6,3,6,3)
@@ -1914,7 +1918,7 @@ foreach ($category in $categoryDefinitions) {
     [Windows.Controls.Grid]::SetColumn($countBadge, 2)
     $countText = [Windows.Controls.TextBlock]::new()
     $countText.Text = [string]$count
-    $countText.Foreground = New-ColorBrush $(if ($category.Name -eq 'İnternet Tarayıcıları') { '#8DD7F4' } else { '#94A3B8' })
+    $countText.Foreground = $(if ($category.Name -eq 'İnternet Tarayıcıları') { $window.FindResource('Primary') } else { $window.FindResource('Muted') })
     $countText.FontSize = 10
     $countText.HorizontalAlignment = 'Center'
     $countBadge.Child = $countText
@@ -1939,6 +1943,24 @@ $script:visibleApps = @()
 $script:updatePackages = [Collections.ObjectModel.ObservableCollection[object]]::new()
 $script:updateScanCompleted = $false
 $controls.UpdateList.ItemsSource = $script:updatePackages
+
+function Update-CategoryThemeAppearance {
+    param([switch]$ClearSelection)
+    foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
+        $isActive = (-not $ClearSelection -and [string]$nav.Tag -eq $script:activeCategory)
+        $nav.Background = if ($isActive) { $window.FindResource('SoftBg') } else { [Windows.Media.Brushes]::Transparent }
+        $nav.BorderBrush = if ($isActive) { $window.FindResource('Primary') } else { [Windows.Media.Brushes]::Transparent }
+        $nav.BorderThickness = if ($isActive) { [Windows.Thickness]::new(3,0,0,0) } else { [Windows.Thickness]::new(0) }
+        $nav.IconElement.Foreground = if ($isActive) { $window.FindResource('Primary') } else { $window.FindResource('Muted') }
+        $nav.LabelElement.Foreground = if ($ClearSelection) { $window.FindResource('Muted') } else { $window.FindResource('Ink') }
+        $nav.LabelElement.FontWeight = if ($isActive) { [Windows.FontWeights]::SemiBold } else { [Windows.FontWeights]::Normal }
+        $nav.CountBadge.Background = $window.FindResource('InputBg')
+        $nav.CountBadge.BorderBrush = $window.FindResource('CardBorder')
+        $nav.CountElement.Foreground = if ($isActive) { $window.FindResource('Primary') } else { $window.FindResource('Muted') }
+    }
+}
+
+Update-CategoryThemeAppearance
 
 function ConvertFrom-WingetUpgradeOutput {
     param([AllowEmptyString()][string]$Output)
@@ -2060,14 +2082,7 @@ function Set-UpdateCenterVisibility {
         $controls.FailureCenterButton.Background = [Windows.Media.Brushes]::Transparent
         $controls.FailureCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
         $controls.FailureCenterButton.BorderThickness = [Windows.Thickness]::new(0)
-        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
-            $nav.Background = [Windows.Media.Brushes]::Transparent
-            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
-            $nav.BorderThickness = [Windows.Thickness]::new(0)
-            $nav.IconElement.Foreground = New-ColorBrush '#94A3B8'
-            $nav.LabelElement.Foreground = New-ColorBrush '#CBD5E1'
-            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-        }
+        Update-CategoryThemeAppearance -ClearSelection
     }
     if ($Visible -and -not $script:updateScanCompleted -and -not $script:systemScanProcess) { Start-SystemScan }
 }
@@ -2261,14 +2276,7 @@ function Set-SecurityCenterVisibility {
         $controls.FailureCenterButton.Background = [Windows.Media.Brushes]::Transparent
         $controls.FailureCenterButton.BorderBrush = [Windows.Media.Brushes]::Transparent
         $controls.FailureCenterButton.BorderThickness = [Windows.Thickness]::new(0)
-        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
-            $nav.Background = [Windows.Media.Brushes]::Transparent
-            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
-            $nav.BorderThickness = [Windows.Thickness]::new(0)
-            $nav.IconElement.Foreground = New-ColorBrush '#94A3B8'
-            $nav.LabelElement.Foreground = New-ColorBrush '#CBD5E1'
-            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-        }
+        Update-CategoryThemeAppearance -ClearSelection
         if (-not $script:securityScanCompleted) { Start-SecurityScan }
     }
 }
@@ -2561,30 +2569,10 @@ function Set-ActiveCategory {
     Set-UpdateCenterVisibility $false
     Set-SecurityCenterVisibility $false
     Set-FailureCenterVisibility $false
-    $targetButton = $null
-    foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
-        $nav.Background = [Windows.Media.Brushes]::Transparent
-        $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
-        $nav.BorderThickness = [Windows.Thickness]::new(0)
-        $nav.IconElement.Foreground = New-ColorBrush '#94A3B8'
-        $nav.LabelElement.Foreground = New-ColorBrush '#CBD5E1'
-        $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-        $nav.CountBadge.Background = New-ColorBrush '#131A22'
-        $nav.CountBadge.BorderBrush = New-ColorBrush '#374655'
-        $nav.CountElement.Foreground = New-ColorBrush '#94A3B8'
-        if ([string]$nav.Tag -eq $CategoryName) { $targetButton = $nav }
-    }
+    Update-CategoryThemeAppearance
+    $targetButton = @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] -and [string]$_.Tag -eq $CategoryName } | Select-Object -First 1)
     if ($targetButton) {
-        $targetButton.Background = New-ColorBrush '#202A35'
-        $targetButton.BorderBrush = New-ColorBrush '#38BDF8'
-        $targetButton.BorderThickness = [Windows.Thickness]::new(3, 0, 0, 0)
-        $targetButton.IconElement.Foreground = New-ColorBrush '#67E8F9'
-        $targetButton.LabelElement.Foreground = New-ColorBrush '#FFFFFF'
-        $targetButton.LabelElement.FontWeight = [Windows.FontWeights]::SemiBold
-        $targetButton.CountBadge.Background = New-ColorBrush '#25343B'
-        $targetButton.CountBadge.BorderBrush = New-ColorBrush '#366072'
-        $targetButton.CountElement.Foreground = New-ColorBrush '#8DD7F4'
-        $targetButton.BringIntoView()
+        $targetButton[0].BringIntoView()
     }
 }
 
@@ -3423,14 +3411,7 @@ function Set-FailureCenterVisibility {
             $button.BorderBrush = [Windows.Media.Brushes]::Transparent
             $button.BorderThickness = [Windows.Thickness]::new(0)
         }
-        foreach ($nav in @($controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Button] })) {
-            $nav.Background = [Windows.Media.Brushes]::Transparent
-            $nav.BorderBrush = [Windows.Media.Brushes]::Transparent
-            $nav.BorderThickness = [Windows.Thickness]::new(0)
-            $nav.IconElement.Foreground = New-ColorBrush '#94A3B8'
-            $nav.LabelElement.Foreground = New-ColorBrush '#CBD5E1'
-            $nav.LabelElement.FontWeight = [Windows.FontWeights]::Normal
-        }
+        Update-CategoryThemeAppearance -ClearSelection
     }
 }
 
