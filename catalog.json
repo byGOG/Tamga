@@ -1028,7 +1028,7 @@
       "Name": "Regram",
       "Description": "Instagram için kapsamlı iOS eklentisi",
       "Action": "Url",
-      "Url": "https://regram.fouadraheb.com",
+      "Url": "https://regram.fouadraheb.com/",
       "Category": "Mobil & Araçlar",
       "Initial": "R",
       "Color": "#C13584"
@@ -1388,7 +1388,7 @@
     "Proton VPN": "https://protonvpn.com/",
     "Python": "https://www.python.org/",
     "qBittorrent": "https://www.qbittorrent.org/",
-    "Regram": "https://regram.fouadraheb.com",
+    "Regram": "https://regram.fouadraheb.com/",
     "Resource Hacker": "https://www.angusj.com/resourcehacker/",
     "gsudo": "https://gerardog.github.io/gsudo/",
     "Rufus": "https://rufus.ie/",
