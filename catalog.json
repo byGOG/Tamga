@@ -725,12 +725,13 @@
       "Color": "#175E85"
     },
     {
-      "Name": "K-Lite Codec Pack Full",
-      "Description": "Windows medya codec paketi",
-      "Id": "CodecGuide.K-LiteCodecPack.Full",
+      "Name": "K-Lite Codec Pack Basic",
+      "Description": "Temel ses ve video codec paketi",
+      "Id": "CodecGuide.K-LiteCodecPack.Basic",
       "Category": "Multimedya",
       "Initial": "K",
-      "Color": "#4B78A5"
+      "Color": "#4B78A5",
+      "LogoKey": "K-Lite Codec Pack Full"
     },
     {
       "Name": "Subtitle Edit",
@@ -1256,7 +1257,7 @@
     "IPTVnator": "https://github.com/4gray/iptvnator",
     "iTunes": "https://www.apple.com/itunes/",
     "JDownloader 2": "https://jdownloader.org/",
-    "K-Lite Codec Pack Full": "https://codecguide.com/",
+    "K-Lite Codec Pack Basic": "https://codecguide.com/download_k-lite_codec_pack_basic.htm",
     "LocalSend": "https://localsend.org/",
     "Malwarebytes": "https://www.malwarebytes.com/mwb-download",
     "Mozilla Firefox": "https://www.firefox.com/tr/",
