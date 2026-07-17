@@ -1911,8 +1911,8 @@ if ($hwinfoLogo) {
     }
 }
 
-# Prefer the vendor-provided marks for the three hardware utilities instead of
-# any stale or mismatched images from the downloadable logo catalog.
+# Prefer vendor-provided marks instead of stale or mismatched images from the
+# downloadable logo catalog.
 $vendorLogoOverrides = @{
     'CPU-Z'           = 'cpuz-logo.png'
     'GPU-Z'           = 'gpuz-logo.png'
@@ -1920,6 +1920,7 @@ $vendorLogoOverrides = @{
     'PerformanceTest' = 'performancetest-logo.png'
     'BurnInTest'      = 'burnintest-logo.png'
     'FurMark 2'       = 'furmark-logo.png'
+    'PowerToys'       = 'powertoys-logo.png'
 }
 foreach ($appName in $vendorLogoOverrides.Keys) {
     $vendorLogo = Import-PowerHubBrandImage -FileName $vendorLogoOverrides[$appName]
