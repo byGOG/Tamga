@@ -757,8 +757,8 @@ Remove-PowerHubLegacyFonts
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource SubtleBorder}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsChecked, ElementName=AppCheck}" Value="True">
-                                <Setter TargetName="CardBorder" Property="Background" Value="#172F40"/>
-                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#38BDF8"/>
+                                <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SelectedCardBg}"/>
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource Primary}"/>
                                 <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5"/>
                             </DataTrigger>
                         </DataTemplate.Triggers>
@@ -893,34 +893,34 @@ Remove-PowerHubLegacyFonts
         </Grid>
 
 
-        <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="#A8080A0C"
+        <Grid x:Name="InstallQueueOverlay" Grid.Column="1" Margin="24,18,24,18" Panel.ZIndex="60" Visibility="Collapsed" Background="{DynamicResource OverlayBg}"
               AutomationProperties.Name="Kurulum kuyruğu" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="QueueBackdrop" Background="Transparent"/>
-            <Border Width="430" HorizontalAlignment="Right" Background="#131A22" BorderBrush="#3C4B5B" BorderThickness="1" CornerRadius="12">
+            <Border Width="430" HorizontalAlignment="Right" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12">
                 <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="7" Opacity="0.6"/></Border.Effect>
                 <Grid>
                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <Border Grid.Row="0" Background="#1C2530" BorderBrush="#374655" BorderThickness="0,0,0,1" Padding="18,15">
+                    <Border Grid.Row="0" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="0,0,0,1" Padding="18,15">
                         <Grid>
                             <Border Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <StackPanel>
-                                <TextBlock Text="POWERHUB  /  PAKET İŞLEMLERİ" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
-                                <TextBlock Text="İşlem kuyruğu" Foreground="White" FontSize="22" FontWeight="SemiBold" Margin="0,4,0,0"/>
-                                <TextBlock Text="Paketleri ve işlem durumlarını tek ekrandan izleyin." Foreground="#9DA9B1" FontSize="11.5" Margin="0,4,48,0"/>
+                                <TextBlock Text="POWERHUB  /  PAKET İŞLEMLERİ" Foreground="{DynamicResource Primary}" FontSize="9.5" FontWeight="Bold"/>
+                                <TextBlock Text="İşlem kuyruğu" Foreground="{DynamicResource Ink}" FontSize="22" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                <TextBlock Text="Paketleri ve işlem durumlarını tek ekrandan izleyin." Foreground="{DynamicResource Muted}" FontSize="11.5" Margin="0,4,48,0"/>
                             </StackPanel>
                             <Button x:Name="QueueCloseButton" Content="&#xE711;" Width="34" Height="34" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                    Background="#24313D" BorderBrush="#435467" BorderThickness="1" Foreground="#C9D4DA"
+                                    Background="{DynamicResource ActionBg}" BorderBrush="{DynamicResource ActionBorder}" BorderThickness="1" Foreground="{DynamicResource ActionIcon}"
                                     FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" ToolTip="Kuyruğu kapat"/>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="1" Margin="16,14,16,10" Background="#1A222C" BorderBrush="#334150" BorderThickness="1" CornerRadius="12" Padding="13,10">
+                    <Border Grid.Row="1" Margin="16,14,16,10" Background="{DynamicResource SoftBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12" Padding="13,10">
                         <Grid>
                             <StackPanel>
-                                <TextBlock x:Name="QueueSummaryText" Text="Kuyruk henüz boş" Foreground="#F1F6F9" FontSize="13.5" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="QueueDetailText" Text="Kurulacak uygulamaları seçip işlemi başlatın." Foreground="#96A3AC" FontSize="10.5" Margin="0,4,0,0"/>
+                                <TextBlock x:Name="QueueSummaryText" Text="Kuyruk henüz boş" Foreground="{DynamicResource Ink}" FontSize="13.5" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="QueueDetailText" Text="Kurulacak uygulamaları seçip işlemi başlatın." Foreground="{DynamicResource Muted}" FontSize="10.5" Margin="0,4,0,0"/>
                             </StackPanel>
-                            <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="#263F52" CornerRadius="12" Padding="8,4">
-                                <TextBlock x:Name="QueueCountText" Text="0 PAKET" Foreground="#7DD3FC" FontSize="9" FontWeight="Bold"/>
+                            <Border HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource ActionBg}" CornerRadius="12" Padding="8,4">
+                                <TextBlock x:Name="QueueCountText" Text="0 PAKET" Foreground="{DynamicResource ActionIcon}" FontSize="9" FontWeight="Bold"/>
                             </Border>
                         </Grid>
                     </Border>
@@ -933,15 +933,15 @@ Remove-PowerHubLegacyFonts
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1C2530" BorderBrush="#374655" BorderThickness="1" CornerRadius="12" Padding="12,10">
+                                <Border Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12" Padding="12,10">
                                     <Grid>
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="28"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                         <Border Width="20" Height="20" CornerRadius="10" Background="{Binding StatusBackground}" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding StatusIcon}" Foreground="{Binding StatusForeground}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Name}" Foreground="White" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding Detail}" Foreground="#929FA8" FontSize="10" Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource Ink}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Detail}" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,3,8,0" TextTrimming="CharacterEllipsis"/>
                                         </StackPanel>
                                         <Border Grid.Column="2" Background="{Binding StatusBackground}" CornerRadius="12" Padding="7,4" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding StatusLabel}" Foreground="{Binding StatusForeground}" FontSize="8.5" FontWeight="Bold"/>
@@ -951,12 +951,12 @@ Remove-PowerHubLegacyFonts
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Border Grid.Row="3" Background="#1A222C" BorderBrush="#374655" BorderThickness="0,1,0,0" Padding="16,13">
+                    <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="0,1,0,0" Padding="16,13">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock x:Name="QueueFooterText" Text="Kuyruk beklemede" Foreground="#E4EBEF" FontSize="11.5" FontWeight="SemiBold"/>
-                                <ProgressBar x:Name="QueueProgress" Height="3" Margin="0,8,16,0" Minimum="0" Maximum="100" Value="0" Foreground="#22D3EE" Background="#3A3A3A"/>
+                                <TextBlock x:Name="QueueFooterText" Text="Kuyruk beklemede" Foreground="{DynamicResource Ink}" FontSize="11.5" FontWeight="SemiBold"/>
+                                <ProgressBar x:Name="QueueProgress" Height="3" Margin="0,8,16,0" Minimum="0" Maximum="100" Value="0" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <Button x:Name="QueueRetryButton" Content="Başarısızları dene" Background="#574422" Foreground="#FFD58A" Margin="0,0,8,0" IsEnabled="False"/>
@@ -1506,7 +1506,7 @@ function Set-PowerHubTheme {
             SurfaceRaised='#1C2530'; CardBg='#18212B'; CardBorder='#2D3A48'; SoftBg='#202C38'; SoftText='#BAE6FD';
             ActionBg='#222D38'; ActionHover='#263E49'; ActionBorder='#425366'; ActionIcon='#BAE6FD';
             DangerBg='#302126'; DangerBorder='#6B3338'; DangerIcon='#FF9B9B';
-            SubtleBorder='#334252'; InputBg='#15202B'; OverlayBg='#E6080A0C'
+            SubtleBorder='#334252'; InputBg='#15202B'; OverlayBg='#E6080A0C'; SelectedCardBg='#172F40'
         }
     } else {
         @{
@@ -1514,7 +1514,7 @@ function Set-PowerHubTheme {
             SurfaceRaised='#FFFFFF'; CardBg='#FFFFFF'; CardBorder='#CBD5E1'; SoftBg='#E7EEF7'; SoftText='#075985';
             ActionBg='#DDEAF6'; ActionHover='#C8E0F2'; ActionBorder='#A9C0D5'; ActionIcon='#075985';
             DangerBg='#FFF0F1'; DangerBorder='#F2B7BC'; DangerIcon='#DC2626';
-            SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#990F172A'
+            SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#730F172A'; SelectedCardBg='#E0F2FE'
         }
     }
     $gradient = if ($dark) { @('#0B1118','#101923','#111827') } else { @('#F7FAFC','#EEF3F8','#E7EEF6') }
