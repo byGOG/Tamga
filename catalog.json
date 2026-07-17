@@ -1319,6 +1319,16 @@
       "Category": "Betikler & Otomasyon",
       "Initial": "B",
       "Color": "#765B9A"
+    },
+    {
+      "Name": "Winfetch",
+      "Description": "Komut satırında sistem bilgilerini gösterir",
+      "Action": "PowerShell",
+      "Command": "(Invoke-WebRequest \"https://raw.githubusercontent.com/lptstr/winfetch/master/winfetch.ps1\" -UseBasicParsing).Content.Remove(0,1) | Invoke-Expression",
+      "Url": "https://github.com/lptstr/winfetch",
+      "Category": "Betikler & Otomasyon",
+      "Initial": "W",
+      "Color": "#00A4EF"
     }
   ],
   "OfficialWebsites": {
@@ -1413,6 +1423,7 @@
     "VLC": "https://www.videolan.org/vlc/",
     "VMware Workstation Pro": "https://www.vmware.com/",
     "WhatsApp": "https://www.whatsapp.com/",
+    "Winfetch": "https://github.com/lptstr/winfetch",
     "Winhance": "https://winhance.net/",
     "WinRAR": "https://www.rarlab.com/",
     "WizTree": "https://diskanalyzer.com/",
