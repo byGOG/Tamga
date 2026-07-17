@@ -878,7 +878,7 @@
       "Name": "BurnInTest",
       "Description": "Donanım kararlılık ve dayanıklılık testi",
       "Action": "Url",
-      "Url": "https://www.passmark.com/products/burnintest/download.php",
+      "Url": "https://www.passmark.com/products/burnintest/",
       "Category": "Donanım & Test",
       "Initial": "BI",
       "Color": "#B04B3A"
