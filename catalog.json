@@ -1001,6 +1001,16 @@
       "Color": "#1D9BF0"
     },
     {
+      "Name": "Apple Mobile Drivers Installer",
+      "Description": "Apple USB ve internet paylaşımı sürücülerini kurar",
+      "Action": "PowerShell",
+      "Command": "iex (irm 'https://raw.githubusercontent.com/NelloKudo/Apple-Mobile-Drivers-Installer/main/AppleDrivInstaller.ps1')",
+      "Url": "https://github.com/NelloKudo/Apple-Mobile-Drivers-Installer",
+      "Category": "Mobil & Araçlar",
+      "Initial": "A",
+      "Color": "#A2AAAD"
+    },
+    {
       "Name": "Internet Download Manager",
       "Description": "Gelişmiş indirme yöneticisi",
       "Id": "Tonec.InternetDownloadManager",
@@ -1280,6 +1290,7 @@
     "7-Zip": "https://7-zip.org/",
     "AIMP": "https://www.aimp.ru",
     "AnyDesk": "https://anydesk.com/",
+    "Apple Mobile Drivers Installer": "https://github.com/NelloKudo/Apple-Mobile-Drivers-Installer",
     "balenaEtcher": "https://etcher.balena.io/",
     "Battle.net": "https://battle.net/",
     "BHTwitter": "https://github.com/BandarHL/BHTwitter",
