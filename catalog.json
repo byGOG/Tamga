@@ -1096,6 +1096,15 @@
       "Color": "#6A52C2"
     },
     {
+      "Name": "PlayTorrio",
+      "Description": "Film, dizi ve çoklu ortam merkezi",
+      "Action": "Url",
+      "Url": "https://github.com/ayman708-UX/PlayTorrioV2",
+      "Category": "Film & Medya",
+      "Initial": "PT",
+      "Color": "#8B36D9"
+    },
+    {
       "Name": "Ninite",
       "Description": "Toplu uygulama kurulum hizmeti",
       "Action": "Url",
@@ -1292,6 +1301,7 @@
     "OpenVPN Connect": "https://openvpn.net/client/",
     "PerformanceTest": "https://www.passmark.com/products/performancetest/",
     "PowerShell 7": "https://microsoft.com/PowerShell",
+    "PlayTorrio": "https://github.com/ayman708-UX/PlayTorrioV2",
     "PowerToys": "https://learn.microsoft.com/tr-tr/windows/powertoys/",
     "Process Lasso": "https://bitsum.com/",
     "Proton VPN": "https://protonvpn.com/",
