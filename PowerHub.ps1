@@ -538,16 +538,20 @@ Remove-PowerHubLegacyFonts
             <Border x:Name="HeaderBanner" CornerRadius="14" Padding="20,17" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
                     Effect="{DynamicResource CardShadow}">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
+                        <ColumnDefinition Width="54"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-20,-17,-20,0" CornerRadius="12,12,0,0">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#38BDF8" Offset="0.45"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
                     </Border>
-                    <Border Width="44" Height="44" CornerRadius="10"
-                            VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Border Grid.Row="0" Grid.Column="0" Width="44" Height="44" CornerRadius="10"
+                            VerticalAlignment="Center" HorizontalAlignment="Left">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0EA5E9" Offset="0"/><GradientStop Color="#6366F1" Offset="1"/></LinearGradientBrush></Border.Background>
                         <Grid>
                             <Rectangle Width="21" Height="17" Fill="Transparent" Stroke="White" StrokeThickness="1.8" RadiusX="3" RadiusY="3"/>
@@ -555,27 +559,15 @@ Remove-PowerHubLegacyFonts
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="POWERHUB  /  WINGET" FontSize="9.5" FontWeight="Bold" Foreground="#7DD3FC" Margin="0,0,0,3"/>
                         <TextBlock Text="Paket merkezi" FontSize="25" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
                         <TextBlock Text="Keşfet, seç ve tek akışta kur."
                                    Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,11,0,0">
-                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="0,0,5,0">
-                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10.5" FontWeight="SemiBold"/>
-                            </Border>
-                            <Border x:Name="SystemScanBadge" Background="#123629" CornerRadius="9" Padding="7,4">
-                                <TextBlock x:Name="SystemScanBadgeText" Text="●  Sistem hazır" Foreground="#6EE7B7" FontSize="10.5" FontWeight="SemiBold"/>
-                            </Border>
-                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="5,0,0,0">
-                                <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
-                            </Border>
-                        </StackPanel>
                     </StackPanel>
-                    <Grid Grid.Column="2" VerticalAlignment="Center">
-                        <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions>
-                        <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
+                        <Border Grid.Column="0" Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
                                 BorderThickness="1" CornerRadius="9" Height="42">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
@@ -593,7 +585,7 @@ Remove-PowerHubLegacyFonts
                                         AutomationProperties.Name="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
-                        <Button x:Name="ThemeButton" Grid.Row="0" Grid.Column="1" Width="34" Height="34"
+                        <Button x:Name="ThemeButton" Grid.Column="1" Width="34" Height="34"
                                 HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0"
                                 Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
@@ -602,11 +594,6 @@ Remove-PowerHubLegacyFonts
                             <TextBlock x:Name="ThemeButtonIcon" Text="&#xE790;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                        FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
-                        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="3,9,3,0">
-                            <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
-                            <TextBlock Text="TEMA" HorizontalAlignment="Center" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold"/>
-                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#6EE7B7" FontSize="10" FontWeight="Bold"/>
-                        </Grid>
                         <Popup x:Name="ThemePopup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
                             <Border Width="158" Margin="0,6,0,0" Padding="7" CornerRadius="10"
                                     Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1">
@@ -620,6 +607,24 @@ Remove-PowerHubLegacyFonts
                             </Border>
                         </Popup>
                     </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,13,0,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="0,0,5,0">
+                                <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10.5" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border x:Name="SystemScanBadge" Background="#123629" CornerRadius="9" Padding="7,4">
+                                <TextBlock x:Name="SystemScanBadgeText" Text="●  Sistem hazır" Foreground="#6EE7B7" FontSize="10.5" FontWeight="SemiBold"/>
+                            </Border>
+                            <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="5,0,0,0">
+                                <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <Ellipse Width="4" Height="4" Fill="{DynamicResource CardBorder}" Margin="10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="GÜVENLİ • REKLAMSIZ" Foreground="#39C77A" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -628,8 +633,8 @@ Remove-PowerHubLegacyFonts
                 <Button x:Name="KeyboardHelpButton" Content="⌨  F1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,104,0"
                         Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" Foreground="{DynamicResource SoftText}" FontSize="10" Padding="8,4"
                         ToolTip="Klavye kısayollarını göster" AutomationProperties.Name="Klavye kısayollarını göster"/>
-                <Border HorizontalAlignment="Right" Background="{DynamicResource Surface}" BorderBrush="#354555" BorderThickness="1" CornerRadius="12" Padding="10,5">
-                    <TextBlock x:Name="ResultCount" Foreground="#CBD5E1" FontSize="11" FontWeight="SemiBold"/>
+                <Border HorizontalAlignment="Right" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12" Padding="10,5">
+                    <TextBlock x:Name="ResultCount" Foreground="{DynamicResource Ink}" FontSize="11" FontWeight="SemiBold"/>
                 </Border>
             </Grid>
 
