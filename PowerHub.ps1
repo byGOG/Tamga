@@ -711,6 +711,7 @@ Remove-PowerHubLegacyFonts
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
+                                                   RenderOptions.BitmapScalingMode="HighQuality"
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
                                             <TextBlock Text="{Binding Initial}" Opacity="{Binding InitialOpacity}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="17"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
