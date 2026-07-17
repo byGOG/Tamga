@@ -1001,6 +1001,15 @@
       "Color": "#1D9BF0"
     },
     {
+      "Name": "Regram",
+      "Description": "Instagram için kapsamlı iOS eklentisi",
+      "Action": "Url",
+      "Url": "https://regram.fouadraheb.com",
+      "Category": "Mobil & Araçlar",
+      "Initial": "R",
+      "Color": "#C13584"
+    },
+    {
       "Name": "Apple Mobile Drivers Installer",
       "Description": "Apple USB ve internet paylaşımı sürücülerini kurar",
       "Action": "PowerShell",
@@ -1355,6 +1364,7 @@
     "Proton VPN": "https://protonvpn.com/",
     "Python": "https://www.python.org/",
     "qBittorrent": "https://www.qbittorrent.org/",
+    "Regram": "https://regram.fouadraheb.com",
     "Resource Hacker": "https://www.angusj.com/resourcehacker/",
     "Rufus": "https://rufus.ie/",
     "Sandboxie Plus": "https://sandboxie-plus.com/",
