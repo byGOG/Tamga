@@ -1192,6 +1192,15 @@
       "Color": "#3B76A0"
     },
     {
+      "Name": "FMHY",
+      "Description": "Ücretsiz internet kaynakları dizini",
+      "Action": "Url",
+      "Url": "https://fmhy.net/",
+      "Category": "Uygulama Arşivleri",
+      "Initial": "FM",
+      "Color": "#C82CCB"
+    },
+    {
       "Name": "Microsoft Package Picker",
       "Description": "Microsoft Mağazası çoklu uygulama paketi",
       "Action": "Url",

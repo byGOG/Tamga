@@ -1930,6 +1930,7 @@ $vendorLogoOverrides = @{
     'VMware Workstation Pro' = 'vmware-workstation-logo.png'
     'Internet Download Manager' = 'internet-download-manager-logo.png'
     'Ninite'          = 'ninite-logo.png'
+    'FMHY'            = 'fmhy-logo.png'
     'AtlasOS'         = 'atlasos-logo.png'
     'Softpedia'       = 'softpedia-logo.png'
     'TechSpot'         = 'techspot-logo.png'
