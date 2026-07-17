@@ -178,6 +178,13 @@ Remove-PowerHubLegacyFonts
         <SolidColorBrush x:Key="CardBorder" Color="#2D3A48"/>
         <SolidColorBrush x:Key="SoftBg" Color="#202C38"/>
         <SolidColorBrush x:Key="SoftText" Color="#BAE6FD"/>
+        <SolidColorBrush x:Key="ActionBg" Color="#222D38"/>
+        <SolidColorBrush x:Key="ActionHover" Color="#263E49"/>
+        <SolidColorBrush x:Key="ActionBorder" Color="#425366"/>
+        <SolidColorBrush x:Key="ActionIcon" Color="#BAE6FD"/>
+        <SolidColorBrush x:Key="DangerBg" Color="#302126"/>
+        <SolidColorBrush x:Key="DangerBorder" Color="#6B3338"/>
+        <SolidColorBrush x:Key="DangerIcon" Color="#FF9B9B"/>
         <SolidColorBrush x:Key="SubtleBorder" Color="#334252"/>
         <SolidColorBrush x:Key="InputBg" Color="#15202B"/>
         <SolidColorBrush x:Key="OverlayBg" Color="#E6080A0C"/>
@@ -279,13 +286,13 @@ Remove-PowerHubLegacyFonts
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="{DynamicResource SoftBg}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource CardBorder}"/>
+            <Setter Property="Background" Value="{DynamicResource ActionBg}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ActionBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{DynamicResource SoftText}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ActionIcon}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -295,11 +302,13 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="IconSurface" Property="Background" Value="{DynamicResource SurfaceRaised}"/>
+                                <Setter TargetName="IconSurface" Property="Background" Value="{DynamicResource ActionHover}"/>
                                 <Setter TargetName="IconSurface" Property="BorderBrush" Value="#38BDF8"/>
+                                <Setter Property="Foreground" Value="{DynamicResource Primary}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="IconSurface" Property="Background" Value="#0D659E"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
                                 <Setter TargetName="IconSurface" Property="BorderBrush" Value="#A5F3FC"/>
@@ -714,20 +723,21 @@ Remove-PowerHubLegacyFonts
                                     </Border>
                                     <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
-                                                   Foreground="#BAE6FD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
-                                                   Foreground="#BAE6FD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="17"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="UninstallButton" Grid.Column="5" Style="{StaticResource IconButton}"
+                                            Background="{DynamicResource DangerBg}" BorderBrush="{DynamicResource DangerBorder}"
                                             Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
-                                                   Foreground="#FF9B9B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
+                                                   Foreground="{DynamicResource DangerIcon}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="6" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını seç}"
@@ -1488,12 +1498,16 @@ function Set-PowerHubTheme {
         @{
             Primary='#38BDF8'; Ink='#F8FAFC'; Muted='#94A3B8'; SidebarBg='#0D141C'; Surface='#171E27';
             SurfaceRaised='#1C2530'; CardBg='#18212B'; CardBorder='#2D3A48'; SoftBg='#202C38'; SoftText='#BAE6FD';
+            ActionBg='#222D38'; ActionHover='#263E49'; ActionBorder='#425366'; ActionIcon='#BAE6FD';
+            DangerBg='#302126'; DangerBorder='#6B3338'; DangerIcon='#FF9B9B';
             SubtleBorder='#334252'; InputBg='#15202B'; OverlayBg='#E6080A0C'
         }
     } else {
         @{
             Primary='#0284C7'; Ink='#0F172A'; Muted='#526273'; SidebarBg='#F4F7FB'; Surface='#F8FAFC';
             SurfaceRaised='#FFFFFF'; CardBg='#FFFFFF'; CardBorder='#CBD5E1'; SoftBg='#E7EEF7'; SoftText='#075985';
+            ActionBg='#DDEAF6'; ActionHover='#C8E0F2'; ActionBorder='#A9C0D5'; ActionIcon='#075985';
+            DangerBg='#FFF0F1'; DangerBorder='#F2B7BC'; DangerIcon='#DC2626';
             SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#990F172A'
         }
     }
