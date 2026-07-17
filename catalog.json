@@ -859,6 +859,14 @@
       "Color": "#47769A"
     },
     {
+      "Name": "gsudo",
+      "Description": "Komutları yönetici yetkisiyle çalıştırır",
+      "Id": "gerardog.gsudo",
+      "Category": "Sistem Araçları",
+      "Initial": "G",
+      "Color": "#FF1D4F"
+    },
+    {
       "Name": "Process Lasso",
       "Description": "İşlem ve CPU optimizasyonu",
       "Id": "BitSum.ProcessLasso",
@@ -1374,6 +1382,7 @@
     "qBittorrent": "https://www.qbittorrent.org/",
     "Regram": "https://regram.fouadraheb.com",
     "Resource Hacker": "https://www.angusj.com/resourcehacker/",
+    "gsudo": "https://gerardog.github.io/gsudo/",
     "Rufus": "https://rufus.ie/",
     "Sandboxie Plus": "https://sandboxie-plus.com/",
     "ShareX": "https://getsharex.com/",
