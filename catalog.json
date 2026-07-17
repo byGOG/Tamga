@@ -1180,7 +1180,7 @@
       "Name": "DNS Speed Test Online",
       "Description": "DNS çözümleyici hız karşılaştırması",
       "Action": "Url",
-      "Url": "https://www.dnsperf.com/dns-speed-benchmark",
+      "Url": "https://dnsspeedtest.online/",
       "Category": "İnternet Testleri",
       "Initial": "DS",
       "Color": "#4A78A0"
