@@ -852,7 +852,7 @@
       "Name": "Windows 10 Media Creation Tool",
       "Description": "Resmî Windows 10 medya aracı",
       "Action": "Url",
-      "Url": "https://www.microsoft.com/software-download/windows10",
+      "Url": "https://www.microsoft.com/tr-tr/software-download/windows10",
       "Category": "Sistem Araçları",
       "Initial": "10",
       "Color": "#1784C7"
