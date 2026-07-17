@@ -869,7 +869,9 @@
     {
       "Name": "Winhance",
       "Description": "Windows özelleştirme ve optimizasyon aracı",
-      "Id": "memstechtips.Winhance",
+      "Action": "PowerShell",
+      "Command": "irm \"https://get.winhance.net\" | iex",
+      "Url": "https://winhance.net/",
       "Category": "Sistem Araçları",
       "Initial": "W",
       "Color": "#2F9DE0"
