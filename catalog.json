@@ -1009,6 +1009,15 @@
       "Color": "#3E85C7"
     },
     {
+      "Name": "RustDesk",
+      "Description": "Açık kaynak uzaktan masaüstü aracı",
+      "Action": "Url",
+      "Url": "https://rustdesk.com/",
+      "Category": "Ağ & Uzaktan Erişim",
+      "Initial": "R",
+      "Color": "#0071FF"
+    },
+    {
       "Name": "Sideloadly",
       "Description": "iOS uygulama imzalama ve yükleme",
       "Action": "Url",
@@ -1423,6 +1432,7 @@
     "Resource Hacker": "https://www.angusj.com/resourcehacker/",
     "gsudo": "https://gerardog.github.io/gsudo/",
     "Rufus": "https://rufus.ie/",
+    "RustDesk": "https://rustdesk.com/",
     "Sandboxie Plus": "https://sandboxie-plus.com/",
     "ShareX": "https://getsharex.com/",
     "Spotify": "https://open.spotify.com/intl-tr/",
