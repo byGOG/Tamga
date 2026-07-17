@@ -234,7 +234,7 @@ Remove-PowerHubLegacyFonts
                                 <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.45"/>
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.62"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -481,7 +481,7 @@ Remove-PowerHubLegacyFonts
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
-                            <TextBlock Text="PowerHub • byGOG" Foreground="#9AB7C7" FontSize="10" Margin="0,3,0,0"/>
+                            <TextBlock Text="PowerHub • byGOG" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,3,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
@@ -1512,6 +1512,14 @@ function Set-PowerHubTheme {
         $visualAnimation.To = if ($dark) { 0.0 } else { 1.0 }
         $visualAnimation.Duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(260))
         $controls.ThemeVisualLayer.BeginAnimation([Windows.UIElement]::OpacityProperty, $visualAnimation)
+    }
+    if ($controls.WingetStatus) { $controls.WingetStatus.Foreground = $window.FindResource('Ink') }
+    if ($controls.WingetDetail) { $controls.WingetDetail.Foreground = $window.FindResource('Muted') }
+    if ($controls.UpdateCenterNavDetail) {
+        $controls.UpdateCenterNavDetail.Foreground = New-ColorBrush $(if ($dark) { '#C8AC7F' } else { '#8A5A00' })
+    }
+    if ($controls.SecurityCenterNavDetail) {
+        $controls.SecurityCenterNavDetail.Foreground = New-ColorBrush $(if ($dark) { '#86C9A8' } else { '#087451' })
     }
     $script:themePreference = $Mode
     $script:resolvedTheme = $resolved
@@ -4107,7 +4115,8 @@ function Set-WingetCardState {
             $controls.WingetBadgeText.Foreground = New-ColorBrush '#FFAAAA'
         }
     }
-    $controls.WingetStatus.Foreground = [Windows.Media.Brushes]::White
+    $controls.WingetStatus.Foreground = $window.FindResource('Ink')
+    $controls.WingetDetail.Foreground = $window.FindResource('Muted')
 }
 
 $script:wingetReady = $false
