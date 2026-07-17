@@ -1931,6 +1931,7 @@ $vendorLogoOverrides = @{
     'Softpedia'       = 'softpedia-logo.png'
     'TechSpot Downloads' = 'techspot-logo.png'
     'DNS Speed Test Online' = 'dns-speed-test-logo.png'
+    'Win11Debloat'     = 'win11debloat-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
 }
