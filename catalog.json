@@ -611,7 +611,7 @@
       "Description": "Office dağıtım ve yönetim aracı",
       "Action": "PowerShell",
       "Command": "irm https://officetool.plus | iex",
-      "Url": "https://github.com/YerongAI/Office-Tool",
+      "Url": "https://www.officetool.plus/",
       "Category": "Betikler & Otomasyon",
       "Initial": "O",
       "Color": "#D64A3A"
@@ -1268,7 +1268,7 @@
     "O&O ShutUp10++": "https://www.oo-software.com/en/shutup10",
     "OBS Studio": "https://obsproject.com/",
     "OCCT": "https://www.ocbase.com/",
-    "Office Tool Plus": "https://github.com/YerongAI/Office-Tool",
+    "Office Tool Plus": "https://www.officetool.plus/",
     "OneCommander": "https://onecommander.com/",
     "OpenVPN Connect": "https://openvpn.net/client/",
     "PerformanceTest": "https://www.passmark.com/products/performancetest/",
