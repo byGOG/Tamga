@@ -1923,6 +1923,7 @@ $vendorLogoOverrides = @{
     'FurMark 2'       = 'furmark-logo.png'
     'PowerToys'       = 'powertoys-logo.png'
     'TeraCopy'        = 'teracopy-logo.png'
+    'O&O ShutUp10++'  = 'oosu10-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
 }
