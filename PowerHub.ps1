@@ -3399,6 +3399,7 @@ $script:installResults = [Collections.ArrayList]::new()
 $script:installProcess = $null
 $script:installCancelled = $false
 $script:installQueueItems = [Collections.ObjectModel.ObservableCollection[object]]::new()
+$script:storeSourcePrepared = $false
 $controls.InstallQueueList.ItemsSource = $script:installQueueItems
 $script:installTimer = [Windows.Threading.DispatcherTimer]::new()
 $script:installTimer.Interval = [TimeSpan]::FromMilliseconds(400)
@@ -3488,6 +3489,7 @@ function New-InstallQueueEntry {
         StatusForeground = '#C2CBD1'
         Detail = if ($operation -eq 'Uninstall') { 'Kaldırma için sırada' } elseif ($operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
         Code = 0
+        StoreRetryCount = 0
     }
 }
 
@@ -3508,6 +3510,43 @@ function Convert-FailureToQueueEntry {
         StatusForeground = '#C2CBD1'
         Detail = 'Başarısız İşlemler Merkezi üzerinden yeniden sırada'
         Code = 0
+        StoreRetryCount = 0
+    }
+}
+
+function Initialize-MicrosoftStoreSource {
+    param([switch]$Force)
+
+    if ($script:storeSourcePrepared -and -not $Force) { return $true }
+    $winget = Resolve-WingetExecutable
+    if (-not $winget) { return $false }
+
+    $isWindowsSandbox = ($env:USERNAME -eq 'WDAGUtilityAccount') -or (Test-Path -LiteralPath 'C:\Users\WDAGUtilityAccount')
+    try {
+        if ($isWindowsSandbox) {
+            # Windows Sandbox bazen geçerli bir mağaza bölgesi olmadan açılır.
+            # Microsoft Store REST kaynağı bu durumda 0x8a15003b döndürür.
+            try {
+                $homeLocation = Get-WinHomeLocation -ErrorAction SilentlyContinue
+                if (-not $homeLocation -or [int]$homeLocation.GeoId -ne 235) {
+                    Set-WinHomeLocation -GeoId 235 -ErrorAction Stop
+                    Write-PowerHubLog -Message 'Windows Sandbox mağaza bölgesi Türkiye olarak hazırlandı.' -Color DarkCyan
+                }
+            } catch {
+                Write-PowerHubLog -Message "Sandbox mağaza bölgesi ayarlanamadı: $($_.Exception.Message)" -Color DarkYellow
+            }
+        }
+
+        if ($Force -or $isWindowsSandbox) {
+            Write-PowerHubLog -Message 'Microsoft Store paket kaynağı onarılıyor...' -Color DarkCyan
+            & $winget source reset --force | Out-Host
+        }
+        & $winget source update --name msstore | Out-Host
+        $script:storeSourcePrepared = ($LASTEXITCODE -eq 0)
+        return $script:storeSourcePrepared
+    } catch {
+        Write-PowerHubLog -Message "Microsoft Store kaynağı hazırlanamadı: $($_.Exception.Message)" -Color DarkYellow
+        return $false
     }
 }
 
@@ -3607,6 +3646,9 @@ function Start-NextInstall {
     $installArguments = @(Get-PackageOperationArguments -Item $item)
 
     try {
+        if ($item.Operation -ne 'Uninstall' -and $item.PackageSource -eq 'msstore') {
+            [void](Initialize-MicrosoftStoreSource)
+        }
         Write-PowerHubLog -Message $(if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }) -Color Cyan
         Write-PowerHubLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
         $script:wingetExecutable = Resolve-WingetExecutable
@@ -3652,6 +3694,17 @@ $script:installTimer.Add_Tick({
     if ($operationSucceeded -and $item.Operation -in @('Install','Uninstall')) {
         $operationSucceeded = Test-PackageOperationApplied -Item $item
         if (-not $operationSucceeded) {
+            if ($item.Operation -eq 'Install' -and $item.PackageSource -eq 'msstore' -and [int]$item.StoreRetryCount -lt 1) {
+                $item.StoreRetryCount = [int]$item.StoreRetryCount + 1
+                Write-PowerHubLog -Message "Microsoft Store işlemi doğrulanamadı; kaynak onarılıp yeniden deneniyor: $($item.Name)" -Color Yellow
+                Set-InstallQueueEntryState -Entry $item -State Waiting -Detail 'Microsoft Store kaynağı onarılıyor; yeniden denenecek'
+                $script:installProcess.Dispose()
+                $script:installProcess = $null
+                [void](Initialize-MicrosoftStoreSource -Force)
+                Update-InstallQueueSummary
+                Start-NextInstall
+                return
+            }
             $exitCode = -2
             Write-PowerHubLog -Message "WinGet başarı bildirdi ancak işlem doğrulanamadı: $($item.Name)" -Color Red
         }
@@ -3989,6 +4042,15 @@ try {
     Write-Host '[PowerHub] WinGet çalışması doğrulanıyor...' -ForegroundColor Cyan
     & $wingetPath --version
     if ($LASTEXITCODE -ne 0) { throw "winget doğrulaması başarısız (kod: $LASTEXITCODE)." }
+
+    if ($env:USERNAME -eq 'WDAGUtilityAccount') {
+        try {
+            Set-WinHomeLocation -GeoId 235 -ErrorAction Stop
+            Write-Host '[PowerHub] Windows Sandbox mağaza bölgesi hazırlandı: Türkiye' -ForegroundColor DarkCyan
+        } catch {
+            Write-Host "[PowerHub] Sandbox mağaza bölgesi ayarlanamadı: $($_.Exception.Message)" -ForegroundColor Yellow
+        }
+    }
 
     Write-Host '[PowerHub] Paket kaynakları hazırlanıyor...' -ForegroundColor Cyan
     & $wingetPath source reset --force
