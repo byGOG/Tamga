@@ -1178,7 +1178,7 @@
     },
     {
       "Name": "DNS Speed Test Online",
-      "Description": "DNS çözümleyici hız karşılaştırması",
+      "Description": "Konumunuz için en hızlı DNS sunucusunu bulun",
       "Action": "Url",
       "Url": "https://dnsspeedtest.online/",
       "Category": "İnternet Testleri",
