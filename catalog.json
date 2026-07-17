@@ -1196,8 +1196,8 @@
       "Color": "#4B7B68"
     },
     {
-      "Name": "Bibata Cursor Installer",
-      "Description": "Bibata imleç temasını kurma aracı",
+      "Name": "Bibata Modern Ice Cursor",
+      "Description": "Bibata Modern Ice imleç temasını kurar",
       "Action": "PowerShell",
       "Command": "irm https://bygog.github.io/Bibata-Cursor-Installer/install.ps1 | iex",
       "Url": "https://github.com/byGOG/Bibata-Cursor-Installer",
