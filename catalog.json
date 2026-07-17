@@ -1117,7 +1117,7 @@
       "Name": "TechSpot Downloads",
       "Description": "Teknoloji ve yazılım indirme dizini",
       "Action": "Url",
-      "Url": "https://www.techspot.com/downloads/",
+      "Url": "https://www.techspot.com/",
       "Category": "Uygulama Arşivleri",
       "Initial": "TS",
       "Color": "#D06A32"

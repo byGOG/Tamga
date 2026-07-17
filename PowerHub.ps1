@@ -1929,6 +1929,7 @@ $vendorLogoOverrides = @{
     'Ninite'          = 'ninite-logo.png'
     'AtlasOS'         = 'atlasos-logo.png'
     'Softpedia'       = 'softpedia-logo.png'
+    'TechSpot Downloads' = 'techspot-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
 }
