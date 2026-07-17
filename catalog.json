@@ -520,6 +520,14 @@
       "Color": "#F4AE2A"
     },
     {
+      "Name": "GreenTunnel",
+      "Description": "DPI tabanlı erişim engellerini aşma aracı",
+      "Id": "SadeghHayeri.GreenTunnel",
+      "Category": "Gizlilik & Ağ Ayarları",
+      "Initial": "GT",
+      "Color": "#6BCB62"
+    },
+    {
       "Name": "DNS Jumper",
       "Description": "Hızlı DNS değiştirme aracı",
       "Id": "sordum.DnsJumper",
@@ -1400,6 +1408,7 @@
     "GOG Galaxy": "https://www.gog.com/",
     "DPIBreak": "https://dilluti0n.com/dpibreak/",
     "GoodbyeDPI": "https://github.com/ValdikSS/GoodbyeDPI",
+    "GreenTunnel": "https://github.com/SadeghHayeri/GreenTunnel",
     "Google Antigravity": "https://antigravity.google/",
     "Google Chrome": "https://www.google.com/chrome/",
     "Google Drive": "https://drive.google.com/",

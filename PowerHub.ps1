@@ -1943,6 +1943,7 @@ $vendorLogoOverrides = @{
     'Subloader'         = 'subloader-logo.png'
     'PlayTorrio'        = 'playtorrio-logo.png'
     'DPIBreak'          = 'dpibreak-logo.png'
+    'GreenTunnel'       = 'greentunnel-logo.png'
     'Helium'            = 'helium-logo.png'
     'TürkAnime İndirici' = 'turkanime-indirici-logo.png'
     'BHTwitter'         = 'bhtwitter-logo.png'
