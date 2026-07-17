@@ -646,7 +646,7 @@
     },
     {
       "Name": "AdGuard Extra",
-      "Description": "Gelişmiş reklam engelleme yardımcısı",
+      "Description": "Standart kuralların yetmediği reklamları engeller",
       "Action": "Url",
       "Url": "https://github.com/AdguardTeam/AdGuardExtra",
       "Category": "Eklentiler",
