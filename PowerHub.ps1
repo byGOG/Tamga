@@ -1948,6 +1948,7 @@ $vendorLogoOverrides = @{
     'BHTwitter'         = 'bhtwitter-logo.png'
     'Regram'            = 'regram-logo.png'
     'Apple Mobile Drivers Installer' = 'apple-mobile-drivers-logo.png'
+    'Microsoft Activation Scripts' = 'microsoft-activation-scripts-logo.png'
     'RustDesk'          = 'rustdesk-logo.png'
     'Yahoo Mail'        = 'yahoo-mail-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'

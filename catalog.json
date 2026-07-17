@@ -1356,6 +1356,16 @@
       "Category": "Betikler & Otomasyon",
       "Initial": "WS",
       "Color": "#6546B8"
+    },
+    {
+      "Name": "Microsoft Activation Scripts",
+      "Description": "Windows ve Office etkinleştirme aracı",
+      "Action": "PowerShell",
+      "Command": "irm https://get.activated.win | iex",
+      "Url": "https://github.com/massgravel/Microsoft-Activation-Scripts",
+      "Category": "Betikler & Otomasyon",
+      "Initial": "MAS",
+      "Color": "#8A64B8"
     }
   ],
   "OfficialWebsites": {
@@ -1407,6 +1417,7 @@
     "K-Lite Codec Pack Basic": "https://codecguide.com/download_k-lite_codec_pack_basic.htm",
     "LocalSend": "https://localsend.org/",
     "Malwarebytes": "https://www.malwarebytes.com/",
+    "Microsoft Activation Scripts": "https://github.com/massgravel/Microsoft-Activation-Scripts",
     "Monochrome": "https://monochrome.tf/",
     "Mozilla Firefox": "https://www.firefox.com/tr/",
     "Mullvad Browser": "https://mullvad.net/tr/browser",
