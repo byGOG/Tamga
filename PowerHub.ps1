@@ -516,7 +516,7 @@ Remove-PowerHubLegacyFonts
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="64"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="260"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-20,-17,-20,0" CornerRadius="12,12,0,0">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#38BDF8" Offset="0.45"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
@@ -547,8 +547,10 @@ Remove-PowerHubLegacyFonts
                             </Border>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <Border Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
                                 BorderThickness="1" CornerRadius="9" Height="42">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
@@ -566,13 +568,18 @@ Remove-PowerHubLegacyFonts
                                         AutomationProperties.Name="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
-                        <Grid Margin="3,9,3,0">
+                        <Button x:Name="ThemeButton" Grid.Row="0" Grid.Column="1" Width="34" Height="34"
+                                HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0"
+                                Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                                BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
+                                ToolTip="Görünüm: Otomatik — değiştirmek için tıklayın"
+                                AutomationProperties.Name="Görünüm temasını seç">
+                            <TextBlock x:Name="ThemeButtonIcon" Text="&#xE790;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                       FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="3,9,3,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="10" FontWeight="Bold"/>
-                            <Button x:Name="ThemeButton" Content="◐" Width="28" Height="23" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    Padding="2" Margin="0,-3,0,0" Background="Transparent" Foreground="{DynamicResource SoftText}"
-                                    BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1" FontSize="9.5"
-                                    ToolTip="Görünüm temasını seç"
-                                    AutomationProperties.Name="Görünüm temasını seç"/>
+                            <TextBlock Text="TEMA" HorizontalAlignment="Center" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" HorizontalAlignment="Right" Foreground="#6EE7B7" FontSize="10" FontWeight="Bold"/>
                         </Grid>
                         <Popup x:Name="ThemePopup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
@@ -587,7 +594,7 @@ Remove-PowerHubLegacyFonts
                                 </StackPanel>
                             </Border>
                         </Popup>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -1380,7 +1387,7 @@ $window.Add_SourceInitialized({
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ThemeButton','ThemePopup','ThemeAutoButton','ThemeDarkButton','ThemeLightButton',
+  'ThemeButton','ThemeButtonIcon','ThemePopup','ThemeAutoButton','ThemeDarkButton','ThemeLightButton',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1434,10 +1441,10 @@ function Save-ThemePreference([string]$Mode) {
 }
 
 function Set-ThemeButtonState([string]$Mode) {
-    $icons = @{ Auto = '◐'; Dark = '☾'; Light = '☀' }
+    $icons = @{ Auto = [char]0xE790; Dark = [char]0xE708; Light = [char]0xE706 }
     $labels = @{ Auto = 'Otomatik'; Dark = 'Koyu'; Light = 'Açık' }
-    $controls.ThemeButton.Content = $icons[$Mode]
-    $controls.ThemeButton.ToolTip = "Görünüm: $($labels[$Mode])"
+    $controls.ThemeButtonIcon.Text = [string]$icons[$Mode]
+    $controls.ThemeButton.ToolTip = "Görünüm: $($labels[$Mode]) — değiştirmek için tıklayın"
     foreach ($button in @($controls.ThemeAutoButton,$controls.ThemeDarkButton,$controls.ThemeLightButton)) {
         $selected = ([string]$button.Tag -eq $Mode)
         $button.Background = if ($selected) { New-ColorBrush '#1A668C' } else { [Windows.Media.Brushes]::Transparent }
