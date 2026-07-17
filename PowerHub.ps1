@@ -3568,8 +3568,55 @@ function Get-PackageOperationArguments {
     return @($arguments)
 }
 
+function Test-WebView2RuntimeInstalled {
+    $applicationRoots = @(
+        (Join-Path ${env:ProgramFiles(x86)} 'Microsoft\EdgeWebView\Application'),
+        (Join-Path $env:LOCALAPPDATA 'Microsoft\EdgeWebView\Application')
+    ) | Where-Object { $_ -and (Test-Path -LiteralPath $_) }
+
+    foreach ($root in $applicationRoots) {
+        if (Get-ChildItem -LiteralPath $root -Filter 'msedgewebview2.exe' -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1) {
+            return $true
+        }
+    }
+    return $false
+}
+
+function Add-RequiredPackageDependencies {
+    param([object[]]$Entries)
+
+    $expandedEntries = @($Entries)
+    $requiresWebView2 = @($expandedEntries | Where-Object {
+        $_.Id -eq '9NKSQGP7F2NH' -and $_.Operation -ne 'Uninstall'
+    }).Count -gt 0
+
+    if ($requiresWebView2 -and -not (Test-WebView2RuntimeInstalled) -and @($expandedEntries | Where-Object Id -eq 'Microsoft.EdgeWebView2Runtime').Count -eq 0) {
+        $dependency = [pscustomobject]@{
+            Name = 'Microsoft Edge WebView2 Runtime'
+            Id = 'Microsoft.EdgeWebView2Runtime'
+            Action = 'Winget'
+            Url = $null
+            InstallArguments = $null
+            Operation = 'Install'
+            PackageSource = 'winget'
+            Status = 'Waiting'
+            StatusLabel = 'BEKLİYOR'
+            StatusIcon = '…'
+            StatusBackground = '#3A3F45'
+            StatusForeground = '#C2CBD1'
+            Detail = 'WhatsApp için gerekli çalışma bileşeni'
+            Code = 0
+            StoreRetryCount = 0
+        }
+        Write-PowerHubLog -Message 'WhatsApp bağımlılığı kuyruğa eklendi: Microsoft Edge WebView2 Runtime' -Color DarkCyan
+        $expandedEntries = @($dependency) + $expandedEntries
+    }
+    return @($expandedEntries)
+}
+
 function Initialize-InstallQueue {
     param([object[]]$Entries)
+    $Entries = @(Add-RequiredPackageDependencies -Entries $Entries)
     $script:installQueueItems.Clear()
     foreach ($entry in $Entries) {
         Set-InstallQueueEntryState -Entry $entry -State Waiting -Detail $entry.Detail
