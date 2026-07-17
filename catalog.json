@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "UpdatedAt": "2026-07-14",
+  "UpdatedAt": "2026-07-18",
   "Categories": [
     {
       "Name": "İnternet Tarayıcıları",
@@ -268,6 +268,15 @@
       "Category": "Multimedya",
       "Initial": "S",
       "Color": "#1DB954"
+    },
+    {
+      "Name": "Monochrome",
+      "Description": "Modern çevrim içi müzik oynatıcı",
+      "Action": "Url",
+      "Url": "https://monochrome.tf/",
+      "Category": "Multimedya",
+      "Initial": "M",
+      "Color": "#A7A7A7"
     },
     {
       "Name": "foobar2000",
@@ -1269,6 +1278,7 @@
     "K-Lite Codec Pack Basic": "https://codecguide.com/download_k-lite_codec_pack_basic.htm",
     "LocalSend": "https://localsend.org/",
     "Malwarebytes": "https://www.malwarebytes.com/",
+    "Monochrome": "https://monochrome.tf/",
     "Mozilla Firefox": "https://www.firefox.com/tr/",
     "Mullvad Browser": "https://mullvad.net/tr/browser",
     "Notepad++": "https://notepad-plus-plus.org/",
