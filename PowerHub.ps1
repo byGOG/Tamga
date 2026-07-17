@@ -1927,6 +1927,7 @@ $vendorLogoOverrides = @{
     'VMware Workstation Pro' = 'vmware-workstation-logo.png'
     'Internet Download Manager' = 'internet-download-manager-logo.png'
     'Ninite'          = 'ninite-logo.png'
+    'AtlasOS'         = 'atlasos-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
 }
