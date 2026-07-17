@@ -1337,6 +1337,16 @@
       "Category": "Betikler & Otomasyon",
       "Initial": "W",
       "Color": "#00A4EF"
+    },
+    {
+      "Name": "WinScript",
+      "Description": "Windows betiği oluşturma ve optimizasyon aracı",
+      "Action": "PowerShell",
+      "Command": "irm \"https://winscript.cc/irm\" | iex",
+      "Url": "https://winscript.cc/",
+      "Category": "Betikler & Otomasyon",
+      "Initial": "WS",
+      "Color": "#6546B8"
     }
   ],
   "OfficialWebsites": {
@@ -1434,6 +1444,7 @@
     "WhatsApp": "https://www.whatsapp.com/",
     "Winfetch": "https://github.com/lptstr/winfetch",
     "Winhance": "https://winhance.net/",
+    "WinScript": "https://winscript.cc/",
     "WinRAR": "https://www.rarlab.com/",
     "WizTree": "https://diskanalyzer.com/",
     "Zen Browser": "https://zen-browser.app/",
