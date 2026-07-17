@@ -1923,6 +1923,7 @@ $vendorLogoOverrides = @{
     'FurMark 2'       = 'furmark-logo.png'
     'PowerToys'       = 'powertoys-logo.png'
     'gsudo'           = 'gsudo-logo.png'
+    'Winhance'        = 'winhance-logo.png'
     'TeraCopy'        = 'teracopy-logo.png'
     'O&O ShutUp10++'  = 'oosu10-logo.png'
     'VMware Workstation Pro' = 'vmware-workstation-logo.png'

@@ -867,6 +867,14 @@
       "Color": "#FF1D4F"
     },
     {
+      "Name": "Winhance",
+      "Description": "Windows özelleştirme ve optimizasyon aracı",
+      "Id": "memstechtips.Winhance",
+      "Category": "Sistem Araçları",
+      "Initial": "W",
+      "Color": "#2F9DE0"
+    },
+    {
       "Name": "Process Lasso",
       "Description": "İşlem ve CPU optimizasyonu",
       "Id": "BitSum.ProcessLasso",
@@ -1403,6 +1411,7 @@
     "VLC": "https://www.videolan.org/vlc/",
     "VMware Workstation Pro": "https://www.vmware.com/",
     "WhatsApp": "https://www.whatsapp.com/",
+    "Winhance": "https://winhance.net/",
     "WinRAR": "https://www.rarlab.com/",
     "WizTree": "https://diskanalyzer.com/",
     "Zen Browser": "https://zen-browser.app/",
