@@ -1921,6 +1921,7 @@ $vendorLogoOverrides = @{
     'BurnInTest'      = 'burnintest-logo.png'
     'FurMark 2'       = 'furmark-logo.png'
     'PowerToys'       = 'powertoys-logo.png'
+    'TeraCopy'        = 'teracopy-logo.png'
 }
 foreach ($appName in $vendorLogoOverrides.Keys) {
     $vendorLogo = Import-PowerHubBrandImage -FileName $vendorLogoOverrides[$appName]
