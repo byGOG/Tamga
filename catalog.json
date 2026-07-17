@@ -1123,7 +1123,7 @@
       "Color": "#3E7FB0"
     },
     {
-      "Name": "TechSpot Downloads",
+      "Name": "TechSpot",
       "Description": "Teknoloji ve yazılım indirme dizini",
       "Action": "Url",
       "Url": "https://www.techspot.com/",
