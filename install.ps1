@@ -19,6 +19,7 @@ $applicationPerformanceTestLogo = Join-Path $applicationAssets 'performancetest-
 $applicationBurnInTestLogo = Join-Path $applicationAssets 'burnintest-logo.png'
 $applicationFurMarkLogo = Join-Path $applicationAssets 'furmark-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
+$applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 
 if (-not (Test-Path -LiteralPath $installDirectory)) {
     New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
@@ -41,6 +42,7 @@ $performanceTestLogoDownloadUrl = '{0}/assets/performancetest-logo.png?v={1}' -f
 $burnInTestLogoDownloadUrl = '{0}/assets/burnintest-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $furMarkLogoDownloadUrl = '{0}/assets/furmark-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
+$aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $temporaryScript = Join-Path $installDirectory 'PowerHub.ps1.download'
 $temporaryCatalog = Join-Path $installDirectory 'catalog.json.download'
 $temporaryLogo = Join-Path $installDirectory 'powerhub-logo.png.download'
@@ -54,6 +56,7 @@ $temporaryPerformanceTestLogo = Join-Path $installDirectory 'performancetest-log
 $temporaryBurnInTestLogo = Join-Path $installDirectory 'burnintest-logo.png.download'
 $temporaryFurMarkLogo = Join-Path $installDirectory 'furmark-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
+$temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 
 try {
     Invoke-WebRequest -UseBasicParsing -Uri $scriptDownloadUrl -OutFile $temporaryScript
@@ -69,6 +72,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $burnInTestLogoDownloadUrl -OutFile $temporaryBurnInTestLogo
     Invoke-WebRequest -UseBasicParsing -Uri $furMarkLogoDownloadUrl -OutFile $temporaryFurMarkLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
+    Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
 
     $catalog = Get-Content -LiteralPath $temporaryCatalog -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($catalog.SchemaVersion -ne 1 -or @($catalog.Applications).Count -eq 0) {
@@ -88,8 +92,9 @@ try {
     Move-Item -LiteralPath $temporaryBurnInTestLogo -Destination $applicationBurnInTestLogo -Force
     Move-Item -LiteralPath $temporaryFurMarkLogo -Destination $applicationFurMarkLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
+    Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryWingetReadyIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
