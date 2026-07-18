@@ -423,8 +423,8 @@ Remove-PowerHubLegacyFonts
                 <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
                         ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="UpdateNavIcon" Width="36" Height="36" Stretch="Uniform"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Image x:Name="UpdateNavIcon" Width="44" Height="44" Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güncelleme Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
@@ -437,8 +437,8 @@ Remove-PowerHubLegacyFonts
                 <Button x:Name="SecurityCenterButton" Grid.Row="4" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="Sistem ve PowerHub güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="SecurityNavIcon" Width="36" Height="36" Stretch="Uniform"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Image x:Name="SecurityNavIcon" Width="44" Height="44" Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güvenlik Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
@@ -466,8 +466,8 @@ Remove-PowerHubLegacyFonts
                 <Button x:Name="AboutButton" Grid.Row="6" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="PowerHub bilgilerini ve bağlantılarını göster" AutomationProperties.Name="PowerHub hakkında">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="AboutNavIcon" Width="36" Height="36" Stretch="Uniform"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Image x:Name="AboutNavIcon" Width="44" Height="44" Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
@@ -484,15 +484,15 @@ Remove-PowerHubLegacyFonts
                     <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="42"/>
+                            <ColumnDefinition Width="48"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="36" Height="36" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="12" VerticalAlignment="Center">
+                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="44" Height="44" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="14" VerticalAlignment="Center">
                             <Grid>
-                                <Image x:Name="WingetReadyIcon" Width="36" Height="36" Stretch="Uniform"
+                                <Image x:Name="WingetReadyIcon" Width="44" Height="44" Stretch="Uniform"
                                        RenderOptions.BitmapScalingMode="HighQuality" Visibility="Collapsed"/>
-                                <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="14" FontWeight="Bold"
+                                <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="16" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
