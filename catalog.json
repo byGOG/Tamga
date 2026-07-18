@@ -678,7 +678,7 @@
       "Color": "#67B279"
     },
     {
-      "Name": "Buster: Captcha Solver for Humans",
+      "Name": "Buster",
       "Description": "Ses tanıma ile CAPTCHA çözme eklentisi",
       "Action": "Url",
       "Url": "https://github.com/dessant/buster",
@@ -1388,7 +1388,7 @@
     "BleachBit": "https://www.bleachbit.org/",
     "Brave": "https://brave.com/tr/",
     "Bulk Crap Uninstaller": "https://www.bcuninstaller.com/",
-    "Buster: Captcha Solver for Humans": "https://github.com/dessant/buster",
+    "Buster": "https://github.com/dessant/buster",
     "Claude": "https://claude.ai/",
     "CopyQ": "https://hluk.github.io/CopyQ/",
     "CPU-Z": "https://www.cpuid.com/softwares/cpu-z.html",
