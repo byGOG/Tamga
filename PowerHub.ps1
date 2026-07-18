@@ -1101,9 +1101,11 @@ Remove-PowerHubLegacyFonts
             <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="15,11" Margin="0,8,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="UpdateSelectionText" Text="Güncelleme taraması bekleniyor" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="UpdateActivityText" Text="WinGet paketleri denetlenecek." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"/>
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,16,0" ClipToBounds="True">
+                        <TextBlock x:Name="UpdateSelectionText" Text="Güncelleme taraması bekleniyor" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"
+                                   TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="UpdateActivityText" Text="WinGet paketleri denetlenecek." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
+                                   TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                         <ProgressBar x:Name="UpdateProgress" Height="3" Margin="0,9,18,0" Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" Foreground="#D09335" Background="#3B3326"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -1976,6 +1978,7 @@ function Update-UpdateCenterSelectionStatus {
     if (-not $script:isInstalling) {
         $controls.UpdateActivityText.Text = if ($count -eq 0 -and $script:updateScanCompleted) { 'Sisteminizde bekleyen WinGet güncellemesi yok.' } elseif ($selected.Count -gt 0) { ($selected.Name -join ', ') } else { 'Güncellemek istediğiniz paketleri seçin.' }
     }
+    $controls.UpdateActivityText.ToolTip = $controls.UpdateActivityText.Text
     $wingetReady = [bool](Resolve-WingetExecutable)
     $controls.UpdateSelectAllButton.IsEnabled = ($count -gt 0 -and -not $script:isInstalling)
     $controls.UpdateInstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $wingetReady)
