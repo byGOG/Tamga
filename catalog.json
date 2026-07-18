@@ -1227,15 +1227,6 @@
       "Color": "#C82CCB"
     },
     {
-      "Name": "Microsoft Package Picker",
-      "Description": "Microsoft Mağazası çoklu uygulama paketi",
-      "Action": "Url",
-      "Url": "https://apps.microsoft.com/",
-      "Category": "Uygulama Arşivleri",
-      "Initial": "MP",
-      "Color": "#2778B8"
-    },
-    {
       "Name": "UUP dump",
       "Description": "Windows UUP indirme aracı",
       "Action": "Url",
