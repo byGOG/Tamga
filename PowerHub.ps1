@@ -20,6 +20,7 @@ using System.Runtime.InteropServices;
 public static class PowerHubWindowLayout {
     [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int command);
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
     [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool RemoveFontResourceEx(string fileName, uint flags, IntPtr reserved);
@@ -3983,6 +3984,29 @@ function Test-PackageOperationApplied {
     }
 }
 
+function Start-DiscordWindowMinimizeWatcher {
+    if ($script:discordMinimizeTimer) {
+        $script:discordMinimizeTimer.Stop()
+        $script:discordMinimizeTimer = $null
+    }
+
+    $script:discordMinimizeDeadline = [DateTime]::UtcNow.AddSeconds(20)
+    $script:discordMinimizeTimer = [Windows.Threading.DispatcherTimer]::new()
+    $script:discordMinimizeTimer.Interval = [TimeSpan]::FromMilliseconds(400)
+    $script:discordMinimizeTimer.Add_Tick({
+        $discordWindows = @(Get-Process -Name 'Discord' -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne [IntPtr]::Zero })
+        foreach ($process in $discordWindows) {
+            [void][PowerHubWindowLayout]::ShowWindowAsync($process.MainWindowHandle, 6)
+        }
+
+        if ($discordWindows.Count -gt 0 -or [DateTime]::UtcNow -ge $script:discordMinimizeDeadline) {
+            $script:discordMinimizeTimer.Stop()
+            $script:discordMinimizeTimer = $null
+        }
+    })
+    $script:discordMinimizeTimer.Start()
+}
+
 $script:installTimer.Add_Tick({
     if (-not $script:installProcess) { return }
     $script:installProcess.Refresh()
@@ -4013,6 +4037,9 @@ $script:installTimer.Add_Tick({
     }
     if ($operationSucceeded) {
         Write-PowerHubLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
+        if ($item.Id -eq 'Discord.Discord' -and $item.Operation -in @('Install','Upgrade')) {
+            Start-DiscordWindowMinimizeWatcher
+        }
         if ($script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$item.Id) }
         Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
         $catalogApp = $apps | Where-Object Id -eq $item.Id | Select-Object -First 1
