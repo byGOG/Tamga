@@ -185,6 +185,7 @@ Remove-PowerHubLegacyFonts
         <SolidColorBrush x:Key="SubtleBorder" Color="#2B2B2B"/>
         <SolidColorBrush x:Key="InputBg" Color="#181818"/>
         <SolidColorBrush x:Key="OverlayBg" Color="#E6080A0C"/>
+        <SolidColorBrush x:Key="SelectedCardBg" Color="#1F2B34"/>
         <SolidColorBrush x:Key="HeaderBg" Color="#1F1F1F"/>
         <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="0" ShadowDepth="0" Opacity="0"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
@@ -381,17 +382,6 @@ Remove-PowerHubLegacyFonts
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="ThemeVisualLayer" Grid.Column="1" IsHitTestVisible="False" ClipToBounds="True" Opacity="0">
-            <Ellipse x:Name="ThemeGlowOne" Width="420" Height="420" Canvas.Right="-115" Canvas.Top="-150" Opacity="0.28">
-                <Ellipse.Fill><RadialGradientBrush><GradientStop Color="#6DB8FF" Offset="0"/><GradientStop Color="#006DB8FF" Offset="1"/></RadialGradientBrush></Ellipse.Fill>
-                <Ellipse.Effect><BlurEffect Radius="42"/></Ellipse.Effect>
-            </Ellipse>
-            <Ellipse x:Name="ThemeGlowTwo" Width="360" Height="360" Canvas.Left="-120" Canvas.Bottom="-125" Opacity="0.2">
-                <Ellipse.Fill><RadialGradientBrush><GradientStop Color="#A78BFA" Offset="0"/><GradientStop Color="#00A78BFA" Offset="1"/></RadialGradientBrush></Ellipse.Fill>
-                <Ellipse.Effect><BlurEffect Radius="48"/></Ellipse.Effect>
-            </Ellipse>
-        </Canvas>
-
         <Border x:Name="Sidebar" Grid.Column="0" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="0,0,1,0" Background="{DynamicResource SidebarBg}">
             <Grid Margin="18,20">
                 <Grid.RowDefinitions>
@@ -558,7 +548,7 @@ Remove-PowerHubLegacyFonts
                                    Foreground="{DynamicResource Muted}" FontSize="14" Margin="0,5,0,0"/>
                     </StackPanel>
                     <Grid Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="40"/></Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Background="{DynamicResource InputBg}" BorderBrush="{DynamicResource SubtleBorder}"
                                 BorderThickness="1" CornerRadius="9" Height="42">
                             <Grid>
@@ -577,27 +567,6 @@ Remove-PowerHubLegacyFonts
                                         AutomationProperties.Name="Aramayı temizle" Visibility="Collapsed"/>
                             </Grid>
                         </Border>
-                        <Button x:Name="ThemeButton" Grid.Column="1" Width="34" Height="34"
-                                HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0"
-                                Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
-                                BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
-                                ToolTip="Görünüm: Otomatik — değiştirmek için tıklayın"
-                                AutomationProperties.Name="Görünüm temasını seç">
-                            <TextBlock x:Name="ThemeButtonIcon" Text="&#xE790;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                       FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Button>
-                        <Popup x:Name="ThemePopup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                            <Border Width="158" Margin="0,6,0,0" Padding="7" CornerRadius="10"
-                                    Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1">
-                                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="18" ShadowDepth="5" Opacity="0.45"/></Border.Effect>
-                                <StackPanel>
-                                    <TextBlock Text="GÖRÜNÜM" Foreground="{DynamicResource Muted}" FontSize="9" FontWeight="Bold" Margin="8,3,8,6"/>
-                                    <Button x:Name="ThemeAutoButton" Tag="Auto" Content="◐   Otomatik" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
-                                    <Button x:Name="ThemeDarkButton" Tag="Dark" Content="☾   Koyu" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
-                                    <Button x:Name="ThemeLightButton" Tag="Light" Content="☀   Açık" HorizontalContentAlignment="Left" Padding="10,7" Margin="0,1" Background="Transparent" Foreground="{DynamicResource Ink}"/>
-                                </StackPanel>
-                            </Border>
-                        </Popup>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,13,0,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -1404,7 +1373,7 @@ $window.Add_SourceInitialized({
     try {
         $windowHelper = [Windows.Interop.WindowInteropHelper]::new($window)
         [PowerHubWindowLayout]::ApplyFluentWindow($windowHelper.Handle)
-        [PowerHubWindowLayout]::ApplyDarkTitleBar($windowHelper.Handle, ($script:resolvedTheme -ne 'Light'))
+        [PowerHubWindowLayout]::ApplyDarkTitleBar($windowHelper.Handle, $true)
         if ($script:powerHubIconPath) {
             [PowerHubWindowLayout]::ApplyWindowIcon($windowHelper.Handle, [IO.Path]::GetFullPath($script:powerHubIconPath))
         }
@@ -1412,8 +1381,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','ThemeVisualLayer','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ThemeButton','ThemeButtonIcon','ThemePopup','ThemeAutoButton','ThemeDarkButton','ThemeLightButton',
+@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1422,151 +1390,6 @@ $controls = @{}
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
 }
-
-function New-ThemeGradientBrush([string[]]$Colors) {
-    $brush = [Windows.Media.LinearGradientBrush]::new()
-    $brush.StartPoint = [Windows.Point]::new(0, 0)
-    $brush.EndPoint = [Windows.Point]::new(1, 1)
-    $offsets = if ($Colors.Count -eq 2) { @(0.0, 1.0) } else { @(0.0, 0.58, 1.0) }
-    for ($index = 0; $index -lt $Colors.Count; $index++) {
-        $brush.GradientStops.Add([Windows.Media.GradientStop]::new(
-            [Windows.Media.ColorConverter]::ConvertFromString($Colors[$index]),
-            $offsets[[Math]::Min($index, $offsets.Count - 1)]
-        ))
-    }
-    return $brush
-}
-
-function New-ThemeShadowEffect([string]$Color, [double]$BlurRadius, [double]$ShadowDepth, [double]$Opacity) {
-    $effect = [Windows.Media.Effects.DropShadowEffect]::new()
-    $effect.Color = [Windows.Media.ColorConverter]::ConvertFromString($Color)
-    $effect.BlurRadius = $BlurRadius
-    $effect.ShadowDepth = $ShadowDepth
-    $effect.Opacity = $Opacity
-    $effect.Direction = 270
-    return $effect
-}
-
-$script:themeSettingsDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
-$script:themeSettingsPath = Join-Path $script:themeSettingsDirectory 'settings.json'
-$script:themePreference = 'Auto'
-$script:resolvedTheme = $null
-
-function Get-WindowsApplicationTheme {
-    try {
-        $value = (Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' -Name AppsUseLightTheme -ErrorAction Stop).AppsUseLightTheme
-        if ([int]$value -eq 1) { return 'Light' }
-    } catch { }
-    return 'Dark'
-}
-
-function Get-SavedThemePreference {
-    if (-not (Test-Path -LiteralPath $script:themeSettingsPath)) { return 'Auto' }
-    try {
-        $settings = Get-Content -LiteralPath $script:themeSettingsPath -Raw -Encoding UTF8 | ConvertFrom-Json
-        if ([string]$settings.Theme -in @('Auto','Dark','Light')) { return [string]$settings.Theme }
-    } catch { }
-    return 'Auto'
-}
-
-function Save-ThemePreference([string]$Mode) {
-    try {
-        [IO.Directory]::CreateDirectory($script:themeSettingsDirectory) | Out-Null
-        [pscustomobject]@{ Theme = $Mode } | ConvertTo-Json | Set-Content -LiteralPath $script:themeSettingsPath -Encoding UTF8
-    } catch { }
-}
-
-function Set-ThemeButtonState([string]$Mode) {
-    $icons = @{ Auto = [char]0xE790; Dark = [char]0xE708; Light = [char]0xE706 }
-    $labels = @{ Auto = 'Otomatik'; Dark = 'Koyu'; Light = 'Açık' }
-    $controls.ThemeButtonIcon.Text = [string]$icons[$Mode]
-    $controls.ThemeButton.ToolTip = "Görünüm: $($labels[$Mode]) — değiştirmek için tıklayın"
-    foreach ($button in @($controls.ThemeAutoButton,$controls.ThemeDarkButton,$controls.ThemeLightButton)) {
-        $selected = ([string]$button.Tag -eq $Mode)
-        $button.Background = if ($selected) { New-ColorBrush '#1A668C' } else { [Windows.Media.Brushes]::Transparent }
-        $button.Foreground = if ($selected) { New-ColorBrush '#FFFFFF' } else { $window.FindResource('Ink') }
-    }
-}
-
-function Set-PowerHubTheme {
-    param([ValidateSet('Auto','Dark','Light')][string]$Mode = 'Auto', [switch]$Save)
-    $resolved = if ($Mode -eq 'Auto') { Get-WindowsApplicationTheme } else { $Mode }
-    $dark = ($resolved -eq 'Dark')
-    $palette = if ($dark) {
-        @{
-            Primary='#007ACC'; Ink='#E8E8E8'; Muted='#A0A0A0'; SidebarBg='#181818'; Surface='#1F1F1F';
-            SurfaceRaised='#252526'; CardBg='#252526'; CardBorder='#343434'; SoftBg='#2A2D2E'; SoftText='#CCCCCC';
-            ActionBg='#2D2D30'; ActionHover='#37373D'; ActionBorder='#474747'; ActionIcon='#D4D4D4';
-            DangerBg='#332528'; DangerBorder='#713C42'; DangerIcon='#F48771';
-            SubtleBorder='#2B2B2B'; InputBg='#181818'; OverlayBg='#E60C0C0C'; SelectedCardBg='#1F2B34'
-        }
-    } else {
-        @{
-            Primary='#0284C7'; Ink='#0F172A'; Muted='#526273'; SidebarBg='#F4F7FB'; Surface='#F8FAFC';
-            SurfaceRaised='#FFFFFF'; CardBg='#FFFFFF'; CardBorder='#CBD5E1'; SoftBg='#E7EEF7'; SoftText='#075985';
-            ActionBg='#DDEAF6'; ActionHover='#C8E0F2'; ActionBorder='#A9C0D5'; ActionIcon='#075985';
-            DangerBg='#FFF0F1'; DangerBorder='#F2B7BC'; DangerIcon='#DC2626';
-            SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#730F172A'; SelectedCardBg='#E0F2FE'
-        }
-    }
-    $gradient = @('#F7FAFC','#EEF3F8','#E7EEF6')
-    $window.Resources['PageBg'] = if ($dark) { New-ColorBrush '#1E1E1E' } else { New-ThemeGradientBrush -Colors $gradient }
-    foreach ($entry in $palette.GetEnumerator()) { $window.Resources[$entry.Key] = New-ColorBrush $entry.Value }
-    $window.Resources['HeaderBg'] = if ($dark) { New-ColorBrush '#1F1F1F' } else { New-ThemeGradientBrush -Colors @('#FFFFFF','#F4F8FF') }
-    $window.Resources['CardBg'] = if ($dark) { New-ColorBrush '#252526' } else { New-ThemeGradientBrush -Colors @('#FFFFFF','#F8FBFF') }
-    $window.Resources['CardShadow'] = if ($dark) {
-        New-ThemeShadowEffect -Color '#000000' -BlurRadius 0 -ShadowDepth 0 -Opacity 0
-    } else {
-        New-ThemeShadowEffect -Color '#486580' -BlurRadius 14 -ShadowDepth 3 -Opacity 0.13
-    }
-    if ($controls.ThemeVisualLayer) {
-        $visualAnimation = [Windows.Media.Animation.DoubleAnimation]::new()
-        $visualAnimation.To = if ($dark) { 0.0 } else { 1.0 }
-        $visualAnimation.Duration = [Windows.Duration]::new([TimeSpan]::FromMilliseconds(260))
-        $controls.ThemeVisualLayer.BeginAnimation([Windows.UIElement]::OpacityProperty, $visualAnimation)
-    }
-    if ($controls.WingetStatus) { $controls.WingetStatus.Foreground = $window.FindResource('Ink') }
-    if ($controls.WingetDetail) { $controls.WingetDetail.Foreground = $window.FindResource('Muted') }
-    if ($controls.UpdateCenterNavDetail) {
-        $controls.UpdateCenterNavDetail.Foreground = New-ColorBrush $(if ($dark) { '#C8AC7F' } else { '#8A5A00' })
-    }
-    if ($controls.SecurityCenterNavDetail) {
-        $controls.SecurityCenterNavDetail.Foreground = New-ColorBrush $(if ($dark) { '#86C9A8' } else { '#087451' })
-    }
-    $script:themePreference = $Mode
-    $script:resolvedTheme = $resolved
-    Set-ThemeButtonState -Mode $Mode
-    if (Get-Command Update-CategoryThemeAppearance -ErrorAction SilentlyContinue) {
-        $clearCategorySelection = ($controls.MainWorkspace.Visibility -ne [Windows.Visibility]::Visible)
-        Update-CategoryThemeAppearance -ClearSelection:$clearCategorySelection
-    }
-    try {
-        $handle = [Windows.Interop.WindowInteropHelper]::new($window).Handle
-        [PowerHubWindowLayout]::ApplyDarkTitleBar($handle, $dark)
-    } catch { }
-    if ($Save) { Save-ThemePreference -Mode $Mode }
-}
-
-$controls.ThemePopup.PlacementTarget = $controls.ThemeButton
-$controls.ThemeButton.Add_Click({ $controls.ThemePopup.IsOpen = -not $controls.ThemePopup.IsOpen })
-foreach ($themeChoice in @($controls.ThemeAutoButton,$controls.ThemeDarkButton,$controls.ThemeLightButton)) {
-    $themeChoice.Add_Click({
-        param($sender,$eventArgs)
-        Set-PowerHubTheme -Mode ([string]$sender.Tag) -Save
-        $controls.ThemePopup.IsOpen = $false
-    })
-}
-$script:themePreference = Get-SavedThemePreference
-Set-PowerHubTheme -Mode $script:themePreference
-$script:themeWatchTimer = [Windows.Threading.DispatcherTimer]::new()
-$script:themeWatchTimer.Interval = [TimeSpan]::FromSeconds(2)
-$script:themeWatchTimer.Add_Tick({
-    if ($script:themePreference -eq 'Auto') {
-        $current = Get-WindowsApplicationTheme
-        if ($current -ne $script:resolvedTheme) { Set-PowerHubTheme -Mode 'Auto' }
-    }
-})
-$script:themeWatchTimer.Start()
 
 function Import-PowerHubBrandImage {
     param([string]$FileName = 'powerhub-logo.png')
@@ -4434,7 +4257,6 @@ Write-PowerHubLog -Message 'PowerHub hazır. Kurulum günlükleri bu terminalde 
 if ($winget) { Start-SystemScan }
 $window.Add_Closed({
     Stop-AppDetailMetadataLoad
-    if ($script:themeWatchTimer) { $script:themeWatchTimer.Stop() }
     $script:systemScanTimer.Stop()
     $script:securityScanTimer.Stop()
     $script:updateTimer.Stop()
