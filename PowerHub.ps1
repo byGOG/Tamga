@@ -491,9 +491,13 @@ Remove-PowerHubLegacyFonts
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="32" Height="32" Background="#123B2C" BorderBrush="#236747" BorderThickness="1" CornerRadius="12" VerticalAlignment="Center">
-                            <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="14" FontWeight="Bold"
-                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="36" Height="36" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="12" VerticalAlignment="Center">
+                            <Grid>
+                                <Image x:Name="WingetReadyIcon" Width="36" Height="36" Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality" Visibility="Collapsed"/>
+                                <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="14" FontWeight="Bold"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
                         </Border>
                         <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="{DynamicResource Ink}"
                                    FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,5,0"/>
@@ -1381,7 +1385,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1414,6 +1418,8 @@ if ($brandImage) {
     $brandIcon = Import-PowerHubBrandImage -FileName 'powerhub-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
+$wingetReadyImage = Import-PowerHubBrandImage -FileName 'winget-ready.png'
+if ($wingetReadyImage) { $controls.WingetReadyIcon.Source = $wingetReadyImage }
 
 $script:focusHistory = [Collections.Stack]::new()
 $script:focusRegionIndex = -1
@@ -3978,8 +3984,11 @@ function Set-WingetCardState {
             $script:wingetReady = $true
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Arrow
             $controls.WingetCard.BorderBrush = New-ColorBrush '#46515A'
-            $controls.WingetIconBox.Background = New-ColorBrush '#123B2C'
-            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#236747'
+            $controls.WingetIconBox.Background = [Windows.Media.Brushes]::Transparent
+            $controls.WingetIconBox.BorderBrush = [Windows.Media.Brushes]::Transparent
+            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(0)
+            $controls.WingetReadyIcon.Visibility = if ($controls.WingetReadyIcon.Source) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+            $controls.WingetIcon.Visibility = if ($controls.WingetReadyIcon.Source) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }
             $controls.WingetIcon.Text = '✓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#6EE7B7'
             $controls.WingetStatus.Text = 'WinGet'
@@ -3996,6 +4005,9 @@ function Set-WingetCardState {
             $controls.WingetCard.BorderBrush = New-ColorBrush '#B07A38'
             $controls.WingetIconBox.Background = New-ColorBrush '#594523'
             $controls.WingetIconBox.BorderBrush = New-ColorBrush '#8A682F'
+            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(1)
+            $controls.WingetReadyIcon.Visibility = [Windows.Visibility]::Collapsed
+            $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '↓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
             $controls.WingetStatus.Text = 'winget kur'
@@ -4012,6 +4024,9 @@ function Set-WingetCardState {
             $controls.WingetCard.BorderBrush = New-ColorBrush '#278DD1'
             $controls.WingetIconBox.Background = New-ColorBrush '#174C70'
             $controls.WingetIconBox.BorderBrush = New-ColorBrush '#278DD1'
+            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(1)
+            $controls.WingetReadyIcon.Visibility = [Windows.Visibility]::Collapsed
+            $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '…'
             $controls.WingetIcon.Foreground = New-ColorBrush '#BEE7FF'
             $controls.WingetStatus.Text = 'winget kuruluyor'
@@ -4028,6 +4043,9 @@ function Set-WingetCardState {
             $controls.WingetCard.BorderBrush = New-ColorBrush '#A95454'
             $controls.WingetIconBox.Background = New-ColorBrush '#542E32'
             $controls.WingetIconBox.BorderBrush = New-ColorBrush '#A95454'
+            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(1)
+            $controls.WingetReadyIcon.Visibility = [Windows.Visibility]::Collapsed
+            $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '!'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFAAAA'
             $controls.WingetStatus.Text = 'winget hatası'
