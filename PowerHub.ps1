@@ -439,9 +439,8 @@ Remove-PowerHubLegacyFonts
                         ToolTip="Sistem ve PowerHub güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border Width="32" Height="32" CornerRadius="12" Background="#174B39" BorderBrush="#2E7658" BorderThickness="1">
-                            <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
+                        <Image x:Name="SecurityNavIcon" Width="36" Height="36" Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güvenlik Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
                             <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="10" Margin="0,3,0,0"/>
@@ -1127,9 +1126,8 @@ Remove-PowerHubLegacyFonts
                     <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#39C77A" Offset="0"/><GradientStop Color="#38BDF8" Offset="0.58"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
                     </Border>
-                    <Border Width="42" Height="42" CornerRadius="10" Background="#174B39" BorderBrush="#2E7658" BorderThickness="1">
-                        <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <Image x:Name="SecurityHeaderIcon" Width="46" Height="46" Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="POWERHUB  /  GÜVENLİK" FontSize="9.5" FontWeight="Bold" Foreground="#67D69B"/>
                         <TextBlock Text="Güvenlik Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
@@ -1385,7 +1383,7 @@ $window.Add_SourceInitialized({
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1421,6 +1419,11 @@ $wingetReadyImage = Import-PowerHubBrandImage -FileName 'winget-ready.png'
 if ($wingetReadyImage) { $controls.WingetReadyIcon.Source = $wingetReadyImage }
 $aboutNavImage = Import-PowerHubBrandImage -FileName 'about-icon.png'
 if ($aboutNavImage) { $controls.AboutNavIcon.Source = $aboutNavImage }
+$securityCenterImage = Import-PowerHubBrandImage -FileName 'security-center-icon.png'
+if ($securityCenterImage) {
+    $controls.SecurityNavIcon.Source = $securityCenterImage
+    $controls.SecurityHeaderIcon.Source = $securityCenterImage
+}
 
 $script:focusHistory = [Collections.Stack]::new()
 $script:focusRegionIndex = -1
