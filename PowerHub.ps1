@@ -164,14 +164,10 @@ Remove-PowerHubLegacyFonts
         AutomationProperties.HelpText="Klavye yardımı için F1 tuşuna basın"
         KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.ControlTabNavigation="Cycle">
     <Window.Resources>
-        <SolidColorBrush x:Key="Primary" Color="#0098FF"/>
+        <SolidColorBrush x:Key="Primary" Color="#007ACC"/>
         <SolidColorBrush x:Key="Ink" Color="#E8E8E8"/>
         <SolidColorBrush x:Key="Muted" Color="#A0A0A0"/>
-        <LinearGradientBrush x:Key="PageBg" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#181818" Offset="0"/>
-            <GradientStop Color="#1B1B1B" Offset="0.58"/>
-            <GradientStop Color="#1E1E1E" Offset="1"/>
-        </LinearGradientBrush>
+        <SolidColorBrush x:Key="PageBg" Color="#1E1E1E"/>
         <SolidColorBrush x:Key="SidebarBg" Color="#181818"/>
         <SolidColorBrush x:Key="Surface" Color="#1F1F1F"/>
         <SolidColorBrush x:Key="SurfaceRaised" Color="#252526"/>
@@ -189,11 +185,8 @@ Remove-PowerHubLegacyFonts
         <SolidColorBrush x:Key="SubtleBorder" Color="#2B2B2B"/>
         <SolidColorBrush x:Key="InputBg" Color="#181818"/>
         <SolidColorBrush x:Key="OverlayBg" Color="#E6080A0C"/>
-        <LinearGradientBrush x:Key="HeaderBg" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#1F1F1F" Offset="0"/>
-            <GradientStop Color="#232323" Offset="1"/>
-        </LinearGradientBrush>
-        <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="8" ShadowDepth="1" Opacity="0.18"/>
+        <SolidColorBrush x:Key="HeaderBg" Color="#1F1F1F"/>
+        <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="0" ShadowDepth="0" Opacity="0"/>
         <Style x:Key="SlimScrollBar" TargetType="ScrollBar">
             <Setter Property="Width" Value="10"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -548,12 +541,10 @@ Remove-PowerHubLegacyFonts
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-20,-17,-20,0" CornerRadius="12,12,0,0">
-                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#38BDF8" Offset="0.45"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
-                    </Border>
+                    <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-20,-17,-20,0" CornerRadius="12,12,0,0" Background="{DynamicResource Primary}"/>
                     <Border Grid.Row="0" Grid.Column="0" Width="44" Height="44" CornerRadius="10"
                             VerticalAlignment="Center" HorizontalAlignment="Left">
-                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0EA5E9" Offset="0"/><GradientStop Color="#6366F1" Offset="1"/></LinearGradientBrush></Border.Background>
+                        <Border.Background><SolidColorBrush Color="#007ACC"/></Border.Background>
                         <Grid>
                             <Rectangle Width="21" Height="17" Fill="Transparent" Stroke="White" StrokeThickness="1.8" RadiusX="3" RadiusY="3"/>
                             <Path Data="M 15 17 L 23 17 M 19 13 L 19 21" Stroke="White" StrokeThickness="1.8"
@@ -1503,7 +1494,7 @@ function Set-PowerHubTheme {
     $dark = ($resolved -eq 'Dark')
     $palette = if ($dark) {
         @{
-            Primary='#0098FF'; Ink='#E8E8E8'; Muted='#A0A0A0'; SidebarBg='#181818'; Surface='#1F1F1F';
+            Primary='#007ACC'; Ink='#E8E8E8'; Muted='#A0A0A0'; SidebarBg='#181818'; Surface='#1F1F1F';
             SurfaceRaised='#252526'; CardBg='#252526'; CardBorder='#343434'; SoftBg='#2A2D2E'; SoftText='#CCCCCC';
             ActionBg='#2D2D30'; ActionHover='#37373D'; ActionBorder='#474747'; ActionIcon='#D4D4D4';
             DangerBg='#332528'; DangerBorder='#713C42'; DangerIcon='#F48771';
@@ -1518,13 +1509,13 @@ function Set-PowerHubTheme {
             SubtleBorder='#C7D2DF'; InputBg='#F8FAFC'; OverlayBg='#730F172A'; SelectedCardBg='#E0F2FE'
         }
     }
-    $gradient = if ($dark) { @('#181818','#1B1B1B','#1E1E1E') } else { @('#F7FAFC','#EEF3F8','#E7EEF6') }
-    $window.Resources['PageBg'] = New-ThemeGradientBrush -Colors $gradient
+    $gradient = @('#F7FAFC','#EEF3F8','#E7EEF6')
+    $window.Resources['PageBg'] = if ($dark) { New-ColorBrush '#1E1E1E' } else { New-ThemeGradientBrush -Colors $gradient }
     foreach ($entry in $palette.GetEnumerator()) { $window.Resources[$entry.Key] = New-ColorBrush $entry.Value }
-    $window.Resources['HeaderBg'] = New-ThemeGradientBrush -Colors $(if ($dark) { @('#1F1F1F','#232323') } else { @('#FFFFFF','#F4F8FF') })
+    $window.Resources['HeaderBg'] = if ($dark) { New-ColorBrush '#1F1F1F' } else { New-ThemeGradientBrush -Colors @('#FFFFFF','#F4F8FF') }
     $window.Resources['CardBg'] = if ($dark) { New-ColorBrush '#252526' } else { New-ThemeGradientBrush -Colors @('#FFFFFF','#F8FBFF') }
     $window.Resources['CardShadow'] = if ($dark) {
-        New-ThemeShadowEffect -Color '#000000' -BlurRadius 8 -ShadowDepth 1 -Opacity 0.18
+        New-ThemeShadowEffect -Color '#000000' -BlurRadius 0 -ShadowDepth 0 -Opacity 0
     } else {
         New-ThemeShadowEffect -Color '#486580' -BlurRadius 14 -ShadowDepth 3 -Opacity 0.13
     }
