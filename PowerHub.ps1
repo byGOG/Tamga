@@ -1976,9 +1976,9 @@ function Update-UpdateCenterSelectionStatus {
     $controls.UpdateCountText.Foreground = New-ColorBrush $(if ($count -gt 0) { '#FFD58A' } else { '#6EE7B7' })
     $controls.UpdateSelectionText.Text = if ($selected.Count -gt 0) { "$($selected.Count) paket güncellenecek" } elseif ($script:updateScanCompleted) { 'Henüz paket seçilmedi' } else { 'Güncelleme taraması bekleniyor' }
     if (-not $script:isInstalling) {
-        $controls.UpdateActivityText.Text = if ($count -eq 0 -and $script:updateScanCompleted) { 'Sisteminizde bekleyen WinGet güncellemesi yok.' } elseif ($selected.Count -gt 0) { ($selected.Name -join ', ') } else { 'Güncellemek istediğiniz paketleri seçin.' }
+        $controls.UpdateActivityText.Text = if ($count -eq 0 -and $script:updateScanCompleted) { 'Sisteminizde bekleyen WinGet güncellemesi yok.' } elseif ($selected.Count -gt 0) { "$($selected.Count) paket seçildi • Güncellemeye hazır" } else { 'Güncellemek istediğiniz paketleri seçin.' }
     }
-    $controls.UpdateActivityText.ToolTip = $controls.UpdateActivityText.Text
+    $controls.UpdateActivityText.ToolTip = if ($selected.Count -gt 0) { $selected.Name -join "`n" } else { $controls.UpdateActivityText.Text }
     $wingetReady = [bool](Resolve-WingetExecutable)
     $controls.UpdateSelectAllButton.IsEnabled = ($count -gt 0 -and -not $script:isInstalling)
     $controls.UpdateInstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $wingetReady)
