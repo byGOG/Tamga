@@ -102,6 +102,11 @@ $installer | iex
 ```powershell
 git clone https://github.com/byGOG/PowerHub.git
 cd PowerHub
+```
+
+Ardından `PowerHub.bat` dosyasına çift tıklayın. Terminalden başlatmak için:
+
+```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
 ```
 
@@ -131,6 +136,7 @@ https://bygog.github.io/PowerHub/PowerHub.ps1
 
 ```text
 PowerHub/
+├─ PowerHub.bat          # Çift tıklamayla güvenli başlatıcı
 ├─ PowerHub.ps1          # WPF arayüzü ve paket işlem motoru
 ├─ catalog.json          # Uygulamalar, kategoriler ve resmî site adresleri
 ├─ install.ps1           # Kodu ve kataloğu doğrulayarak indiren başlatıcı
