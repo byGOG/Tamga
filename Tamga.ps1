@@ -395,16 +395,8 @@ Remove-TamgaLegacyFonts
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Border Width="44" Height="44" CornerRadius="10" SnapsToDevicePixels="True" ClipToBounds="True">
-                        <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
-                        <Viewbox Stretch="Uniform" Margin="5">
-                            <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
-                                <Path Fill="#F8FAFC" Data="F0 M16,10 L35,10 C48,10 55,18 55,30 C55,42 48,49 35,49 L27,49 L27,56 L16,56 Z M27,20 L27,39 L35,39 C41,39 44,36 44,30 C44,24 41,20 35,20 Z"/>
-                                <Path Stroke="#22D3EE" StrokeThickness="4.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M22,49 L35,36 L35,29"/>
-                                <Ellipse Canvas.Left="30.5" Canvas.Top="21" Width="9" Height="9" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Border>
+                    <Image x:Name="BrandLogoImage" Width="48" Height="48" Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="Tamga" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="18"/>
                         <TextBlock Text="Uygulama merkezi" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,2,0,0"/>
@@ -1306,16 +1298,8 @@ Remove-TamgaLegacyFonts
                             <Border Height="2" VerticalAlignment="Top" Margin="-24,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#22D3EE" Offset="0.64"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background></Border>
                             <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="62"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <Border Width="54" Height="54" CornerRadius="12" SnapsToDevicePixels="True" ClipToBounds="True">
-                                    <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#0F2747" Offset="0"/><GradientStop Color="#0759BC" Offset="0.72"/><GradientStop Color="#089DD5" Offset="1"/></LinearGradientBrush></Border.Background>
-                                    <Viewbox Stretch="Uniform" Margin="6">
-                                        <Canvas Width="64" Height="64" SnapsToDevicePixels="True">
-                                            <Path Fill="#F8FAFC" Data="F0 M16,10 L35,10 C48,10 55,18 55,30 C55,42 48,49 35,49 L27,49 L27,56 L16,56 Z M27,20 L27,39 L35,39 C41,39 44,36 44,30 C44,24 41,20 35,20 Z"/>
-                                            <Path Stroke="#22D3EE" StrokeThickness="4.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M22,49 L35,36 L35,29"/>
-                                            <Ellipse Canvas.Left="30.5" Canvas.Top="21" Width="9" Height="9" Fill="#67E8F9" Stroke="#E0F2FE" StrokeThickness="1.5"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                </Border>
+                                <Image x:Name="AboutBrandLogoImage" Width="58" Height="58" Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                     <TextBlock Text="TAMGA  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
                                     <TextBlock Text="Tamga" Foreground="White" FontSize="25" FontWeight="SemiBold" Margin="0,4,0,0"/>
@@ -1382,7 +1366,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1412,6 +1396,8 @@ function Import-TamgaBrandImage {
 
 $brandImage = Import-TamgaBrandImage -FileName 'tamga-logo.png'
 if ($brandImage) {
+    $controls.BrandLogoImage.Source = $brandImage
+    $controls.AboutBrandLogoImage.Source = $brandImage
     $brandIcon = Import-TamgaBrandImage -FileName 'tamga-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
