@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/tamga-logo.png" alt="Tamga logosu" width="120" height="120">
+<img src="assets/tamga-logo.png" alt="Tamga logosu" width="100" height="100">
 
 # Tamga
 
