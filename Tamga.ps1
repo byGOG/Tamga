@@ -661,7 +661,7 @@ Remove-TamgaLegacyFonts
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="12,7,11,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="56"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
@@ -695,10 +695,11 @@ Remove-TamgaLegacyFonts
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="UninstallButton" Grid.Column="5" Style="{StaticResource IconButton}"
+                                            Width="54" Height="54"
                                             Background="{DynamicResource DangerBg}" BorderBrush="{DynamicResource DangerBorder}"
                                             Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource UninstallIconImage}" Width="28" Height="28" Stretch="Uniform"
+                                        <Image Source="{DynamicResource UninstallIconImage}" Width="50" Height="50" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
