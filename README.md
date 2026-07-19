@@ -110,6 +110,8 @@ Ardından `PowerHub.bat` dosyasına çift tıklayın. Terminalden başlatmak iç
 powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
 ```
 
+Proje dosyalarına ihtiyaç duymadan internet üzerinden en güncel sürümü çalıştırmak için `PowerHub-Online.bat` dosyasını kullanabilirsiniz.
+
 ### Gereksinimler
 
 - Windows 10 veya Windows 11
@@ -136,6 +138,7 @@ https://bygog.github.io/PowerHub/PowerHub.ps1
 
 ```text
 PowerHub/
+├─ PowerHub-Online.bat   # İnternetten güncel sürümü indirip çalıştırır
 ├─ PowerHub.bat          # Çift tıklamayla güvenli başlatıcı
 ├─ PowerHub.ps1          # WPF arayüzü ve paket işlem motoru
 ├─ catalog.json          # Uygulamalar, kategoriler ve resmî site adresleri
