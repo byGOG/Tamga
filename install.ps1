@@ -1,4 +1,4 @@
-﻿# Tamga bootstrapper
+# Tamga bootstrapper
 # Usage: irm https://bygog.github.io/Tamga/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
@@ -30,9 +30,9 @@ $applicationUpdateCenterIcon = Join-Path $applicationAssets 'update-center-icon.
 if ((Test-Path -LiteralPath $legacyInstallDirectory) -and -not (Test-Path -LiteralPath $installDirectory)) {
     try {
         Move-Item -LiteralPath $legacyInstallDirectory -Destination $installDirectory -Force
-        Write-Host 'Eski PowerHub kurulumu Tamga dizinine taşındı.' -ForegroundColor DarkCyan
+        Write-Host 'Eski PowerHub kurulumu Tamga dizinine tasindi.' -ForegroundColor DarkCyan
     } catch {
-        Write-Host ('Eski PowerHub kurulumu taşınamadı; Tamga temiz kurulacak: {0}' -f $_.Exception.Message) -ForegroundColor Yellow
+        Write-Host ('Eski PowerHub kurulumu tasinamadi; Tamga temiz kurulacak: {0}' -f $_.Exception.Message) -ForegroundColor Yellow
     }
 }
 
@@ -106,7 +106,7 @@ try {
 
     $catalog = Get-Content -LiteralPath $temporaryCatalog -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($catalog.SchemaVersion -ne 1 -or @($catalog.Applications).Count -eq 0) {
-        throw 'İndirilen Tamga kataloğu geçerli değil.'
+        throw 'Indirilen Tamga katalogu gecerli degil.'
     }
 
     Move-Item -LiteralPath $temporaryScript -Destination $applicationScript -Force
@@ -144,4 +144,4 @@ Start-Process -FilePath $windowsPowerShell -ArgumentList @(
     '-File', ('"{0}"' -f $applicationScript)
 )
 
-Write-Host 'Tamga started.' -ForegroundColor Cyan
+Write-Host 'Tamga baslatildi.' -ForegroundColor Cyan
