@@ -772,7 +772,7 @@ Remove-TamgaLegacyFonts
                                 <Border Width="54" Height="54" Background="#1E2833" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="12">
                                     <Grid>
                                         <Image x:Name="AppDetailLogo" Width="46" Height="46" Stretch="Uniform" SnapsToDevicePixels="True"/>
-                                        <TextBlock x:Name="AppDetailInitial" Text="P" Foreground="#67E8F9" FontSize="21" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="AppDetailInitial" Text="T" Foreground="#67E8F9" FontSize="21" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
