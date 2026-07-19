@@ -23,6 +23,7 @@ $applicationFurMarkLogo = Join-Path $applicationAssets 'furmark-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationLinkIcon = Join-Path $applicationAssets 'link-icon.png'
+$applicationUninstallIcon = Join-Path $applicationAssets 'uninstall-icon.png'
 $applicationSecurityCenterIcon = Join-Path $applicationAssets 'security-center-icon.png'
 $applicationUpdateCenterIcon = Join-Path $applicationAssets 'update-center-icon.png'
 
@@ -59,6 +60,7 @@ $furMarkLogoDownloadUrl = '{0}/assets/furmark-logo.png?v={1}' -f $baseUrl, $cach
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $linkIconDownloadUrl = '{0}/assets/link-icon.png?v={1}' -f $baseUrl, $cacheBuster
+$uninstallIconDownloadUrl = '{0}/assets/uninstall-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $securityCenterIconDownloadUrl = '{0}/assets/security-center-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $updateCenterIconDownloadUrl = '{0}/assets/update-center-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $temporaryScript = Join-Path $installDirectory 'Tamga.ps1.download'
@@ -77,6 +79,7 @@ $temporaryFurMarkLogo = Join-Path $installDirectory 'furmark-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 $temporaryLinkIcon = Join-Path $installDirectory 'link-icon.png.download'
+$temporaryUninstallIcon = Join-Path $installDirectory 'uninstall-icon.png.download'
 $temporarySecurityCenterIcon = Join-Path $installDirectory 'security-center-icon.png.download'
 $temporaryUpdateCenterIcon = Join-Path $installDirectory 'update-center-icon.png.download'
 
@@ -97,6 +100,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
     Invoke-WebRequest -UseBasicParsing -Uri $linkIconDownloadUrl -OutFile $temporaryLinkIcon
+    Invoke-WebRequest -UseBasicParsing -Uri $uninstallIconDownloadUrl -OutFile $temporaryUninstallIcon
     Invoke-WebRequest -UseBasicParsing -Uri $securityCenterIconDownloadUrl -OutFile $temporarySecurityCenterIcon
     Invoke-WebRequest -UseBasicParsing -Uri $updateCenterIconDownloadUrl -OutFile $temporaryUpdateCenterIcon
 
@@ -121,10 +125,11 @@ try {
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
     Move-Item -LiteralPath $temporaryLinkIcon -Destination $applicationLinkIcon -Force
+    Move-Item -LiteralPath $temporaryUninstallIcon -Destination $applicationUninstallIcon -Force
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'

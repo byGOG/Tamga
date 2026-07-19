@@ -698,8 +698,9 @@ Remove-TamgaLegacyFonts
                                             Background="{DynamicResource DangerBg}" BorderBrush="{DynamicResource DangerBorder}"
                                             Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
-                                                   Foreground="{DynamicResource DangerIcon}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Image Source="{DynamicResource UninstallIconImage}" Width="28" Height="28" Stretch="Uniform"
+                                               RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <CheckBox x:Name="AppCheck" Grid.Column="6" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını seç}"
@@ -1440,6 +1441,8 @@ if ($aboutNavImage) {
 }
 $linkIconImage = Import-TamgaBrandImage -FileName 'link-icon.png'
 if ($linkIconImage) { $window.Resources['LinkIconImage'] = $linkIconImage }
+$uninstallIconImage = Import-TamgaBrandImage -FileName 'uninstall-icon.png'
+if ($uninstallIconImage) { $window.Resources['UninstallIconImage'] = $uninstallIconImage }
 $securityCenterImage = Import-TamgaBrandImage -FileName 'security-center-icon.png'
 if ($securityCenterImage) {
     $controls.SecurityNavIcon.Source = $securityCenterImage
