@@ -683,14 +683,14 @@ Remove-TamgaLegacyFonts
                                     </Border>
                                     <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="26" Height="26" Stretch="Uniform"
+                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="21" Height="21" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource LinkIconImage}" Width="25" Height="25" Stretch="Uniform"
+                                        <Image Source="{DynamicResource LinkIconImage}" Width="21" Height="21" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
@@ -841,7 +841,7 @@ Remove-TamgaLegacyFonts
                                     ToolTip="Uygulamayı bilgisayardan kaldır"/>
                             <Button x:Name="AppDetailWebsiteButton" Grid.Column="1" Background="#24313D" Foreground="#9EDBF3" HorizontalAlignment="Left"
                                     ToolTip="Uygulamanın resmî sitesini aç">
-                                <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,7,0" RenderOptions.BitmapScalingMode="HighQuality"/><TextBlock Text="Resmî site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,7,0" RenderOptions.BitmapScalingMode="HighQuality"/><TextBlock Text="Resmî site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
                             </Button>
                             <Button x:Name="AppDetailPrimaryButton" Grid.Column="2" Content="Kurulum için seç  →" Background="#0EA5E9" Foreground="White" MinWidth="145"/>
                         </Grid>
@@ -994,7 +994,7 @@ Remove-TamgaLegacyFonts
                                     </Border>
                                     <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
                                         <Button x:Name="FailureWebsiteButton" Background="#24313D" Foreground="#9EDBF3" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding HasWebsite}">
-                                            <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,6,0"/><TextBlock Text="Site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
+                                            <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0"/><TextBlock Text="Site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
                                         </Button>
                                         <Button x:Name="FailureInteractiveButton" Content="Etkileşimli" Background="#574422" Foreground="#FFD58A" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding CanInteractive}"/>
                                         <Button x:Name="FailureRetryButton" Content="Tekrar dene  →" Background="#0EA5E9" Foreground="White" Padding="11,7"/>
