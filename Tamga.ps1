@@ -661,7 +661,7 @@ Remove-TamgaLegacyFonts
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="12,7,11,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="34"/><ColumnDefinition Width="34"/><ColumnDefinition Width="56"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="56"/><ColumnDefinition Width="56"/><ColumnDefinition Width="56"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
@@ -681,16 +681,17 @@ Remove-TamgaLegacyFonts
                                             VerticalAlignment="Center" ToolTip="{Binding StatusDetail}">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
-                                    <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
+                                    <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" Width="54" Height="54" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="28" Height="28" Stretch="Uniform"
+                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="50" Height="50" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
+                                            Width="54" Height="54"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource LinkIconImage}" Width="28" Height="28" Stretch="Uniform"
+                                        <Image Source="{DynamicResource LinkIconImage}" Width="50" Height="50" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
