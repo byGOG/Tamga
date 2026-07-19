@@ -683,8 +683,9 @@ Remove-TamgaLegacyFonts
                                     </Border>
                                     <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="25" Height="25" Stretch="Uniform"
+                                               RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
@@ -1428,7 +1429,10 @@ if ($brandImage) {
 $wingetReadyImage = Import-TamgaBrandImage -FileName 'winget-ready.png'
 if ($wingetReadyImage) { $controls.WingetReadyIcon.Source = $wingetReadyImage }
 $aboutNavImage = Import-TamgaBrandImage -FileName 'about-icon.png'
-if ($aboutNavImage) { $controls.AboutNavIcon.Source = $aboutNavImage }
+if ($aboutNavImage) {
+    $window.Resources['AboutInfoIcon'] = $aboutNavImage
+    $controls.AboutNavIcon.Source = $aboutNavImage
+}
 $securityCenterImage = Import-TamgaBrandImage -FileName 'security-center-icon.png'
 if ($securityCenterImage) {
     $controls.SecurityNavIcon.Source = $securityCenterImage
