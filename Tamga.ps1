@@ -683,14 +683,14 @@ Remove-TamgaLegacyFonts
                                     </Border>
                                     <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="21" Height="21" Stretch="Uniform"
+                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="28" Height="28" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource LinkIconImage}" Width="21" Height="21" Stretch="Uniform"
+                                        <Image Source="{DynamicResource LinkIconImage}" Width="28" Height="28" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
