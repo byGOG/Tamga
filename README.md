@@ -110,7 +110,21 @@ Ardından `PowerHub.bat` dosyasına çift tıklayın. Terminalden başlatmak iç
 powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
 ```
 
-Proje dosyalarına ihtiyaç duymadan internet üzerinden en güncel sürümü çalıştırmak için `PowerHub-Online.bat` dosyasını kullanabilirsiniz.
+Proje dosyalarına ihtiyaç duymadan internet üzerinden en güncel sürümü çalıştırmak için
+[PowerHub-Online.bat dosyasını doğrudan indirin](https://bygog.github.io/PowerHub/PowerHub-Online.bat).
+GitHub dosya görüntüleme sayfasını `.bat` olarak kaydetmeyin; bu işlem BAT yerine HTML indirir.
+
+PowerShell ile doğrulanmış doğrudan indirme:
+
+```powershell
+curl.exe -L "https://bygog.github.io/PowerHub/PowerHub-Online.bat" -o "$HOME\Downloads\PowerHub-Online.bat"
+```
+
+Ardından:
+
+```powershell
+& "$HOME\Downloads\PowerHub-Online.bat"
+```
 
 ### Gereksinimler
 
