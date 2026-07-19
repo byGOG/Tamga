@@ -459,7 +459,7 @@ Remove-TamgaLegacyFonts
                         ToolTip="Tamga bilgilerini ve bağlantılarını göster" AutomationProperties.Name="Tamga hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="AboutNavIcon" Width="44" Height="44" Stretch="Uniform"
+                        <Image x:Name="AboutNavIcon" Width="40" Height="40" Stretch="Uniform"
                                RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
@@ -683,7 +683,7 @@ Remove-TamgaLegacyFonts
                                     </Border>
                                     <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="25" Height="25" Stretch="Uniform"
+                                        <Image Source="{DynamicResource AboutInfoIcon}" Width="26" Height="26" Stretch="Uniform"
                                                RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
