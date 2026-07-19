@@ -1336,10 +1336,15 @@ Remove-TamgaLegacyFonts
                             <Grid Margin="24,0">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <Border Width="70" Height="70" CornerRadius="18" Background="#172B3A" BorderBrush="#3C7088" BorderThickness="1">
+                                    <Border x:Name="AboutBrandLogoImage" Width="70" Height="70" CornerRadius="20" BorderBrush="#55C7F2" BorderThickness="1">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#087DB8" Offset="0"/><GradientStop Color="#2858C7" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
                                         <Border.Effect><DropShadowEffect Color="#22D3EE" BlurRadius="18" ShadowDepth="0" Opacity="0.22"/></Border.Effect>
-                                        <Image x:Name="AboutBrandLogoImage" Width="62" Height="62" Stretch="Uniform"
-                                               RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
+                                        <TextBlock Text="T" FontFamily="Segoe UI Variable Display, Segoe UI" FontSize="37" FontWeight="Bold"
+                                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="TAMGA  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
@@ -1441,7 +1446,6 @@ function Import-TamgaBrandImage {
 
 $brandImage = Import-TamgaBrandImage -FileName 'tamga-logo.png'
 if ($brandImage) {
-    $controls.AboutBrandLogoImage.Source = $brandImage
     $brandIcon = Import-TamgaBrandImage -FileName 'tamga-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
