@@ -395,15 +395,8 @@ Remove-TamgaLegacyFonts
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Border x:Name="BrandLogoImage" Width="48" Height="48" CornerRadius="14" BorderBrush="#4AAEE8" BorderThickness="1">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#087DB8" Offset="0"/><GradientStop Color="#2858C7" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <TextBlock Text="T" FontFamily="Segoe UI Variable Display, Segoe UI" FontSize="25" FontWeight="Bold"
-                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <Image x:Name="BrandLogoImage" Width="48" Height="48" Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="Tamga" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="18"/>
                         <TextBlock Text="Uygulama merkezi" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,2,0,0"/>
@@ -1336,16 +1329,10 @@ Remove-TamgaLegacyFonts
                             <Grid Margin="24,0">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <Border x:Name="AboutBrandLogoImage" Width="70" Height="70" CornerRadius="20" BorderBrush="#55C7F2" BorderThickness="1">
-                                        <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                <GradientStop Color="#087DB8" Offset="0"/><GradientStop Color="#2858C7" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-                                        <Border.Effect><DropShadowEffect Color="#22D3EE" BlurRadius="18" ShadowDepth="0" Opacity="0.22"/></Border.Effect>
-                                        <TextBlock Text="T" FontFamily="Segoe UI Variable Display, Segoe UI" FontSize="37" FontWeight="Bold"
-                                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
+                                    <Image x:Name="AboutBrandLogoImage" Width="70" Height="70" Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True">
+                                        <Image.Effect><DropShadowEffect Color="#22D3EE" BlurRadius="18" ShadowDepth="0" Opacity="0.22"/></Image.Effect>
+                                    </Image>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="TAMGA  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
                                         <TextBlock Text="Tamga" Foreground="White" FontSize="27" FontWeight="SemiBold" Margin="0,4,0,0"/>
@@ -1446,6 +1433,8 @@ function Import-TamgaBrandImage {
 
 $brandImage = Import-TamgaBrandImage -FileName 'tamga-logo.png'
 if ($brandImage) {
+    $controls.BrandLogoImage.Source = $brandImage
+    $controls.AboutBrandLogoImage.Source = $brandImage
     $brandIcon = Import-TamgaBrandImage -FileName 'tamga-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
