@@ -395,8 +395,15 @@ Remove-TamgaLegacyFonts
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
-                    <Image x:Name="BrandLogoImage" Width="48" Height="48" Stretch="Uniform"
-                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
+                    <Border x:Name="BrandLogoImage" Width="48" Height="48" CornerRadius="14" BorderBrush="#4AAEE8" BorderThickness="1">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#087DB8" Offset="0"/><GradientStop Color="#2858C7" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <TextBlock Text="T" FontFamily="Segoe UI Variable Display, Segoe UI" FontSize="25" FontWeight="Bold"
+                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
                     <StackPanel Margin="11,0,0,0">
                         <TextBlock Text="Tamga" Foreground="{DynamicResource Ink}" FontWeight="SemiBold" FontSize="18"/>
                         <TextBlock Text="Uygulama merkezi" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,2,0,0"/>
@@ -416,8 +423,10 @@ Remove-TamgaLegacyFonts
                         ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="UpdateNavIcon" Width="44" Height="44" Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="UpdateNavIcon" Width="40" Height="40" CornerRadius="12" Background="#4B3715" BorderBrush="#8A6423" BorderThickness="1">
+                            <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#FFD166"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güncelleme Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
                             <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#C8AC7F" FontSize="10" Margin="0,3,0,0"/>
@@ -430,8 +439,10 @@ Remove-TamgaLegacyFonts
                         ToolTip="Sistem ve Tamga güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="SecurityNavIcon" Width="44" Height="44" Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="SecurityNavIcon" Width="40" Height="40" CornerRadius="12" Background="#123D31" BorderBrush="#25745A" BorderThickness="1">
+                            <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#69E0AE"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güvenlik Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
                             <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="10" Margin="0,3,0,0"/>
@@ -459,8 +470,10 @@ Remove-TamgaLegacyFonts
                         ToolTip="Tamga bilgilerini ve bağlantılarını göster" AutomationProperties.Name="Tamga hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Image x:Name="AboutNavIcon" Width="40" Height="40" Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border x:Name="AboutNavIcon" Width="40" Height="40" CornerRadius="12" Background="#123B55" BorderBrush="#2576A4" BorderThickness="1">
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#72CFF4"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
                             <TextBlock Text="Tamga • byGOG" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,3,0,0"/>
@@ -482,8 +495,8 @@ Remove-TamgaLegacyFonts
                         </Grid.ColumnDefinitions>
                         <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="44" Height="44" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="14" VerticalAlignment="Center">
                             <Grid>
-                                <Image x:Name="WingetReadyIcon" Width="44" Height="44" Stretch="Uniform"
-                                       RenderOptions.BitmapScalingMode="HighQuality" Visibility="Collapsed"/>
+                                <TextBlock x:Name="WingetReadyIcon" Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                           FontSize="21" Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
                                 <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="16" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
@@ -1028,8 +1041,9 @@ Remove-TamgaLegacyFonts
                     <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#E4A23A" Offset="0"/><GradientStop Color="#38BDF8" Offset="1"/></LinearGradientBrush></Border.Background>
                     </Border>
-                    <Image x:Name="UpdateHeaderIcon" Width="46" Height="46" Stretch="Uniform"
-                           RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border x:Name="UpdateHeaderIcon" Width="46" Height="46" CornerRadius="13" Background="#4B3715" BorderBrush="#8A6423" BorderThickness="1">
+                        <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="23" Foreground="#FFD166" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="TAMGA  /  WINGET" FontSize="9.5" FontWeight="Bold" Foreground="#E9B55D"/>
                         <TextBlock Text="Güncelleme Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
@@ -1124,8 +1138,9 @@ Remove-TamgaLegacyFonts
                     <Border Grid.ColumnSpan="3" Height="2" VerticalAlignment="Top" Margin="-18,-15,-18,0">
                         <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#39C77A" Offset="0"/><GradientStop Color="#38BDF8" Offset="0.58"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
                     </Border>
-                    <Image x:Name="SecurityHeaderIcon" Width="46" Height="46" Stretch="Uniform"
-                           RenderOptions.BitmapScalingMode="HighQuality" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border x:Name="SecurityHeaderIcon" Width="46" Height="46" CornerRadius="13" Background="#123D31" BorderBrush="#25745A" BorderThickness="1">
+                        <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="23" Foreground="#69E0AE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="TAMGA  /  GÜVENLİK" FontSize="9.5" FontWeight="Bold" Foreground="#67D69B"/>
                         <TextBlock Text="Güvenlik Merkezi" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource Ink}" Margin="0,3,0,0"/>
@@ -1426,32 +1441,18 @@ function Import-TamgaBrandImage {
 
 $brandImage = Import-TamgaBrandImage -FileName 'tamga-logo.png'
 if ($brandImage) {
-    $controls.BrandLogoImage.Source = $brandImage
     $controls.AboutBrandLogoImage.Source = $brandImage
     $brandIcon = Import-TamgaBrandImage -FileName 'tamga-logo.ico'
     $window.Icon = if ($brandIcon) { $brandIcon } else { $brandImage }
 }
-$wingetReadyImage = Import-TamgaBrandImage -FileName 'winget-ready.png'
-if ($wingetReadyImage) { $controls.WingetReadyIcon.Source = $wingetReadyImage }
 $aboutNavImage = Import-TamgaBrandImage -FileName 'about-icon.png'
 if ($aboutNavImage) {
     $window.Resources['AboutInfoIcon'] = $aboutNavImage
-    $controls.AboutNavIcon.Source = $aboutNavImage
 }
 $linkIconImage = Import-TamgaBrandImage -FileName 'link-icon.png'
 if ($linkIconImage) { $window.Resources['LinkIconImage'] = $linkIconImage }
 $uninstallIconImage = Import-TamgaBrandImage -FileName 'uninstall-icon.png'
 if ($uninstallIconImage) { $window.Resources['UninstallIconImage'] = $uninstallIconImage }
-$securityCenterImage = Import-TamgaBrandImage -FileName 'security-center-icon.png'
-if ($securityCenterImage) {
-    $controls.SecurityNavIcon.Source = $securityCenterImage
-    $controls.SecurityHeaderIcon.Source = $securityCenterImage
-}
-$updateCenterImage = Import-TamgaBrandImage -FileName 'update-center-icon.png'
-if ($updateCenterImage) {
-    $controls.UpdateNavIcon.Source = $updateCenterImage
-    $controls.UpdateHeaderIcon.Source = $updateCenterImage
-}
 
 $script:focusHistory = [Collections.Stack]::new()
 $script:focusRegionIndex = -1
@@ -4020,8 +4021,8 @@ function Set-WingetCardState {
             $controls.WingetIconBox.Background = [Windows.Media.Brushes]::Transparent
             $controls.WingetIconBox.BorderBrush = [Windows.Media.Brushes]::Transparent
             $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(0)
-            $controls.WingetReadyIcon.Visibility = if ($controls.WingetReadyIcon.Source) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
-            $controls.WingetIcon.Visibility = if ($controls.WingetReadyIcon.Source) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }
+            $controls.WingetReadyIcon.Visibility = [Windows.Visibility]::Visible
+            $controls.WingetIcon.Visibility = [Windows.Visibility]::Collapsed
             $controls.WingetIcon.Text = '✓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#6EE7B7'
             $controls.WingetStatus.Text = 'WinGet'
