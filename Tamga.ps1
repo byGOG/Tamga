@@ -482,18 +482,18 @@ Remove-TamgaLegacyFonts
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="7" Height="58" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="7" Height="62" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
                         CornerRadius="10" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir"
                         Focusable="True" AutomationProperties.Name="WinGet paket yöneticisi durumu"
                         AutomationProperties.HelpText="WinGet eksikse Enter veya Boşluk tuşuyla kurulumu başlatın">
-                    <Grid Width="183" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Grid Width="183" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions><RowDefinition Height="26"/><RowDefinition Height="20"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="48"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="44" Height="44" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" CornerRadius="14" VerticalAlignment="Center">
+                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="40" Height="40" Background="#123D31" BorderBrush="#25745A" BorderThickness="1" CornerRadius="12" VerticalAlignment="Center">
                             <Grid>
                                 <TextBlock x:Name="WingetReadyIcon" Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                            FontSize="21" Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -502,9 +502,9 @@ Remove-TamgaLegacyFonts
                             </Grid>
                         </Border>
                         <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="{DynamicResource Ink}"
-                                   FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,5,0"/>
+                                   FontSize="12" FontWeight="SemiBold" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis" Margin="2,0,5,2"/>
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
-                                   Foreground="{DynamicResource Muted}" FontSize="10" Margin="2,3,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                   Foreground="{DynamicResource Muted}" FontSize="10" Margin="2,1,0,0" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#123A2A" BorderBrush="#236747" BorderThickness="1"
                                 CornerRadius="12" Padding="6,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -4018,9 +4018,9 @@ function Set-WingetCardState {
             $script:wingetReady = $true
             $controls.WingetCard.Cursor = [Windows.Input.Cursors]::Arrow
             $controls.WingetCard.BorderBrush = New-ColorBrush '#46515A'
-            $controls.WingetIconBox.Background = [Windows.Media.Brushes]::Transparent
-            $controls.WingetIconBox.BorderBrush = [Windows.Media.Brushes]::Transparent
-            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(0)
+            $controls.WingetIconBox.Background = New-ColorBrush '#123D31'
+            $controls.WingetIconBox.BorderBrush = New-ColorBrush '#25745A'
+            $controls.WingetIconBox.BorderThickness = [Windows.Thickness]::new(1)
             $controls.WingetReadyIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Visibility = [Windows.Visibility]::Collapsed
             $controls.WingetIcon.Text = '✓'
