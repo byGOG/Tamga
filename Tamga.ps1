@@ -322,7 +322,7 @@ Remove-TamgaLegacyFonts
             <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource SubtleBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="9"/>
+            <Setter Property="Padding" Value="7"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -419,7 +419,7 @@ Remove-TamgaLegacyFonts
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
                         ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -435,7 +435,7 @@ Remove-TamgaLegacyFonts
                     </Grid>
                 </Button>
 
-                <Button x:Name="SecurityCenterButton" Grid.Row="4" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="SecurityCenterButton" Grid.Row="4" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="Sistem ve Tamga güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -466,7 +466,7 @@ Remove-TamgaLegacyFonts
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="6" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="AboutButton" Grid.Row="6" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="Tamga bilgilerini ve bağlantılarını göster" AutomationProperties.Name="Tamga hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
