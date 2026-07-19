@@ -690,8 +690,9 @@ Remove-TamgaLegacyFonts
                                     <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="17"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Image Source="{DynamicResource LinkIconImage}" Width="25" Height="25" Stretch="Uniform"
+                                               RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <Button x:Name="UninstallButton" Grid.Column="5" Style="{StaticResource IconButton}"
                                             Background="{DynamicResource DangerBg}" BorderBrush="{DynamicResource DangerBorder}"
@@ -838,8 +839,10 @@ Remove-TamgaLegacyFonts
                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                             <Button x:Name="AppDetailRemoveButton" Content="Kaldır" Background="#543136" Foreground="#FFAAAA" Visibility="Collapsed" Margin="0,0,8,0"
                                     ToolTip="Uygulamayı bilgisayardan kaldır"/>
-                            <Button x:Name="AppDetailWebsiteButton" Grid.Column="1" Content="Resmî site  ↗" Background="#24313D" Foreground="#9EDBF3" HorizontalAlignment="Left"
-                                    ToolTip="Uygulamanın resmî sitesini aç"/>
+                            <Button x:Name="AppDetailWebsiteButton" Grid.Column="1" Background="#24313D" Foreground="#9EDBF3" HorizontalAlignment="Left"
+                                    ToolTip="Uygulamanın resmî sitesini aç">
+                                <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,7,0" RenderOptions.BitmapScalingMode="HighQuality"/><TextBlock Text="Resmî site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
+                            </Button>
                             <Button x:Name="AppDetailPrimaryButton" Grid.Column="2" Content="Kurulum için seç  →" Background="#0EA5E9" Foreground="White" MinWidth="145"/>
                         </Grid>
                     </Border>
@@ -990,7 +993,9 @@ Remove-TamgaLegacyFonts
                                         <TextBlock Text="{Binding CodeLabel}" Foreground="#FFAAAA" FontSize="9" FontWeight="Bold"/>
                                     </Border>
                                     <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
-                                        <Button x:Name="FailureWebsiteButton" Content="Site  ↗" Background="#24313D" Foreground="#9EDBF3" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding HasWebsite}"/>
+                                        <Button x:Name="FailureWebsiteButton" Background="#24313D" Foreground="#9EDBF3" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding HasWebsite}">
+                                            <StackPanel Orientation="Horizontal"><Image Source="{DynamicResource LinkIconImage}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,6,0"/><TextBlock Text="Site" Foreground="#BCEAFF" VerticalAlignment="Center"/></StackPanel>
+                                        </Button>
                                         <Button x:Name="FailureInteractiveButton" Content="Etkileşimli" Background="#574422" Foreground="#FFD58A" Margin="0,0,7,0" Padding="11,7" IsEnabled="{Binding CanInteractive}"/>
                                         <Button x:Name="FailureRetryButton" Content="Tekrar dene  →" Background="#0EA5E9" Foreground="White" Padding="11,7"/>
                                     </StackPanel>
@@ -1433,6 +1438,8 @@ if ($aboutNavImage) {
     $window.Resources['AboutInfoIcon'] = $aboutNavImage
     $controls.AboutNavIcon.Source = $aboutNavImage
 }
+$linkIconImage = Import-TamgaBrandImage -FileName 'link-icon.png'
+if ($linkIconImage) { $window.Resources['LinkIconImage'] = $linkIconImage }
 $securityCenterImage = Import-TamgaBrandImage -FileName 'security-center-icon.png'
 if ($securityCenterImage) {
     $controls.SecurityNavIcon.Source = $securityCenterImage
