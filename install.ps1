@@ -1,16 +1,17 @@
-# PowerHub bootstrapper
-# Usage: irm https://bygog.github.io/PowerHub/install.ps1 | iex
+﻿# Tamga bootstrapper
+# Usage: irm https://bygog.github.io/Tamga/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
 
-$baseUrl = 'https://bygog.github.io/PowerHub'
-$installDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
-$applicationScript = Join-Path $installDirectory 'PowerHub.ps1'
-$applicationLauncher = Join-Path $installDirectory 'PowerHub.bat'
+$baseUrl = 'https://bygog.github.io/Tamga'
+$installDirectory = Join-Path $env:LOCALAPPDATA 'Tamga'
+$legacyInstallDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
+$applicationScript = Join-Path $installDirectory 'Tamga.ps1'
+$applicationLauncher = Join-Path $installDirectory 'Tamga.bat'
 $applicationCatalog = Join-Path $installDirectory 'catalog.json'
 $applicationAssets = Join-Path $installDirectory 'assets'
-$applicationLogo = Join-Path $applicationAssets 'powerhub-logo.png'
-$applicationIcon = Join-Path $applicationAssets 'powerhub-logo.ico'
+$applicationLogo = Join-Path $applicationAssets 'tamga-logo.png'
+$applicationIcon = Join-Path $applicationAssets 'tamga-logo.ico'
 $applicationPowerShellLogo = Join-Path $applicationAssets 'powershell-logo.png'
 $applicationHwinfoLogo = Join-Path $applicationAssets 'hwinfo-logo.png'
 $applicationCpuZLogo = Join-Path $applicationAssets 'cpuz-logo.png'
@@ -24,6 +25,15 @@ $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationSecurityCenterIcon = Join-Path $applicationAssets 'security-center-icon.png'
 $applicationUpdateCenterIcon = Join-Path $applicationAssets 'update-center-icon.png'
 
+if ((Test-Path -LiteralPath $legacyInstallDirectory) -and -not (Test-Path -LiteralPath $installDirectory)) {
+    try {
+        Move-Item -LiteralPath $legacyInstallDirectory -Destination $installDirectory -Force
+        Write-Host 'Eski PowerHub kurulumu Tamga dizinine taşındı.' -ForegroundColor DarkCyan
+    } catch {
+        Write-Host ('Eski PowerHub kurulumu taşınamadı; Tamga temiz kurulacak: {0}' -f $_.Exception.Message) -ForegroundColor Yellow
+    }
+}
+
 if (-not (Test-Path -LiteralPath $installDirectory)) {
     New-Item -ItemType Directory -Path $installDirectory -Force | Out-Null
 }
@@ -32,11 +42,11 @@ if (-not (Test-Path -LiteralPath $applicationAssets)) {
 }
 
 $cacheBuster = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-$scriptDownloadUrl = '{0}/PowerHub.ps1?v={1}' -f $baseUrl, $cacheBuster
-$launcherDownloadUrl = '{0}/PowerHub.bat?v={1}' -f $baseUrl, $cacheBuster
+$scriptDownloadUrl = '{0}/Tamga.ps1?v={1}' -f $baseUrl, $cacheBuster
+$launcherDownloadUrl = '{0}/Tamga.bat?v={1}' -f $baseUrl, $cacheBuster
 $catalogDownloadUrl = '{0}/catalog.json?v={1}' -f $baseUrl, $cacheBuster
-$logoDownloadUrl = '{0}/assets/powerhub-logo.png?v={1}' -f $baseUrl, $cacheBuster
-$iconDownloadUrl = '{0}/assets/powerhub-logo.ico?v={1}' -f $baseUrl, $cacheBuster
+$logoDownloadUrl = '{0}/assets/tamga-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$iconDownloadUrl = '{0}/assets/tamga-logo.ico?v={1}' -f $baseUrl, $cacheBuster
 $powerShellLogoDownloadUrl = '{0}/assets/powershell-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $hwinfoLogoDownloadUrl = '{0}/assets/hwinfo-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $cpuZLogoDownloadUrl = '{0}/assets/cpuz-logo.png?v={1}' -f $baseUrl, $cacheBuster
@@ -49,11 +59,11 @@ $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $securityCenterIconDownloadUrl = '{0}/assets/security-center-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $updateCenterIconDownloadUrl = '{0}/assets/update-center-icon.png?v={1}' -f $baseUrl, $cacheBuster
-$temporaryScript = Join-Path $installDirectory 'PowerHub.ps1.download'
-$temporaryLauncher = Join-Path $installDirectory 'PowerHub.bat.download'
+$temporaryScript = Join-Path $installDirectory 'Tamga.ps1.download'
+$temporaryLauncher = Join-Path $installDirectory 'Tamga.bat.download'
 $temporaryCatalog = Join-Path $installDirectory 'catalog.json.download'
-$temporaryLogo = Join-Path $installDirectory 'powerhub-logo.png.download'
-$temporaryIcon = Join-Path $installDirectory 'powerhub-logo.ico.download'
+$temporaryLogo = Join-Path $installDirectory 'tamga-logo.png.download'
+$temporaryIcon = Join-Path $installDirectory 'tamga-logo.ico.download'
 $temporaryPowerShellLogo = Join-Path $installDirectory 'powershell-logo.png.download'
 $temporaryHwinfoLogo = Join-Path $installDirectory 'hwinfo-logo.png.download'
 $temporaryCpuZLogo = Join-Path $installDirectory 'cpuz-logo.png.download'
@@ -88,7 +98,7 @@ try {
 
     $catalog = Get-Content -LiteralPath $temporaryCatalog -Raw -Encoding UTF8 | ConvertFrom-Json
     if ($catalog.SchemaVersion -ne 1 -or @($catalog.Applications).Count -eq 0) {
-        throw 'İndirilen PowerHub kataloğu geçerli değil.'
+        throw 'İndirilen Tamga kataloğu geçerli değil.'
     }
 
     Move-Item -LiteralPath $temporaryScript -Destination $applicationScript -Force
@@ -124,4 +134,4 @@ Start-Process -FilePath $windowsPowerShell -ArgumentList @(
     '-File', ('"{0}"' -f $applicationScript)
 )
 
-Write-Host 'PowerHub started.' -ForegroundColor Cyan
+Write-Host 'Tamga started.' -ForegroundColor Cyan

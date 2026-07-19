@@ -1,18 +1,18 @@
 <div align="center">
 
-<img src="assets/powerhub-logo.png" alt="PowerHub logosu" width="120" height="120">
+<img src="assets/tamga-logo.png" alt="Tamga logosu" width="120" height="120">
 
-# PowerHub
+# Tamga
 
 **Windows uygulamalarını keşfet, denetle, toplu kur ve güncel tut.**
 
 [![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 [![PowerShell](https://img.shields.io/badge/PowerShell-5.1%20%7C%207-5391FE?logo=powershell&logoColor=white)](https://learn.microsoft.com/powershell/)
 [![WinGet](https://img.shields.io/badge/WinGet-destekli-00A4EF)](https://learn.microsoft.com/windows/package-manager/winget/)
-[![Son değişiklik](https://img.shields.io/github/last-commit/byGOG/PowerHub?label=son%20değişiklik&color=18A7E0)](https://github.com/byGOG/PowerHub/commits/main)
-[![Depo boyutu](https://img.shields.io/github/repo-size/byGOG/PowerHub?label=depo%20boyutu&color=765DE8)](https://github.com/byGOG/PowerHub)
+[![Son değişiklik](https://img.shields.io/github/last-commit/byGOG/Tamga?label=son%20değişiklik&color=18A7E0)](https://github.com/byGOG/Tamga/commits/main)
+[![Depo boyutu](https://img.shields.io/github/repo-size/byGOG/Tamga?label=depo%20boyutu&color=765DE8)](https://github.com/byGOG/Tamga)
 
-[İnternet sitesi](https://bygog.github.io/) · [Sorun bildir](https://github.com/byGOG/PowerHub/issues)
+[İnternet sitesi](https://bygog.github.io/) · [Sorun bildir](https://github.com/byGOG/Tamga/issues)
 
 </div>
 
@@ -20,24 +20,24 @@
 
 ## Genel bakış
 
-PowerHub, Windows uygulamalarını tek merkezden yönetmek için geliştirilmiş açık kaynak bir PowerShell/WPF arayüzüdür. WinGet kataloğunu modern bir masaüstü deneyimiyle birleştirir; uygulama keşfi, kurulum, sistem taraması ve güncelleme işlemlerini sadeleştirir.
+Tamga, Windows uygulamalarını tek merkezden yönetmek için geliştirilmiş açık kaynak bir PowerShell/WPF arayüzüdür. WinGet kataloğunu modern bir masaüstü deneyimiyle birleştirir; uygulama keşfi, kurulum, sistem taraması ve güncelleme işlemlerini sadeleştirir.
 
 ### Hızlı başlangıç
 
 PowerShell'i açın ve şu komutu çalıştırın:
 
 ```powershell
-irm https://bygog.github.io/PowerHub/install.ps1 | iex
+irm https://bygog.github.io/Tamga/install.ps1 | iex
 ```
 
-Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAPPDATA%\PowerHub` dizinine indirir, kataloğu doğrular ve uygulamayı STA modunda açar. Sisteminizde WinGet yoksa PowerHub durum kartı üzerinden Microsoft Mağazası gerektirmeyen kurulumu başlatabilir.
+Başlatıcı en güncel `Tamga.ps1` ve `catalog.json` dosyalarını `%LOCALAPPDATA%\Tamga` dizinine indirir, kataloğu doğrular ve uygulamayı STA modunda açar. Sisteminizde WinGet yoksa Tamga durum kartı üzerinden Microsoft Mağazası gerektirmeyen kurulumu başlatabilir.
 
 > [!IMPORTANT]
 > İnternetten indirilen betikleri çalıştırmadan önce incelemek iyi bir güvenlik alışkanlığıdır. Aşağıdaki [Güvenlik](#güvenlik) bölümüne bakın.
 
 ### Öne çıkanlar
 
-| Alan | PowerHub ne sunuyor? |
+| Alan | Tamga ne sunuyor? |
 | --- | --- |
 | **Fluent Aurora arayüzü** | Windows 11'in Mica uyumlu katmanları, yumuşak yükselti, modern köşe geometrisi ve sakin camgöbeği vurgularıyla net ve erişilebilir koyu WPF arayüzü |
 | **Uygulama kataloğu** | 21 kategoride 132 uygulama ve güvenilir internet kaynağı |
@@ -53,7 +53,7 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 
 ### Nasıl çalışır?
 
-1. PowerHub açılışta WinGet durumunu ve kurulu paketleri denetler.
+1. Tamga açılışta WinGet durumunu ve kurulu paketleri denetler.
 2. Arama veya kategori menüsüyle istediğiniz uygulamaya odaklanırsınız.
 3. Uygulamaları seçer, resmî sitelerini açar, toplu kurulum başlatır veya kurulu paketleri karttan kaldırırsınız.
 4. Güncelleme Merkezi, mevcut ve yeni sürümleri karşılaştırarak seçili paketleri yükseltir.
@@ -74,20 +74,20 @@ Başlatıcı en güncel `PowerHub.ps1` ve `catalog.json` dosyalarını `%LOCALAP
 | <kbd>F5</kbd> | Geçerli sistem veya güvenlik taramasını yenile |
 | <kbd>Esc</kbd> | Aramayı veya açık pencereyi kapat |
 
-PowerHub ayrıca görünür klavye odak halkaları, modal odak kilidi ve geri dönüşü, ekran okuyucu etiketleri ve canlı durum duyuruları sunar.
+Tamga ayrıca görünür klavye odak halkaları, modal odak kilidi ve geri dönüşü, ekran okuyucu etiketleri ve canlı durum duyuruları sunar.
 
 ### Kurulum seçenekleri
 
 #### Tek komutla
 
 ```powershell
-irm https://bygog.github.io/PowerHub/install.ps1 | iex
+irm https://bygog.github.io/Tamga/install.ps1 | iex
 ```
 
 #### Önce inceleyerek
 
 ```powershell
-$installer = irm https://bygog.github.io/PowerHub/install.ps1
+$installer = irm https://bygog.github.io/Tamga/install.ps1
 $installer
 ```
 
@@ -100,30 +100,30 @@ $installer | iex
 #### Elle çalıştırma
 
 ```powershell
-git clone https://github.com/byGOG/PowerHub.git
-cd PowerHub
+git clone https://github.com/byGOG/Tamga.git
+cd Tamga
 ```
 
-Ardından `PowerHub.bat` dosyasına çift tıklayın. Terminalden başlatmak için:
+Ardından `Tamga.bat` dosyasına çift tıklayın. Terminalden başlatmak için:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\PowerHub.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .\Tamga.ps1
 ```
 
 Proje dosyalarına ihtiyaç duymadan internet üzerinden en güncel sürümü çalıştırmak için
-[PowerHub-Online.bat dosyasını doğrudan indirin](https://bygog.github.io/PowerHub/PowerHub-Online.bat).
+[Tamga-Online.bat dosyasını doğrudan indirin](https://bygog.github.io/Tamga/Tamga-Online.bat).
 GitHub dosya görüntüleme sayfasını `.bat` olarak kaydetmeyin; bu işlem BAT yerine HTML indirir.
 
 PowerShell ile doğrulanmış doğrudan indirme:
 
 ```powershell
-curl.exe -L "https://bygog.github.io/PowerHub/PowerHub-Online.bat" -o "$HOME\Downloads\PowerHub-Online.bat"
+curl.exe -L "https://bygog.github.io/Tamga/Tamga-Online.bat" -o "$HOME\Downloads\Tamga-Online.bat"
 ```
 
 Ardından:
 
 ```powershell
-& "$HOME\Downloads\PowerHub-Online.bat"
+& "$HOME\Downloads\Tamga-Online.bat"
 ```
 
 ### Gereksinimler
@@ -132,29 +132,29 @@ Ardından:
 - Windows PowerShell 5.1 ya da PowerShell 7
 - İnternet bağlantısı
 - Paket kurulumları için yönetici izni gerekebilir
-- WinGet önerilir; eksikse PowerHub içinden Store bağımsız kurulum yapılabilir
+- WinGet önerilir; eksikse Tamga içinden Store bağımsız kurulum yapılabilir
 
 ### Güvenlik
 
 - Kurulum komutları paket kimliğini tam eşleştiren `--exact` seçeneğini kullanır.
 - Paket ve kaynak sözleşmeleri WinGet üzerinden açık biçimde kabul edilir.
 - WinGet bağımlılıkları resmî Microsoft/GitHub kaynaklarından alınır ve desteklenen dosyalarda SHA-256 doğrulaması uygulanır.
-- PowerHub kalıcı betik çalıştırma ilkesi değişikliği yapmaz; başlatıcı yalnızca kendi süreç kapsamını kullanır.
+- Tamga kalıcı betik çalıştırma ilkesi değişikliği yapmaz; başlatıcı yalnızca kendi süreç kapsamını kullanır.
 - Kurulum günlükleri terminalde görünür; başarısız paketler ayrıca raporlanır.
 
 Ana uygulama dosyasını doğrudan inceleyebilirsiniz:
 
 ```text
-https://bygog.github.io/PowerHub/PowerHub.ps1
+https://bygog.github.io/Tamga/Tamga.ps1
 ```
 
 ### Proje yapısı
 
 ```text
-PowerHub/
-├─ PowerHub-Online.bat   # İnternetten güncel sürümü indirip çalıştırır
-├─ PowerHub.bat          # Çift tıklamayla güvenli başlatıcı
-├─ PowerHub.ps1          # WPF arayüzü ve paket işlem motoru
+Tamga/
+├─ Tamga-Online.bat   # İnternetten güncel sürümü indirip çalıştırır
+├─ Tamga.bat          # Çift tıklamayla güvenli başlatıcı
+├─ Tamga.ps1          # WPF arayüzü ve paket işlem motoru
 ├─ catalog.json          # Uygulamalar, kategoriler ve resmî site adresleri
 ├─ install.ps1           # Kodu ve kataloğu doğrulayarak indiren başlatıcı
 ├─ logos.json            # Uygulama logo varlıkları
@@ -164,16 +164,16 @@ PowerHub/
 
 ### Katkıda bulunma
 
-Hata raporu, uygulama önerisi veya geliştirme fikri için [GitHub üzerinden bildirim oluşturabilirsiniz](https://github.com/byGOG/PowerHub/issues). Kataloğa uygulama eklemek veya bir bağlantıyı düzeltmek için yalnızca `catalog.json` dosyasını düzenleyebilirsiniz; `SchemaVersion`, benzersiz uygulama adları ve geçerli kategori adları korunmalıdır. Kod değişikliklerinde mevcut işlevleri ve Windows PowerShell 5.1 uyumluluğunu koruyun.
+Hata raporu, uygulama önerisi veya geliştirme fikri için [GitHub üzerinden bildirim oluşturabilirsiniz](https://github.com/byGOG/Tamga/issues). Kataloğa uygulama eklemek veya bir bağlantıyı düzeltmek için yalnızca `catalog.json` dosyasını düzenleyebilirsiniz; `SchemaVersion`, benzersiz uygulama adları ve geçerli kategori adları korunmalıdır. Kod değişikliklerinde mevcut işlevleri ve Windows PowerShell 5.1 uyumluluğunu koruyun.
 
 ---
 
 <div align="center">
 
-PowerHub, [byGOG](https://bygog.github.io/) tarafından geliştirilmektedir.
+Tamga, [byGOG](https://bygog.github.io/) tarafından geliştirilmektedir.
 
 *Sordum.net topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı.*
 
-[Sordum.net](https://www.sordum.net/) · [GitHub](https://github.com/byGOG/PowerHub) · [İnternet sitesi](https://bygog.github.io/)
+[Sordum.net](https://www.sordum.net/) · [GitHub](https://github.com/byGOG/Tamga) · [İnternet sitesi](https://bygog.github.io/)
 
 </div>
