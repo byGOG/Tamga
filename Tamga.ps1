@@ -215,7 +215,7 @@ $script:tamgaIconPath = @(
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="IconSurface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -1006,16 +1006,24 @@ $script:tamgaIconPath = @(
                                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
                                             AutomationProperties.Name="{Binding Name}" AutomationProperties.HelpText="Paket ayrıntılarını aç">
                                         <Grid>
-                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
-                                            <StackPanel Margin="14,0,12,0" VerticalAlignment="Center">
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
+                                            <Grid Width="38" Height="38" Margin="12,0,4,0" VerticalAlignment="Center">
+                                                <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                                                <Border Opacity="{Binding InitialOpacity}" Width="36" Height="36" CornerRadius="9" Background="#2B3743" BorderBrush="#485B6D" BorderThickness="1">
+                                                    <TextBlock Text="{Binding Initial}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="16"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                            <StackPanel Grid.Column="1" Margin="10,0,12,0" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                                 <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
                                                 <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
                                             </StackPanel>
-                                            <Border Grid.Column="2" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Border Grid.Column="3" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
                                             </Border>
                                         </Grid>
@@ -1916,7 +1924,16 @@ function Set-UpdateCenterPackages {
     param([AllowEmptyString()][string]$UpgradeOutput)
 
     $script:updatePackages.Clear()
-    foreach ($package in @(ConvertFrom-WingetUpgradeOutput -Output $UpgradeOutput)) { $script:updatePackages.Add($package) }
+    foreach ($package in @(ConvertFrom-WingetUpgradeOutput -Output $UpgradeOutput)) {
+        $catalogApp = $apps | Where-Object { -not $_.IsWebResource -and [string]$_.Id -eq [string]$package.Id } | Select-Object -First 1
+        $name = [string]$package.Name
+        $initial = if ($name.Length -gt 0) { $name.Substring(0,1).ToUpperInvariant() } else { '?' }
+        $package | Add-Member -NotePropertyName Logo -NotePropertyValue $(if ($catalogApp) { $catalogApp.Logo } else { $null }) -Force
+        $package | Add-Member -NotePropertyName Initial -NotePropertyValue $(if ($catalogApp) { [string]$catalogApp.Initial } else { $initial }) -Force
+        $package | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue $(if ($catalogApp -and $catalogApp.Logo) { 0.0 } else { 1.0 }) -Force
+        $package | Add-Member -NotePropertyName Color -NotePropertyValue $(if ($catalogApp) { [string]$catalogApp.Color } else { '#FFD58A' }) -Force
+        $script:updatePackages.Add($package)
+    }
     $script:updateScanCompleted = $true
     $controls.UpdateList.Visibility = if ($script:updatePackages.Count -gt 0) { 'Visible' } else { 'Collapsed' }
     $controls.UpdateEmptyState.Visibility = if ($script:updatePackages.Count -eq 0) { 'Visible' } else { 'Collapsed' }
