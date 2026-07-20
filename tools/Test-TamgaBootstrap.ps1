@@ -25,7 +25,7 @@ try {
     [void][Management.Automation.Language.Parser]::ParseFile((Join-Path $target 'Tamga.ps1'), [ref]$tokens, [ref]$errors)
     if ($errors.Count -gt 0) { throw "İndirilen Tamga.ps1 ayrıştırılamadı: $($errors.Message -join '; ')" }
     $downloadedScript = [IO.File]::ReadAllText((Join-Path $target 'Tamga.ps1'), [Text.Encoding]::UTF8)
-    if (-not $downloadedScript.Contains('function Export-TamgaRecipe')) { throw 'İndirilen Tamga sürümünde Reçete özelliği bulunamadı.' }
+    if ($downloadedScript.Contains('Export-TamgaRecipe') -or $downloadedScript.Contains('RecipeButton')) { throw 'İndirilen Tamga sürümünde kaldırılan Reçete özelliği hâlâ bulunuyor.' }
     if ($downloadedScript.Contains('AddFontResourceEx') -or $downloadedScript.Contains('RemoveFontResourceEx')) { throw 'İndirilen Tamga sürümü kullanıcı yazı tiplerine müdahale edebilir.' }
 
     $catalog = Get-Content -LiteralPath (Join-Path $target 'catalog.json') -Raw -Encoding UTF8 | ConvertFrom-Json

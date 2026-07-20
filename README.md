@@ -86,15 +86,6 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 5. **Güncellemeleri yönetin.** Sol alttaki **Güncelleme Merkezi** tüm bekleyen WinGet güncellemelerini listeler.
 6. **Kurulu uygulamayı kaldırın.** Karttaki kırmızı kaldırma düğmesine basın ve onaylayın. Liste işlemden sonra otomatik yenilenir.
 
-### Tamga Reçetesi
-
-Aynı uygulama grubunu başka bir bilgisayarda yeniden seçmek için alt çubuktaki **Reçete** düğmesini kullanın:
-
-- **Seçimi reçete olarak kaydet** seçili WinGet paketlerini taşınabilir bir `.tamga.json` dosyasına yazar.
-- **Reçete aç** dosyadaki paketleri katalogda bulup seçer.
-- Zaten kurulu, katalogdan kaldırılmış veya bu sistemde kullanılamayan kayıtlar güvenle atlanır.
-- Reçete açmak kurulumu kendiliğinden başlatmaz; son onay her zaman kullanıcıdadır.
-
 ### Durum etiketleri
 
 | Etiket | Anlamı |
@@ -110,7 +101,6 @@ Aynı uygulama grubunu başka bir bilgisayarda yeniden seçmek için alt çubukt
 - Windows 10 ve Windows 11 ile uyumlu modern koyu arayüz
 - Akıllı kurulu uygulama ve güncelleme taraması
 - Toplu kurulum, güncelleme ve kaldırma kuyruğu
-- Bilgisayarlar arasında güvenle taşınabilen Tamga Reçeteleri
 - Paket sürümü, yayıncı, lisans ve kaynak bilgilerini gösteren ayrıntı çekmecesi
 - Windows koruması, WinGet kaynakları ve katalog bütünlüğü için Güvenlik Merkezi
 - Eksik WinGet’i Microsoft Store olmadan hazırlayabilen kurulum akışı
@@ -138,7 +128,6 @@ WinGet sistemde yoksa sol alttaki **WinGet** kartına tıklayın. Tamga gerekli 
 | <kbd>Ctrl</kbd> + <kbd>A</kbd> | Görünen kurulabilir uygulamaları seçer veya seçimi kaldırır. |
 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Seçilen işlemleri başlatır. |
 | <kbd>Ctrl</kbd> + <kbd>Q</kbd> | İşlem kuyruğunu açar. |
-| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Tamga Reçetesi menüsünü açar. |
 | <kbd>Esc</kbd> | Açık pencereyi veya aramayı kapatır. |
 
 ## Güvenlik
