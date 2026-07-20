@@ -1000,35 +1000,31 @@ $script:tamgaIconPath = @(
                         <DataTemplate>
                             <Border x:Name="UpdateCard" Height="72" Background="#1C2530" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="12">
                                 <Grid>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
                                     <Border Background="#D09335"/>
-                                    <Button x:Name="UpdateDetailButton" Grid.Column="1" Grid.ColumnSpan="3" Background="Transparent" BorderThickness="0" Padding="0"
-                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
-                                            AutomationProperties.Name="{Binding Name}" AutomationProperties.HelpText="Paket ayrıntılarını aç">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
-                                            <Grid Width="38" Height="38" Margin="12,0,4,0" VerticalAlignment="Center">
-                                                <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"
-                                                       HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
-                                                <Border Opacity="{Binding InitialOpacity}" Width="36" Height="36" CornerRadius="9" Background="#2B3743" BorderBrush="#485B6D" BorderThickness="1">
-                                                    <TextBlock Text="{Binding Initial}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="16"
-                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                            </Grid>
-                                            <StackPanel Grid.Column="1" Margin="10,0,12,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
-                                            </StackPanel>
-                                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                                <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
-                                                <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
-                                            </StackPanel>
-                                            <Border Grid.Column="3" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
-                                            </Border>
-                                        </Grid>
-                                    </Button>
-                                    <CheckBox Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}" AutomationProperties.Name="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Button x:Name="UpdateDetailButton" Grid.Column="1" Grid.ColumnSpan="4" Background="Transparent" BorderThickness="0" Padding="0"
+                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand"
+                                            AutomationProperties.Name="{Binding Name}" AutomationProperties.HelpText="Paket ayrıntılarını aç"/>
+                                    <Grid Grid.Column="1" Width="38" Height="38" Margin="12,0,4,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                        <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                                        <Border Opacity="{Binding InitialOpacity}" Width="36" Height="36" CornerRadius="9" Background="#2B3743" BorderBrush="#485B6D" BorderThickness="1">
+                                            <TextBlock Text="{Binding Initial}" Foreground="{Binding Color}" FontWeight="Bold" FontSize="16"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                    <StackPanel Grid.Column="2" Margin="10,0,12,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Center" IsHitTestVisible="False">
+                                        <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
+                                        <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
+                                    </StackPanel>
+                                    <Border Grid.Column="4" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+                                        <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
+                                    </Border>
+                                    <CheckBox Grid.Column="5" IsChecked="{Binding IsSelected, Mode=TwoWay}" AutomationProperties.Name="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>
