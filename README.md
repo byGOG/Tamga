@@ -86,6 +86,15 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 5. **Güncellemeleri yönetin.** Sol alttaki **Güncelleme Merkezi** tüm bekleyen WinGet güncellemelerini listeler.
 6. **Kurulu uygulamayı kaldırın.** Karttaki kırmızı kaldırma düğmesine basın ve onaylayın. Liste işlemden sonra otomatik yenilenir.
 
+### Tamga Reçetesi
+
+Aynı uygulama grubunu başka bir bilgisayarda yeniden seçmek için alt çubuktaki **Reçete** düğmesini kullanın:
+
+- **Seçimi reçete olarak kaydet** seçili WinGet paketlerini taşınabilir bir `.tamga.json` dosyasına yazar.
+- **Reçete aç** dosyadaki paketleri katalogda bulup seçer.
+- Zaten kurulu, katalogdan kaldırılmış veya bu sistemde kullanılamayan kayıtlar güvenle atlanır.
+- Reçete açmak kurulumu kendiliğinden başlatmaz; son onay her zaman kullanıcıdadır.
+
 ### Durum etiketleri
 
 | Etiket | Anlamı |
@@ -101,6 +110,7 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 - Windows 10 ve Windows 11 ile uyumlu modern koyu arayüz
 - Akıllı kurulu uygulama ve güncelleme taraması
 - Toplu kurulum, güncelleme ve kaldırma kuyruğu
+- Bilgisayarlar arasında güvenle taşınabilen Tamga Reçeteleri
 - Paket sürümü, yayıncı, lisans ve kaynak bilgilerini gösteren ayrıntı çekmecesi
 - Windows koruması, WinGet kaynakları ve katalog bütünlüğü için Güvenlik Merkezi
 - Eksik WinGet’i Microsoft Store olmadan hazırlayabilen kurulum akışı
@@ -128,6 +138,7 @@ WinGet sistemde yoksa sol alttaki **WinGet** kartına tıklayın. Tamga gerekli 
 | <kbd>Ctrl</kbd> + <kbd>A</kbd> | Görünen kurulabilir uygulamaları seçer veya seçimi kaldırır. |
 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Seçilen işlemleri başlatır. |
 | <kbd>Ctrl</kbd> + <kbd>Q</kbd> | İşlem kuyruğunu açar. |
+| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Tamga Reçetesi menüsünü açar. |
 | <kbd>Esc</kbd> | Açık pencereyi veya aramayı kapatır. |
 
 ## Güvenlik
@@ -137,6 +148,7 @@ Tamga açık kaynaklıdır; çalıştırılan komutları terminalde görebilirsi
 - WinGet işlemlerinde tam paket kimliği ve `--exact` eşleşmesi kullanılır.
 - Kurulabilir paketler mümkün olduğunda `winget` kaynağıyla sınırlandırılır.
 - Tamga kalıcı Execution Policy değişikliği yapmaz.
+- Tamga kullanıcı yazı tiplerini kurmaz, silmez veya font kayıt defterini değiştirmez.
 - Uygulama ve katalog dosyaları GitHub Pages üzerinden indirilir.
 - Kaldırma işlemleri açık kullanıcı onayı olmadan başlatılmaz.
 - Tamga, Güvenlik Merkezi üzerinden durumu raporlar; Windows güvenlik ayarlarını izinsiz değiştirmez.
@@ -219,8 +231,17 @@ Bu işlem Tamga aracılığıyla kurduğunuz uygulamaları kaldırmaz.
 | `install.ps1` | Güncel dosyaları yerel Tamga klasörüne indiren başlatıcı |
 | `Tamga.bat` | Yerel PowerShell betiğini çift tıklamayla açan başlatıcı |
 | `Tamga-Online.bat` | Güncel çevrim içi yükleyiciyi indirip çalıştıran başlatıcı |
+| `tools/Test-Tamga.ps1` | PowerShell, XAML, katalog, bağlantı, varlık ve güvenlik sınırı denetimleri |
 
 Katalog değişikliklerinde `SchemaVersion`, benzersiz uygulama adları ve geçerli kategori adları korunmalıdır. Kod değişikliklerinde Windows PowerShell 5.1 uyumluluğu gözetilmelidir.
+
+Yerel kalite kapısını çalıştırmak için:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Test-Tamga.ps1
+```
+
+Aynı denetimler her gönderim ve çekme isteğinde yalıtılmış bir Windows GitHub Actions ortamında otomatik çalışır. Denetim uygulamayı açmaz, paket kurmaz ve sistem ayarlarını değiştirmez.
 
 Katkı, hata raporu ve uygulama önerileri için [GitHub Issues](https://github.com/byGOG/Tamga/issues) sayfasını kullanabilirsiniz.
 

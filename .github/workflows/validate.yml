@@ -1,0 +1,22 @@
+name: Tamga kalite kapisi
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: PowerShell ve katalog denetimi
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+      - name: Tamga kalite kapisini calistir
+        shell: powershell
+        run: .\tools\Test-Tamga.ps1

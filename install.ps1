@@ -1,10 +1,17 @@
 # Tamga bootstrapper
 # Usage: irm https://bygog.github.io/Tamga/install.ps1 | iex
 
+param(
+    [string]$BaseUrl = 'https://bygog.github.io/Tamga',
+    [string]$InstallDirectory,
+    [switch]$NoLaunch
+)
+
 $ErrorActionPreference = 'Stop'
 
-$baseUrl = 'https://bygog.github.io/Tamga'
-$installDirectory = Join-Path $env:LOCALAPPDATA 'Tamga'
+$baseUrl = $BaseUrl.TrimEnd('/')
+$customInstallDirectory = -not [string]::IsNullOrWhiteSpace($InstallDirectory)
+$installDirectory = if ($customInstallDirectory) { [IO.Path]::GetFullPath($InstallDirectory) } else { Join-Path $env:LOCALAPPDATA 'Tamga' }
 $legacyInstallDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
 $applicationScript = Join-Path $installDirectory 'Tamga.ps1'
 $applicationLauncher = Join-Path $installDirectory 'Tamga.bat'
@@ -27,7 +34,7 @@ $applicationUninstallIcon = Join-Path $applicationAssets 'uninstall-icon.png'
 $applicationSecurityCenterIcon = Join-Path $applicationAssets 'security-center-icon.png'
 $applicationUpdateCenterIcon = Join-Path $applicationAssets 'update-center-icon.png'
 
-if ((Test-Path -LiteralPath $legacyInstallDirectory) -and -not (Test-Path -LiteralPath $installDirectory)) {
+if (-not $customInstallDirectory -and (Test-Path -LiteralPath $legacyInstallDirectory) -and -not (Test-Path -LiteralPath $installDirectory)) {
     try {
         Move-Item -LiteralPath $legacyInstallDirectory -Destination $installDirectory -Force
         Write-Host 'Eski PowerHub kurulumu Tamga dizinine tasindi.' -ForegroundColor DarkCyan
@@ -109,6 +116,25 @@ try {
         throw 'Indirilen Tamga katalogu gecerli degil.'
     }
 
+    $tokens = $null
+    $parseErrors = $null
+    [void][Management.Automation.Language.Parser]::ParseFile($temporaryScript, [ref]$tokens, [ref]$parseErrors)
+    if ($parseErrors.Count -gt 0) {
+        throw ('Indirilen Tamga betigi gecersiz: {0}' -f ($parseErrors.Message -join '; '))
+    }
+    $launcherText = [IO.File]::ReadAllText($temporaryLauncher, [Text.Encoding]::UTF8).TrimStart()
+    if (-not $launcherText.StartsWith('@echo off', [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Indirilen Tamga baslaticisi gecerli degil.'
+    }
+    $pngBytes = [IO.File]::ReadAllBytes($temporaryLogo)
+    if ($pngBytes.Length -lt 8 -or $pngBytes[0] -ne 0x89 -or $pngBytes[1] -ne 0x50 -or $pngBytes[2] -ne 0x4E -or $pngBytes[3] -ne 0x47) {
+        throw 'Indirilen Tamga logosu gecerli bir PNG degil.'
+    }
+    $icoBytes = [IO.File]::ReadAllBytes($temporaryIcon)
+    if ($icoBytes.Length -lt 6 -or $icoBytes[0] -ne 0 -or $icoBytes[1] -ne 0 -or $icoBytes[2] -ne 1 -or $icoBytes[3] -ne 0) {
+        throw 'Indirilen Tamga simgesi gecerli bir ICO degil.'
+    }
+
     Move-Item -LiteralPath $temporaryScript -Destination $applicationScript -Force
     Move-Item -LiteralPath $temporaryLauncher -Destination $applicationLauncher -Force
     Move-Item -LiteralPath $temporaryCatalog -Destination $applicationCatalog -Force
@@ -137,11 +163,14 @@ if (-not (Test-Path -LiteralPath $windowsPowerShell)) {
     $windowsPowerShell = 'powershell.exe'
 }
 
-Start-Process -FilePath $windowsPowerShell -ArgumentList @(
-    '-NoProfile',
-    '-ExecutionPolicy', 'Bypass',
-    '-STA',
-    '-File', ('"{0}"' -f $applicationScript)
-)
-
-Write-Host 'Tamga baslatildi.' -ForegroundColor Cyan
+if ($NoLaunch) {
+    Write-Host ('Tamga dosyalari hazirlandi: {0}' -f $installDirectory) -ForegroundColor Cyan
+} else {
+    Start-Process -FilePath $windowsPowerShell -ArgumentList @(
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-STA',
+        '-File', ('"{0}"' -f $applicationScript)
+    )
+    Write-Host 'Tamga baslatildi.' -ForegroundColor Cyan
+}

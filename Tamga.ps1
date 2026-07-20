@@ -2,7 +2,7 @@
 
 <#
     Tamga - Windows için sade ve modern toplu uygulama kurucusu.
-    Uses the built-in Windows Package Manager (winget).
+    Windows Paket Yöneticisi (WinGet) altyapısını kullanır.
 #>
 
 if ([Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
@@ -22,9 +22,6 @@ public static class TamgaWindowLayout {
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int command);
     [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
-    [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern int AddFontResourceEx(string fileName, uint flags, IntPtr reserved);
-    [DllImport("gdi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern bool RemoveFontResourceEx(string fileName, uint flags, IntPtr reserved);
-    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint message, UIntPtr wParam, IntPtr lParam, uint flags, uint timeout, out UIntPtr result);
     [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr LoadImage(IntPtr instance, string name, uint type, int width, int height, uint loadFlags);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr SendMessage(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
     [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)] private static extern int SetCurrentProcessExplicitAppUserModelID(string appId);
@@ -77,81 +74,6 @@ $script:tamgaIconPath = @(
     (Join-Path $PSScriptRoot 'Tamga\assets\tamga-logo.ico')
 ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 
-function Get-TamgaFileSha256([string]$Path) {
-    $stream = [IO.File]::OpenRead($Path)
-    $sha256 = [Security.Cryptography.SHA256]::Create()
-    try {
-        return ([BitConverter]::ToString($sha256.ComputeHash($stream))).Replace('-', '')
-    } finally {
-        $sha256.Dispose()
-        $stream.Dispose()
-    }
-}
-
-function Remove-TamgaLegacyFonts {
-    $legacyFonts = @(
-        [pscustomobject]@{ FileName='Tamga-Outfit.ttf'; RegistryName='Outfit (TrueType)' },
-        [pscustomobject]@{ FileName='Tamga-Poppins-Regular.ttf'; RegistryName='Poppins Regular (TrueType)' },
-        [pscustomobject]@{ FileName='Tamga-Poppins-SemiBold.ttf'; RegistryName='Poppins SemiBold (TrueType)' },
-        [pscustomobject]@{ FileName='Tamga-Orbitron.ttf'; RegistryName='Orbitron (TrueType)' },
-        [pscustomobject]@{ FileName='Tamga-FiraCode.ttf'; RegistryName='Fira Code (TrueType)' }
-    )
-    $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
-    $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
-    foreach ($font in $legacyFonts) {
-        $fontPath = Join-Path $fontDirectory $font.FileName
-        if (Test-Path -LiteralPath $fontPath) {
-            [void][TamgaWindowLayout]::RemoveFontResourceEx($fontPath, 0, [IntPtr]::Zero)
-            Remove-Item -LiteralPath $fontPath -Force -ErrorAction SilentlyContinue
-        }
-        Remove-ItemProperty -Path $registryPath -Name $font.RegistryName -ErrorAction SilentlyContinue
-    }
-    Remove-Item -LiteralPath (Join-Path $env:LOCALAPPDATA 'Tamga\font.txt') -Force -ErrorAction SilentlyContinue
-}
-
-function Install-TamgaFonts {
-    $fontDefinitions = @(
-        [pscustomobject]@{ Family='Inter'; FileName='Tamga-Inter.ttf'; RegistryName='Inter (TrueType)'; Url='https://raw.githubusercontent.com/google/fonts/ec0464b978de222073645d6d3366f3fdf03376d8/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf'; Sha256='29160A80FF49DDCAB2C97711247E08B1FAB27A484A329CE8B813D820DC559031' }
-    )
-    $fontDirectory = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
-    $registryPath = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
-    [IO.Directory]::CreateDirectory($fontDirectory) | Out-Null
-    if (-not (Test-Path -LiteralPath $registryPath)) { New-Item -Path $registryPath -Force | Out-Null }
-    try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
-    $failedFamilies = [Collections.Generic.List[string]]::new()
-
-    foreach ($font in $fontDefinitions) {
-        $destination = Join-Path $fontDirectory $font.FileName
-        $needsDownload = $true
-        if (Test-Path -LiteralPath $destination) {
-            try { $needsDownload = ((Get-TamgaFileSha256 -Path $destination) -ne $font.Sha256) } catch {}
-        }
-        try {
-            if ($needsDownload) {
-                Write-Host '[Tamga] Inter yazı tipi kuruluyor...' -ForegroundColor Cyan
-                $temporaryFile = Join-Path $env:TEMP ("Tamga-{0}-{1}.tmp" -f $PID, [Guid]::NewGuid().ToString('N'))
-                try {
-                    Invoke-WebRequest -Uri $font.Url -OutFile $temporaryFile -UseBasicParsing -ErrorAction Stop
-                    $downloadHash = Get-TamgaFileSha256 -Path $temporaryFile
-                    if ($downloadHash -ne $font.Sha256) { throw "SHA-256 doğrulaması başarısız: $($font.Family)" }
-                    Move-Item -LiteralPath $temporaryFile -Destination $destination -Force
-                } finally {
-                    if ($temporaryFile -and (Test-Path -LiteralPath $temporaryFile)) { Remove-Item -LiteralPath $temporaryFile -Force -ErrorAction SilentlyContinue }
-                }
-            }
-            New-ItemProperty -Path $registryPath -Name $font.RegistryName -Value $destination -PropertyType String -Force | Out-Null
-            [void][TamgaWindowLayout]::AddFontResourceEx($destination, 0, [IntPtr]::Zero)
-        } catch {
-            if (-not $failedFamilies.Contains($font.Family)) { $failedFamilies.Add($font.Family) }
-            Write-Host ("[Tamga] Yazı tipi kurulamadı: {0} - {1}" -f $font.Family, $_.Exception.Message) -ForegroundColor Red
-        }
-    }
-    $broadcastResult = [UIntPtr]::Zero
-    [void][TamgaWindowLayout]::SendMessageTimeout([IntPtr]0xFFFF, 0x001D, [UIntPtr]::Zero, [IntPtr]::Zero, 2, 2000, [ref]$broadcastResult)
-    return @($failedFamilies)
-}
-
-Remove-TamgaLegacyFonts
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -741,6 +663,8 @@ Remove-TamgaLegacyFonts
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="RecipeButton" Content="Reçete" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                                Margin="0,0,9,0" ToolTip="Seçimi Tamga reçetesi olarak kaydet veya bir reçete aç (Ctrl+R)" AutomationProperties.Name="Tamga reçetesi işlemleri"/>
                         <Button x:Name="QueueViewButton" Content="Kuyruk" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster (Ctrl+Q)" AutomationProperties.Name="Kurulum kuyruğunu göster"/>
                         <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
@@ -1404,7 +1328,7 @@ $window.Add_SourceInitialized({
 
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','RecipeButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
@@ -1810,6 +1734,101 @@ foreach ($appName in $vendorLogoOverrides.Keys) {
     if ($vendorApp) {
         $vendorApp.Logo = $vendorLogo
         $vendorApp.InitialOpacity = 0.0
+    }
+}
+
+function Export-TamgaRecipe {
+    $selectedApps = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and -not [string]::IsNullOrWhiteSpace([string]$_.Id) })
+    if ($selectedApps.Count -eq 0) {
+        $controls.ActivityText.Text = 'Reçete için önce en az bir kurulabilir uygulama seçin.'
+        Send-TamgaAnnouncement $controls.ActivityText.Text
+        return
+    }
+
+    $dialog = [System.Windows.Forms.SaveFileDialog]::new()
+    try {
+        $dialog.Title = 'Tamga reçetesini kaydet'
+        $dialog.Filter = 'Tamga reçetesi (*.tamga.json)|*.tamga.json|JSON dosyası (*.json)|*.json'
+        $dialog.FileName = 'tamga-recetesi.tamga.json'
+        $dialog.AddExtension = $true
+        $dialog.OverwritePrompt = $true
+        if ($dialog.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { return }
+
+        $recipe = [ordered]@{
+            SchemaVersion = 1
+            Type = 'TamgaRecipe'
+            CreatedAt = [DateTime]::UtcNow.ToString('o')
+            Applications = @($selectedApps | Sort-Object Name | ForEach-Object {
+                [ordered]@{ Name = [string]$_.Name; Id = [string]$_.Id }
+            })
+        }
+        $json = $recipe | ConvertTo-Json -Depth 5
+        [IO.File]::WriteAllText($dialog.FileName, $json, [Text.UTF8Encoding]::new($false))
+        $controls.ActivityText.Text = "$($selectedApps.Count) uygulamalık Tamga reçetesi kaydedildi."
+        Write-TamgaLog -Message $controls.ActivityText.Text -Color Green
+        Send-TamgaAnnouncement $controls.ActivityText.Text
+    } catch {
+        $controls.ActivityText.Text = "Reçete kaydedilemedi: $($_.Exception.Message)"
+        Write-TamgaLog -Message $controls.ActivityText.Text -Color Red
+        Send-TamgaAnnouncement $controls.ActivityText.Text
+    } finally {
+        $dialog.Dispose()
+    }
+}
+
+function Import-TamgaRecipeFile {
+    $dialog = [System.Windows.Forms.OpenFileDialog]::new()
+    try {
+        $dialog.Title = 'Tamga reçetesi aç'
+        $dialog.Filter = 'Tamga reçetesi (*.tamga.json;*.json)|*.tamga.json;*.json'
+        $dialog.Multiselect = $false
+        $dialog.CheckFileExists = $true
+        if ($dialog.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { return }
+
+        $file = Get-Item -LiteralPath $dialog.FileName -ErrorAction Stop
+        if ($file.Length -gt 1MB) { throw 'Reçete dosyası 1 MB sınırını aşıyor.' }
+        $recipe = Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+        if ($recipe.Type -ne 'TamgaRecipe' -or [int]$recipe.SchemaVersion -ne 1) { throw 'Dosya geçerli bir Tamga reçetesi değil.' }
+        $requested = @($recipe.Applications)
+        if ($requested.Count -eq 0 -or $requested.Count -gt 500) { throw 'Reçetedeki uygulama sayısı geçersiz.' }
+
+        foreach ($app in $apps) { $app.IsSelected = $false }
+        $matched = [Collections.Generic.List[string]]::new()
+        $unavailable = [Collections.Generic.List[string]]::new()
+        foreach ($requestedApp in $requested) {
+            $id = [string]$requestedApp.Id
+            $name = [string]$requestedApp.Name
+            if ([string]::IsNullOrWhiteSpace($id) -and [string]::IsNullOrWhiteSpace($name)) { continue }
+            $match = if (-not [string]::IsNullOrWhiteSpace($id)) {
+                $apps | Where-Object { -not $_.IsWebResource -and [string]$_.Id -eq $id } | Select-Object -First 1
+            }
+            if (-not $match -and -not [string]::IsNullOrWhiteSpace($name)) {
+                $match = $apps | Where-Object { -not $_.IsWebResource -and [string]$_.Name -eq $name } | Select-Object -First 1
+            }
+            if ($match -and $match.Operation -ne 'None') {
+                $match.IsSelected = $true
+                $matched.Add([string]$match.Name)
+            } else {
+                $unavailable.Add($(if ($name) { $name } else { $id }))
+            }
+        }
+
+        Update-AppList
+        Update-SelectionStatus
+        $controls.ActivityText.Text = if ($unavailable.Count -gt 0) {
+            "$($matched.Count) uygulama seçildi; $($unavailable.Count) kayıt bu sistemde kurulabilir değil."
+        } else {
+            "$($matched.Count) uygulamalık Tamga reçetesi yüklendi."
+        }
+        $logColor = if ($unavailable.Count -gt 0) { [ConsoleColor]::Yellow } else { [ConsoleColor]::Green }
+        Write-TamgaLog -Message $controls.ActivityText.Text -Color $logColor
+        Send-TamgaAnnouncement $controls.ActivityText.Text
+    } catch {
+        $controls.ActivityText.Text = "Reçete açılamadı: $($_.Exception.Message)"
+        Write-TamgaLog -Message $controls.ActivityText.Text -Color Red
+        Send-TamgaAnnouncement $controls.ActivityText.Text
+    } finally {
+        $dialog.Dispose()
     }
 }
 
@@ -2604,6 +2623,36 @@ $controls.CategoryPanel.Children | Where-Object { $_ -is [Windows.Controls.Butto
     })
 }
 
+$script:recipeMenu = [Windows.Controls.ContextMenu]::new()
+$script:recipeMenu.Background = New-ColorBrush '#252526'
+$script:recipeMenu.BorderBrush = New-ColorBrush '#474747'
+$script:recipeMenu.BorderThickness = [Windows.Thickness]::new(1)
+$script:recipeMenu.Padding = [Windows.Thickness]::new(4)
+$script:recipeMenu.Placement = [System.Windows.Controls.Primitives.PlacementMode]::Bottom
+
+$recipeImportItem = [Windows.Controls.MenuItem]::new()
+$recipeImportItem.Header = 'Reçete aç…'
+$recipeImportItem.Foreground = New-ColorBrush '#E8E8E8'
+$recipeImportItem.Padding = [Windows.Thickness]::new(12,8,18,8)
+$recipeImportItem.ToolTip = 'Daha önce kaydedilmiş uygulama seçimini yükle'
+$recipeImportItem.Add_Click({ Import-TamgaRecipeFile })
+[void]$script:recipeMenu.Items.Add($recipeImportItem)
+
+$recipeExportItem = [Windows.Controls.MenuItem]::new()
+$recipeExportItem.Header = 'Seçimi reçete olarak kaydet…'
+$recipeExportItem.Foreground = New-ColorBrush '#E8E8E8'
+$recipeExportItem.Padding = [Windows.Thickness]::new(12,8,18,8)
+$recipeExportItem.ToolTip = 'Seçili kurulabilir uygulamaları taşınabilir JSON reçetesine kaydet'
+$recipeExportItem.Add_Click({ Export-TamgaRecipe })
+[void]$script:recipeMenu.Items.Add($recipeExportItem)
+
+function Show-TamgaRecipeMenu {
+    $script:recipeMenu.PlacementTarget = $controls.RecipeButton
+    $script:recipeMenu.IsOpen = $true
+}
+
+$controls.RecipeButton.Add_Click({ Show-TamgaRecipeMenu })
+
 $controls.UpdateCenterButton.Add_Click({ Set-UpdateCenterVisibility $true })
 $controls.UpdateBackButton.Add_Click({
     Set-ActiveCategory -CategoryName $script:activeCategory
@@ -3177,6 +3226,11 @@ $window.Add_PreviewKeyDown({
     if ($controlDown -and $eventArgs.Key -in @([Windows.Input.Key]::F,[Windows.Input.Key]::K)) {
         $controls.SearchBox.Focus() | Out-Null
         $controls.SearchBox.SelectAll()
+        $eventArgs.Handled = $true
+        return
+    }
+    if ($controlDown -and $eventArgs.Key -eq [Windows.Input.Key]::R) {
+        Show-TamgaRecipeMenu
         $eventArgs.Handled = $true
         return
     }
