@@ -1225,84 +1225,65 @@ $script:tamgaIconPath = @(
               AutomationProperties.Name="Tamga hakkında" KeyboardNavigation.TabNavigation="Cycle">
             <Border x:Name="AboutBackdrop" Background="Transparent"/>
             <Border x:Name="AboutCard" Width="660" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Background="#0D131A" BorderBrush="#405164" BorderThickness="1" CornerRadius="16" ClipToBounds="True">
-                <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="28" ShadowDepth="8" Opacity="0.68"/></Border.Effect>
+                    Background="{DynamicResource Surface}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="14" ClipToBounds="True">
                 <Grid>
-                    <Grid.RowDefinitions><RowDefinition Height="152"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                    <Border Grid.Row="0" BorderBrush="#33475A" BorderThickness="0,0,0,1">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#183246" Offset="0"/><GradientStop Color="#14212D" Offset="0.56"/><GradientStop Color="#171A2B" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
+                    <Grid.RowDefinitions><RowDefinition Height="132"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="{DynamicResource HeaderBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="0,0,0,1">
                         <Grid ClipToBounds="True">
-                            <Canvas HorizontalAlignment="Right" Width="280" IsHitTestVisible="False" Opacity="0.72">
-                                <Ellipse Canvas.Left="64" Canvas.Top="-76" Width="230" Height="230" Stroke="#2D8EAD" StrokeThickness="1"/>
-                                <Ellipse Canvas.Left="112" Canvas.Top="-28" Width="134" Height="134" Stroke="#57D6F2" StrokeThickness="1.4"/>
-                                <Ellipse Canvas.Left="153" Canvas.Top="13" Width="52" Height="52" Stroke="#A495FF" StrokeThickness="2"/>
-                                <Line X1="28" Y1="134" X2="258" Y2="-14" Stroke="#2EA5C5" StrokeThickness="1"/>
-                                <Line X1="92" Y1="152" X2="276" Y2="42" Stroke="#7769D8" StrokeThickness="1"/>
-                                <Ellipse Canvas.Left="252" Canvas.Top="25" Width="7" Height="7" Fill="#F7C84B"/>
-                                <Ellipse Canvas.Left="55" Canvas.Top="111" Width="5" Height="5" Fill="#32D4EE"/>
-                            </Canvas>
-                            <Border Height="3" VerticalAlignment="Top">
-                                <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#22D3EE" Offset="0"/><GradientStop Color="#5CC8FF" Offset="0.58"/><GradientStop Color="#8B5CF6" Offset="1"/></LinearGradientBrush></Border.Background>
-                            </Border>
+                            <Border Height="2" VerticalAlignment="Top" Background="{DynamicResource Primary}"/>
                             <Grid Margin="24,0">
                                 <Grid VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                    <Image x:Name="AboutBrandLogoImage" Width="70" Height="70" Stretch="Uniform"
-                                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True">
-                                        <Image.Effect><DropShadowEffect Color="#22D3EE" BlurRadius="18" ShadowDepth="0" Opacity="0.22"/></Image.Effect>
-                                    </Image>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="76"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <Image x:Name="AboutBrandLogoImage" Width="62" Height="62" Stretch="Uniform"
+                                           RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="TAMGA  /  HAKKINDA" Foreground="#67E8F9" FontSize="9.5" FontWeight="Bold"/>
-                                        <TextBlock Text="Tamga" Foreground="White" FontSize="27" FontWeight="SemiBold" Margin="0,4,0,0"/>
-                                        <TextBlock Text="Windows uygulama merkezi" Foreground="#A8B7C2" FontSize="11.5" Margin="0,3,0,0"/>
-                                        <Border Background="#193B36" BorderBrush="#276453" BorderThickness="1" CornerRadius="8" Padding="8,3" HorizontalAlignment="Left" Margin="0,9,0,0">
-                                            <StackPanel Orientation="Horizontal"><Ellipse Width="6" Height="6" Fill="#55E6A5" Margin="0,0,6,0"/><TextBlock Text="AÇIK KAYNAK" Foreground="#78E8B5" FontSize="8.5" FontWeight="Bold"/></StackPanel>
+                                        <TextBlock Text="TAMGA  /  HAKKINDA" Foreground="{DynamicResource Primary}" FontSize="9.5" FontWeight="Bold"/>
+                                        <TextBlock Text="Tamga" Foreground="{DynamicResource Ink}" FontSize="27" FontWeight="SemiBold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Windows uygulama merkezi" Foreground="{DynamicResource Muted}" FontSize="11.5" Margin="0,3,0,0"/>
+                                        <Border Background="#123326" BorderBrush="#1F6748" BorderThickness="1" CornerRadius="8" Padding="8,3" HorizontalAlignment="Left" Margin="0,8,0,0">
+                                            <StackPanel Orientation="Horizontal"><Ellipse Width="6" Height="6" Fill="#3DDC97" Margin="0,0,6,0"/><TextBlock Text="AÇIK KAYNAK" Foreground="#72E3AD" FontSize="8.5" FontWeight="Bold"/></StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <Button x:Name="AboutCloseButton" Grid.Column="2" Content="&#xE711;" Width="36" Height="36" Padding="0" VerticalAlignment="Top" Margin="0,-43,0,0"
-                                            Background="#1B2936" BorderBrush="#466073" BorderThickness="1" Foreground="#DCE9F0"
+                                    <Button x:Name="AboutCloseButton" Grid.Column="2" Content="&#xE711;" Width="36" Height="36" Padding="0" VerticalAlignment="Top" Margin="0,-33,0,0"
+                                            Background="{DynamicResource ActionBg}" BorderBrush="{DynamicResource ActionBorder}" BorderThickness="1" Foreground="{DynamicResource ActionIcon}"
                                             FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" ToolTip="Kapat (Esc)"/>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Border>
                     <StackPanel Grid.Row="1" Margin="24,22,24,22">
-                        <TextBlock Text="Uygulamaların için tek merkez." Foreground="White" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="Uygulamaların için tek merkez." Foreground="{DynamicResource Ink}" FontSize="20" FontWeight="SemiBold"/>
                         <TextBlock Text="Tamga, Windows uygulamalarını keşfetmek, resmî kaynaklara ulaşmak ve güvenli paket kurulumlarını tek merkezden yönetmek için geliştirildi."
-                                   Foreground="#AEB8C0" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,9,0,0"/>
+                                   Foreground="{DynamicResource Muted}" FontSize="12.5" TextWrapping="Wrap" LineHeight="20" Margin="0,9,0,0"/>
                         <Grid Margin="0,18,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Background="#151E28" BorderBrush="#334B5D" BorderThickness="1" CornerRadius="12" Padding="12,11">
-                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="10" Background="#173A4B"><TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#67E8F9" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="WinGet" Foreground="#F2F7FA" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Paket yönetimi" Foreground="#8495A2" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
+                            <Border Grid.Column="0" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="12,11">
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="8" Background="#12344A"><TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#5CC8FF" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="WinGet" Foreground="{DynamicResource Ink}" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Paket yönetimi" Foreground="{DynamicResource Muted}" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
                             </Border>
-                            <Border Grid.Column="2" Background="#151E28" BorderBrush="#334B5D" BorderThickness="1" CornerRadius="12" Padding="12,11">
-                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="10" Background="#173A32"><TextBlock Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#71D69A" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="Güvenli" Foreground="#F2F7FA" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Resmî kaynaklar" Foreground="#8495A2" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
+                            <Border Grid.Column="2" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="12,11">
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="8" Background="#123B2A"><TextBlock Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#55D68B" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="Güvenli" Foreground="{DynamicResource Ink}" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Resmî kaynaklar" Foreground="{DynamicResource Muted}" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
                             </Border>
-                            <Border Grid.Column="4" Background="#151E28" BorderBrush="#334B5D" BorderThickness="1" CornerRadius="12" Padding="12,11">
-                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="10" Background="#292540"><TextBlock Text="&#xE943;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#B9AFFF" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="Şeffaf" Foreground="#F2F7FA" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Açık kaynak" Foreground="#8495A2" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
+                            <Border Grid.Column="4" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="10" Padding="12,11">
+                                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Width="34" Height="34" CornerRadius="8" Background="#302A45"><TextBlock Text="&#xE943;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#B5A7F7" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="Şeffaf" Foreground="{DynamicResource Ink}" FontSize="11" FontWeight="SemiBold"/><TextBlock Text="Açık kaynak" Foreground="{DynamicResource Muted}" FontSize="9" Margin="0,3,0,0"/></StackPanel></Grid>
                             </Border>
                         </Grid>
-                        <Border Background="#171E27" CornerRadius="12" Padding="15,13" Margin="0,14,0,0" BorderBrush="#334150" BorderThickness="1">
+                        <Border Background="{DynamicResource CardBg}" CornerRadius="10" Padding="15,13" Margin="0,14,0,0" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="3"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border Background="#22D3EE" CornerRadius="2"/>
-                                <TextBlock Grid.Column="1" Foreground="#9EABB4" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="12,0,0,0">
-                                    <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#67E8F9" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
+                                <Border Background="{DynamicResource Primary}" CornerRadius="2"/>
+                                <TextBlock Grid.Column="1" Foreground="{DynamicResource Muted}" FontStyle="Italic" FontSize="11.5" TextWrapping="Wrap" LineHeight="18" Margin="12,0,0,0">
+                                    <Hyperlink x:Name="SordumLink" NavigateUri="https://www.sordum.net/" Foreground="#5CC8FF" TextDecorations="None">Sordum.net</Hyperlink><Run Text=" topluluğunun paylaşım kültürü ve kullanıcı odaklı vizyonundan ilham alınarak hazırlandı."/>
                                 </TextBlock>
                             </Grid>
                         </Border>
                         <Grid Margin="0,16,0,0">
                             <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="byGOG" Background="#222D38" Foreground="#E1E9EE"
-                                    BorderBrush="#484848" BorderThickness="1" Padding="13,10" ToolTip="byGOG internet sitesini aç"/>
-                            <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="#174A63" Foreground="#A9E5FF"
-                                    BorderBrush="#286783" BorderThickness="1" Padding="13,10" ToolTip="Tamga GitHub sayfasını aç"/>
+                            <Button x:Name="AboutByGogButton" Grid.Column="0" Content="byGOG" Background="{DynamicResource ActionBg}" Foreground="{DynamicResource ActionIcon}"
+                                    BorderBrush="{DynamicResource ActionBorder}" BorderThickness="1" Padding="13,10" ToolTip="byGOG internet sitesini aç"/>
+                            <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="{DynamicResource Primary}" Foreground="White"
+                                    BorderBrush="#258CC0" BorderThickness="1" Padding="13,10" ToolTip="Tamga GitHub sayfasını aç"/>
                         </Grid>
-                        <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="#75828B" FontSize="9.5" HorizontalAlignment="Center" Margin="0,16,0,0"/>
+                        <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="{DynamicResource Muted}" FontSize="9.5" HorizontalAlignment="Center" Margin="0,16,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
