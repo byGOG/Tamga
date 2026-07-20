@@ -1000,7 +1000,7 @@ $script:tamgaIconPath = @(
                         <DataTemplate>
                             <Border x:Name="UpdateCard" Height="72" Background="#1C2530" BorderBrush="#3A4958" BorderThickness="1" CornerRadius="12">
                                 <Grid>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="54"/><ColumnDefinition Width="*"/><ColumnDefinition Width="245"/><ColumnDefinition Width="76"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
                                     <Border Background="#D09335"/>
                                     <Button x:Name="UpdateDetailButton" Grid.Column="1" Grid.ColumnSpan="4" Background="Transparent" BorderThickness="0" Padding="0"
                                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand"
@@ -1019,7 +1019,11 @@ $script:tamgaIconPath = @(
                                     </StackPanel>
                                     <StackPanel Grid.Column="3" VerticalAlignment="Center" IsHitTestVisible="False">
                                         <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
-                                        <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
+                                        <TextBlock Text="{Binding CurrentVersion}" Foreground="#D4DEE5" FontSize="10.5" Margin="0,3,0,0" TextTrimming="None"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,1,0,0">
+                                            <TextBlock Text="→  " Foreground="#8997A3" FontSize="10.5"/>
+                                            <TextBlock Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontSize="10.5" FontWeight="SemiBold" TextTrimming="None"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     <Border Grid.Column="4" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
                                         <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
