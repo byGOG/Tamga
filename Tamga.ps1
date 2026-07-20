@@ -1002,17 +1002,24 @@ $script:tamgaIconPath = @(
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
                                     <Border Background="#D09335"/>
-                                    <StackPanel Grid.Column="1" Margin="14,0,12,0" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                        <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
-                                        <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
-                                    </StackPanel>
-                                    <Border Grid.Column="3" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
-                                    </Border>
+                                    <Button x:Name="UpdateDetailButton" Grid.Column="1" Grid.ColumnSpan="3" Background="Transparent" BorderThickness="0" Padding="0"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
+                                            AutomationProperties.Name="{Binding Name}" AutomationProperties.HelpText="Paket ayrıntılarını aç">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="170"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
+                                            <StackPanel Margin="14,0,12,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Id}" Foreground="#8997A3" FontSize="10.5" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="SÜRÜM" Foreground="#7F8B94" FontSize="9" FontWeight="Bold"/>
+                                                <TextBlock Foreground="#D4DEE5" FontSize="11.5" Margin="0,5,0,0"><Run Text="{Binding CurrentVersion}"/><Run Text="  →  "/><Run Text="{Binding AvailableVersion}" Foreground="#FFD58A" FontWeight="SemiBold"/></TextBlock>
+                                            </StackPanel>
+                                            <Border Grid.Column="2" Background="#263F52" CornerRadius="12" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Source}" Foreground="#7DD3FC" FontSize="9.5" FontWeight="Bold"/>
+                                            </Border>
+                                        </Grid>
+                                    </Button>
                                     <CheckBox Grid.Column="4" IsChecked="{Binding IsSelected, Mode=TwoWay}" AutomationProperties.Name="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
@@ -2588,6 +2595,22 @@ $failureActionHandler = [Windows.RoutedEventHandler]{
 $controls.FailureList.AddHandler([Windows.Controls.Primitives.ButtonBase]::ClickEvent, $failureActionHandler, $true)
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
 $controls.UpdateList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-UpdateCenterSelectionStatus })
+$updateDetailClickHandler = [Windows.RoutedEventHandler]{
+    param($sender, $eventArgs)
+    $button = $eventArgs.Source -as [Windows.Controls.Button]
+    if (-not $button) {
+        $node = $eventArgs.OriginalSource
+        while ($node -and -not ($node -is [Windows.Controls.Button])) {
+            try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+        }
+        $button = $node -as [Windows.Controls.Button]
+    }
+    if ($button -and $button.Name -eq 'UpdateDetailButton') {
+        Show-UpdatePackageDetail -Package $button.DataContext
+        $eventArgs.Handled = $true
+    }
+}
+$controls.UpdateList.AddHandler([Windows.Controls.Primitives.ButtonBase]::ClickEvent, $updateDetailClickHandler, $true)
 $controls.UpdateSelectAllButton.Add_Click({
     $allSelected = $script:updatePackages.Count -gt 0 -and @($script:updatePackages | Where-Object { -not $_.IsSelected }).Count -eq 0
     foreach ($package in $script:updatePackages) { $package.IsSelected = -not $allSelected }
@@ -2765,9 +2788,15 @@ function Get-TamgaCatalogDate {
 function Set-AppDetailMetadata {
     param($Metadata)
     $installedVersion = $Metadata.InstalledVersion
+    $catalogVersion = $Metadata.CatalogVersion
+    $isUpdatePackage = $script:detailApp -and $script:detailApp.PSObject.Properties['IsUpdateCenterPackage'] -and [bool]$script:detailApp.IsUpdateCenterPackage
+    if ($isUpdatePackage) {
+        if ($installedVersion -in @('—','…','')) { $installedVersion = [string]$script:detailApp.CurrentVersion }
+        if ($catalogVersion -in @('—','…','')) { $catalogVersion = [string]$script:detailApp.AvailableVersion }
+    }
     if ($script:detailApp -and $script:detailApp.InstallState -notin @('Installed','UpdateAvailable') -and $installedVersion -eq '—') { $installedVersion = 'Kurulu değil' }
     $controls.AppDetailInstalledVersion.Text = $installedVersion
-    $controls.AppDetailCatalogVersion.Text = $Metadata.CatalogVersion
+    $controls.AppDetailCatalogVersion.Text = $catalogVersion
     $controls.AppDetailPublisher.Text = $Metadata.Publisher
     $controls.AppDetailAuthor.Text = $Metadata.Author
     $controls.AppDetailLicense.Text = $Metadata.License
@@ -2836,8 +2865,9 @@ function Start-AppDetailMetadataLoad {
         Set-AppDetailMetadata -Metadata $script:detailMetadataCache[$App.Id]
         return
     }
+    $isUpdatePackage = $App.PSObject.Properties['IsUpdateCenterPackage'] -and [bool]$App.IsUpdateCenterPackage
     Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-        InstalledVersion='…'; CatalogVersion='…'; Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; Repository='Yükleniyor'; Hash=''; HashStatus='Denetleniyor'; Elevation='Denetleniyor'; CatalogUpdated=(Get-TamgaCatalogDate); State='WinGet katalog ayrıntıları alınıyor...'
+        InstalledVersion=$(if ($isUpdatePackage) { [string]$App.CurrentVersion } else { '…' }); CatalogVersion=$(if ($isUpdatePackage) { [string]$App.AvailableVersion } else { '…' }); Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; Repository='Yükleniyor'; Hash=''; HashStatus='Denetleniyor'; Elevation='Denetleniyor'; CatalogUpdated=(Get-TamgaCatalogDate); State='WinGet katalog ayrıntıları alınıyor...'
     })
     $source = 'winget'
     if ($App.PSObject.Properties['InstallArguments']) {
@@ -2881,6 +2911,43 @@ function Close-AppDetail {
     if ($wasVisible) { Restore-TamgaFocus }
 }
 
+function Show-UpdatePackageDetail {
+    param($Package)
+    if (-not $Package) { return }
+
+    $catalogApp = $apps | Where-Object { -not $_.IsWebResource -and [string]$_.Id -eq [string]$Package.Id } | Select-Object -First 1
+    $name = [string]$Package.Name
+    $initial = if ($name.Length -gt 0) { $name.Substring(0,1).ToUpperInvariant() } else { '?' }
+    $source = if ([string]::IsNullOrWhiteSpace([string]$Package.Source)) { 'winget' } else { [string]$Package.Source }
+    $detail = [pscustomobject]@{
+        Name = $name
+        Id = [string]$Package.Id
+        Category = $(if ($catalogApp) { [string]$catalogApp.Category } else { 'Güncelleme Merkezi' })
+        Description = $(if ($catalogApp) { [string]$catalogApp.Description } else { "$name paketinin yeni sürümü WinGet kataloğunda hazır." })
+        IsWebResource = $false
+        IsScriptAction = $false
+        WebsiteUrl = $(if ($catalogApp) { [string]$catalogApp.WebsiteUrl } else { '' })
+        Url = $(if ($catalogApp) { [string]$catalogApp.Url } else { '' })
+        Logo = $(if ($catalogApp) { $catalogApp.Logo } else { $null })
+        Initial = $(if ($catalogApp) { [string]$catalogApp.Initial } else { $initial })
+        InitialOpacity = $(if ($catalogApp) { [double]$catalogApp.InitialOpacity } else { 1.0 })
+        Color = $(if ($catalogApp) { [string]$catalogApp.Color } else { '#D09335' })
+        SourceLabel = 'GÜNCELLEME HAZIR'
+        StatusDetail = ("{0} sürümünden {1} sürümüne güncellenecek." -f [string]$Package.CurrentVersion,[string]$Package.AvailableVersion)
+        SourceForeground = '#FFD58A'
+        SourceBackground = '#574422'
+        InstallState = 'UpdateAvailable'
+        Operation = 'Upgrade'
+        InstallArguments = @('upgrade','--id',[string]$Package.Id,'--exact','--source',$source,'--include-unknown')
+        IsSelected = [bool]$Package.IsSelected
+        IsUpdateCenterPackage = $true
+        UpdatePackage = $Package
+        CurrentVersion = [string]$Package.CurrentVersion
+        AvailableVersion = [string]$Package.AvailableVersion
+    }
+    Show-AppDetail -App $detail
+}
+
 function Show-AppDetail {
     param($App)
     if (-not $App) { return }
@@ -2902,7 +2969,8 @@ function Show-AppDetail {
     $controls.AppDetailStatusBadge.Background = New-ColorBrush $App.SourceBackground
     $controls.AppDetailStatusBadge.BorderBrush = New-ColorBrush $App.SourceBackground
     $controls.AppDetailWebsiteButton.Visibility = if ($App.WebsiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
-    $controls.AppDetailRemoveButton.Visibility = if ($App.InstallState -in @('Installed','UpdateAvailable')) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+    $isUpdatePackage = $App.PSObject.Properties['IsUpdateCenterPackage'] -and [bool]$App.IsUpdateCenterPackage
+    $controls.AppDetailRemoveButton.Visibility = if (-not $isUpdatePackage -and $App.InstallState -in @('Installed','UpdateAvailable')) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
     $controls.AppDetailPrimaryButton.IsEnabled = -not $script:isInstalling
     $controls.AppDetailPrimaryButton.Visibility = [Windows.Visibility]::Visible
     if ($App.IsScriptAction) {
@@ -2939,7 +3007,11 @@ $controls.AppDetailWebsiteButton.Add_Click({
 $controls.AppDetailPrimaryButton.Add_Click({
     $app = $script:detailApp
     if (-not $app) { return }
-    if ($app.IsScriptAction) {
+    if ($app.PSObject.Properties['IsUpdateCenterPackage'] -and [bool]$app.IsUpdateCenterPackage) {
+        $app.UpdatePackage.IsSelected = $true
+        $controls.UpdateList.Items.Refresh()
+        Update-UpdateCenterSelectionStatus
+    } elseif ($app.IsScriptAction) {
         Invoke-TamgaCatalogCommand -Item $app
     } elseif ($app.IsWebResource) {
         Open-TamgaWebsite -Item $app -Url $app.Url -WebResource
