@@ -1712,7 +1712,6 @@ $vendorLogoOverrides = @{
     'GreenTunnel'       = 'greentunnel-logo.png'
     'Helium'            = 'helium-logo.png'
     'TürkAnime İndirici' = 'turkanime-indirici-logo.png'
-    'BHTwitter'         = 'bhtwitter-logo.png'
     'Regram'            = 'regram-logo.png'
     'Apple Mobile Drivers Installer' = 'apple-mobile-drivers-logo.png'
     'Microsoft Activation Scripts' = 'microsoft-activation-scripts-logo.png'
