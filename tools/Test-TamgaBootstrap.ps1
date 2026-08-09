@@ -17,6 +17,7 @@ try {
         'assets\about-icon.png','assets\link-icon.png','assets\uninstall-icon.png',
         'assets\security-center-icon.png','assets\update-center-icon.png',
         'assets\picview-logo.png','assets\neofreebird-logo.png','assets\bibata-modern-ice-logo.png',
+        'assets\win11debloat-logo.png',
         'assets\windows-desktop-icons-installer-logo.png'
     )
     $missing = @($required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $target $_)) })
