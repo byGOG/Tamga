@@ -29,6 +29,7 @@ $applicationBurnInTestLogo = Join-Path $applicationAssets 'burnintest-logo.png'
 $applicationFurMarkLogo = Join-Path $applicationAssets 'furmark-logo.png'
 $applicationPicViewLogo = Join-Path $applicationAssets 'picview-logo.png'
 $applicationNeoFreeBirdLogo = Join-Path $applicationAssets 'neofreebird-logo.png'
+$applicationDesktopIconsInstallerLogo = Join-Path $applicationAssets 'windows-desktop-icons-installer-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationLinkIcon = Join-Path $applicationAssets 'link-icon.png'
@@ -68,6 +69,7 @@ $burnInTestLogoDownloadUrl = '{0}/assets/burnintest-logo.png?v={1}' -f $baseUrl,
 $furMarkLogoDownloadUrl = '{0}/assets/furmark-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $picViewLogoDownloadUrl = '{0}/assets/picview-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $neoFreeBirdLogoDownloadUrl = '{0}/assets/neofreebird-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$desktopIconsInstallerLogoDownloadUrl = '{0}/assets/windows-desktop-icons-installer-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $linkIconDownloadUrl = '{0}/assets/link-icon.png?v={1}' -f $baseUrl, $cacheBuster
@@ -89,6 +91,7 @@ $temporaryBurnInTestLogo = Join-Path $installDirectory 'burnintest-logo.png.down
 $temporaryFurMarkLogo = Join-Path $installDirectory 'furmark-logo.png.download'
 $temporaryPicViewLogo = Join-Path $installDirectory 'picview-logo.png.download'
 $temporaryNeoFreeBirdLogo = Join-Path $installDirectory 'neofreebird-logo.png.download'
+$temporaryDesktopIconsInstallerLogo = Join-Path $installDirectory 'windows-desktop-icons-installer-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 $temporaryLinkIcon = Join-Path $installDirectory 'link-icon.png.download'
@@ -112,6 +115,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $furMarkLogoDownloadUrl -OutFile $temporaryFurMarkLogo
     Invoke-WebRequest -UseBasicParsing -Uri $picViewLogoDownloadUrl -OutFile $temporaryPicViewLogo
     Invoke-WebRequest -UseBasicParsing -Uri $neoFreeBirdLogoDownloadUrl -OutFile $temporaryNeoFreeBirdLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $desktopIconsInstallerLogoDownloadUrl -OutFile $temporaryDesktopIconsInstallerLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
     Invoke-WebRequest -UseBasicParsing -Uri $linkIconDownloadUrl -OutFile $temporaryLinkIcon
@@ -158,6 +162,7 @@ try {
     Move-Item -LiteralPath $temporaryFurMarkLogo -Destination $applicationFurMarkLogo -Force
     Move-Item -LiteralPath $temporaryPicViewLogo -Destination $applicationPicViewLogo -Force
     Move-Item -LiteralPath $temporaryNeoFreeBirdLogo -Destination $applicationNeoFreeBirdLogo -Force
+    Move-Item -LiteralPath $temporaryDesktopIconsInstallerLogo -Destination $applicationDesktopIconsInstallerLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
     Move-Item -LiteralPath $temporaryLinkIcon -Destination $applicationLinkIcon -Force
@@ -165,7 +170,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'

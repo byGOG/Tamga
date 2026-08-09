@@ -1721,6 +1721,7 @@ $vendorLogoOverrides = @{
     'Yahoo Mail'        = 'yahoo-mail-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
+    'Windows Desktop Icons Installer' = 'windows-desktop-icons-installer-logo.png'
 }
 foreach ($appName in $vendorLogoOverrides.Keys) {
     $vendorLogo = Import-TamgaBrandImage -FileName $vendorLogoOverrides[$appName]

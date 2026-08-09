@@ -1374,6 +1374,16 @@
       "Category": "Betikler & Otomasyon",
       "Initial": "MAS",
       "Color": "#8A64B8"
+    },
+    {
+      "Name": "Windows Desktop Icons Installer",
+      "Description": "Klasik Windows masaüstü simgelerini geri getirir",
+      "Action": "PowerShell",
+      "Command": "irm https://bygog.github.io/Windows-Desktop-Icons-Installer/install.ps1 | iex",
+      "Url": "https://github.com/byGOG/Windows-Desktop-Icons-Installer",
+      "Category": "Betikler & Otomasyon",
+      "Initial": "W",
+      "Color": "#2563B8"
     }
   ],
   "OfficialWebsites": {
@@ -1476,6 +1486,7 @@
     "Winfetch": "https://github.com/lptstr/winfetch",
     "Winhance": "https://winhance.net/",
     "WinScript": "https://winscript.cc/",
+    "Windows Desktop Icons Installer": "https://github.com/byGOG/Windows-Desktop-Icons-Installer",
     "WinRAR": "https://www.rarlab.com/",
     "WizTree": "https://diskanalyzer.com/",
     "Zen Browser": "https://zen-browser.app/",
