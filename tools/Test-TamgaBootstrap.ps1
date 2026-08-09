@@ -15,7 +15,8 @@ try {
         'Tamga.ps1','Tamga.bat','catalog.json',
         'assets\tamga-logo.png','assets\tamga-logo.ico','assets\winget-ready.png',
         'assets\about-icon.png','assets\link-icon.png','assets\uninstall-icon.png',
-        'assets\security-center-icon.png','assets\update-center-icon.png'
+        'assets\security-center-icon.png','assets\update-center-icon.png',
+        'assets\picview-logo.png'
     )
     $missing = @($required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $target $_)) })
     if ($missing.Count -gt 0) { throw "Kurucu eksik dosya bıraktı: $($missing -join ', ')" }

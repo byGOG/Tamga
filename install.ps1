@@ -27,6 +27,7 @@ $applicationOcctLogo = Join-Path $applicationAssets 'occt-logo.png'
 $applicationPerformanceTestLogo = Join-Path $applicationAssets 'performancetest-logo.png'
 $applicationBurnInTestLogo = Join-Path $applicationAssets 'burnintest-logo.png'
 $applicationFurMarkLogo = Join-Path $applicationAssets 'furmark-logo.png'
+$applicationPicViewLogo = Join-Path $applicationAssets 'picview-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationLinkIcon = Join-Path $applicationAssets 'link-icon.png'
@@ -64,6 +65,7 @@ $occtLogoDownloadUrl = '{0}/assets/occt-logo.png?v={1}' -f $baseUrl, $cacheBuste
 $performanceTestLogoDownloadUrl = '{0}/assets/performancetest-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $burnInTestLogoDownloadUrl = '{0}/assets/burnintest-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $furMarkLogoDownloadUrl = '{0}/assets/furmark-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$picViewLogoDownloadUrl = '{0}/assets/picview-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $linkIconDownloadUrl = '{0}/assets/link-icon.png?v={1}' -f $baseUrl, $cacheBuster
@@ -83,6 +85,7 @@ $temporaryOcctLogo = Join-Path $installDirectory 'occt-logo.png.download'
 $temporaryPerformanceTestLogo = Join-Path $installDirectory 'performancetest-logo.png.download'
 $temporaryBurnInTestLogo = Join-Path $installDirectory 'burnintest-logo.png.download'
 $temporaryFurMarkLogo = Join-Path $installDirectory 'furmark-logo.png.download'
+$temporaryPicViewLogo = Join-Path $installDirectory 'picview-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 $temporaryLinkIcon = Join-Path $installDirectory 'link-icon.png.download'
@@ -104,6 +107,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $performanceTestLogoDownloadUrl -OutFile $temporaryPerformanceTestLogo
     Invoke-WebRequest -UseBasicParsing -Uri $burnInTestLogoDownloadUrl -OutFile $temporaryBurnInTestLogo
     Invoke-WebRequest -UseBasicParsing -Uri $furMarkLogoDownloadUrl -OutFile $temporaryFurMarkLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $picViewLogoDownloadUrl -OutFile $temporaryPicViewLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
     Invoke-WebRequest -UseBasicParsing -Uri $linkIconDownloadUrl -OutFile $temporaryLinkIcon
@@ -148,6 +152,7 @@ try {
     Move-Item -LiteralPath $temporaryPerformanceTestLogo -Destination $applicationPerformanceTestLogo -Force
     Move-Item -LiteralPath $temporaryBurnInTestLogo -Destination $applicationBurnInTestLogo -Force
     Move-Item -LiteralPath $temporaryFurMarkLogo -Destination $applicationFurMarkLogo -Force
+    Move-Item -LiteralPath $temporaryPicViewLogo -Destination $applicationPicViewLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
     Move-Item -LiteralPath $temporaryLinkIcon -Destination $applicationLinkIcon -Force
@@ -155,7 +160,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
