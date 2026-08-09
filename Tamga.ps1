@@ -1686,6 +1686,7 @@ $vendorLogoOverrides = @{
     'PerformanceTest' = 'performancetest-logo.png'
     'BurnInTest'      = 'burnintest-logo.png'
     'FurMark 2'       = 'furmark-logo.png'
+    'PicView'         = 'picview-logo.png'
     'PowerToys'       = 'powertoys-logo.png'
     'gsudo'           = 'gsudo-logo.png'
     'Winhance'        = 'winhance-logo.png'

@@ -262,6 +262,14 @@
       "Color": "#3FA35C"
     },
     {
+      "Name": "PicView",
+      "Description": "Hızlı ve özelleştirilebilir görsel görüntüleyici",
+      "Id": "Ruben2776.PicView",
+      "Category": "Multimedya",
+      "Initial": "P",
+      "Color": "#FF7139"
+    },
+    {
       "Name": "Spotify",
       "Description": "Müzik ve podcast",
       "Id": "Spotify.Spotify",
@@ -1422,6 +1430,7 @@
     "OneCommander": "https://onecommander.com/",
     "OpenVPN Connect": "https://openvpn.net/client/",
     "PerformanceTest": "https://www.passmark.com/products/performancetest/",
+    "PicView": "https://picview.org/",
     "PowerShell 7": "https://microsoft.com/PowerShell",
     "PlayTorrio": "https://github.com/ayman708-UX/PlayTorrioV2",
     "PowerToys": "https://learn.microsoft.com/tr-tr/windows/powertoys/",
