@@ -1053,6 +1053,15 @@
       "Color": "#C13584"
     },
     {
+      "Name": "NeoFreeBird",
+      "Description": "Twitter/X için özelleştirilmiş iOS IPA uygulaması",
+      "Action": "Url",
+      "Url": "https://github.com/theacrat/NeoFreeBird",
+      "Category": "Mobil & Araçlar",
+      "Initial": "N",
+      "Color": "#249DE4"
+    },
+    {
       "Name": "Apple Mobile Drivers Installer",
       "Description": "Apple USB ve internet paylaşımı sürücülerini kurar",
       "Action": "PowerShell",
@@ -1420,6 +1429,7 @@
     "Monochrome": "https://monochrome.tf/",
     "Mozilla Firefox": "https://www.firefox.com/tr/",
     "Mullvad Browser": "https://mullvad.net/tr/browser",
+    "NeoFreeBird": "https://github.com/theacrat/NeoFreeBird",
     "Notepad++": "https://notepad-plus-plus.org/",
     "NVIDIA App": "https://www.nvidia.com/tr-tr/software/nvidia-app/",
     "O&O AppBuster": "https://www.oo-software.com/products/ooappbuster",

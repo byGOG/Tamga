@@ -1714,6 +1714,7 @@ $vendorLogoOverrides = @{
     'Helium'            = 'helium-logo.png'
     'TürkAnime İndirici' = 'turkanime-indirici-logo.png'
     'Regram'            = 'regram-logo.png'
+    'NeoFreeBird'       = 'neofreebird-logo.png'
     'Apple Mobile Drivers Installer' = 'apple-mobile-drivers-logo.png'
     'Microsoft Activation Scripts' = 'microsoft-activation-scripts-logo.png'
     'RustDesk'          = 'rustdesk-logo.png'
