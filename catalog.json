@@ -368,6 +368,14 @@
       "Color": "#2979A8"
     },
     {
+      "Name": "CrystalDiskInfo",
+      "Description": "Disk sağlığı ve S.M.A.R.T. izleme",
+      "Id": "CrystalDewWorld.CrystalDiskInfo",
+      "Category": "Donanım & Test",
+      "Initial": "C",
+      "Color": "#287EB8"
+    },
+    {
       "Name": "CPU-Z",
       "Description": "İşlemci ve sistem bilgileri",
       "Id": "CPUID.CPU-Z",
@@ -1427,6 +1435,7 @@
     "Helium": "https://helium.computer/",
     "HashCheck": "https://github.com/gurnec/HashCheck",
     "HWiNFO64": "https://www.hwinfo.com/",
+    "CrystalDiskInfo": "https://crystalmark.info/en/software/crystaldiskinfo/",
     "Intel Driver & Support Assistant": "https://www.intel.com/content/www/us/en/support/detect.html",
     "Internet Download Manager": "https://www.internetdownloadmanager.com/",
     "IPTVnator": "https://4gray.github.io/iptvnator/",

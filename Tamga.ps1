@@ -1680,6 +1680,7 @@ if ($hwinfoLogo) {
 # Prefer vendor-provided marks instead of stale or mismatched images from the
 # downloadable logo catalog.
 $vendorLogoOverrides = @{
+    'CrystalDiskInfo' = 'crystaldiskinfo-logo.png'
     'CPU-Z'           = 'cpuz-logo.png'
     'GPU-Z'           = 'gpuz-logo.png'
     'OCCT'            = 'occt-logo.png'

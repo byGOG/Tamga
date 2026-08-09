@@ -32,6 +32,7 @@ $applicationNeoFreeBirdLogo = Join-Path $applicationAssets 'neofreebird-logo.png
 $applicationBibataModernIceLogo = Join-Path $applicationAssets 'bibata-modern-ice-logo.png'
 $applicationWin11DebloatLogo = Join-Path $applicationAssets 'win11debloat-logo.png'
 $applicationBusterLogo = Join-Path $applicationAssets 'buster-logo.png'
+$applicationCrystalDiskInfoLogo = Join-Path $applicationAssets 'crystaldiskinfo-logo.png'
 $applicationDesktopIconsInstallerLogo = Join-Path $applicationAssets 'windows-desktop-icons-installer-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
@@ -75,6 +76,7 @@ $neoFreeBirdLogoDownloadUrl = '{0}/assets/neofreebird-logo.png?v={1}' -f $baseUr
 $bibataModernIceLogoDownloadUrl = '{0}/assets/bibata-modern-ice-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $win11DebloatLogoDownloadUrl = '{0}/assets/win11debloat-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $busterLogoDownloadUrl = '{0}/assets/buster-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$crystalDiskInfoLogoDownloadUrl = '{0}/assets/crystaldiskinfo-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $desktopIconsInstallerLogoDownloadUrl = '{0}/assets/windows-desktop-icons-installer-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
@@ -100,6 +102,7 @@ $temporaryNeoFreeBirdLogo = Join-Path $installDirectory 'neofreebird-logo.png.do
 $temporaryBibataModernIceLogo = Join-Path $installDirectory 'bibata-modern-ice-logo.png.download'
 $temporaryWin11DebloatLogo = Join-Path $installDirectory 'win11debloat-logo.png.download'
 $temporaryBusterLogo = Join-Path $installDirectory 'buster-logo.png.download'
+$temporaryCrystalDiskInfoLogo = Join-Path $installDirectory 'crystaldiskinfo-logo.png.download'
 $temporaryDesktopIconsInstallerLogo = Join-Path $installDirectory 'windows-desktop-icons-installer-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
@@ -127,6 +130,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $bibataModernIceLogoDownloadUrl -OutFile $temporaryBibataModernIceLogo
     Invoke-WebRequest -UseBasicParsing -Uri $win11DebloatLogoDownloadUrl -OutFile $temporaryWin11DebloatLogo
     Invoke-WebRequest -UseBasicParsing -Uri $busterLogoDownloadUrl -OutFile $temporaryBusterLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $crystalDiskInfoLogoDownloadUrl -OutFile $temporaryCrystalDiskInfoLogo
     Invoke-WebRequest -UseBasicParsing -Uri $desktopIconsInstallerLogoDownloadUrl -OutFile $temporaryDesktopIconsInstallerLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
@@ -177,6 +181,7 @@ try {
     Move-Item -LiteralPath $temporaryBibataModernIceLogo -Destination $applicationBibataModernIceLogo -Force
     Move-Item -LiteralPath $temporaryWin11DebloatLogo -Destination $applicationWin11DebloatLogo -Force
     Move-Item -LiteralPath $temporaryBusterLogo -Destination $applicationBusterLogo -Force
+    Move-Item -LiteralPath $temporaryCrystalDiskInfoLogo -Destination $applicationCrystalDiskInfoLogo -Force
     Move-Item -LiteralPath $temporaryDesktopIconsInstallerLogo -Destination $applicationDesktopIconsInstallerLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
@@ -185,7 +190,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
