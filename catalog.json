@@ -262,14 +262,6 @@
       "Color": "#3FA35C"
     },
     {
-      "Name": "ImageGlass",
-      "Description": "Hafif ve modern görsel görüntüleyici",
-      "Id": "DuongDieuPhap.ImageGlass",
-      "Category": "Multimedya",
-      "Initial": "I",
-      "Color": "#D9509E"
-    },
-    {
       "Name": "Spotify",
       "Description": "Müzik ve podcast",
       "Id": "Spotify.Spotify",
@@ -1418,7 +1410,6 @@
     "Helium": "https://helium.computer/",
     "HashCheck": "https://github.com/gurnec/HashCheck",
     "HWiNFO64": "https://www.hwinfo.com/",
-    "ImageGlass": "https://imageglass.org/",
     "Intel Driver & Support Assistant": "https://www.intel.com/content/www/us/en/support/detect.html",
     "Internet Download Manager": "https://www.internetdownloadmanager.com/",
     "IPTVnator": "https://4gray.github.io/iptvnator/",
