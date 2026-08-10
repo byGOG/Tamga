@@ -1,0 +1,63 @@
+name: Uygulama önerisi
+description: Tamga kataloğuna yeni bir uygulama veya kaynak önerin.
+title: "[Uygulama]: "
+labels: ["katalog", "öneri"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Uygulama adı
+    validations:
+      required: true
+  - type: input
+    id: website
+    attributes:
+      label: Resmî site
+      placeholder: https://
+    validations:
+      required: true
+  - type: input
+    id: winget
+    attributes:
+      label: WinGet paket kimliği
+      description: Varsa `Yayıncı.Paket` biçiminde yazın.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Kategori
+      options:
+        - İnternet Tarayıcıları
+        - Eklentiler
+        - İletişim & Sosyal
+        - Üretkenlik
+        - Multimedya
+        - Geliştirme
+        - Yapay Zeka
+        - Donanım & Test
+        - Ağ & Uzaktan Erişim
+        - Mobil & Araçlar
+        - Sistem Araçları
+        - Güvenlik
+        - Gizlilik & Ağ Ayarları
+        - Oyun & Platformlar
+        - Dosya Yönetimi
+        - Sanallaştırma
+        - İndirme Yöneticileri
+        - Film & Medya
+        - Uygulama Arşivleri
+        - İnternet Testleri
+        - Betikler & Otomasyon
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Açıklama ve notlar
+      description: Logo kaynağı, kurulum yöntemi ve özel gereksinimleri ekleyin.
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Kontrol
+      options:
+        - label: Resmî kaynağı ve paket kimliğini kontrol ettim.
+          required: true

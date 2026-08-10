@@ -28,7 +28,7 @@ Tamga, Windows uygulamalarını yönetmeyi kolaylaştıran açık kaynak bir mas
 - uygulamaların resmî sitelerine güvenli biçimde ulaşabilirsiniz,
 - sistem ve paket yöneticisi durumunu denetleyebilirsiniz.
 
-Tamga şu anda **21 kategoride 146 uygulama ve internet kaynağı** sunar. Kurulabilir paketler WinGet üzerinden yönetilir; yalnızca internet bağlantısı olan kayıtlar kurulum sırasına eklenmez ve doğrudan ilgili siteyi açar.
+Tamga şu anda **21 kategoride 148 uygulama ve internet kaynağı** sunar. Kurulabilir paketler WinGet üzerinden yönetilir; yalnızca internet bağlantısı olan kayıtlar kurulum sırasına eklenmez ve doğrudan ilgili siteyi açar.
 
 ## Hızlı kurulum
 
@@ -83,8 +83,9 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 2. **Uygulamayı inceleyin.** Bilgi düğmesi ayrıntıları, bağlantı düğmesi resmî siteyi açar.
 3. **Kurulacak uygulamaları seçin.** Kartın sağındaki kutuyu işaretleyin. İnternet kaynağı olan kartlar seçilemez; doğrudan siteyi açar.
 4. **Kurulumu başlatın.** Alt çubuktaki **Kurulumu başlat** düğmesine basın. İşlem kuyruğunda her paketin durumunu görebilirsiniz.
-5. **Güncellemeleri yönetin.** Sol alttaki **Güncelleme Merkezi** tüm bekleyen WinGet güncellemelerini listeler.
-6. **Kurulu uygulamayı kaldırın.** Karttaki kırmızı kaldırma düğmesine basın ve onaylayın. Liste işlemden sonra otomatik yenilenir.
+5. **İsterseniz çevrimdışı paket hazırlayın.** Seçili WinGet paketlerini **Önbelleğe indir** ile `%LOCALAPPDATA%\Tamga\packages` klasörüne indirebilirsiniz.
+6. **Güncellemeleri yönetin.** Sol alttaki **Güncelleme Merkezi** tüm bekleyen WinGet güncellemelerini listeler.
+7. **Kurulu uygulamayı kaldırın.** Karttaki kırmızı kaldırma düğmesine basın ve onaylayın. Liste işlemden sonra otomatik yenilenir.
 
 ### Durum etiketleri
 
@@ -99,10 +100,14 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 ## Öne çıkan özellikler
 
 - Windows 10 ve Windows 11 ile uyumlu modern koyu arayüz
-- Akıllı kurulu uygulama ve güncelleme taraması
+- Beş dakikalık güvenli önbellekle hızlandırılan kurulu uygulama ve güncelleme taraması
 - Toplu kurulum, güncelleme ve kaldırma kuyruğu
-- Paket sürümü, yayıncı, lisans ve kaynak bilgilerini gösteren ayrıntı çekmecesi
+- Çevrimdışı kullanım için WinGet paketlerini önceden indirme ve yerel paket önbelleği
+- Paket sürümü, yayıncı, lisans, mimari ve sistem uyumluluğunu gösteren ayrıntı çekmecesi
 - Windows koruması, WinGet kaynakları ve katalog bütünlüğü için Güvenlik Merkezi
+- Bekleyen Windows yeniden başlatmalarını gösteren durum uyarısı
+- Hakkında ekranından sürüm denetimi ve tek tıklamayla Tamga güncellemesi
+- Her gün çalışan katalog, bağlantı ve WinGet kimliği sağlık denetimi
 - Eksik WinGet’i Microsoft Store olmadan hazırlayabilen kurulum akışı
 - Windows Sandbox gibi boş sistemlerde çalışma desteği
 - Resmî site bağlantıları ve yerel önbelleğe alınan uygulama logoları

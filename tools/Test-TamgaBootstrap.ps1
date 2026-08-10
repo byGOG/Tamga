@@ -12,7 +12,7 @@ $target = Join-Path $env:TEMP ("Tamga-bootstrap-test-{0}" -f [Guid]::NewGuid().T
 try {
     & (Join-Path $root 'install.ps1') -BaseUrl $BaseUrl -InstallDirectory $target -NoLaunch
     $required = @(
-        'Tamga.ps1','Tamga.bat','catalog.json',
+        'Tamga.ps1','Tamga.bat','catalog.json','version.json',
         'assets\tamga-logo.png','assets\tamga-logo.ico','assets\winget-ready.png',
         'assets\about-icon.png','assets\link-icon.png','assets\uninstall-icon.png',
         'assets\security-center-icon.png','assets\update-center-icon.png',

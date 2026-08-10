@@ -16,6 +16,7 @@ $legacyInstallDirectory = Join-Path $env:LOCALAPPDATA 'PowerHub'
 $applicationScript = Join-Path $installDirectory 'Tamga.ps1'
 $applicationLauncher = Join-Path $installDirectory 'Tamga.bat'
 $applicationCatalog = Join-Path $installDirectory 'catalog.json'
+$applicationVersion = Join-Path $installDirectory 'version.json'
 $applicationAssets = Join-Path $installDirectory 'assets'
 $applicationLogo = Join-Path $applicationAssets 'tamga-logo.png'
 $applicationIcon = Join-Path $applicationAssets 'tamga-logo.ico'
@@ -61,6 +62,7 @@ $cacheBuster = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
 $scriptDownloadUrl = '{0}/Tamga.ps1?v={1}' -f $baseUrl, $cacheBuster
 $launcherDownloadUrl = '{0}/Tamga.bat?v={1}' -f $baseUrl, $cacheBuster
 $catalogDownloadUrl = '{0}/catalog.json?v={1}' -f $baseUrl, $cacheBuster
+$versionDownloadUrl = '{0}/version.json?v={1}' -f $baseUrl, $cacheBuster
 $logoDownloadUrl = '{0}/assets/tamga-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $iconDownloadUrl = '{0}/assets/tamga-logo.ico?v={1}' -f $baseUrl, $cacheBuster
 $powerShellLogoDownloadUrl = '{0}/assets/powershell-logo.png?v={1}' -f $baseUrl, $cacheBuster
@@ -87,6 +89,7 @@ $updateCenterIconDownloadUrl = '{0}/assets/update-center-icon.png?v={1}' -f $bas
 $temporaryScript = Join-Path $installDirectory 'Tamga.ps1.download'
 $temporaryLauncher = Join-Path $installDirectory 'Tamga.bat.download'
 $temporaryCatalog = Join-Path $installDirectory 'catalog.json.download'
+$temporaryVersion = Join-Path $installDirectory 'version.json.download'
 $temporaryLogo = Join-Path $installDirectory 'tamga-logo.png.download'
 $temporaryIcon = Join-Path $installDirectory 'tamga-logo.ico.download'
 $temporaryPowerShellLogo = Join-Path $installDirectory 'powershell-logo.png.download'
@@ -115,6 +118,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $scriptDownloadUrl -OutFile $temporaryScript
     Invoke-WebRequest -UseBasicParsing -Uri $launcherDownloadUrl -OutFile $temporaryLauncher
     Invoke-WebRequest -UseBasicParsing -Uri $catalogDownloadUrl -OutFile $temporaryCatalog
+    Invoke-WebRequest -UseBasicParsing -Uri $versionDownloadUrl -OutFile $temporaryVersion
     Invoke-WebRequest -UseBasicParsing -Uri $logoDownloadUrl -OutFile $temporaryLogo
     Invoke-WebRequest -UseBasicParsing -Uri $iconDownloadUrl -OutFile $temporaryIcon
     Invoke-WebRequest -UseBasicParsing -Uri $powerShellLogoDownloadUrl -OutFile $temporaryPowerShellLogo
@@ -143,6 +147,10 @@ try {
     if ($catalog.SchemaVersion -ne 1 -or @($catalog.Applications).Count -eq 0) {
         throw 'Indirilen Tamga katalogu gecerli degil.'
     }
+    $versionManifest = Get-Content -LiteralPath $temporaryVersion -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ([string]::IsNullOrWhiteSpace([string]$versionManifest.Version)) {
+        throw 'Indirilen Tamga surum bilgisi gecerli degil.'
+    }
 
     $tokens = $null
     $parseErrors = $null
@@ -166,6 +174,7 @@ try {
     Move-Item -LiteralPath $temporaryScript -Destination $applicationScript -Force
     Move-Item -LiteralPath $temporaryLauncher -Destination $applicationLauncher -Force
     Move-Item -LiteralPath $temporaryCatalog -Destination $applicationCatalog -Force
+    Move-Item -LiteralPath $temporaryVersion -Destination $applicationVersion -Force
     Move-Item -LiteralPath $temporaryLogo -Destination $applicationLogo -Force
     Move-Item -LiteralPath $temporaryIcon -Destination $applicationIcon -Force
     Move-Item -LiteralPath $temporaryPowerShellLogo -Destination $applicationPowerShellLogo -Force
@@ -190,7 +199,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryVersion, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'

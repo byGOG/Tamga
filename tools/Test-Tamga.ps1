@@ -26,7 +26,7 @@ function Test-PowerShellFile {
     Assert-Tamga ($parseErrors.Count -eq 0) "$RelativePath PowerShell sözdizimi hatası içeriyor: $($parseErrors.Message -join '; ')"
 }
 
-foreach ($file in @('Tamga.ps1','install.ps1','tools\Test-Tamga.ps1','tools\Test-TamgaBootstrap.ps1')) { Test-PowerShellFile $file }
+foreach ($file in @('Tamga.ps1','install.ps1','tools\Test-Tamga.ps1','tools\Test-TamgaBootstrap.ps1','tools\Test-CatalogHealth.ps1')) { Test-PowerShellFile $file }
 
 $scriptPath = Join-Path $root 'Tamga.ps1'
 $scriptText = [IO.File]::ReadAllText($scriptPath, [Text.Encoding]::UTF8)
@@ -134,6 +134,14 @@ Assert-Tamga (-not ($installBytes.Length -ge 3 -and $installBytes[0] -eq 0xEF -a
 Assert-Tamga (-not ($onlineBytes.Length -ge 3 -and $onlineBytes[0] -eq 0xEF -and $onlineBytes[1] -eq 0xBB -and $onlineBytes[2] -eq 0xBF)) 'Tamga-Online.bat UTF-8 BOM içermemeli.'
 Assert-Tamga ($scriptText -notmatch 'CurrentVersion\\Fonts|AddFontResourceEx|RemoveFontResourceEx|Tamga-Inter') 'Tamga kullanıcı yazı tiplerini veya font kayıt defterini değiştirmemeli.'
 Assert-Tamga ($scriptText -notmatch 'Set-ExecutionPolicy') 'Tamga kalıcı ExecutionPolicy değişikliği yapmamalı.'
+Assert-Tamga (Test-Path -LiteralPath (Join-Path $root 'version.json')) 'Sürüm bildirimi eksik: version.json'
+Assert-Tamga ($scriptText -match 'Update-TamgaVersionState') 'Tamga kendi sürümünü denetlemeli.'
+Assert-Tamga ($scriptText -match 'Test-TamgaPendingReboot') 'Bekleyen yeniden başlatma denetimi eksik.'
+Assert-Tamga ($scriptText -match "ValidateSet\('Install','Upgrade','Uninstall','Download'\)") 'Çevrimdışı paket indirme işlemi eksik.'
+Assert-Tamga ($scriptText -match 'Save-TamgaOfflineReceipt') 'İndirilen paket doğrulama kaydı eksik.'
+Assert-Tamga ($scriptText -match 'system-scan.json') 'Sistem taraması önbelleği eksik.'
+Assert-Tamga ($scriptText -match 'AppDetailCompatibility') 'Paket uyumluluk görünümü eksik.'
+Assert-Tamga (Test-Path -LiteralPath (Join-Path $root '.github\ISSUE_TEMPLATE\uygulama-onerisi.yml')) 'Uygulama önerisi şablonu eksik.'
 
 if ($warnings.Count -gt 0) {
     Write-Host "`nUyarılar ($($warnings.Count))" -ForegroundColor Yellow

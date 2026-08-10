@@ -1,0 +1,29 @@
+name: Günlük katalog sağlığı
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Katalog yapısını ve bağlantıları denetle
+        shell: powershell
+        run: .\tools\Test-CatalogHealth.ps1 -CheckNetwork
+      - name: WinGet paket kimliklerini denetle
+        shell: powershell
+        run: |
+          $catalog = Get-Content .\catalog.json -Raw -Encoding UTF8 | ConvertFrom-Json
+          $missing = @()
+          foreach ($app in @($catalog.Applications | Where-Object { $_.Id -and $_.Action -notin @('Url','PowerShell') })) {
+            winget show --id $app.Id --exact --accept-source-agreements --disable-interactivity | Out-Null
+            if ($LASTEXITCODE -ne 0) { $missing += "$($app.Name) [$($app.Id)]" }
+          }
+          if ($missing.Count) { throw "Bulunamayan WinGet paketleri:`n$($missing -join "`n")" }

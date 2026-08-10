@@ -20,3 +20,6 @@ jobs:
       - name: Tamga kalite kapisini calistir
         shell: powershell
         run: .\tools\Test-Tamga.ps1
+      - name: Katalog sagligini denetle
+        shell: powershell
+        run: .\tools\Test-CatalogHealth.ps1

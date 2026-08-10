@@ -500,6 +500,10 @@ $script:tamgaIconPath = @(
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="5,0,0,0">
                                 <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
+                            <Border x:Name="RebootBadge" Background="#543D22" CornerRadius="9" Padding="7,4" Margin="5,0,0,0" Visibility="Collapsed"
+                                    ToolTip="Windows veya bir paket işlemi yeniden başlatma bekliyor.">
+                                <TextBlock Text="↻  Yeniden başlatma bekliyor" Foreground="#FFD58A" FontSize="10.5" FontWeight="SemiBold"/>
+                            </Border>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
@@ -665,6 +669,10 @@ $script:tamgaIconPath = @(
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button x:Name="QueueViewButton" Content="Kuyruk" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster (Ctrl+Q)" AutomationProperties.Name="Kurulum kuyruğunu göster"/>
+                        <Button x:Name="DownloadButton" Content="Önbelleğe indir" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                                Margin="0,0,9,0" IsEnabled="False" ToolTip="Seçilen paketleri kurmadan çevrimdışı önbelleğe indir"/>
+                        <Button x:Name="OfflineCacheButton" Content="Önbellek" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
+                                Margin="0,0,9,0" ToolTip="Çevrimdışı paket önbelleğini aç"/>
                         <Button x:Name="SelectAllButton" Content="Görünenleri seç" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" ToolTip="Görünen kartları seç veya seçimi kaldır (Ctrl+A)" AutomationProperties.Name="Görünen uygulamaları seç veya seçimi kaldır"/>
                         <Button x:Name="InstallButton" Content="Kurulumu başlat  →" Background="#0EA5E9" Foreground="White"
@@ -732,7 +740,7 @@ $script:tamgaIconPath = @(
                             <TextBlock Text="PAKET BİLGİLERİ" Foreground="#7F8B94" FontSize="9" FontWeight="Bold" Margin="0,22,0,8"/>
                             <Border Background="#1A222C" BorderBrush="#334150" BorderThickness="1" CornerRadius="10" Padding="13,11">
                                 <Grid>
-                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="104"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <TextBlock Text="Paket kimliği" Foreground="#8D999F" FontSize="10.5"/>
                                     <TextBlock x:Name="AppDetailId" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontFamily="Cascadia Mono, Consolas" FontSize="10.5" TextWrapping="Wrap"/>
@@ -758,6 +766,10 @@ $script:tamgaIconPath = @(
                                     <TextBlock x:Name="AppDetailElevation" Grid.Row="10" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                     <TextBlock Grid.Row="11" Text="Katalog tarihi" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
                                     <TextBlock x:Name="AppDetailCatalogUpdated" Grid.Row="11" Grid.Column="1" Text="—" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock Grid.Row="12" Text="Mimari" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailArchitecture" Grid.Row="12" Grid.Column="1" Text="Denetleniyor" Foreground="#E2E7EA" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="13" Text="Uyumluluk" Foreground="#8D999F" FontSize="10.5" Margin="0,10,0,0"/>
+                                    <TextBlock x:Name="AppDetailCompatibility" Grid.Row="13" Grid.Column="1" Text="Denetleniyor" Foreground="#6EE7B7" FontSize="10.5" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -1298,6 +1310,10 @@ $script:tamgaIconPath = @(
                             <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="{DynamicResource Primary}" Foreground="White"
                                     BorderBrush="#258CC0" BorderThickness="1" Padding="13,10" ToolTip="Tamga GitHub sayfasını aç"/>
                         </Grid>
+                        <Grid Margin="0,10,0,0">
+                            <TextBlock x:Name="AboutVersionText" Text="Sürüm denetleniyor..." Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+                            <Button x:Name="AboutUpdateButton" Content="Tamga'yı güncelle" HorizontalAlignment="Right" Background="#0E7490" Foreground="White" Visibility="Collapsed"/>
+                        </Grid>
                         <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="{DynamicResource Muted}" FontSize="9.5" HorizontalAlignment="Center" Margin="0,16,0,0"/>
                     </StackPanel>
                 </Grid>
@@ -1321,14 +1337,72 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
-  'ActivityText','InstallProgress','SelectAllButton','InstallButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
-  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','SordumLink') | ForEach-Object {
+@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+  'ActivityText','InstallProgress','SelectAllButton','InstallButton','DownloadButton','OfflineCacheButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
+  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailArchitecture','AppDetailCompatibility','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','AboutVersionText','AboutUpdateButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
 function New-ColorBrush([string]$color) {
     return [Windows.Media.BrushConverter]::new().ConvertFromString($color)
+}
+
+$script:tamgaDataRoot = Join-Path $env:LOCALAPPDATA 'Tamga'
+$script:tamgaCacheRoot = Join-Path $script:tamgaDataRoot 'cache'
+$script:systemScanCachePath = Join-Path $script:tamgaCacheRoot 'system-scan.json'
+$script:offlinePackageRoot = Join-Path $script:tamgaDataRoot 'packages'
+foreach ($directory in @($script:tamgaCacheRoot,$script:offlinePackageRoot)) {
+    if (-not (Test-Path -LiteralPath $directory)) { New-Item -ItemType Directory -Path $directory -Force | Out-Null }
+}
+
+function Get-TamgaLocalVersion {
+    $manifestPath = Join-Path $PSScriptRoot 'version.json'
+    if (-not (Test-Path -LiteralPath $manifestPath)) { return '1.0.0' }
+    try { return [string](Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json).Version } catch { return '1.0.0' }
+}
+
+function Save-TamgaOfflineReceipt {
+    param($Item)
+    try {
+        $receiptPath = Join-Path $script:offlinePackageRoot 'tamga-paketler.json'
+        $records = if (Test-Path -LiteralPath $receiptPath) { @(Get-Content -LiteralPath $receiptPath -Raw -Encoding UTF8 | ConvertFrom-Json) } else { @() }
+        $records = @($records | Where-Object { $_.Id -ne [string]$Item.Id }) + [pscustomobject]@{
+            Name = [string]$Item.Name
+            Id = [string]$Item.Id
+            Source = [string]$Item.PackageSource
+            DownloadedAt = [DateTimeOffset]::Now.ToString('o')
+            Verification = 'WinGet yükleyici özeti ve SHA-256 denetimi başarılı'
+        }
+        [IO.File]::WriteAllText($receiptPath, ($records | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
+    } catch { Write-TamgaLog -Message "Önbellek doğrulama kaydı yazılamadı: $($_.Exception.Message)" -Color DarkYellow }
+}
+
+function Test-TamgaPendingReboot {
+    $paths = @(
+        'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending',
+        'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired',
+        'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager'
+    )
+    if (Test-Path -LiteralPath $paths[0]) { return $true }
+    if (Test-Path -LiteralPath $paths[1]) { return $true }
+    try { return $null -ne (Get-ItemProperty -LiteralPath $paths[2] -Name PendingFileRenameOperations -ErrorAction Stop).PendingFileRenameOperations } catch { return $false }
+}
+
+function Update-TamgaRebootState {
+    $controls.RebootBadge.Visibility = if (Test-TamgaPendingReboot) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
+}
+
+function Update-TamgaVersionState {
+    $local = Get-TamgaLocalVersion
+    $controls.AboutVersionText.Text = "Yüklü sürüm: $local"
+    $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Collapsed
+    try {
+        $remote = Invoke-RestMethod -UseBasicParsing -Uri ("https://bygog.github.io/Tamga/version.json?v={0}" -f [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) -TimeoutSec 4
+        if ([version]$remote.Version -gt [version]$local) {
+            $controls.AboutVersionText.Text = "Yüklü: $local  •  Yeni: $($remote.Version)"
+            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
+        } else { $controls.AboutVersionText.Text = "Sürüm $local • güncel" }
+    } catch { $controls.AboutVersionText.Text = "Sürüm $local • çevrimdışı denetim" }
 }
 
 function Import-TamgaBrandImage {
@@ -2182,6 +2256,7 @@ function Update-SelectionStatus {
     }
     $script:wingetExecutable = Resolve-WingetExecutable
     $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
+    $controls.DownloadButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
     $controls.InstallButton.Content = if (@($selected | Where-Object Operation -eq 'Upgrade').Count -gt 0) { 'İşlemi başlat  →' } else { 'Kurulumu başlat  →' }
     if ($previousSelectionText -ne [string]$controls.SelectionText.Text) { Send-TamgaAnnouncement $controls.SelectionText.Text }
 }
@@ -2303,7 +2378,7 @@ $script:systemScanTimer = [Windows.Threading.DispatcherTimer]::new()
 $script:systemScanTimer.Interval = [TimeSpan]::FromMilliseconds(450)
 
 function Complete-SystemScan {
-    param($ScanResult)
+    param($ScanResult, [switch]$FromCache)
 
     if (-not $ScanResult -or [int]$ScanResult.InstalledExitCode -ne 0) {
         throw 'WinGet kurulu uygulama listesini döndüremedi.'
@@ -2328,7 +2403,14 @@ function Complete-SystemScan {
     $installedCount = @($apps | Where-Object { $_.InstallState -in @('Installed','UpdateAvailable') }).Count
     $updateCount = $script:updatePackages.Count
     $controls.ActivityText.Text = "Sistem tarandı: $installedCount kurulu, $updateCount güncelleme."
-    Write-TamgaLog -Message "Akıllı tarama tamamlandı: $installedCount kurulu, $updateCount güncelleme." -Color Green
+    if (-not $FromCache) {
+        try {
+            $cacheRecord = [ordered]@{ CachedAt=[DateTimeOffset]::Now.ToString('o'); InstalledExitCode=$ScanResult.InstalledExitCode; UpgradeExitCode=$ScanResult.UpgradeExitCode; InstalledOutput=$installedOutput; UpgradeOutput=$upgradeOutput }
+            [IO.File]::WriteAllText($script:systemScanCachePath, ($cacheRecord | ConvertTo-Json -Compress), [Text.UTF8Encoding]::new($false))
+        } catch { }
+    }
+    Write-TamgaLog -Message $(if ($FromCache) { "Önbellekli tarama yüklendi: $installedCount kurulu, $updateCount güncelleme." } else { "Akıllı tarama tamamlandı: $installedCount kurulu, $updateCount güncelleme." }) -Color Green
+    Update-TamgaRebootState
 }
 
 $script:systemScanTimer.Add_Tick({
@@ -2368,10 +2450,21 @@ $script:systemScanTimer.Add_Tick({
 })
 
 function Start-SystemScan {
-    param([switch]$PreserveCurrentState)
+    param([switch]$PreserveCurrentState, [switch]$Force)
     if ($script:systemScanProcess -or $script:isInstalling) { return }
     $winget = Resolve-WingetExecutable
     if (-not $winget) { return }
+
+    if (-not $Force -and (Test-Path -LiteralPath $script:systemScanCachePath)) {
+        try {
+            $cached = Get-Content -LiteralPath $script:systemScanCachePath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $cacheAge = [DateTimeOffset]::Now - [DateTimeOffset]::Parse([string]$cached.CachedAt)
+            if ($cacheAge.TotalMinutes -lt 5) {
+                Complete-SystemScan -ScanResult $cached -FromCache
+                return
+            }
+        } catch { Remove-Item -LiteralPath $script:systemScanCachePath -Force -ErrorAction SilentlyContinue }
+    }
 
     if (-not $PreserveCurrentState) {
         foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) { Set-AppInstallState -App $app -State Pending }
@@ -2539,7 +2632,7 @@ $controls.UpdateBackButton.Add_Click({
     Set-ActiveCategory -CategoryName $script:activeCategory
     Update-AppList
 })
-$controls.UpdateRefreshButton.Add_Click({ Start-SystemScan })
+$controls.UpdateRefreshButton.Add_Click({ Start-SystemScan -Force })
 $controls.SecurityCenterButton.Add_Click({ Set-SecurityCenterVisibility $true })
 $controls.SecurityBackButton.Add_Click({
     Set-ActiveCategory -CategoryName $script:activeCategory
@@ -2665,7 +2758,10 @@ function Set-TamgaAboutVisibility([bool]$Visible) {
     $wasVisible = $controls.AboutOverlay.Visibility -eq [Windows.Visibility]::Visible
     if ($Visible -and -not $wasVisible) { Save-TamgaFocus }
     $controls.AboutOverlay.Visibility = if ($Visible) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
-    if ($Visible) { $controls.AboutCloseButton.Focus() | Out-Null }
+    if ($Visible) {
+        Update-TamgaVersionState
+        $controls.AboutCloseButton.Focus() | Out-Null
+    }
     elseif ($wasVisible) { Restore-TamgaFocus }
 }
 $controls.AboutButton.Add_Click({ Set-TamgaAboutVisibility $true })
@@ -2676,6 +2772,20 @@ $controls.AboutByGogButton.Add_Click({
 })
 $controls.AboutGitHubButton.Add_Click({
     try { Start-Process -FilePath 'https://github.com/byGOG/Tamga' } catch { Write-TamgaLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
+})
+$controls.AboutUpdateButton.Add_Click({
+    try {
+        $controls.AboutUpdateButton.IsEnabled = $false
+        $controls.AboutUpdateButton.Content = 'Güncelleme başlatılıyor…'
+        $updateCommand = "`$ErrorActionPreference='Stop'; `$content=Invoke-RestMethod -UseBasicParsing 'https://bygog.github.io/Tamga/install.ps1'; & ([scriptblock]::Create([string]`$content))"
+        $encodedUpdate = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($updateCommand))
+        Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-EncodedCommand',$encodedUpdate) | Out-Null
+        $window.Close()
+    } catch {
+        $controls.AboutUpdateButton.IsEnabled = $true
+        $controls.AboutUpdateButton.Content = "Tamga'yı güncelle"
+        Write-TamgaLog -Message "Tamga güncellemesi başlatılamadı: $($_.Exception.Message)" -Color Red
+    }
 })
 $controls.SordumLink.Add_RequestNavigate({
     param($sender, $eventArgs)
@@ -2828,6 +2938,9 @@ function Set-AppDetailMetadata {
     $controls.AppDetailHashStatus.ToolTip = $Metadata.Hash
     $controls.AppDetailElevation.Text = $Metadata.Elevation
     $controls.AppDetailCatalogUpdated.Text = $Metadata.CatalogUpdated
+    $controls.AppDetailArchitecture.Text = $Metadata.Architecture
+    $controls.AppDetailCompatibility.Text = $Metadata.Compatibility
+    $controls.AppDetailCompatibility.Foreground = New-ColorBrush $(if ($Metadata.Compatibility -match 'uyumsuz|desteklenmiyor') { '#FFAAAA' } elseif ($Metadata.Compatibility -match 'uyarı') { '#FFD58A' } else { '#6EE7B7' })
     $controls.AppDetailMetadataState.Text = $Metadata.State
 }
 
@@ -2860,6 +2973,17 @@ $script:detailMetadataTimer.Add_Tick({
             HashStatus = $hashStatus
             Elevation = Get-AppDetailElevation -Output ([string]$result.ShowOutput)
             CatalogUpdated = Get-TamgaCatalogDate
+            Architecture = $(
+                $architecture = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('Architecture','Mimari','Installer Architecture')
+                if ($architecture -eq '—') { 'WinGet otomatik seçer' } else { $architecture }
+            )
+            Compatibility = $(
+                $architecture = Get-AppDetailWingetField -Output ([string]$result.ShowOutput) -Labels @('Architecture','Mimari','Installer Architecture')
+                $machine = [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant()
+                if ($architecture -match '(?i)arm64' -and $machine -notmatch 'arm64') { 'Bu paket ARM64 gerektiriyor; sistemle uyumsuz.' }
+                elseif ($architecture -match '(?i)x64' -and $machine -match 'x86') { 'Bu paket 64 bit Windows gerektiriyor; sistemle uyumsuz.' }
+                else { "Uyumlu • Windows $machine • SHA-256 denetimi etkin" }
+            )
             State = if ([int]$result.ShowExitCode -eq 0) { "WinGet ayrıntıları hazır • $([DateTime]::Now.ToString('HH:mm:ss'))" } else { 'Katalog ayrıntılarının bir bölümü alınamadı' }
         }
         $script:detailMetadataCache[[string]$result.Id] = $metadata
@@ -2877,7 +3001,7 @@ function Start-AppDetailMetadataLoad {
     Stop-AppDetailMetadataLoad
     if ($App.IsWebResource) {
         Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-            InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; Repository=$(if ($App.WebsiteUrl) { $App.WebsiteUrl } else { 'Belirtilmemiş' }); Hash='—'; HashStatus='Uygulanamaz'; Elevation='Yetki gerekmez'; CatalogUpdated=(Get-TamgaCatalogDate); State='İnternet kaynağı • kurulum gerektirmez'
+            InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; Repository=$(if ($App.WebsiteUrl) { $App.WebsiteUrl } else { 'Belirtilmemiş' }); Hash='—'; HashStatus='Uygulanamaz'; Elevation='Yetki gerekmez'; CatalogUpdated=(Get-TamgaCatalogDate); Architecture='Web kaynağı'; Compatibility='Uyumlu • kurulum gerektirmez'; State='İnternet kaynağı • kurulum gerektirmez'
         })
         return
     }
@@ -2887,7 +3011,7 @@ function Start-AppDetailMetadataLoad {
     }
     $isUpdatePackage = $App.PSObject.Properties['IsUpdateCenterPackage'] -and [bool]$App.IsUpdateCenterPackage
     Set-AppDetailMetadata -Metadata ([pscustomobject]@{
-        InstalledVersion=$(if ($isUpdatePackage) { [string]$App.CurrentVersion } else { '…' }); CatalogVersion=$(if ($isUpdatePackage) { [string]$App.AvailableVersion } else { '…' }); Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; Repository='Yükleniyor'; Hash=''; HashStatus='Denetleniyor'; Elevation='Denetleniyor'; CatalogUpdated=(Get-TamgaCatalogDate); State='WinGet katalog ayrıntıları alınıyor...'
+        InstalledVersion=$(if ($isUpdatePackage) { [string]$App.CurrentVersion } else { '…' }); CatalogVersion=$(if ($isUpdatePackage) { [string]$App.AvailableVersion } else { '…' }); Publisher='Yükleniyor'; Author='Yükleniyor'; License='Yükleniyor'; InstallerType='Yükleniyor'; Tags='Yükleniyor'; Repository='Yükleniyor'; Hash=''; HashStatus='Denetleniyor'; Elevation='Denetleniyor'; CatalogUpdated=(Get-TamgaCatalogDate); Architecture='Denetleniyor'; Compatibility='Denetleniyor'; State='WinGet katalog ayrıntıları alınıyor...'
     })
     $source = 'winget'
     if ($App.PSObject.Properties['InstallArguments']) {
@@ -3176,7 +3300,7 @@ $window.Add_PreviewKeyDown({
         return
     }
     if ($eventArgs.Key -eq [Windows.Input.Key]::F5) {
-        if ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible) { Start-SecurityScan } else { Start-SystemScan }
+        if ($controls.SecurityCenterView.Visibility -eq [Windows.Visibility]::Visible) { Start-SecurityScan } else { Start-SystemScan -Force }
         $eventArgs.Handled = $true
         return
     }
@@ -3381,7 +3505,7 @@ function Complete-UpdateQueue {
     foreach ($package in $script:updatePackages) { $package.IsSelected = $false }
     $controls.UpdateList.Items.Refresh()
     Update-UpdateCenterSelectionStatus
-    Start-SystemScan -PreserveCurrentState
+    Start-SystemScan -PreserveCurrentState -Force
 }
 
 function Start-NextUpdate {
@@ -3539,7 +3663,7 @@ function Update-InstallQueueSummary {
 }
 
 function New-InstallQueueEntry {
-    param($App, [ValidateSet('Install','Upgrade','Uninstall')][string]$OperationOverride)
+    param($App, [ValidateSet('Install','Upgrade','Uninstall','Download')][string]$OperationOverride)
     $sourceIndex = if ($App.PSObject.Properties['InstallArguments']) { [Array]::IndexOf([object[]]@($App.InstallArguments), '--source') } else { -1 }
     $packageSource = if ($sourceIndex -ge 0 -and ($sourceIndex + 1) -lt @($App.InstallArguments).Count) { @($App.InstallArguments)[$sourceIndex + 1] } else { 'winget' }
     $operation = if ($OperationOverride) { $OperationOverride } else { $App.Operation }
@@ -3557,7 +3681,7 @@ function New-InstallQueueEntry {
         StatusIcon = '…'
         StatusBackground = '#3A3F45'
         StatusForeground = '#C2CBD1'
-        Detail = if ($operation -eq 'Uninstall') { 'Kaldırma için sırada' } elseif ($operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
+        Detail = if ($operation -eq 'Uninstall') { 'Kaldırma için sırada' } elseif ($operation -eq 'Upgrade') { 'Güncelleme için sırada' } elseif ($operation -eq 'Download') { 'Çevrimdışı önbellek için sırada' } elseif ($App.PSObject.Properties['Action'] -and $App.Action -eq 'Url') { 'Resmî indirme sayfası için sırada' } else { 'Kurulum için sırada' }
         Code = 0
         StoreRetryCount = 0
     }
@@ -3622,7 +3746,10 @@ function Initialize-MicrosoftStoreSource {
 
 function Get-PackageOperationArguments {
     param($Item, [switch]$Interactive)
-    $arguments = if ($Item.Operation -eq 'Uninstall') {
+    $arguments = if ($Item.Operation -eq 'Download') {
+        if (-not (Test-Path -LiteralPath $script:offlinePackageRoot)) { New-Item -ItemType Directory -Path $script:offlinePackageRoot -Force | Out-Null }
+        @('download','--id',$Item.Id,'--exact','--source',$Item.PackageSource,'--download-directory',$script:offlinePackageRoot)
+    } elseif ($Item.Operation -eq 'Uninstall') {
         @('uninstall','--id',$Item.Id,'--exact')
     } elseif ($Item.Operation -eq 'Upgrade') {
         @('upgrade','--id',$Item.Id,'--exact','--source',$Item.PackageSource,'--include-unknown')
@@ -3634,7 +3761,10 @@ function Get-PackageOperationArguments {
     if ($Item.Operation -ne 'Uninstall' -and $arguments -notcontains '--source') { $arguments += @('--source','winget') }
     $arguments += '--accept-source-agreements'
     if ($Item.Operation -ne 'Uninstall') { $arguments += '--accept-package-agreements' }
-    if (-not $Interactive) { $arguments += @('--silent','--disable-interactivity') }
+    if (-not $Interactive) {
+        if ($Item.Operation -ne 'Download') { $arguments += '--silent' }
+        $arguments += '--disable-interactivity'
+    }
     return @($arguments)
 }
 
@@ -3738,10 +3868,12 @@ function Complete-InstallQueue {
     $manualCount = @($script:installResults | Where-Object Manual).Count
     $successCount = @($script:installResults | Where-Object { $_.Success -and -not $_.Manual }).Count
     $removedCount = @($script:installQueueItems | Where-Object { $_.Status -eq 'Success' -and $_.Operation -eq 'Uninstall' }).Count
-    $changedCount = [Math]::Max(0, $successCount - $removedCount)
+    $downloadedCount = @($script:installQueueItems | Where-Object { $_.Status -eq 'Success' -and $_.Operation -eq 'Download' }).Count
+    $changedCount = [Math]::Max(0, $successCount - $removedCount - $downloadedCount)
     $summaryParts = @()
     if ($changedCount -gt 0) { $summaryParts += "$changedCount kuruldu veya güncellendi" }
     if ($removedCount -gt 0) { $summaryParts += "$removedCount kaldırıldı" }
+    if ($downloadedCount -gt 0) { $summaryParts += "$downloadedCount paket önbelleğe indirildi" }
     if ($manualCount -gt 0) { $summaryParts += "$manualCount indirme sayfası açıldı" }
     $summary = if ($summaryParts.Count -gt 0) { $summaryParts -join ', ' } else { 'İşlem tamamlandı' }
     if ($failed.Count -eq 0) {
@@ -3753,7 +3885,7 @@ function Complete-InstallQueue {
     }
     Update-InstallQueueSummary
     Update-SelectionStatus
-    Start-SystemScan -PreserveCurrentState
+    if (@($script:installQueueItems | Where-Object Operation -ne 'Download').Count -gt 0) { Start-SystemScan -PreserveCurrentState -Force }
 }
 
 function Start-NextInstall {
@@ -3765,7 +3897,7 @@ function Start-NextInstall {
 
     $item = $script:installQueue[$script:installIndex]
     $controls.InstallProgress.Value = [int](($script:installIndex / $script:installQueue.Count) * 100)
-    Set-InstallQueueEntryState -Entry $item -State Running -Detail $(if ($item.Action -eq 'Url') { 'Resmî indirme sayfası açılıyor' } elseif ($item.Operation -eq 'Uninstall') { 'Paket kaldırılıyor' } elseif ($item.Operation -eq 'Upgrade') { 'Paket güncelleniyor' } else { 'Paket kuruluyor' })
+    Set-InstallQueueEntryState -Entry $item -State Running -Detail $(if ($item.Action -eq 'Url') { 'Resmî indirme sayfası açılıyor' } elseif ($item.Operation -eq 'Uninstall') { 'Paket kaldırılıyor' } elseif ($item.Operation -eq 'Upgrade') { 'Paket güncelleniyor' } elseif ($item.Operation -eq 'Download') { 'Paket önbelleğe indiriliyor' } else { 'Paket kuruluyor' })
     Update-InstallQueueSummary
 
     if ($item.Action -eq 'Url') {
@@ -3787,14 +3919,14 @@ function Start-NextInstall {
         return
     }
 
-    $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
+    $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } elseif ($item.Operation -eq 'Download') { "İndiriliyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
     $installArguments = @(Get-PackageOperationArguments -Item $item)
 
     try {
         if ($item.Operation -ne 'Uninstall' -and $item.PackageSource -eq 'msstore') {
             [void](Initialize-MicrosoftStoreSource)
         }
-        Write-TamgaLog -Message $(if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }) -Color Cyan
+        Write-TamgaLog -Message $(if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } elseif ($item.Operation -eq 'Download') { "Önbelleğe indiriliyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }) -Color Cyan
         Write-TamgaLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
         $script:wingetExecutable = Resolve-WingetExecutable
         if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
@@ -3814,6 +3946,7 @@ function Start-NextInstall {
 function Test-PackageOperationApplied {
     param($Item)
 
+    if ($Item.Operation -eq 'Download') { return $true }
     if (-not $script:wingetExecutable -or -not $Item.Id) { return $true }
     try {
         $listOutput = & $script:wingetExecutable list --id $Item.Id --exact --accept-source-agreements --disable-interactivity 2>&1 | Out-String
@@ -3882,10 +4015,11 @@ $script:installTimer.Add_Tick({
         if ($item.Id -eq 'Discord.Discord' -and $item.Operation -in @('Install','Upgrade')) {
             Start-DiscordWindowMinimizeWatcher
         }
+        if ($item.Operation -eq 'Download') { Save-TamgaOfflineReceipt -Item $item }
         if ($script:detailMetadataCache) { [void]$script:detailMetadataCache.Remove([string]$item.Id) }
-        Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } else { 'Kurulum tamamlandı' })
+        Set-InstallQueueEntryState -Entry $item -State Success -Detail $(if ($item.Operation -eq 'Uninstall') { 'Kaldırma tamamlandı' } elseif ($item.Operation -eq 'Upgrade') { 'Güncelleme tamamlandı' } elseif ($item.Operation -eq 'Download') { 'Paket önbelleğe indirildi' } else { 'Kurulum tamamlandı' })
         $catalogApp = $apps | Where-Object Id -eq $item.Id | Select-Object -First 1
-        if ($catalogApp) {
+        if ($catalogApp -and $item.Operation -ne 'Download') {
             Set-AppInstallState -App $catalogApp -State $(if ($item.Operation -eq 'Uninstall') { 'NotInstalled' } else { 'Installed' })
             Update-AppList
             Update-SelectionStatus
@@ -3916,6 +4050,7 @@ function Start-InstallQueueExecution {
     $script:installCancelled = $false
     $script:isInstalling = $true
     $controls.InstallButton.IsEnabled = $false
+    $controls.DownloadButton.IsEnabled = $false
     $controls.SelectAllButton.IsEnabled = $false
     $controls.InstallProgress.Visibility = 'Visible'
     $controls.InstallProgress.Value = 0
@@ -3962,6 +4097,19 @@ $controls.InstallButton.Add_Click({
     Initialize-InstallQueue -Entries $entries
     Start-InstallQueueExecution
 })
+$controls.DownloadButton.Add_Click({
+    $entries = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Action -eq 'Winget' -and $_.Id } | ForEach-Object { New-InstallQueueEntry -App $_ -OperationOverride Download })
+    if ($entries.Count -eq 0) {
+        $controls.ActivityText.Text = 'Önbelleğe indirilebilen bir WinGet paketi seçin.'
+        return
+    }
+    Initialize-InstallQueue -Entries $entries
+    Start-InstallQueueExecution
+})
+$controls.OfflineCacheButton.Add_Click({
+    if (-not (Test-Path -LiteralPath $script:offlinePackageRoot)) { New-Item -ItemType Directory -Path $script:offlinePackageRoot -Force | Out-Null }
+    Start-Process -FilePath 'explorer.exe' -ArgumentList @($script:offlinePackageRoot)
+})
 
 $controls.QueueViewButton.Add_Click({ Set-InstallQueueVisibility $true })
 $controls.QueueCloseButton.Add_Click({ Set-InstallQueueVisibility $false })
@@ -3987,6 +4135,7 @@ $controls.QueueCancelButton.Add_Click({
     $controls.ActivityText.Text = 'İşlem kuyruğu iptal edildi.'
     Write-TamgaLog -Message 'İşlem kuyruğu kullanıcı tarafından iptal edildi.' -Color Yellow
     Update-InstallQueueSummary
+    Update-SelectionStatus
 })
 $controls.QueueRetryButton.Add_Click({
     $failedEntries = @($script:installQueueItems | Where-Object Status -eq 'Failed')
@@ -4293,6 +4442,7 @@ Update-UpdateCenterSelectionStatus
 Update-InstallQueueSummary
 Import-FailedOperations
 Set-TamgaWindowLayout
+Update-TamgaRebootState
 Write-TamgaLog -Message 'Tamga hazır. Kurulum günlükleri bu terminalde gösterilecek.' -Color Cyan
 if ($winget) { Start-SystemScan }
 $window.Add_Closed({
