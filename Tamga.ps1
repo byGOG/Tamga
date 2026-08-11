@@ -1626,8 +1626,8 @@ function Write-TamgaLog {
     Write-Host "[$timestamp] [Tamga] $Message" -ForegroundColor $Color
 }
 
-# Resmî DiskGenius faviconu; çevrimdışı kullanım için betiğe gömülüdür.
-$diskGeniusLogo = ConvertFrom-Base64Image 'AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAQAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA////ADpz8QBTj/MAS5P1AEib+AA3p/kALrX7ADKq+gA1pvQASK/nAGm+5QCdws4AKmTxADB68wAogPQAJ4j2ABy7/QAf8f8AIdr+ACCf+QAipfsAHaD6ACez+ABqvOEAJGHwAB9x8gAkfPMAJH3zACKx+gAr4P0AKbb7ACeg+AAnnPcAKZ34ACGn+wAXov0AV6zmACVe8AAldvMAGGDyABJn8QAVZPEAEnf0ABN69AAUf/QAFYD0ABKU9gARmfgAHKP7ACO3+QByv9AAJlXvABxi8ABpleUAkLvqAIi37ACKu+wAirztAIq+7ACJwu0AjcftAH266wAmgPIAHYf4AEKV5wAkVfEAH1PnAMjl7ADo//4A5v/5AOj/+gDr//oA7P/7AOr/+gDv//sA5vz3ADR77wAYdPUAPXzsACVY8QAeUOYAu93rAMfo+QBBdO0AQYzzADWA8gAye/AAMX7wADd88AAjbvEAHHn0ACKG9QAqe+4AJVPxAB1M5QDA4esAwuD3ABVK7QAUZfEAaJrpAJK97ACIuO0Aj7frAICm6QAlau8AIXrzACVo8QAlUvIAHkjlAMPh9wAjVO8AIGDsALrX6QDz//0A5P/4AOP//QDm//gAPHbtABxs8wAmbPIAJmXyABxm6QC+3usAxN/2ABE16AASSO4AFUHoACtg7gAraewAnsjqAN35+QA2du0AHIL3ACaK8QAmavIAHXznAMDf6gDX/PwAnsLsAJi76wCcwOwAi6/sAA5Y7gCRwOkA6//7ADp77QAUZ/UAOH/rAChn8gAcbugApsnfAN35+wDd/vkA4P/5AOT/+wDZ+fYAH2/tAHym4wDX7fYAJ3buACh+9wBHgOkAK27wACBy8wAlbOsAOH3wADR27wA0hvIAN4zyACh58QAeZfIAJmTtACV37wA9ifUAU5j2AGeTzQAva/AAJ3jzACdw9AAiZ/IAH2byAB1v8gAdcPIAIW7yACZr8QAkZPAAJXL1AEKK+wBZkuMALG3xACp18wAmdfIAJXPyACZ08wAlcPIAJHPyACN28wAidfUAH2bzACNo7gBeiNUALXPxACdu8QAnbvIAJ3HxACd18QApdPIAKXHxAChs8AA0eeAAZZPfAKS12AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMrLzM3Oz9DR0tPUAAAAAAC+v8DBwsPExcbHyMkAAAAAsbKztLW2t7i5uru8vQAAAKOkpaanqKmqq6ytrq+wAACVlpeYmZqbnJ2en6ChogAAh4iJiouMjY6PkJGSk5QAAHl6e3x9fn+AgYKDhIWGAABsbWBub3BxcnN0dXZ3eAAAXl9gYWJjZGVmZ2hpamsAAFBRUlNUVVZXWFlaW1xdAABCQ0RFRkdISUpLTE1OTwAANDU2Nzg5Ojs8PT4/QEEAACYnKCkqKywtLi8wMTIzAAAZGhscHR4fICEiIyQlAAAADQ4PEBESExQVFhcYAAAAAAIDBAUGBwgJCgsMAAAAAIAPAACABwAAgAMAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAwAAgAcAAIAPAAA='
+# Yüksek çözünürlüklü DiskGenius simgesi; şeffaf PNG olarak betiğe gömülüdür.
+$diskGeniusLogo = ConvertFrom-Base64Image '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'
 
 function Import-TamgaCatalog {
     $cacheDirectory = Join-Path $env:LOCALAPPDATA 'Tamga'
@@ -3603,6 +3603,7 @@ $script:installQueue = @()
 $script:installIndex = 0
 $script:installResults = [Collections.ArrayList]::new()
 $script:installProcess = $null
+$script:installProcessPurpose = 'Package'
 $script:installCancelled = $false
 $script:installQueueItems = [Collections.ObjectModel.ObservableCollection[object]]::new()
 $script:storeSourcePrepared = $false
@@ -3827,31 +3828,6 @@ function Add-RequiredPackageDependencies {
         }
     }
 
-    $requiresWebView2 = @($expandedEntries | Where-Object {
-        $_.Id -eq '9NKSQGP7F2NH' -and $_.Operation -ne 'Uninstall'
-    }).Count -gt 0
-
-    if ($requiresWebView2 -and -not (Test-WebView2RuntimeInstalled) -and @($expandedEntries | Where-Object Id -eq 'Microsoft.EdgeWebView2Runtime').Count -eq 0) {
-        $dependency = [pscustomobject]@{
-            Name = 'Microsoft Edge WebView2 Runtime'
-            Id = 'Microsoft.EdgeWebView2Runtime'
-            Action = 'Winget'
-            Url = $null
-            InstallArguments = $null
-            Operation = 'Install'
-            PackageSource = 'winget'
-            Status = 'Waiting'
-            StatusLabel = 'BEKLİYOR'
-            StatusIcon = '…'
-            StatusBackground = '#3A3F45'
-            StatusForeground = '#C2CBD1'
-            Detail = 'WhatsApp için gerekli çalışma bileşeni'
-            Code = 0
-            StoreRetryCount = 0
-        }
-        Write-TamgaLog -Message 'WhatsApp bağımlılığı kuyruğa eklendi: Microsoft Edge WebView2 Runtime' -Color DarkCyan
-        $expandedEntries = @($dependency) + $expandedEntries
-    }
     return @($expandedEntries)
 }
 
@@ -3933,6 +3909,39 @@ function Start-NextInstall {
     }
 
     $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } elseif ($item.Operation -eq 'Download') { "İndiriliyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
+
+    $isWhatsAppInstall = ($item.Id -eq '9NKSQGP7F2NH' -and $item.Operation -in @('Install','Upgrade'))
+    if ($isWhatsAppInstall -and -not (Test-WebView2RuntimeInstalled) -and -not ($item.PSObject.Properties['WebView2Prepared'] -and $item.WebView2Prepared)) {
+        if (-not $item.PSObject.Properties['WebView2Prepared']) {
+            $item | Add-Member -NotePropertyName WebView2Prepared -NotePropertyValue $false
+        }
+        $dependencyArguments = @(
+            'install','--id','Microsoft.EdgeWebView2Runtime','--exact','--source','winget',
+            '--accept-source-agreements','--accept-package-agreements','--silent','--disable-interactivity'
+        )
+        try {
+            $controls.ActivityText.Text = 'WhatsApp hazırlanıyor'
+            Set-InstallQueueEntryState -Entry $item -State Running -Detail 'WhatsApp için gerekli bileşen hazırlanıyor'
+            Update-InstallQueueSummary
+            Write-TamgaLog -Message 'WhatsApp çalışma bileşeni arka planda hazırlanıyor.' -Color DarkCyan
+            $script:wingetExecutable = Resolve-WingetExecutable
+            if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+            $script:installProcessPurpose = 'WhatsAppWebView2'
+            $script:installProcess = Start-Process -FilePath $script:wingetExecutable -ArgumentList $dependencyArguments -PassThru -NoNewWindow
+            $script:installTimer.Start()
+            return
+        } catch {
+            Write-TamgaLog -Message "WhatsApp çalışma bileşeni hazırlanamadı: $($_.Exception.Message)" -Color Red
+            [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=-1 })
+            Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'WhatsApp hazırlığı tamamlanamadı' -Code -1
+            Add-FailedOperation -Item $item -Operation $item.Operation -Code -1 -Detail $_.Exception.Message -Arguments $dependencyArguments
+            $script:installIndex++
+            Update-InstallQueueSummary
+            Start-NextInstall
+            return
+        }
+    }
+
     $installArguments = @(Get-PackageOperationArguments -Item $item)
 
     try {
@@ -3943,6 +3952,7 @@ function Start-NextInstall {
         Write-TamgaLog -Message "Komut: winget $($installArguments -join ' ')" -Color DarkGray
         $script:wingetExecutable = Resolve-WingetExecutable
         if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
+        $script:installProcessPurpose = 'Package'
         $script:installProcess = Start-Process -FilePath $script:wingetExecutable -ArgumentList $installArguments -PassThru -NoNewWindow
         $script:installTimer.Start()
     } catch {
@@ -4004,6 +4014,31 @@ $script:installTimer.Add_Tick({
     $item = $script:installQueue[$script:installIndex]
     $script:installProcess.WaitForExit()
     $exitCode = [int]$script:installProcess.ExitCode
+
+    if ($script:installProcessPurpose -eq 'WhatsAppWebView2') {
+        $dependencySucceeded = ($exitCode -eq 0 -and (Test-WebView2RuntimeInstalled))
+        $script:installProcess.Dispose()
+        $script:installProcess = $null
+        $script:installProcessPurpose = 'Package'
+        if ($dependencySucceeded) {
+            $item.WebView2Prepared = $true
+            Write-TamgaLog -Message 'WhatsApp çalışma bileşeni hazır.' -Color DarkCyan
+            Set-InstallQueueEntryState -Entry $item -State Running -Detail 'WhatsApp kuruluyor'
+            Update-InstallQueueSummary
+            Start-NextInstall
+            return
+        }
+
+        Write-TamgaLog -Message "WhatsApp çalışma bileşeni hazırlanamadı, çıkış kodu: $exitCode" -Color Red
+        [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=$exitCode })
+        Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'WhatsApp hazırlığı tamamlanamadı' -Code $exitCode
+        Add-FailedOperation -Item $item -Operation $item.Operation -Code $exitCode -Detail 'WebView2 çalışma bileşeni kurulamadı'
+        $script:installIndex++
+        Update-InstallQueueSummary
+        Start-NextInstall
+        return
+    }
+
     $operationSucceeded = ($exitCode -eq 0)
     if ($operationSucceeded -and $item.Operation -in @('Install','Uninstall')) {
         $operationSucceeded = Test-PackageOperationApplied -Item $item
@@ -4197,8 +4232,8 @@ function Set-WingetCardState {
             $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '↓'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFD58A'
-            $controls.WingetStatus.Text = 'winget kur'
-            $controls.WingetDetail.Text = 'Otomatik kurmak için tıklayın'
+            $controls.WingetStatus.Text = 'WinGet'
+            $controls.WingetDetail.Text = 'Kurmak için tıklayın'
             $controls.WingetBadge.Background = New-ColorBrush '#58441F'
             $controls.WingetBadge.BorderBrush = New-ColorBrush '#8A682F'
             $controls.WingetBadgeDot.Fill = New-ColorBrush '#F5BC5A'
@@ -4216,7 +4251,7 @@ function Set-WingetCardState {
             $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '…'
             $controls.WingetIcon.Foreground = New-ColorBrush '#BEE7FF'
-            $controls.WingetStatus.Text = 'winget kuruluyor'
+            $controls.WingetStatus.Text = 'WinGet'
             $controls.WingetDetail.Text = 'App Installer indiriliyor'
             $controls.WingetBadge.Background = New-ColorBrush '#174C70'
             $controls.WingetBadge.BorderBrush = New-ColorBrush '#278DD1'
@@ -4235,8 +4270,8 @@ function Set-WingetCardState {
             $controls.WingetIcon.Visibility = [Windows.Visibility]::Visible
             $controls.WingetIcon.Text = '!'
             $controls.WingetIcon.Foreground = New-ColorBrush '#FFAAAA'
-            $controls.WingetStatus.Text = 'winget hatası'
-            $controls.WingetDetail.Text = 'Başarısız • yeniden denemek için tıklayın'
+            $controls.WingetStatus.Text = 'WinGet'
+            $controls.WingetDetail.Text = 'Yeniden denemek için tıklayın'
             $controls.WingetBadge.Background = New-ColorBrush '#542E32'
             $controls.WingetBadge.BorderBrush = New-ColorBrush '#A95454'
             $controls.WingetBadgeDot.Fill = New-ColorBrush '#FF7777'
