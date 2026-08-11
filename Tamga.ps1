@@ -446,6 +446,7 @@ $script:tamgaIconPath = @(
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="54"/>
@@ -489,8 +490,7 @@ $script:tamgaIconPath = @(
                             </Grid>
                         </Border>
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,13,0,0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,13,12,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="0,0,5,0">
                                 <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
@@ -500,17 +500,18 @@ $script:tamgaIconPath = @(
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="5,0,0,0">
                                 <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
-                            <Border x:Name="RebootBadge" Background="#543D22" CornerRadius="9" Padding="7,4" Margin="5,0,0,0" Visibility="Collapsed"
-                                    ToolTip="Windows veya bir paket işlemi yeniden başlatma bekliyor.">
-                                <TextBlock Text="↻  Yeniden başlatma bekliyor" Foreground="#FFD58A" FontSize="10.5" FontWeight="SemiBold"/>
-                            </Border>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,13,0,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
                             <Ellipse Width="4" Height="4" Fill="{DynamicResource CardBorder}" Margin="10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" Foreground="#39C77A" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Grid>
+                    </StackPanel>
+                    <Border x:Name="RebootBadge" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                            HorizontalAlignment="Left" Background="#543D22" CornerRadius="9" Padding="7,4"
+                            Margin="0,8,0,0" Visibility="Collapsed"
+                            ToolTip="Windows veya bir paket işlemi yeniden başlatma bekliyor.">
+                        <TextBlock Text="↻  Yeniden başlatma bekliyor" Foreground="#FFD58A" FontSize="10.5" FontWeight="SemiBold"/>
+                    </Border>
                 </Grid>
             </Border>
 
@@ -657,16 +658,16 @@ $script:tamgaIconPath = @(
             <Border Grid.Row="3" Background="{DynamicResource SurfaceRaised}" BorderBrush="{DynamicResource CardBorder}" BorderThickness="1" CornerRadius="12" Padding="15,11" Margin="0,8,0,0"
                     Effect="{DynamicResource CardShadow}">
                 <Grid>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <StackPanel VerticalAlignment="Center">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" VerticalAlignment="Center" ClipToBounds="True">
                         <TextBlock x:Name="SelectionText" Text="Henüz uygulama seçilmedi" Foreground="{DynamicResource Ink}" FontSize="14.5" FontWeight="SemiBold"
-                                   AutomationProperties.LiveSetting="Polite"/>
+                                   TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.LiveSetting="Polite"/>
                         <TextBlock x:Name="ActivityText" Text="Kurulacak uygulamaları işaretleyin." Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,4,0,0"
-                                   AutomationProperties.LiveSetting="Polite"/>
+                                   TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" AutomationProperties.LiveSetting="Polite"/>
                         <ProgressBar x:Name="InstallProgress" Height="3" Margin="0,9,18,0" Minimum="0" Maximum="100"
                                      Value="0" Visibility="Collapsed" Foreground="{DynamicResource Primary}" Background="{DynamicResource SoftBg}"/>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                         <Button x:Name="QueueViewButton" Content="Kuyruk" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
                                 Margin="0,0,9,0" IsEnabled="False" ToolTip="Kurulum kuyruğunu göster (Ctrl+Q)" AutomationProperties.Name="Kurulum kuyruğunu göster"/>
                         <Button x:Name="DownloadButton" Content="Önbelleğe indir" Background="{DynamicResource SoftBg}" Foreground="{DynamicResource SoftText}"
@@ -1625,6 +1626,9 @@ function Write-TamgaLog {
     Write-Host "[$timestamp] [Tamga] $Message" -ForegroundColor $Color
 }
 
+# Resmî DiskGenius faviconu; çevrimdışı kullanım için betiğe gömülüdür.
+$diskGeniusLogo = ConvertFrom-Base64Image 'AAABAAEAEBAAAAEACABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAQAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA////ADpz8QBTj/MAS5P1AEib+AA3p/kALrX7ADKq+gA1pvQASK/nAGm+5QCdws4AKmTxADB68wAogPQAJ4j2ABy7/QAf8f8AIdr+ACCf+QAipfsAHaD6ACez+ABqvOEAJGHwAB9x8gAkfPMAJH3zACKx+gAr4P0AKbb7ACeg+AAnnPcAKZ34ACGn+wAXov0AV6zmACVe8AAldvMAGGDyABJn8QAVZPEAEnf0ABN69AAUf/QAFYD0ABKU9gARmfgAHKP7ACO3+QByv9AAJlXvABxi8ABpleUAkLvqAIi37ACKu+wAirztAIq+7ACJwu0AjcftAH266wAmgPIAHYf4AEKV5wAkVfEAH1PnAMjl7ADo//4A5v/5AOj/+gDr//oA7P/7AOr/+gDv//sA5vz3ADR77wAYdPUAPXzsACVY8QAeUOYAu93rAMfo+QBBdO0AQYzzADWA8gAye/AAMX7wADd88AAjbvEAHHn0ACKG9QAqe+4AJVPxAB1M5QDA4esAwuD3ABVK7QAUZfEAaJrpAJK97ACIuO0Aj7frAICm6QAlau8AIXrzACVo8QAlUvIAHkjlAMPh9wAjVO8AIGDsALrX6QDz//0A5P/4AOP//QDm//gAPHbtABxs8wAmbPIAJmXyABxm6QC+3usAxN/2ABE16AASSO4AFUHoACtg7gAraewAnsjqAN35+QA2du0AHIL3ACaK8QAmavIAHXznAMDf6gDX/PwAnsLsAJi76wCcwOwAi6/sAA5Y7gCRwOkA6//7ADp77QAUZ/UAOH/rAChn8gAcbugApsnfAN35+wDd/vkA4P/5AOT/+wDZ+fYAH2/tAHym4wDX7fYAJ3buACh+9wBHgOkAK27wACBy8wAlbOsAOH3wADR27wA0hvIAN4zyACh58QAeZfIAJmTtACV37wA9ifUAU5j2AGeTzQAva/AAJ3jzACdw9AAiZ/IAH2byAB1v8gAdcPIAIW7yACZr8QAkZPAAJXL1AEKK+wBZkuMALG3xACp18wAmdfIAJXPyACZ08wAlcPIAJHPyACN28wAidfUAH2bzACNo7gBeiNUALXPxACdu8QAnbvIAJ3HxACd18QApdPIAKXHxAChs8AA0eeAAZZPfAKS12AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMrLzM3Oz9DR0tPUAAAAAAC+v8DBwsPExcbHyMkAAAAAsbKztLW2t7i5uru8vQAAAKOkpaanqKmqq6ytrq+wAACVlpeYmZqbnJ2en6ChogAAh4iJiouMjY6PkJGSk5QAAHl6e3x9fn+AgYKDhIWGAABsbWBub3BxcnN0dXZ3eAAAXl9gYWJjZGVmZ2hpamsAAFBRUlNUVVZXWFlaW1xdAABCQ0RFRkdISUpLTE1OTwAANDU2Nzg5Ojs8PT4/QEEAACYnKCkqKywtLi8wMTIzAAAZGhscHR4fICEiIyQlAAAADQ4PEBESExQVFhcYAAAAAAIDBAUGBwgJCgsMAAAAAIAPAACABwAAgAMAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAQAAgAEAAIABAACAAwAAgAcAAIAPAAA='
+
 function Import-TamgaCatalog {
     $cacheDirectory = Join-Path $env:LOCALAPPDATA 'Tamga'
     $cachePath = Join-Path $cacheDirectory 'catalog.json'
@@ -1755,6 +1759,7 @@ if ($hwinfoLogo) {
 # downloadable logo catalog.
 $vendorLogoOverrides = @{
     'CrystalDiskInfo' = 'crystaldiskinfo-logo.png'
+    'CrystalDiskMark' = 'crystaldiskinfo-logo.png'
     'CPU-Z'           = 'cpuz-logo.png'
     'GPU-Z'           = 'gpuz-logo.png'
     'OCCT'            = 'occt-logo.png'
@@ -1806,6 +1811,11 @@ foreach ($appName in $vendorLogoOverrides.Keys) {
         $vendorApp.Logo = $vendorLogo
         $vendorApp.InitialOpacity = 0.0
     }
+}
+$diskGeniusApp = $apps | Where-Object Name -eq 'DiskGenius' | Select-Object -First 1
+if ($diskGeniusApp) {
+    $diskGeniusApp.Logo = $diskGeniusLogo
+    $diskGeniusApp.InitialOpacity = 0.0
 }
 
 $categoryDefinitions = @($catalog.Categories)
@@ -2239,6 +2249,9 @@ function Set-SecurityCenterVisibility {
 function Update-SelectionStatus {
     $previousSelectionText = [string]$controls.SelectionText.Text
     $selected = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Operation -ne 'None' })
+    $downloadable = @($selected | Where-Object {
+        $_.Id -and (-not $_.PSObject.Properties['Action'] -or [string]$_.Action -eq 'Winget')
+    })
     if ($selected.Count -eq 0) {
         $controls.SelectionText.Text = 'Henüz uygulama seçilmedi'
         $controls.ActivityText.Text = 'Kurulacak uygulamaları işaretleyin.'
@@ -2256,7 +2269,7 @@ function Update-SelectionStatus {
     }
     $script:wingetExecutable = Resolve-WingetExecutable
     $controls.InstallButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
-    $controls.DownloadButton.IsEnabled = ($selected.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
+    $controls.DownloadButton.IsEnabled = ($downloadable.Count -gt 0 -and -not $script:isInstalling -and $script:wingetExecutable)
     $controls.InstallButton.Content = if (@($selected | Where-Object Operation -eq 'Upgrade').Count -gt 0) { 'İşlemi başlat  →' } else { 'Kurulumu başlat  →' }
     if ($previousSelectionText -ne [string]$controls.SelectionText.Text) { Send-TamgaAnnouncement $controls.SelectionText.Text }
 }
@@ -4098,7 +4111,10 @@ $controls.InstallButton.Add_Click({
     Start-InstallQueueExecution
 })
 $controls.DownloadButton.Add_Click({
-    $entries = @($apps | Where-Object { $_.IsSelected -and -not $_.IsWebResource -and $_.Action -eq 'Winget' -and $_.Id } | ForEach-Object { New-InstallQueueEntry -App $_ -OperationOverride Download })
+    $entries = @($apps | Where-Object {
+        $_.IsSelected -and -not $_.IsWebResource -and $_.Id -and
+        (-not $_.PSObject.Properties['Action'] -or [string]$_.Action -eq 'Winget')
+    } | ForEach-Object { New-InstallQueueEntry -App $_ -OperationOverride Download })
     if ($entries.Count -eq 0) {
         $controls.ActivityText.Text = 'Önbelleğe indirilebilen bir WinGet paketi seçin.'
         return

@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "UpdatedAt": "2026-07-18",
+  "UpdatedAt": "2026-08-11",
   "Categories": [
     {
       "Name": "İnternet Tarayıcıları",
@@ -374,6 +374,22 @@
       "Category": "Donanım & Test",
       "Initial": "C",
       "Color": "#287EB8"
+    },
+    {
+      "Name": "CrystalDiskMark",
+      "Description": "Disk okuma ve yazma hız testi",
+      "Id": "CrystalDewWorld.CrystalDiskMark",
+      "Category": "Donanım & Test",
+      "Initial": "C",
+      "Color": "#287EB8"
+    },
+    {
+      "Name": "DiskGenius",
+      "Description": "Disk bölümlendirme ve veri kurtarma",
+      "Id": "Eassos.DiskGenius",
+      "Category": "Donanım & Test",
+      "Initial": "D",
+      "Color": "#3B82F6"
     },
     {
       "Name": "CPU-Z",
@@ -1436,6 +1452,8 @@
     "HashCheck": "https://github.com/gurnec/HashCheck",
     "HWiNFO64": "https://www.hwinfo.com/",
     "CrystalDiskInfo": "https://crystalmark.info/en/software/crystaldiskinfo/",
+    "CrystalDiskMark": "https://crystalmark.info/en/software/crystaldiskmark/",
+    "DiskGenius": "https://www.diskgenius.com/",
     "Intel Driver & Support Assistant": "https://www.intel.com/content/www/us/en/support/detect.html",
     "Internet Download Manager": "https://www.internetdownloadmanager.com/",
     "IPTVnator": "https://4gray.github.io/iptvnator/",
