@@ -298,7 +298,8 @@
           "Name": "foobar2000 Free Encoder Pack",
           "Id": "PeterPawlowski.foobar2000.EncoderPack",
           "Version": "2026-01-22",
-          "Description": "Dönüştürücü bileşeni için ücretsiz kodlayıcı paketi"
+          "Description": "Dönüştürücü bileşeni için ücretsiz kodlayıcı paketi",
+          "SkipStateVerification": true
         }
       ]
     },

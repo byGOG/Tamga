@@ -3823,6 +3823,7 @@ function Add-RequiredPackageDependencies {
                 Detail = "$($entry.Name) ile birlikte kurulacak ek paket"
                 Code = 0
                 StoreRetryCount = 0
+                SkipStateVerification = [bool]($package.PSObject.Properties['SkipStateVerification'] -and $package.SkipStateVerification)
             }
             Write-TamgaLog -Message "$($entry.Name) ek paketi kuyruğa eklendi: $($package.Name)" -Color DarkCyan
         }
@@ -4040,7 +4041,8 @@ $script:installTimer.Add_Tick({
     }
 
     $operationSucceeded = ($exitCode -eq 0)
-    if ($operationSucceeded -and $item.Operation -in @('Install','Uninstall')) {
+    $skipStateVerification = [bool]($item.PSObject.Properties['SkipStateVerification'] -and $item.SkipStateVerification)
+    if ($operationSucceeded -and $item.Operation -in @('Install','Uninstall') -and -not $skipStateVerification) {
         $operationSucceeded = Test-PackageOperationApplied -Item $item
         if (-not $operationSucceeded) {
             if ($item.Operation -eq 'Install' -and $item.PackageSource -eq 'msstore' -and [int]$item.StoreRetryCount -lt 1) {
@@ -4057,6 +4059,8 @@ $script:installTimer.Add_Tick({
             $exitCode = -2
             Write-TamgaLog -Message "WinGet başarı bildirdi ancak işlem doğrulanamadı: $($item.Name)" -Color Red
         }
+    } elseif ($operationSucceeded -and $skipStateVerification) {
+        Write-TamgaLog -Message "Yardımcı paket başarı koduyla doğrulandı: $($item.Name)" -Color DarkCyan
     }
     if ($operationSucceeded) {
         Write-TamgaLog -Message "Başarılı: $($item.Name), çıkış kodu: 0" -Color Green
