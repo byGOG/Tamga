@@ -105,6 +105,9 @@ if ($catalog) {
         foreach ($dependency in @($app.AdditionalPackages | Where-Object { $null -ne $_ })) {
             Assert-Tamga (-not [string]::IsNullOrWhiteSpace([string]$dependency.Id)) "$($app.Name): ek paket kimliği eksik."
             Assert-Tamga (-not [string]::IsNullOrWhiteSpace([string]$dependency.Name)) "$($app.Name): ek paket adı eksik."
+            if ($dependency.PSObject.Properties['SkipStateVerification']) {
+                Assert-Tamga ($dependency.SkipStateVerification -is [bool]) "$($app.Name): SkipStateVerification doğru/yanlış değeri olmalı."
+            }
         }
     }
 
@@ -136,6 +139,7 @@ Assert-Tamga ($scriptText -notmatch 'CurrentVersion\\Fonts|AddFontResourceEx|Rem
 Assert-Tamga ($scriptText -notmatch 'Set-ExecutionPolicy') 'Tamga kalıcı ExecutionPolicy değişikliği yapmamalı.'
 Assert-Tamga (Test-Path -LiteralPath (Join-Path $root 'version.json')) 'Sürüm bildirimi eksik: version.json'
 Assert-Tamga ($scriptText -match 'Update-TamgaVersionState') 'Tamga kendi sürümünü denetlemeli.'
+Assert-Tamga ($scriptText -match "PSObject\.Properties\['SkipStateVerification'\]") 'Kurulu paket kaydı oluşturmayan yardımcı paket doğrulaması eksik.'
 Assert-Tamga ($scriptText -match 'Test-TamgaPendingReboot') 'Bekleyen yeniden başlatma denetimi eksik.'
 Assert-Tamga ($scriptText -match "ValidateSet\('Install','Upgrade','Uninstall','Download'\)") 'Çevrimdışı paket indirme işlemi eksik.'
 Assert-Tamga ($scriptText -match 'Save-TamgaOfflineReceipt') 'İndirilen paket doğrulama kaydı eksik.'
