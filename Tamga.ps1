@@ -490,7 +490,7 @@ $script:tamgaIconPath = @(
                             </Grid>
                         </Border>
                     </Grid>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,13,12,0">
+                    <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,13,0,0">
                             <Border Background="{DynamicResource SoftBg}" CornerRadius="9" Padding="7,4" Margin="0,0,5,0">
                                 <TextBlock x:Name="TotalAppBadgeText" Text="0 uygulama" Foreground="{DynamicResource SoftText}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
@@ -501,12 +501,12 @@ $script:tamgaIconPath = @(
                                 <TextBlock x:Name="CategoryBadgeText" Text="0 kategori" Foreground="{DynamicResource Ink}" FontSize="10.5" FontWeight="SemiBold"/>
                             </Border>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,13,0,0">
+                    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,8,0,0">
                             <TextBlock Text="WINGET KATALOĞU" Foreground="{DynamicResource Muted}" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
                             <Ellipse Width="4" Height="4" Fill="{DynamicResource CardBorder}" Margin="10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="GÜVENLİ • REKLAMSIZ" Foreground="#39C77A" FontSize="9.5" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <Border x:Name="RebootBadge" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                    <Border x:Name="RebootBadge" Grid.Row="2" Grid.Column="1"
                             HorizontalAlignment="Left" Background="#543D22" CornerRadius="9" Padding="7,4"
                             Margin="0,8,0,0" Visibility="Collapsed"
                             ToolTip="Windows veya bir paket işlemi yeniden başlatma bekliyor.">

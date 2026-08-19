@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "UpdatedAt": "2026-08-11",
+  "UpdatedAt": "2026-08-19",
   "Categories": [
     {
       "Name": "İnternet Tarayıcıları",
@@ -842,9 +842,65 @@
       "Color": "#E58A2D"
     },
     {
+      "Name": "iCloud",
+      "Description": "Apple bulut depolama ve eşitleme",
+      "Id": "9PKTQ5699M62",
+      "InstallArguments": [
+        "install",
+        "-e",
+        "--id",
+        "9PKTQ5699M62",
+        "--source",
+        "msstore"
+      ],
+      "Category": "Üretkenlik",
+      "Initial": "iC",
+      "Color": "#4D9DE0"
+    },
+    {
+      "Name": "Apple Music",
+      "Description": "Apple müzik dinleme uygulaması",
+      "Id": "9PFHDD62MXS1",
+      "InstallArguments": [
+        "install",
+        "-e",
+        "--id",
+        "9PFHDD62MXS1",
+        "--source",
+        "msstore"
+      ],
+      "Category": "Multimedya",
+      "Initial": "AM",
+      "Color": "#FA2D48"
+    },
+    {
+      "Name": "Apple Aygıtları",
+      "Description": "Apple aygıtlarını yönetme ve eşitleme",
+      "Id": "9NP83LWLPZ9K",
+      "InstallArguments": [
+        "install",
+        "-e",
+        "--id",
+        "9NP83LWLPZ9K",
+        "--source",
+        "msstore"
+      ],
+      "Category": "Mobil & Araçlar",
+      "Initial": "A",
+      "Color": "#6B7280"
+    },
+    {
       "Name": "iTunes",
-      "Description": "Apple müzik ve aygıt yönetimi",
-      "Id": "Apple.iTunes",
+      "Description": "Apple müzik ve medya yönetimi",
+      "Id": "9PB2MZ1ZMB1S",
+      "InstallArguments": [
+        "install",
+        "-e",
+        "--id",
+        "9PB2MZ1ZMB1S",
+        "--source",
+        "msstore"
+      ],
       "Category": "Multimedya",
       "Initial": "i",
       "Color": "#D94E86"
@@ -1415,7 +1471,9 @@
     "7-Zip": "https://7-zip.org/",
     "AIMP": "https://www.aimp.ru",
     "AnyDesk": "https://anydesk.com/",
+    "Apple Aygıtları": "https://support.apple.com/tr-tr/guide/devices-windows/welcome/windows",
     "Apple Mobile Drivers Installer": "https://github.com/NelloKudo/Apple-Mobile-Drivers-Installer",
+    "Apple Music": "https://music.apple.com/tr/",
     "balenaEtcher": "https://etcher.balena.io/",
     "Battle.net": "https://battle.net/",
     "Bitwarden": "https://bitwarden.com/",
@@ -1458,7 +1516,8 @@
     "Intel Driver & Support Assistant": "https://www.intel.com/content/www/us/en/support/detect.html",
     "Internet Download Manager": "https://www.internetdownloadmanager.com/",
     "IPTVnator": "https://4gray.github.io/iptvnator/",
-    "iTunes": "https://www.apple.com/itunes/",
+    "iCloud": "https://www.icloud.com/",
+    "iTunes": "https://www.apple.com/tr/itunes/",
     "JDownloader 2": "https://jdownloader.org/",
     "K-Lite Codec Pack Basic": "https://codecguide.com/download_k-lite_codec_pack_basic.htm",
     "LocalSend": "https://localsend.org/",
