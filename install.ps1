@@ -35,6 +35,10 @@ $applicationWin11DebloatLogo = Join-Path $applicationAssets 'win11debloat-logo.p
 $applicationBusterLogo = Join-Path $applicationAssets 'buster-logo.png'
 $applicationCrystalDiskInfoLogo = Join-Path $applicationAssets 'crystaldiskinfo-logo.png'
 $applicationDesktopIconsInstallerLogo = Join-Path $applicationAssets 'windows-desktop-icons-installer-logo.png'
+$applicationICloudLogo = Join-Path $applicationAssets 'icloud-logo.png'
+$applicationAppleMusicLogo = Join-Path $applicationAssets 'apple-music-logo.png'
+$applicationAppleDevicesLogo = Join-Path $applicationAssets 'apple-devices-logo.png'
+$applicationITunesLogo = Join-Path $applicationAssets 'itunes-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationLinkIcon = Join-Path $applicationAssets 'link-icon.png'
@@ -80,6 +84,10 @@ $win11DebloatLogoDownloadUrl = '{0}/assets/win11debloat-logo.png?v={1}' -f $base
 $busterLogoDownloadUrl = '{0}/assets/buster-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $crystalDiskInfoLogoDownloadUrl = '{0}/assets/crystaldiskinfo-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $desktopIconsInstallerLogoDownloadUrl = '{0}/assets/windows-desktop-icons-installer-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$iCloudLogoDownloadUrl = '{0}/assets/icloud-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$appleMusicLogoDownloadUrl = '{0}/assets/apple-music-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$appleDevicesLogoDownloadUrl = '{0}/assets/apple-devices-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$iTunesLogoDownloadUrl = '{0}/assets/itunes-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $linkIconDownloadUrl = '{0}/assets/link-icon.png?v={1}' -f $baseUrl, $cacheBuster
@@ -107,6 +115,10 @@ $temporaryWin11DebloatLogo = Join-Path $installDirectory 'win11debloat-logo.png.
 $temporaryBusterLogo = Join-Path $installDirectory 'buster-logo.png.download'
 $temporaryCrystalDiskInfoLogo = Join-Path $installDirectory 'crystaldiskinfo-logo.png.download'
 $temporaryDesktopIconsInstallerLogo = Join-Path $installDirectory 'windows-desktop-icons-installer-logo.png.download'
+$temporaryICloudLogo = Join-Path $installDirectory 'icloud-logo.png.download'
+$temporaryAppleMusicLogo = Join-Path $installDirectory 'apple-music-logo.png.download'
+$temporaryAppleDevicesLogo = Join-Path $installDirectory 'apple-devices-logo.png.download'
+$temporaryITunesLogo = Join-Path $installDirectory 'itunes-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 $temporaryLinkIcon = Join-Path $installDirectory 'link-icon.png.download'
@@ -136,6 +148,10 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $busterLogoDownloadUrl -OutFile $temporaryBusterLogo
     Invoke-WebRequest -UseBasicParsing -Uri $crystalDiskInfoLogoDownloadUrl -OutFile $temporaryCrystalDiskInfoLogo
     Invoke-WebRequest -UseBasicParsing -Uri $desktopIconsInstallerLogoDownloadUrl -OutFile $temporaryDesktopIconsInstallerLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $iCloudLogoDownloadUrl -OutFile $temporaryICloudLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $appleMusicLogoDownloadUrl -OutFile $temporaryAppleMusicLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $appleDevicesLogoDownloadUrl -OutFile $temporaryAppleDevicesLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $iTunesLogoDownloadUrl -OutFile $temporaryITunesLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
     Invoke-WebRequest -UseBasicParsing -Uri $linkIconDownloadUrl -OutFile $temporaryLinkIcon
@@ -192,6 +208,10 @@ try {
     Move-Item -LiteralPath $temporaryBusterLogo -Destination $applicationBusterLogo -Force
     Move-Item -LiteralPath $temporaryCrystalDiskInfoLogo -Destination $applicationCrystalDiskInfoLogo -Force
     Move-Item -LiteralPath $temporaryDesktopIconsInstallerLogo -Destination $applicationDesktopIconsInstallerLogo -Force
+    Move-Item -LiteralPath $temporaryICloudLogo -Destination $applicationICloudLogo -Force
+    Move-Item -LiteralPath $temporaryAppleMusicLogo -Destination $applicationAppleMusicLogo -Force
+    Move-Item -LiteralPath $temporaryAppleDevicesLogo -Destination $applicationAppleDevicesLogo -Force
+    Move-Item -LiteralPath $temporaryITunesLogo -Destination $applicationITunesLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
     Move-Item -LiteralPath $temporaryLinkIcon -Destination $applicationLinkIcon -Force
@@ -199,7 +219,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryVersion, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryVersion, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryICloudLogo, $temporaryAppleMusicLogo, $temporaryAppleDevicesLogo, $temporaryITunesLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
