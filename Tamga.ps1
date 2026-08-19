@@ -1799,6 +1799,10 @@ $vendorLogoOverrides = @{
     'Microsoft Activation Scripts' = 'microsoft-activation-scripts-logo.png'
     'RustDesk'          = 'rustdesk-logo.png'
     'Yahoo Mail'        = 'yahoo-mail-logo.png'
+    'iCloud'            = 'icloud-logo.png'
+    'Apple Music'       = 'apple-music-logo.png'
+    'Apple Aygıtları'   = 'apple-devices-logo.png'
+    'iTunes'            = 'itunes-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows Desktop Icons Installer' = 'windows-desktop-icons-installer-logo.png'
@@ -3911,8 +3915,14 @@ function Start-NextInstall {
 
     $controls.ActivityText.Text = if ($item.Operation -eq 'Uninstall') { "Kaldırılıyor: $($item.Name)" } elseif ($item.Operation -eq 'Download') { "İndiriliyor: $($item.Name)" } else { "Kuruluyor: $($item.Name)" }
 
-    $isWhatsAppInstall = ($item.Id -eq '9NKSQGP7F2NH' -and $item.Operation -in @('Install','Upgrade'))
-    if ($isWhatsAppInstall -and -not (Test-WebView2RuntimeInstalled) -and -not ($item.PSObject.Properties['WebView2Prepared'] -and $item.WebView2Prepared)) {
+    $webView2RequiredPackageIds = @(
+        '9NKSQGP7F2NH', # WhatsApp
+        '9PFHDD62MXS1', # Apple Music
+        '9NP83LWLPZ9K', # Apple Aygıtları
+        '9PKTQ5699M62'  # iCloud
+    )
+    $requiresWebView2 = ($item.Id -in $webView2RequiredPackageIds -and $item.Operation -in @('Install','Upgrade'))
+    if ($requiresWebView2 -and -not (Test-WebView2RuntimeInstalled) -and -not ($item.PSObject.Properties['WebView2Prepared'] -and $item.WebView2Prepared)) {
         if (-not $item.PSObject.Properties['WebView2Prepared']) {
             $item | Add-Member -NotePropertyName WebView2Prepared -NotePropertyValue $false
         }
@@ -3921,20 +3931,20 @@ function Start-NextInstall {
             '--accept-source-agreements','--accept-package-agreements','--silent','--disable-interactivity'
         )
         try {
-            $controls.ActivityText.Text = 'WhatsApp hazırlanıyor'
-            Set-InstallQueueEntryState -Entry $item -State Running -Detail 'WhatsApp için gerekli bileşen hazırlanıyor'
+            $controls.ActivityText.Text = "$($item.Name) hazırlanıyor"
+            Set-InstallQueueEntryState -Entry $item -State Running -Detail "$($item.Name) için gerekli bileşen hazırlanıyor"
             Update-InstallQueueSummary
-            Write-TamgaLog -Message 'WhatsApp çalışma bileşeni arka planda hazırlanıyor.' -Color DarkCyan
+            Write-TamgaLog -Message "$($item.Name) çalışma bileşeni arka planda hazırlanıyor." -Color DarkCyan
             $script:wingetExecutable = Resolve-WingetExecutable
             if (-not $script:wingetExecutable) { throw 'winget çalıştırılabilir dosyası bulunamadı.' }
-            $script:installProcessPurpose = 'WhatsAppWebView2'
+            $script:installProcessPurpose = 'WebView2Dependency'
             $script:installProcess = Start-Process -FilePath $script:wingetExecutable -ArgumentList $dependencyArguments -PassThru -NoNewWindow
             $script:installTimer.Start()
             return
         } catch {
-            Write-TamgaLog -Message "WhatsApp çalışma bileşeni hazırlanamadı: $($_.Exception.Message)" -Color Red
+            Write-TamgaLog -Message "$($item.Name) çalışma bileşeni hazırlanamadı: $($_.Exception.Message)" -Color Red
             [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=-1 })
-            Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'WhatsApp hazırlığı tamamlanamadı' -Code -1
+            Set-InstallQueueEntryState -Entry $item -State Failed -Detail "$($item.Name) hazırlığı tamamlanamadı" -Code -1
             Add-FailedOperation -Item $item -Operation $item.Operation -Code -1 -Detail $_.Exception.Message -Arguments $dependencyArguments
             $script:installIndex++
             Update-InstallQueueSummary
@@ -4016,23 +4026,23 @@ $script:installTimer.Add_Tick({
     $script:installProcess.WaitForExit()
     $exitCode = [int]$script:installProcess.ExitCode
 
-    if ($script:installProcessPurpose -eq 'WhatsAppWebView2') {
+    if ($script:installProcessPurpose -eq 'WebView2Dependency') {
         $dependencySucceeded = ($exitCode -eq 0 -and (Test-WebView2RuntimeInstalled))
         $script:installProcess.Dispose()
         $script:installProcess = $null
         $script:installProcessPurpose = 'Package'
         if ($dependencySucceeded) {
             $item.WebView2Prepared = $true
-            Write-TamgaLog -Message 'WhatsApp çalışma bileşeni hazır.' -Color DarkCyan
-            Set-InstallQueueEntryState -Entry $item -State Running -Detail 'WhatsApp kuruluyor'
+            Write-TamgaLog -Message "$($item.Name) çalışma bileşeni hazır." -Color DarkCyan
+            Set-InstallQueueEntryState -Entry $item -State Running -Detail "$($item.Name) kuruluyor"
             Update-InstallQueueSummary
             Start-NextInstall
             return
         }
 
-        Write-TamgaLog -Message "WhatsApp çalışma bileşeni hazırlanamadı, çıkış kodu: $exitCode" -Color Red
+        Write-TamgaLog -Message "$($item.Name) çalışma bileşeni hazırlanamadı, çıkış kodu: $exitCode" -Color Red
         [void]$script:installResults.Add([pscustomobject]@{ Name=$item.Name; Success=$false; Manual=$false; Code=$exitCode })
-        Set-InstallQueueEntryState -Entry $item -State Failed -Detail 'WhatsApp hazırlığı tamamlanamadı' -Code $exitCode
+        Set-InstallQueueEntryState -Entry $item -State Failed -Detail "$($item.Name) hazırlığı tamamlanamadı" -Code $exitCode
         Add-FailedOperation -Item $item -Operation $item.Operation -Code $exitCode -Detail 'WebView2 çalışma bileşeni kurulamadı'
         $script:installIndex++
         Update-InstallQueueSummary
