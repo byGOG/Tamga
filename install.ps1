@@ -39,6 +39,7 @@ $applicationICloudLogo = Join-Path $applicationAssets 'icloud-logo.png'
 $applicationAppleMusicLogo = Join-Path $applicationAssets 'apple-music-logo.png'
 $applicationAppleDevicesLogo = Join-Path $applicationAssets 'apple-devices-logo.png'
 $applicationITunesLogo = Join-Path $applicationAssets 'itunes-logo.png'
+$applicationSnappyDriverInstallerOriginLogo = Join-Path $applicationAssets 'snappy-driver-installer-origin-logo.png'
 $applicationWingetReadyIcon = Join-Path $applicationAssets 'winget-ready.png'
 $applicationAboutIcon = Join-Path $applicationAssets 'about-icon.png'
 $applicationLinkIcon = Join-Path $applicationAssets 'link-icon.png'
@@ -88,6 +89,7 @@ $iCloudLogoDownloadUrl = '{0}/assets/icloud-logo.png?v={1}' -f $baseUrl, $cacheB
 $appleMusicLogoDownloadUrl = '{0}/assets/apple-music-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $appleDevicesLogoDownloadUrl = '{0}/assets/apple-devices-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $iTunesLogoDownloadUrl = '{0}/assets/itunes-logo.png?v={1}' -f $baseUrl, $cacheBuster
+$snappyDriverInstallerOriginLogoDownloadUrl = '{0}/assets/snappy-driver-installer-origin-logo.png?v={1}' -f $baseUrl, $cacheBuster
 $wingetReadyIconDownloadUrl = '{0}/assets/winget-ready.png?v={1}' -f $baseUrl, $cacheBuster
 $aboutIconDownloadUrl = '{0}/assets/about-icon.png?v={1}' -f $baseUrl, $cacheBuster
 $linkIconDownloadUrl = '{0}/assets/link-icon.png?v={1}' -f $baseUrl, $cacheBuster
@@ -119,6 +121,7 @@ $temporaryICloudLogo = Join-Path $installDirectory 'icloud-logo.png.download'
 $temporaryAppleMusicLogo = Join-Path $installDirectory 'apple-music-logo.png.download'
 $temporaryAppleDevicesLogo = Join-Path $installDirectory 'apple-devices-logo.png.download'
 $temporaryITunesLogo = Join-Path $installDirectory 'itunes-logo.png.download'
+$temporarySnappyDriverInstallerOriginLogo = Join-Path $installDirectory 'snappy-driver-installer-origin-logo.png.download'
 $temporaryWingetReadyIcon = Join-Path $installDirectory 'winget-ready.png.download'
 $temporaryAboutIcon = Join-Path $installDirectory 'about-icon.png.download'
 $temporaryLinkIcon = Join-Path $installDirectory 'link-icon.png.download'
@@ -152,6 +155,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $appleMusicLogoDownloadUrl -OutFile $temporaryAppleMusicLogo
     Invoke-WebRequest -UseBasicParsing -Uri $appleDevicesLogoDownloadUrl -OutFile $temporaryAppleDevicesLogo
     Invoke-WebRequest -UseBasicParsing -Uri $iTunesLogoDownloadUrl -OutFile $temporaryITunesLogo
+    Invoke-WebRequest -UseBasicParsing -Uri $snappyDriverInstallerOriginLogoDownloadUrl -OutFile $temporarySnappyDriverInstallerOriginLogo
     Invoke-WebRequest -UseBasicParsing -Uri $wingetReadyIconDownloadUrl -OutFile $temporaryWingetReadyIcon
     Invoke-WebRequest -UseBasicParsing -Uri $aboutIconDownloadUrl -OutFile $temporaryAboutIcon
     Invoke-WebRequest -UseBasicParsing -Uri $linkIconDownloadUrl -OutFile $temporaryLinkIcon
@@ -212,6 +216,7 @@ try {
     Move-Item -LiteralPath $temporaryAppleMusicLogo -Destination $applicationAppleMusicLogo -Force
     Move-Item -LiteralPath $temporaryAppleDevicesLogo -Destination $applicationAppleDevicesLogo -Force
     Move-Item -LiteralPath $temporaryITunesLogo -Destination $applicationITunesLogo -Force
+    Move-Item -LiteralPath $temporarySnappyDriverInstallerOriginLogo -Destination $applicationSnappyDriverInstallerOriginLogo -Force
     Move-Item -LiteralPath $temporaryWingetReadyIcon -Destination $applicationWingetReadyIcon -Force
     Move-Item -LiteralPath $temporaryAboutIcon -Destination $applicationAboutIcon -Force
     Move-Item -LiteralPath $temporaryLinkIcon -Destination $applicationLinkIcon -Force
@@ -219,7 +224,7 @@ try {
     Move-Item -LiteralPath $temporarySecurityCenterIcon -Destination $applicationSecurityCenterIcon -Force
     Move-Item -LiteralPath $temporaryUpdateCenterIcon -Destination $applicationUpdateCenterIcon -Force
 } finally {
-    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryVersion, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryICloudLogo, $temporaryAppleMusicLogo, $temporaryAppleDevicesLogo, $temporaryITunesLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $temporaryScript, $temporaryLauncher, $temporaryCatalog, $temporaryVersion, $temporaryLogo, $temporaryIcon, $temporaryPowerShellLogo, $temporaryHwinfoLogo, $temporaryCpuZLogo, $temporaryGpuZLogo, $temporaryOcctLogo, $temporaryPerformanceTestLogo, $temporaryBurnInTestLogo, $temporaryFurMarkLogo, $temporaryPicViewLogo, $temporaryNeoFreeBirdLogo, $temporaryBibataModernIceLogo, $temporaryWin11DebloatLogo, $temporaryBusterLogo, $temporaryCrystalDiskInfoLogo, $temporaryDesktopIconsInstallerLogo, $temporaryICloudLogo, $temporaryAppleMusicLogo, $temporaryAppleDevicesLogo, $temporaryITunesLogo, $temporarySnappyDriverInstallerOriginLogo, $temporaryWingetReadyIcon, $temporaryAboutIcon, $temporaryLinkIcon, $temporaryUninstallIcon, $temporarySecurityCenterIcon, $temporaryUpdateCenterIcon -Force -ErrorAction SilentlyContinue
 }
 
 $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'

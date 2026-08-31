@@ -22,7 +22,8 @@ try {
         'assets\crystaldiskinfo-logo.png',
         'assets\windows-desktop-icons-installer-logo.png',
         'assets\icloud-logo.png','assets\apple-music-logo.png',
-        'assets\apple-devices-logo.png','assets\itunes-logo.png'
+        'assets\apple-devices-logo.png','assets\itunes-logo.png',
+        'assets\snappy-driver-installer-origin-logo.png'
     )
     $missing = @($required | Where-Object { -not (Test-Path -LiteralPath (Join-Path $target $_)) })
     if ($missing.Count -gt 0) { throw "Kurucu eksik dosya bıraktı: $($missing -join ', ')" }

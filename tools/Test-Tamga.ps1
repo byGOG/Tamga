@@ -127,7 +127,7 @@ if ($catalog) {
     }
 }
 
-foreach ($asset in @('tamga-logo.png','tamga-logo.ico','winget-ready.png','about-icon.png','link-icon.png','uninstall-icon.png','security-center-icon.png','update-center-icon.png')) {
+foreach ($asset in @('tamga-logo.png','tamga-logo.ico','winget-ready.png','about-icon.png','link-icon.png','uninstall-icon.png','security-center-icon.png','update-center-icon.png','snappy-driver-installer-origin-logo.png')) {
     Assert-Tamga (Test-Path -LiteralPath (Join-Path $root "assets\$asset")) "Eksik arayüz varlığı: assets/$asset"
 }
 
