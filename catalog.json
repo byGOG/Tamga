@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "UpdatedAt": "2026-08-19",
+  "UpdatedAt": "2026-08-31",
   "Categories": [
     {
       "Name": "İnternet Tarayıcıları",
@@ -1083,6 +1083,14 @@
       "Color": "#53759A"
     },
     {
+      "Name": "Snappy Driver Installer Origin",
+      "Description": "Sürücü bulma ve çevrimdışı yükleme",
+      "Id": "GlennDelahoy.SnappyDriverInstallerOrigin",
+      "Category": "Donanım & Test",
+      "Initial": "S",
+      "Color": "#3B82C4"
+    },
+    {
       "Name": "AnyDesk",
       "Description": "Uzak masaüstü bağlantısı",
       "Id": "AnyDesk.AnyDesk",
@@ -1489,6 +1497,7 @@
     "Discord": "https://discord.com/",
     "DNS Jumper": "https://www.sordum.org/7952/dns-jumper-v2-3/",
     "DriverStore Explorer": "https://github.com/lostindark/DriverStoreExplorer",
+    "Snappy Driver Installer Origin": "https://www.glenn.delahoy.com/snappy-driver-installer-origin/",
     "Dropbox": "https://www.dropbox.com/",
     "Epic Games Launcher": "https://store.epicgames.com/",
     "ESET Security": "https://www.eset.com/tr/",

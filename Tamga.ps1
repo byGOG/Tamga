@@ -1803,6 +1803,7 @@ $vendorLogoOverrides = @{
     'Apple Music'       = 'apple-music-logo.png'
     'Apple Aygıtları'   = 'apple-devices-logo.png'
     'iTunes'            = 'itunes-logo.png'
+    'Snappy Driver Installer Origin' = 'snappy-driver-installer-origin-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows Desktop Icons Installer' = 'windows-desktop-icons-installer-logo.png'

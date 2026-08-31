@@ -117,7 +117,7 @@ if ($catalog) {
 
     if ($logos) {
         $logoKeys = @($logos.PSObject.Properties.Name)
-        $localOverrides = @('CrystalDiskInfo','CrystalDiskMark','DiskGenius','PerformanceTest','Buster','YouTube Auto HD + FPS','Win11Debloat','Bibata Modern Ice Cursor','PicView','NeoFreeBird','Windows Desktop Icons Installer','iCloud','Apple Music','Apple Aygıtları','iTunes')
+        $localOverrides = @('CrystalDiskInfo','CrystalDiskMark','DiskGenius','PerformanceTest','Buster','YouTube Auto HD + FPS','Win11Debloat','Bibata Modern Ice Cursor','PicView','NeoFreeBird','Windows Desktop Icons Installer','iCloud','Apple Music','Apple Aygıtları','iTunes','Snappy Driver Installer Origin')
         foreach ($app in $applications) {
             $key = if ($app.LogoKey) { [string]$app.LogoKey } else { [string]$app.Name }
             if ($logoKeys -notcontains $key -and $localOverrides -notcontains [string]$app.Name) {
