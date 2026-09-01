@@ -1700,23 +1700,25 @@ foreach ($app in $apps) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
     $isScriptAction = $app.PSObject.Properties['Action'] -and $app.Action -eq 'PowerShell'
-    $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -in @('Url','PowerShell')
+    $isSystemAction = $app.PSObject.Properties['Action'] -and $app.Action -eq 'System'
+    $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -in @('Url','PowerShell','System')
     $app | Add-Member -NotePropertyName IsScriptAction -NotePropertyValue $isScriptAction -Force
+    $app | Add-Member -NotePropertyName IsSystemAction -NotePropertyValue $isSystemAction -Force
     $app | Add-Member -NotePropertyName IsWebResource -NotePropertyValue $isWebResource -Force
-    $websiteUrl = if ($isWebResource) { $app.Url } else { $officialWebsiteCatalog[$app.Name] }
+    $websiteUrl = if ($isSystemAction) { $null } elseif ($isWebResource) { $app.Url } else { $officialWebsiteCatalog[$app.Name] }
     $app | Add-Member -NotePropertyName WebsiteUrl -NotePropertyValue $websiteUrl -Force
     $app | Add-Member -NotePropertyName WebsiteVisibility -NotePropertyValue $(if ($websiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     $app | Add-Member -NotePropertyName CheckVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Collapsed } else { [Windows.Visibility]::Visible }) -Force
     $app | Add-Member -NotePropertyName UninstallVisibility -NotePropertyValue ([Windows.Visibility]::Collapsed) -Force
-    $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($isWebResource) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
+    $app | Add-Member -NotePropertyName LinkVisibility -NotePropertyValue $(if ($websiteUrl) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }) -Force
     if ($isWebResource) { $app.IsSelected = $false }
-    $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isScriptAction) { 'Script' } elseif ($isWebResource) { 'Web' } else { 'Pending' }) -Force
+    $app | Add-Member -NotePropertyName InstallState -NotePropertyValue $(if ($isSystemAction) { 'System' } elseif ($isScriptAction) { 'Script' } elseif ($isWebResource) { 'Web' } else { 'Pending' }) -Force
     $app | Add-Member -NotePropertyName Operation -NotePropertyValue 'Install' -Force
-    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isScriptAction) { 'Kart tıklandığında PowerShell aracı çalıştırılır' } elseif ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
-    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isScriptAction) { 'POWERSHELL' } elseif ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
-    $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isScriptAction) { '#174A42' } elseif ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
-    $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isScriptAction) { '#6EE7B7' } elseif ($isWebResource) { '#D8C7FF' } else { '#7DD3FC' }) -Force
-    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isScriptAction) { 'PowerShell komutu' } elseif ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
+    $app | Add-Member -NotePropertyName StatusDetail -NotePropertyValue $(if ($isSystemAction) { 'Kart tıklandığında Windows UAC ayarları açılır' } elseif ($isScriptAction) { 'Kart tıklandığında PowerShell aracı çalıştırılır' } elseif ($isWebResource) { 'Resmî internet kaynağı' } else { 'Sistem durumu taranmayı bekliyor' }) -Force
+    $app | Add-Member -NotePropertyName SourceLabel -NotePropertyValue $(if ($isSystemAction) { 'WINDOWS' } elseif ($isScriptAction) { 'POWERSHELL' } elseif ($isWebResource) { 'SİTE' } else { 'BEKLİYOR' }) -Force
+    $app | Add-Member -NotePropertyName SourceBackground -NotePropertyValue $(if ($isSystemAction) { '#163F5C' } elseif ($isScriptAction) { '#174A42' } elseif ($isWebResource) { '#453C58' } else { '#263F52' }) -Force
+    $app | Add-Member -NotePropertyName SourceForeground -NotePropertyValue $(if ($isSystemAction) { '#7DD3FC' } elseif ($isScriptAction) { '#6EE7B7' } elseif ($isWebResource) { '#D8C7FF' } else { '#7DD3FC' }) -Force
+    $app | Add-Member -NotePropertyName AccessibleName -NotePropertyValue ("{0}. {1}. {2}" -f $app.Name,$app.Description,$(if ($isSystemAction) { 'Windows sistem ayarı' } elseif ($isScriptAction) { 'PowerShell komutu' } elseif ($isWebResource) { 'İnternet kaynağı' } else { 'Paket durumu taranıyor' })) -Force
 }
 
 $logoCatalog = Get-TamgaLogoCatalog
@@ -1804,6 +1806,7 @@ $vendorLogoOverrides = @{
     'Apple Aygıtları'   = 'apple-devices-logo.png'
     'iTunes'            = 'itunes-logo.png'
     'Snappy Driver Installer Origin' = 'snappy-driver-installer-origin-logo.png'
+    'UAC Ayarları'       = 'uac-settings-logo.png'
     'Windows 10 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows 11 Media Creation Tool' = 'media-creation-tool-logo.png'
     'Windows Desktop Icons Installer' = 'windows-desktop-icons-installer-logo.png'
@@ -2847,6 +2850,27 @@ function Invoke-TamgaCatalogCommand {
     }
 }
 
+function Invoke-TamgaSystemAction {
+    param($Item)
+    if (-not $Item -or -not $Item.IsSystemAction -or -not $Item.PSObject.Properties['Target']) { return }
+    $allowedTargets = @{
+        'UserAccountControlSettings' = (Join-Path $env:WINDIR 'System32\UserAccountControlSettings.exe')
+    }
+    $targetName = [string]$Item.Target
+    if (-not $allowedTargets.ContainsKey($targetName)) {
+        Write-TamgaLog -Message "İzin verilmeyen Windows sistem aracı engellendi: $targetName" -Color Red
+        return
+    }
+    try {
+        Start-Process -FilePath $allowedTargets[$targetName] | Out-Null
+        $controls.ActivityText.Text = "Windows ayarı açıldı: $($Item.Name)"
+        Write-TamgaLog -Message "Windows sistem aracı açıldı: $($Item.Name)" -Color Cyan
+    } catch {
+        $controls.ActivityText.Text = "Windows ayarı açılamadı: $($Item.Name)"
+        Write-TamgaLog -Message "Windows sistem aracı açılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
+    }
+}
+
 $script:detailApp = $null
 $script:detailMetadataProcess = $null
 $script:detailMetadataResultFile = $null
@@ -3017,6 +3041,12 @@ $script:detailMetadataTimer.Add_Tick({
 function Start-AppDetailMetadataLoad {
     param($App)
     Stop-AppDetailMetadataLoad
+    if ($App.IsSystemAction) {
+        Set-AppDetailMetadata -Metadata ([pscustomobject]@{
+            InstalledVersion='Windows bileşeni'; CatalogVersion='Yerleşik'; Publisher='Microsoft Windows'; Author='Microsoft'; License='Windows lisansı'; InstallerType='Sistem aracı'; Tags='Windows  •  Güvenlik  •  UAC'; Repository='Yerleşik Windows bileşeni'; Hash='—'; HashStatus='Uygulanamaz'; Elevation='Ayar değişikliğinde onay gerekir'; CatalogUpdated=(Get-TamgaCatalogDate); Architecture='Windows ile uyumlu'; Compatibility='Uyumlu • kurulum gerektirmez'; State='Yerleşik Windows güvenlik ayarı'
+        })
+        return
+    }
     if ($App.IsWebResource) {
         Set-AppDetailMetadata -Metadata ([pscustomobject]@{
             InstalledVersion='Gerekmez'; CatalogVersion='Çevrim içi'; Publisher='Resmî internet kaynağı'; Author='—'; License='Siteye göre'; InstallerType='İnternet bağlantısı'; Tags='İnternet  •  Kaynak'; Repository=$(if ($App.WebsiteUrl) { $App.WebsiteUrl } else { 'Belirtilmemiş' }); Hash='—'; HashStatus='Uygulanamaz'; Elevation='Yetki gerekmez'; CatalogUpdated=(Get-TamgaCatalogDate); Architecture='Web kaynağı'; Compatibility='Uyumlu • kurulum gerektirmez'; State='İnternet kaynağı • kurulum gerektirmez'
@@ -3118,8 +3148,8 @@ function Show-AppDetail {
     $controls.AppDetailName.Text = $App.Name
     $controls.AppDetailCategory.Text = $App.Category
     $controls.AppDetailDescription.Text = $App.Description
-    $controls.AppDetailId.Text = if ($App.IsWebResource) { 'İnternet kaynağı' } else { $App.Id }
-    $controls.AppDetailSource.Text = if ($App.IsWebResource) { 'Resmî internet kaynağı' } else { 'WinGet' }
+    $controls.AppDetailId.Text = if ($App.IsSystemAction) { [string]$App.Target } elseif ($App.IsWebResource) { 'İnternet kaynağı' } else { $App.Id }
+    $controls.AppDetailSource.Text = if ($App.IsSystemAction) { 'Microsoft Windows' } elseif ($App.IsWebResource) { 'Resmî internet kaynağı' } else { 'WinGet' }
     $controls.AppDetailMetaCategory.Text = $App.Category
     $controls.AppDetailLogo.Source = $App.Logo
     $controls.AppDetailInitial.Text = $App.Initial
@@ -3135,7 +3165,9 @@ function Show-AppDetail {
     $controls.AppDetailRemoveButton.Visibility = if (-not $isUpdatePackage -and $App.InstallState -in @('Installed','UpdateAvailable')) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
     $controls.AppDetailPrimaryButton.IsEnabled = -not $script:isInstalling
     $controls.AppDetailPrimaryButton.Visibility = [Windows.Visibility]::Visible
-    if ($App.IsScriptAction) {
+    if ($App.IsSystemAction) {
+        $controls.AppDetailPrimaryButton.Content = 'UAC ayarlarını aç  →'
+    } elseif ($App.IsScriptAction) {
         $controls.AppDetailPrimaryButton.Content = 'Aracı çalıştır  →'
     } elseif ($App.IsWebResource) {
         $controls.AppDetailPrimaryButton.Content = 'Siteyi aç  →'
@@ -3173,6 +3205,8 @@ $controls.AppDetailPrimaryButton.Add_Click({
         $app.UpdatePackage.IsSelected = $true
         $controls.UpdateList.Items.Refresh()
         Update-UpdateCenterSelectionStatus
+    } elseif ($app.IsSystemAction) {
+        Invoke-TamgaSystemAction -Item $app
     } elseif ($app.IsScriptAction) {
         Invoke-TamgaCatalogCommand -Item $app
     } elseif ($app.IsWebResource) {
@@ -3240,6 +3274,12 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
         }
         if ($node -is [Windows.Controls.CheckBox]) { return }
         try { $node = [Windows.Media.VisualTreeHelper]::GetParent($node) } catch { $node = $null }
+    }
+
+    if ($item.IsSystemAction) {
+        Invoke-TamgaSystemAction -Item $item
+        $eventArgs.Handled = $true
+        return
     }
 
     if ($item.IsScriptAction) {
@@ -3346,7 +3386,9 @@ $window.Add_PreviewKeyDown({
     if ($controls.AppList.IsKeyboardFocusWithin -and -not $focusIsActionControl -and $controls.AppList.SelectedItem) {
         $focusedApp = $controls.AppList.SelectedItem
         if ($eventArgs.Key -eq [Windows.Input.Key]::Space) {
-            if ($focusedApp.IsScriptAction) {
+            if ($focusedApp.IsSystemAction) {
+                Invoke-TamgaSystemAction -Item $focusedApp
+            } elseif ($focusedApp.IsScriptAction) {
                 Invoke-TamgaCatalogCommand -Item $focusedApp
             } elseif ($focusedApp.IsWebResource) {
                 Open-TamgaWebsite -Item $focusedApp -Url $focusedApp.Url -WebResource

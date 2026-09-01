@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 1,
-  "UpdatedAt": "2026-08-31",
+  "UpdatedAt": "2026-09-01",
   "Categories": [
     {
       "Name": "İnternet Tarayıcıları",
@@ -511,6 +511,15 @@
       "Category": "Güvenlik",
       "Initial": "S",
       "Color": "#D5A62E"
+    },
+    {
+      "Name": "UAC Ayarları",
+      "Description": "Kullanıcı Hesabı Denetimi bildirim düzeyini seçin",
+      "Action": "System",
+      "Target": "UserAccountControlSettings",
+      "Category": "Güvenlik",
+      "Initial": "UAC",
+      "Color": "#1C8DCE"
     },
     {
       "Name": "Proton VPN",
