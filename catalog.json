@@ -513,15 +513,6 @@
       "Color": "#D5A62E"
     },
     {
-      "Name": "UAC Ayarları",
-      "Description": "Kullanıcı Hesabı Denetimi bildirim düzeyini seçin",
-      "Action": "System",
-      "Target": "UserAccountControlSettings",
-      "Category": "Güvenlik",
-      "Initial": "UAC",
-      "Color": "#1C8DCE"
-    },
-    {
       "Name": "Proton VPN",
       "Description": "Gizlilik odaklı VPN",
       "Id": "Proton.ProtonVPN",

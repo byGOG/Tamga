@@ -92,17 +92,13 @@ if ($catalog) {
         Assert-Tamga (-not [string]::IsNullOrWhiteSpace([string]$app.Initial)) "$($app.Name): Initial eksik."
         Assert-Tamga ([string]$app.Color -match '^#[0-9A-Fa-f]{6}$') "$($app.Name): Color #RRGGBB biçiminde olmalı."
         $action = [string]$app.Action
-        Assert-Tamga (@('','Url','PowerShell','System') -contains $action) "$($app.Name): bilinmeyen eylem türü '$action'."
+        Assert-Tamga (@('','Url','PowerShell') -contains $action) "$($app.Name): bilinmeyen eylem türü '$action'."
         if ($action -eq 'Url') {
             Assert-Tamga ([string]$app.Url -match '^https://') "$($app.Name): internet adresi HTTPS olmalı."
         } elseif ($action -eq 'PowerShell') {
             Assert-Tamga (-not [string]::IsNullOrWhiteSpace([string]$app.Command)) "$($app.Name): PowerShell komutu eksik."
             Assert-Tamga ([string]$app.Url -match '^https://') "$($app.Name): resmî internet adresi HTTPS olmalı."
             Assert-Tamga ([string]$app.Category -eq 'Betikler & Otomasyon') "$($app.Name): PowerShell eylemleri Betikler & Otomasyon kategorisinde olmalı."
-        } elseif ($action -eq 'System') {
-            Assert-Tamga ([string]$app.Target -eq 'UserAccountControlSettings') "$($app.Name): izin verilmeyen Windows sistem hedefi."
-            $securityCategory = 'G' + [char]0x00FC + 'venlik'
-            Assert-Tamga ([string]$app.Category -eq $securityCategory) "$($app.Name): Windows sistem ayarı güvenlik kategorisinde olmalı."
         } else {
             Assert-Tamga (-not [string]::IsNullOrWhiteSpace([string]$app.Id)) "$($app.Name): WinGet kimliği eksik."
         }
@@ -121,7 +117,7 @@ if ($catalog) {
 
     if ($logos) {
         $logoKeys = @($logos.PSObject.Properties.Name)
-        $localOverrides = @('CrystalDiskInfo','CrystalDiskMark','DiskGenius','PerformanceTest','Buster','YouTube Auto HD + FPS','Win11Debloat','Bibata Modern Ice Cursor','PicView','NeoFreeBird','Windows Desktop Icons Installer','iCloud','Apple Music','Apple Aygıtları','iTunes','Snappy Driver Installer Origin',('UAC Ayarlar' + [char]0x0131))
+        $localOverrides = @('CrystalDiskInfo','CrystalDiskMark','DiskGenius','PerformanceTest','Buster','YouTube Auto HD + FPS','Win11Debloat','Bibata Modern Ice Cursor','PicView','NeoFreeBird','Windows Desktop Icons Installer','iCloud','Apple Music','Apple Aygıtları','iTunes','Snappy Driver Installer Origin')
         foreach ($app in $applications) {
             $key = if ($app.LogoKey) { [string]$app.LogoKey } else { [string]$app.Name }
             if ($logoKeys -notcontains $key -and $localOverrides -notcontains [string]$app.Name) {
