@@ -69,6 +69,11 @@ $window.Close()
     }
 }
 
+Assert-Tamga ($scriptText -match 'x:Name="OpenButton"') 'Kurulu uygulama kartlarında hızlı aç düğmesi bulunamadı.'
+Assert-Tamga ($scriptText -match 'Visibility="\{Binding LaunchVisibility\}"') 'Hızlı aç düğmesinin görünürlük bağlaması bulunamadı.'
+Assert-Tamga ($scriptText -match 'function Resolve-TamgaLaunchTarget') 'Kurulu uygulama başlatma çözümleyicisi bulunamadı.'
+Assert-Tamga ($scriptText -match 'shell:AppsFolder') 'Başlat menüsü uygulamalarını açma desteği bulunamadı.'
+
 $catalogPath = Join-Path $root 'catalog.json'
 $logosPath = Join-Path $root 'logos.json'
 try { $catalog = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json } catch { $failures.Add("catalog.json okunamadı: $($_.Exception.Message)") }

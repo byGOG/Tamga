@@ -610,7 +610,7 @@ $script:tamgaIconPath = @(
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="4"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                 <Border x:Name="AccentBar" Background="{Binding Color}"/>
                                 <Grid Grid.Column="1" Margin="12,7,11,7">
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="42"/><ColumnDefinition Width="42"/><ColumnDefinition Width="42"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="46"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="42"/><ColumnDefinition Width="42"/><ColumnDefinition Width="42"/><ColumnDefinition Width="42"/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions>
                                     <Border Width="38" Height="38" Background="Transparent" VerticalAlignment="Center">
                                         <Grid>
                                             <Image Source="{Binding Logo}" Width="36" Height="36" Stretch="Uniform"
@@ -630,19 +630,25 @@ $script:tamgaIconPath = @(
                                             VerticalAlignment="Center" ToolTip="{Binding StatusDetail}">
                                         <TextBlock Text="{Binding SourceLabel}" Foreground="{Binding SourceForeground}" FontSize="9.5" FontWeight="Bold"/>
                                     </Border>
-                                    <Button x:Name="DetailButton" Grid.Column="3" Style="{StaticResource IconButton}" Width="38" Height="38" ToolTip="Uygulama ayrıntılarını göster"
+                                    <Button x:Name="OpenButton" Grid.Column="3" Style="{StaticResource IconButton}" Width="38" Height="38"
+                                            Visibility="{Binding LaunchVisibility}" ToolTip="Uygulamayı aç"
+                                            AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını aç}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Text="&#xE768;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="18"
+                                                   Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <Button x:Name="DetailButton" Grid.Column="4" Style="{StaticResource IconButton}" Width="38" Height="38" ToolTip="Uygulama ayrıntılarını göster"
                                             AutomationProperties.Name="{Binding Name, StringFormat={}{0} ayrıntılarını göster}" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                                    Foreground="#93C5FD" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <Button x:Name="WebsiteButton" Grid.Column="4" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
+                                    <Button x:Name="WebsiteButton" Grid.Column="5" Tag="{Binding WebsiteUrl}" Style="{StaticResource IconButton}"
                                             Width="38" Height="38"
                                             Visibility="{Binding WebsiteVisibility}" ToolTip="Resmî siteyi aç" AutomationProperties.Name="Resmî siteyi aç"
                                             VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Text="&#xE71B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="19"
                                                    Foreground="#67E8F9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <Button x:Name="UninstallButton" Grid.Column="5" Style="{StaticResource IconButton}"
+                                    <Button x:Name="UninstallButton" Grid.Column="6" Style="{StaticResource IconButton}"
                                             Width="38" Height="38"
                                             Background="{DynamicResource DangerBg}" BorderBrush="{DynamicResource DangerBorder}"
                                             Visibility="{Binding UninstallVisibility}" ToolTip="Uygulamayı kaldır" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını kaldır}"
@@ -650,7 +656,7 @@ $script:tamgaIconPath = @(
                                         <TextBlock Text="&#xE74D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20"
                                                    Foreground="#FF8585" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
-                                    <CheckBox x:Name="AppCheck" Grid.Column="6" IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                    <CheckBox x:Name="AppCheck" Grid.Column="7" IsChecked="{Binding IsSelected, Mode=TwoWay}"
                                               Visibility="{Binding CheckVisibility}" AutomationProperties.Name="{Binding Name, StringFormat={}{0} uygulamasını seç}"
                                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Grid>
@@ -1717,6 +1723,12 @@ foreach ($app in $apps) {
     if (-not $app.PSObject.Properties['InitialOpacity']) {
         $app | Add-Member -NotePropertyName InitialOpacity -NotePropertyValue 1.0
     }
+    if (-not $app.PSObject.Properties['LaunchVisibility']) {
+        $app | Add-Member -NotePropertyName LaunchVisibility -NotePropertyValue ([Windows.Visibility]::Collapsed)
+    }
+    if (-not $app.PSObject.Properties['LaunchTarget']) {
+        $app | Add-Member -NotePropertyName LaunchTarget -NotePropertyValue $null
+    }
     $isScriptAction = $app.PSObject.Properties['Action'] -and $app.Action -eq 'PowerShell'
     $isWebResource = $app.PSObject.Properties['Action'] -and $app.Action -in @('Url','PowerShell')
     $app | Add-Member -NotePropertyName IsScriptAction -NotePropertyValue $isScriptAction -Force
@@ -2334,6 +2346,8 @@ function Set-AppInstallState {
             $App.IsSelected = $false
             $App.CheckVisibility = [Windows.Visibility]::Collapsed
             $App.UninstallVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchTarget = $null
         }
         'NotInstalled' {
             $App.SourceLabel = 'KURULU DEĞİL'
@@ -2343,6 +2357,8 @@ function Set-AppInstallState {
             $App.Operation = 'Install'
             $App.CheckVisibility = [Windows.Visibility]::Visible
             $App.UninstallVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchTarget = $null
         }
         'Installed' {
             $App.SourceLabel = 'KURULU'
@@ -2353,6 +2369,8 @@ function Set-AppInstallState {
             $App.IsSelected = $false
             $App.CheckVisibility = [Windows.Visibility]::Collapsed
             $App.UninstallVisibility = [Windows.Visibility]::Visible
+            $App.LaunchTarget = Resolve-TamgaLaunchTarget -Item $App
+            $App.LaunchVisibility = if ($App.LaunchTarget) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
         }
         'UpdateAvailable' {
             $App.SourceLabel = 'GÜNCELLEME'
@@ -2362,6 +2380,8 @@ function Set-AppInstallState {
             $App.Operation = 'Upgrade'
             $App.CheckVisibility = [Windows.Visibility]::Visible
             $App.UninstallVisibility = [Windows.Visibility]::Visible
+            $App.LaunchTarget = Resolve-TamgaLaunchTarget -Item $App
+            $App.LaunchVisibility = if ($App.LaunchTarget) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
         }
         'Unknown' {
             $App.SourceLabel = 'DURUM YOK'
@@ -2371,6 +2391,8 @@ function Set-AppInstallState {
             $App.Operation = 'Install'
             $App.CheckVisibility = [Windows.Visibility]::Visible
             $App.UninstallVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchVisibility = [Windows.Visibility]::Collapsed
+            $App.LaunchTarget = $null
         }
     }
     $App.AccessibleName = "{0}. {1}. {2}" -f $App.Name,$App.Description,$App.StatusDetail
@@ -2422,6 +2444,8 @@ function Complete-SystemScan {
 
     $installedOutput = [string]$ScanResult.InstalledOutput
     $upgradeOutput = [string]$ScanResult.UpgradeOutput
+    $script:startAppCatalog = $null
+    $script:uninstallCatalog = $null
     Set-UpdateCenterPackages -UpgradeOutput $upgradeOutput
     foreach ($app in @($apps | Where-Object { -not $_.IsWebResource })) {
         if (Test-WingetOutputContainsId -Output $upgradeOutput -Id $app.Id) {
@@ -2842,6 +2866,183 @@ $controls.SordumLink.Add_RequestNavigate({
 })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::CheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
 $controls.AppList.AddHandler([Windows.Controls.CheckBox]::UncheckedEvent, [Windows.RoutedEventHandler]{ Update-SelectionStatus })
+$script:startAppCatalog = $null
+$script:uninstallCatalog = $null
+
+function ConvertTo-TamgaLaunchKey {
+    param([AllowEmptyString()][string]$Value)
+    if ([string]::IsNullOrWhiteSpace($Value)) { return '' }
+    $normalized = $Value.ToLowerInvariant().Replace('ı','i').Replace('ş','s').Replace('ğ','g').Replace('ü','u').Replace('ö','o').Replace('ç','c')
+    $decomposed = $normalized.Normalize([Text.NormalizationForm]::FormD)
+    $characters = foreach ($character in $decomposed.ToCharArray()) {
+        if ([Globalization.CharUnicodeInfo]::GetUnicodeCategory($character) -ne [Globalization.UnicodeCategory]::NonSpacingMark) { $character }
+    }
+    return [Regex]::Replace((-join $characters), '[^a-z0-9]', '')
+}
+
+function Get-TamgaLaunchAliases {
+    param([AllowEmptyString()][string]$Value)
+    $primary = ConvertTo-TamgaLaunchKey $Value
+    if ([string]::IsNullOrWhiteSpace($Value)) { return @($primary) }
+    $words = @([Regex]::Matches($Value, '[\p{L}\p{Nd}]+') | ForEach-Object { ConvertTo-TamgaLaunchKey $_.Value } | Where-Object { $_ })
+    $aliases = [Collections.Generic.List[string]]::new()
+    if ($primary) { $aliases.Add($primary) }
+    if ($words.Count -ge 2) {
+        $initials = -join @($words | ForEach-Object { $_.Substring(0,1) })
+        if ($initials.Length -ge 3) { $aliases.Add($initials) }
+        $prefixAndLast = (-join @($words[0..($words.Count - 2)] | ForEach-Object { $_.Substring(0,1) })) + $words[-1]
+        if ($prefixAndLast.Length -ge 4) { $aliases.Add($prefixAndLast) }
+    }
+    return @($aliases | Select-Object -Unique)
+}
+
+function Get-TamgaStartAppCatalog {
+    if ($null -ne $script:startAppCatalog) { return @($script:startAppCatalog) }
+    try {
+        $script:startAppCatalog = @(Get-StartApps | Where-Object {
+            -not [string]::IsNullOrWhiteSpace([string]$_.Name) -and
+            -not [string]::IsNullOrWhiteSpace([string]$_.AppID) -and
+            [string]$_.AppID -notmatch '^(?i)https?://' -and
+            [string]$_.Name -notmatch '(?i)\b(uninstall|kaldır|kaldir|help|yardım|yardim|readme|manual|website|web sitesi|license|lisans)\b'
+        })
+    } catch {
+        $script:startAppCatalog = @()
+        Write-TamgaLog -Message "Başlat menüsü uygulamaları okunamadı: $($_.Exception.Message)" -Color Yellow
+    }
+    return @($script:startAppCatalog)
+}
+
+function Resolve-TamgaStartApp {
+    param($Item)
+    if (-not $Item) { return $null }
+    $nameKey = ConvertTo-TamgaLaunchKey ([string]$Item.Name)
+    $nameAliases = @(Get-TamgaLaunchAliases ([string]$Item.Name))
+    $id = [string]$Item.Id
+    $idLeaf = ConvertTo-TamgaLaunchKey $(if ($id -match '\.') { ($id -split '\.')[-1] } else { $id })
+    $candidates = foreach ($startApp in @(Get-TamgaStartAppCatalog)) {
+        $candidateName = ConvertTo-TamgaLaunchKey ([string]$startApp.Name)
+        $candidateId = ConvertTo-TamgaLaunchKey ([string]$startApp.AppID)
+        $score = 0
+        if ($nameKey -and $candidateName -eq $nameKey) { $score = 120 }
+        elseif (@($nameAliases | Where-Object { $_ -and $candidateName -eq $_ }).Count -gt 0) { $score = 116 }
+        elseif ($idLeaf -and $candidateName -eq $idLeaf) { $score = 115 }
+        elseif ($nameKey.Length -ge 4 -and $candidateName.Contains($nameKey)) { $score = 105 - [Math]::Min(20,[Math]::Abs($candidateName.Length - $nameKey.Length)) }
+        elseif ($candidateName.Length -ge 4 -and $nameKey.Contains($candidateName)) { $score = 100 - [Math]::Min(20,[Math]::Abs($candidateName.Length - $nameKey.Length)) }
+        elseif ($idLeaf.Length -ge 4 -and $candidateId.Contains($idLeaf)) { $score = 95 }
+        elseif ($idLeaf.Length -ge 4 -and $candidateName.Contains($idLeaf)) { $score = 90 }
+        elseif (@($nameAliases | Where-Object { $_.Length -ge 4 -and ($candidateName.Contains($_) -or $_.Contains($candidateName)) }).Count -gt 0) { $score = 88 }
+        elseif ($candidateName.Length -ge 3 -and $nameKey.StartsWith($candidateName)) { $score = 86 }
+        if ($score -ge 80) {
+            [pscustomobject]@{ StartApp=$startApp; Score=$score; NameLength=$candidateName.Length }
+        }
+    }
+    return @($candidates | Sort-Object -Property @{ Expression='Score'; Descending=$true }, @{ Expression='NameLength'; Ascending=$true } | Select-Object -First 1).StartApp
+}
+
+function Get-TamgaUninstallCatalog {
+    if ($null -ne $script:uninstallCatalog) { return @($script:uninstallCatalog) }
+    $registryPaths = @(
+        'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+        'HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*',
+        'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*'
+    )
+    $script:uninstallCatalog = @(Get-ItemProperty -Path $registryPaths -ErrorAction SilentlyContinue | Where-Object {
+        -not [string]::IsNullOrWhiteSpace([string]$_.DisplayName)
+    })
+    return @($script:uninstallCatalog)
+}
+
+function Get-TamgaExecutableFromUninstallEntry {
+    param($Entry, [string]$NameKey, [string[]]$NameAliases, [string]$IdLeaf)
+    if (-not $Entry) { return $null }
+    $displayIcon = ([string]$Entry.DisplayIcon).Trim().Trim('"') -replace ',\s*-?\d+\s*$',''
+    $displayIconName = [IO.Path]::GetFileNameWithoutExtension($displayIcon)
+    if ($displayIcon -match '(?i)\.exe$' -and $displayIconName -notmatch '(?i)(unins|uninstall|setup|install|update|updater|crash|report|remove)' -and (Test-Path -LiteralPath $displayIcon)) { return $displayIcon }
+
+    $installLocation = ([string]$Entry.InstallLocation).Trim().Trim('"')
+    if ([string]::IsNullOrWhiteSpace($installLocation) -or -not (Test-Path -LiteralPath $installLocation -PathType Container)) { return $null }
+    $executables = @(Get-ChildItem -LiteralPath $installLocation -File -Filter '*.exe' -ErrorAction SilentlyContinue)
+    if ($executables.Count -eq 0) {
+        $executables = @(Get-ChildItem -LiteralPath $installLocation -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+            Get-ChildItem -LiteralPath $_.FullName -File -Filter '*.exe' -ErrorAction SilentlyContinue
+        })
+    }
+    $safeExecutables = @($executables | Where-Object { $_.BaseName -notmatch '(?i)(unins|uninstall|setup|install|update|updater|crash|report|remove)' })
+    if ($safeExecutables.Count -eq 0) { return $null }
+    $ranked = foreach ($executable in $safeExecutables) {
+        $executableKey = ConvertTo-TamgaLaunchKey $executable.BaseName
+        $score = 0
+        if ($NameKey -and $executableKey -eq $NameKey) { $score = 120 }
+        elseif (@($NameAliases | Where-Object { $_ -and ($executableKey -eq $_ -or $executableKey.StartsWith($_)) }).Count -gt 0) { $score = 116 }
+        elseif ($IdLeaf -and $executableKey -eq $IdLeaf) { $score = 115 }
+        elseif ($NameKey.Length -ge 4 -and ($executableKey.Contains($NameKey) -or $NameKey.Contains($executableKey))) { $score = 100 }
+        elseif ($IdLeaf.Length -ge 4 -and ($executableKey.Contains($IdLeaf) -or $IdLeaf.Contains($executableKey))) { $score = 95 }
+        [pscustomobject]@{ Path=$executable.FullName; Score=$score; Length=$executable.Length }
+    }
+    $best = $ranked | Sort-Object -Property @{ Expression='Score'; Descending=$true }, @{ Expression='Length'; Descending=$true } | Select-Object -First 1
+    if (-not $best -or ($best.Score -eq 0 -and $safeExecutables.Count -gt 3)) { return $null }
+    return [string]$best.Path
+}
+
+function Resolve-TamgaRegistryExecutable {
+    param($Item)
+    if (-not $Item) { return $null }
+    $nameKey = ConvertTo-TamgaLaunchKey ([string]$Item.Name)
+    $nameAliases = @(Get-TamgaLaunchAliases ([string]$Item.Name))
+    $id = [string]$Item.Id
+    $idKey = ConvertTo-TamgaLaunchKey $id
+    $idLeaf = ConvertTo-TamgaLaunchKey $(if ($id -match '\.') { ($id -split '\.')[-1] } else { $id })
+    $ranked = foreach ($entry in @(Get-TamgaUninstallCatalog)) {
+        $displayNameKey = ConvertTo-TamgaLaunchKey ([string]$entry.DisplayName)
+        $wingetIdKey = ConvertTo-TamgaLaunchKey ([string]$entry.WinGetPackageIdentifier)
+        $score = 0
+        if ($idKey -and $wingetIdKey -eq $idKey) { $score = 130 }
+        elseif ($nameKey -and $displayNameKey -eq $nameKey) { $score = 120 }
+        elseif ($nameKey.Length -ge 5 -and ($displayNameKey.Contains($nameKey) -or $nameKey.Contains($displayNameKey))) { $score = 100 }
+        elseif ($idLeaf.Length -ge 5 -and $displayNameKey.Contains($idLeaf)) { $score = 90 }
+        if ($score -ge 90) { [pscustomobject]@{ Entry=$entry; Score=$score } }
+    }
+    foreach ($match in @($ranked | Sort-Object Score -Descending)) {
+        $path = Get-TamgaExecutableFromUninstallEntry -Entry $match.Entry -NameKey $nameKey -NameAliases $nameAliases -IdLeaf $idLeaf
+        if ($path) { return $path }
+    }
+    return $null
+}
+
+function Resolve-TamgaLaunchTarget {
+    param($Item)
+    $startApp = Resolve-TamgaStartApp -Item $Item
+    if ($startApp) { return [pscustomobject]@{ Kind='AppsFolder'; Value=[string]$startApp.AppID; Label=[string]$startApp.Name } }
+    $executable = Resolve-TamgaRegistryExecutable -Item $Item
+    if ($executable) { return [pscustomobject]@{ Kind='Executable'; Value=$executable; Label=[IO.Path]::GetFileNameWithoutExtension($executable) } }
+    return $null
+}
+
+function Start-TamgaInstalledApp {
+    param($Item)
+    if (-not $Item -or $Item.InstallState -notin @('Installed','UpdateAvailable')) { return }
+    $target = if ($Item.PSObject.Properties['LaunchTarget'] -and $Item.LaunchTarget) { $Item.LaunchTarget } else { Resolve-TamgaLaunchTarget -Item $Item }
+    if (-not $target) {
+        $controls.ActivityText.Text = "Güvenli başlatma hedefi bulunamadı: $($Item.Name)"
+        Write-TamgaLog -Message "Uygulama açılamadı; güvenli başlatma hedefi bulunamadı: $($Item.Name)" -Color Yellow
+        return
+    }
+    try {
+        if ($target.Kind -eq 'AppsFolder') {
+            Start-Process -FilePath 'explorer.exe' -ArgumentList @("shell:AppsFolder\$([string]$target.Value)") | Out-Null
+        } elseif ($target.Kind -eq 'Executable') {
+            Start-Process -FilePath ([string]$target.Value) -WorkingDirectory (Split-Path -Parent ([string]$target.Value)) | Out-Null
+        } else {
+            throw 'Desteklenmeyen başlatma hedefi.'
+        }
+        $controls.ActivityText.Text = "Uygulama açıldı: $($Item.Name)"
+        Write-TamgaLog -Message "Uygulama açıldı: $($Item.Name) — $($target.Label)" -Color Cyan
+    } catch {
+        $controls.ActivityText.Text = "Uygulama açılamadı: $($Item.Name)"
+        Write-TamgaLog -Message "Uygulama açılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
+    }
+}
+
 function Open-TamgaWebsite {
     param($Item, [string]$Url, [switch]$WebResource)
     if ([string]::IsNullOrWhiteSpace($Url)) { return }
@@ -3238,6 +3439,11 @@ $websiteClickHandler = [Windows.RoutedEventHandler]{
         $eventArgs.Handled = $true
         return
     }
+    if ($button.Name -eq 'OpenButton') {
+        Start-TamgaInstalledApp -Item $button.DataContext
+        $eventArgs.Handled = $true
+        return
+    }
     if ($button.Name -eq 'UninstallButton') {
         Request-AppUninstall -App $button.DataContext
         $eventArgs.Handled = $true
@@ -3263,7 +3469,7 @@ $controls.AppList.Add_PreviewMouseLeftButtonUp({
     $node = $source
     while ($node) {
         if ($node -is [Windows.Controls.Button]) {
-            if ($node.Name -in @('DetailButton','UninstallButton')) { return }
+            if ($node.Name -in @('OpenButton','DetailButton','UninstallButton')) { return }
             Open-TamgaWebsite -Item $item -Url ([string]$node.Tag) -WebResource:$item.IsWebResource
             $eventArgs.Handled = $true
             return
