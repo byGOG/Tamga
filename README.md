@@ -94,7 +94,7 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 | **KURULU** | Uygulama bilgisayarınızda kurulu. |
 | **KURULU DEĞİL** | Uygulama kurulabilir durumda. |
 | **GÜNCELLEME** | Daha yeni bir sürüm bulunuyor. |
-| **SİTE** | Kart bir internet kaynağıdır; kurulum yapmaz. |
+| **WEB** | Kart bir internet kaynağıdır; kurulum yapmaz. |
 | **POWERSHELL** | İlgili aracın resmî PowerShell komutunu çalıştırır. |
 
 ## Öne çıkan özellikler
