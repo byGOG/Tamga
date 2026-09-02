@@ -2016,6 +2016,7 @@ function ConvertFrom-WingetUpgradeOutput {
         $line = [string]$lines[$index]
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
         if ($line -match '^\s*\d+\s+package' -or $line -match '^\s*No installed package') { break }
+        if ($line -match '(?i)^\s*(The following packages?|No applicable upgrade|No newer package versions?|Aşağıdaki paketler?|Uygulanabilir güncelleme|Daha yeni paket sürümü)') { break }
         if ($line.Length -le $starts[1]) { continue }
 
         $values = for ($column = 0; $column -lt $starts.Count; $column++) {
@@ -2031,6 +2032,9 @@ function ConvertFrom-WingetUpgradeOutput {
         $available = [string]$values[3]
         $source = if ($values.Count -ge 5 -and $values[4]) { [string]$values[4] } else { 'winget' }
         if ([string]::IsNullOrWhiteSpace($id) -or [string]::IsNullOrWhiteSpace($available)) { continue }
+        # WinGet tablo sonundaki açıklamaları terminal genişliğine göre sütunlara
+        # bölebilir. Gerçek paket kimliği, sürümler ve kaynak boşluk içermez.
+        if ($id -match '\s' -or $current -match '\s' -or $available -match '\s' -or $source -match '\s') { continue }
         [void]$packages.Add([pscustomobject]@{
             Name = $name
             Id = $id

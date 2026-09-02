@@ -76,6 +76,25 @@ Assert-Tamga ($scriptText -match 'shell:AppsFolder') 'Başlat menüsü uygulamal
 Assert-Tamga ($scriptText -match 'x:Name="MicrosoftDefenderButton"') 'Microsoft Defender sabit araç kartı bulunamadı.'
 Assert-Tamga ($scriptText -match 'windowsdefender://threat') 'Microsoft Defender virüs ve tehdit koruması bağlantısı bulunamadı.'
 
+$tamgaAst = [Management.Automation.Language.Parser]::ParseInput($scriptText, [ref]$null, [ref]$null)
+$upgradeParserAst = $tamgaAst.Find({
+    param($node)
+    $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'ConvertFrom-WingetUpgradeOutput'
+}, $true)
+Assert-Tamga ($null -ne $upgradeParserAst) 'WinGet güncelleme çıktısı ayrıştırıcısı bulunamadı.'
+if ($upgradeParserAst) {
+    Invoke-Expression $upgradeParserAst.Extent.Text
+    $upgradeOutputWithFooter = @'
+Name                       Id                         Version        Available      Source
+----------------------------------------------------------------------------------------
+Battle.net                 Blizzard.BattleNet         Unknown        1.19.3.3291    winget
+The following packages have an upgrade available, but require explicit targeting for upgrade:
+'@
+    $parsedUpgrades = @(ConvertFrom-WingetUpgradeOutput -Output $upgradeOutputWithFooter)
+    Assert-Tamga ($parsedUpgrades.Count -eq 1) 'WinGet açıklama satırı sahte güncelleme olarak ayrıştırıldı.'
+    Assert-Tamga ($parsedUpgrades[0].Id -eq 'Blizzard.BattleNet') 'Gerçek WinGet güncelleme satırı korunamadı.'
+}
+
 $catalogPath = Join-Path $root 'catalog.json'
 $logosPath = Join-Path $root 'logos.json'
 try { $catalog = Get-Content -LiteralPath $catalogPath -Raw -Encoding UTF8 | ConvertFrom-Json } catch { $failures.Add("catalog.json okunamadı: $($_.Exception.Message)") }
