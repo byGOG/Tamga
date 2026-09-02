@@ -73,6 +73,8 @@ Assert-Tamga ($scriptText -match 'x:Name="OpenButton"') 'Kurulu uygulama kartlar
 Assert-Tamga ($scriptText -match 'Visibility="\{Binding LaunchVisibility\}"') 'Hızlı aç düğmesinin görünürlük bağlaması bulunamadı.'
 Assert-Tamga ($scriptText -match 'function Resolve-TamgaLaunchTarget') 'Kurulu uygulama başlatma çözümleyicisi bulunamadı.'
 Assert-Tamga ($scriptText -match 'shell:AppsFolder') 'Başlat menüsü uygulamalarını açma desteği bulunamadı.'
+Assert-Tamga ($scriptText -match 'x:Name="MicrosoftDefenderButton"') 'Microsoft Defender sabit araç kartı bulunamadı.'
+Assert-Tamga ($scriptText -match 'windowsdefender://threat') 'Microsoft Defender virüs ve tehdit koruması bağlantısı bulunamadı.'
 
 $catalogPath = Join-Path $root 'catalog.json'
 $logosPath = Join-Path $root 'logos.json'

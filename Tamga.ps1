@@ -316,6 +316,7 @@ $script:tamgaIconPath = @(
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="8,0,0,25">
                     <Image x:Name="BrandLogoImage" Width="48" Height="48" Stretch="Uniform"
@@ -367,7 +368,22 @@ $script:tamgaIconPath = @(
                     </Grid>
                 </Button>
 
-                <Button x:Name="FailureCenterButton" Grid.Row="5" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0" Visibility="Collapsed"
+                <Button x:Name="MicrosoftDefenderButton" Grid.Row="5" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                        ToolTip="Microsoft Defender virüs ve tehdit korumasını aç" AutomationProperties.Name="Microsoft Defender">
+                    <Grid Width="183">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="40" Height="40" CornerRadius="12" Background="#183C58" BorderBrush="#2C78A8" BorderThickness="1">
+                            <Image x:Name="DefenderNavIconImage" Width="28" Height="28" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
+                            <TextBlock Text="Microsoft Defender" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="Virüs ve tehdit koruması" Foreground="#86BBD8" FontSize="10" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </Button>
+
+                <Button x:Name="FailureCenterButton" Grid.Row="6" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0" Visibility="Collapsed"
                         ToolTip="Başarısız paket işlemlerini incele ve yeniden dene" AutomationProperties.Name="Başarısız İşlemler Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -382,7 +398,7 @@ $script:tamgaIconPath = @(
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="6" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="AboutButton" Grid.Row="7" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="Tamga bilgilerini ve bağlantılarını göster" AutomationProperties.Name="Tamga hakkında">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -398,7 +414,7 @@ $script:tamgaIconPath = @(
                     </Grid>
                 </Button>
 
-                <Button x:Name="UacSettingsButton" Grid.Row="7" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="UacSettingsButton" Grid.Row="8" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
                         ToolTip="Kullanıcı Hesabı Denetimi bildirim düzeyini seç" AutomationProperties.Name="UAC Ayarları">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -413,7 +429,7 @@ $script:tamgaIconPath = @(
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="8" Height="62" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
+                <Border x:Name="WingetCard" Grid.Row="9" Height="62" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
                         CornerRadius="10" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir"
                         Focusable="True" AutomationProperties.Name="WinGet paket yöneticisi durumu"
                         AutomationProperties.HelpText="WinGet eksikse Enter veya Boşluk tuşuyla kurulumu başlatın">
@@ -1360,7 +1376,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','UacSettingsButton','UacNavIconImage','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','MicrosoftDefenderButton','DefenderNavIconImage','UacSettingsButton','UacNavIconImage','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','DownloadButton','OfflineCacheButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailArchitecture','AppDetailCompatibility','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','AboutVersionText','AboutUpdateButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1462,7 +1478,10 @@ if ($linkIconImage) { $window.Resources['LinkIconImage'] = $linkIconImage }
 $uninstallIconImage = Import-TamgaBrandImage -FileName 'uninstall-icon.png'
 if ($uninstallIconImage) { $window.Resources['UninstallIconImage'] = $uninstallIconImage }
 $uacNavImage = Import-TamgaBrandImage -FileName 'uac-settings-logo.png'
-if ($uacNavImage) { $controls.UacNavIconImage.Source = $uacNavImage }
+if ($uacNavImage) {
+    $controls.UacNavIconImage.Source = $uacNavImage
+    $controls.DefenderNavIconImage.Source = $uacNavImage
+}
 
 $script:focusHistory = [Collections.Stack]::new()
 $script:focusRegionIndex = -1
@@ -2701,6 +2720,16 @@ $controls.SecurityBackButton.Add_Click({
 $controls.SecurityRefreshButton.Add_Click({ Start-SecurityScan })
 $controls.OpenWindowsSecurityButton.Add_Click({
     try { Start-Process -FilePath 'windowsdefender:' } catch { Write-TamgaLog -Message "Windows Güvenliği açılamadı: $($_.Exception.Message)" -Color Red }
+})
+$controls.MicrosoftDefenderButton.Add_Click({
+    try {
+        Start-Process -FilePath 'windowsdefender://threat' | Out-Null
+        $controls.ActivityText.Text = 'Microsoft Defender açıldı'
+        Write-TamgaLog -Message 'Microsoft Defender virüs ve tehdit koruması açıldı.' -Color Cyan
+    } catch {
+        $controls.ActivityText.Text = 'Microsoft Defender açılamadı'
+        Write-TamgaLog -Message "Microsoft Defender açılamadı: $($_.Exception.Message)" -Color Red
+    }
 })
 $controls.UacSettingsButton.Add_Click({
     try {
