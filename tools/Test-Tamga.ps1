@@ -84,6 +84,9 @@ Assert-Tamga ($scriptText -match 'x:Name="WingetCard" Grid.Row="9" Height="54"')
 Assert-Tamga ($scriptText -notmatch 'DefenderNavIconImage|UacNavIconImage') 'Alt araç alanında eski kalkan görselleri kullanılmamalı.'
 Assert-Tamga ($scriptText -match 'x:Name="AboutCloseButton"[^>]+Margin="0"') 'Hakkında kapatma düğmesi başlık alanında doğru konumlandırılmamış.'
 Assert-Tamga ($scriptText -notmatch 'x:Name="AboutCloseButton"[^>]+Margin="[^"]*-') 'Hakkında kapatma düğmesi kırpılmaya neden olan negatif kenar boşluğu içermemeli.'
+Assert-Tamga ($scriptText -match '\$script:lastAppLaunchKey') 'Hızlı aç düğmesinde yinelenen süreç koruması bulunamadı.'
+Assert-Tamga ($scriptText -match 'lastAppLaunchAt\)\.TotalSeconds -lt 5') 'Hızlı aç düğmesinin güvenli bekleme süresi bulunamadı.'
+Assert-Tamga ($scriptText -match 'if \(\$button\.Name -eq ''OpenButton''\) \{\s*\$eventArgs\.Handled = \$true\s*Start-TamgaInstalledApp') 'Hızlı aç olayı, uygulama başlatılmadan önce işlenmiş olarak işaretlenmeli.'
 
 $tamgaAst = [Management.Automation.Language.Parser]::ParseInput($scriptText, [ref]$null, [ref]$null)
 $upgradeParserAst = $tamgaAst.Find({

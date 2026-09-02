@@ -3056,6 +3056,9 @@ function Resolve-TamgaLaunchTarget {
     return $null
 }
 
+$script:lastAppLaunchKey = ''
+$script:lastAppLaunchAt = [DateTime]::MinValue
+
 function Start-TamgaInstalledApp {
     param($Item)
     if (-not $Item -or $Item.InstallState -notin @('Installed','UpdateAvailable')) { return }
@@ -3065,6 +3068,11 @@ function Start-TamgaInstalledApp {
         Write-TamgaLog -Message "Uygulama açılamadı; güvenli başlatma hedefi bulunamadı: $($Item.Name)" -Color Yellow
         return
     }
+    $launchKey = if (-not [string]::IsNullOrWhiteSpace([string]$Item.Id)) { [string]$Item.Id } else { [string]$Item.Name }
+    $launchNow = [DateTime]::UtcNow
+    if ($script:lastAppLaunchKey -eq $launchKey -and ($launchNow - $script:lastAppLaunchAt).TotalSeconds -lt 5) { return }
+    $script:lastAppLaunchKey = $launchKey
+    $script:lastAppLaunchAt = $launchNow
     try {
         if ($target.Kind -eq 'AppsFolder') {
             Start-Process -FilePath 'explorer.exe' -ArgumentList @("shell:AppsFolder\$([string]$target.Value)") | Out-Null
@@ -3076,6 +3084,8 @@ function Start-TamgaInstalledApp {
         $controls.ActivityText.Text = "Uygulama açıldı: $($Item.Name)"
         Write-TamgaLog -Message "Uygulama açıldı: $($Item.Name) — $($target.Label)" -Color Cyan
     } catch {
+        $script:lastAppLaunchKey = ''
+        $script:lastAppLaunchAt = [DateTime]::MinValue
         $controls.ActivityText.Text = "Uygulama açılamadı: $($Item.Name)"
         Write-TamgaLog -Message "Uygulama açılamadı ($($Item.Name)): $($_.Exception.Message)" -Color Red
     }
@@ -3478,8 +3488,8 @@ $websiteClickHandler = [Windows.RoutedEventHandler]{
         return
     }
     if ($button.Name -eq 'OpenButton') {
-        Start-TamgaInstalledApp -Item $button.DataContext
         $eventArgs.Handled = $true
+        Start-TamgaInstalledApp -Item $button.DataContext
         return
     }
     if ($button.Name -eq 'UninstallButton') {
