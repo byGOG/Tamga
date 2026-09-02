@@ -1,6 +1,12 @@
 {
-  "Version": "1.2.10",
+  "Version": "1.2.11",
   "Channel": "stable",
   "PublishedAt": "2026-09-02",
-  "MinimumPowerShell": "5.1"
+  "MinimumPowerShell": "5.1",
+  "Summary": "Daha modern ve durum odaklı Tamga güncelleme deneyimi.",
+  "Highlights": [
+    "Arka planda güvenli kurulum",
+    "Canlı durum ve ilerleme görünümü",
+    "Hazır olduğunda tek tıkla yeniden başlatma"
+  ]
 }

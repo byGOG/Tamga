@@ -106,7 +106,7 @@ Git kullanmıyorsanız GitHub’daki **Code → Download ZIP** seçeneğiyle pro
 - Paket sürümü, yayıncı, lisans, mimari ve sistem uyumluluğunu gösteren ayrıntı çekmecesi
 - Windows koruması, WinGet kaynakları ve katalog bütünlüğü için Güvenlik Merkezi
 - Bekleyen Windows yeniden başlatmalarını gösteren durum uyarısı
-- Hakkında ekranından sürüm denetimi ve tek tıklamayla Tamga güncellemesi
+- Hakkında ekranında sürüm notları, canlı kurulum durumu ve tek tıkla yeniden başlatma sunan modern Tamga güncelleyicisi
 - Her gün çalışan katalog, bağlantı ve WinGet kimliği sağlık denetimi
 - Eksik WinGet’i Microsoft Store olmadan hazırlayabilen kurulum akışı
 - Windows Sandbox gibi boş sistemlerde çalışma desteği

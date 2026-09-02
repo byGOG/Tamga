@@ -1360,11 +1360,25 @@ $script:tamgaIconPath = @(
                             <Button x:Name="AboutGitHubButton" Grid.Column="2" Content="GitHub projesi  →" Background="{DynamicResource Primary}" Foreground="White"
                                     BorderBrush="#258CC0" BorderThickness="1" Padding="13,10" ToolTip="Tamga GitHub sayfasını aç"/>
                         </Grid>
-                        <Grid Margin="0,10,0,0">
-                            <TextBlock x:Name="AboutVersionText" Text="Sürüm denetleniyor..." Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
-                            <Button x:Name="AboutUpdateButton" Content="Tamga'yı güncelle" HorizontalAlignment="Right" Background="#0E7490" Foreground="White" Visibility="Collapsed"/>
-                        </Grid>
-                        <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="{DynamicResource Muted}" FontSize="9.5" HorizontalAlignment="Center" Margin="0,16,0,0"/>
+                        <Border x:Name="AboutUpdatePanel" Background="#182731" BorderBrush="#28536A" BorderThickness="1" CornerRadius="12" Padding="14,12" Margin="0,12,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <Border x:Name="AboutUpdateStatusBox" Width="30" Height="30" CornerRadius="9" Background="#123B52" VerticalAlignment="Top">
+                                    <TextBlock x:Name="AboutUpdateStatusIcon" Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#5CC8FF" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="0,0,14,0">
+                                    <TextBlock x:Name="AboutUpdateTitle" Text="Güncellemeler denetleniyor" Foreground="{DynamicResource Ink}" FontSize="12.5" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="AboutVersionText" Text="Sürüm bilgisi alınıyor..." Foreground="{DynamicResource Muted}" FontSize="10.5" Margin="0,3,0,0"/>
+                                    <TextBlock x:Name="AboutUpdateNotes" Text="En son kararlı sürüm güvenli kaynaktan denetleniyor." Foreground="#91A7B4" FontSize="10" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                    <ProgressBar x:Name="AboutUpdateProgress" Height="3" Minimum="0" Maximum="100" Value="0" IsIndeterminate="True" Margin="0,9,0,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                    <Button x:Name="AboutUpdateButton" Content="Şimdi güncelle" MinWidth="112" Padding="12,8" Background="#0E8AB4" BorderBrush="#27A5CE" Foreground="White" Visibility="Collapsed"/>
+                                    <Button x:Name="AboutRestartButton" Content="Yeniden başlat  →" MinWidth="112" Padding="12,8" Background="#138A5B" BorderBrush="#2AB77C" Foreground="White" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="© 2026 byGOG   •   PowerShell ile açık kaynak" Foreground="{DynamicResource Muted}" FontSize="9.5" HorizontalAlignment="Center" Margin="0,14,0,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -1389,7 +1403,7 @@ $window.Add_SourceInitialized({
 $controls = @{}
 @('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','MicrosoftDefenderButton','UacSettingsButton','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','DownloadButton','OfflineCacheButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
-  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailArchitecture','AppDetailCompatibility','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','AboutVersionText','AboutUpdateButton','SordumLink') | ForEach-Object {
+  'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailArchitecture','AppDetailCompatibility','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','AboutUpdatePanel','AboutUpdateStatusBox','AboutUpdateStatusIcon','AboutUpdateTitle','AboutVersionText','AboutUpdateNotes','AboutUpdateProgress','AboutUpdateButton','AboutRestartButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
 }
 
@@ -1442,17 +1456,185 @@ function Update-TamgaRebootState {
     $controls.RebootBadge.Visibility = if (Test-TamgaPendingReboot) { [Windows.Visibility]::Visible } else { [Windows.Visibility]::Collapsed }
 }
 
-function Update-TamgaVersionState {
-    $local = Get-TamgaLocalVersion
-    $controls.AboutVersionText.Text = "Yüklü sürüm: $local"
+$script:tamgaRemoteVersion = $null
+$script:tamgaUpdateProcess = $null
+$script:tamgaUpdateTimer = $null
+$script:tamgaUpdateResultPath = $null
+$script:tamgaUpdateReady = $false
+
+function Set-TamgaUpdaterState {
+    param(
+        [ValidateSet('Checking','Available','Current','Installing','Ready','Error')][string]$State,
+        [string]$VersionText,
+        [string]$Notes
+    )
+
+    $controls.AboutVersionText.Text = $VersionText
+    $controls.AboutUpdateNotes.Text = $Notes
     $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Collapsed
+    $controls.AboutRestartButton.Visibility = [Windows.Visibility]::Collapsed
+    $controls.AboutUpdateProgress.Visibility = [Windows.Visibility]::Visible
+    $controls.AboutUpdateProgress.IsIndeterminate = $false
+    $controls.AboutUpdateProgress.Value = 0
+
+    switch ($State) {
+        'Checking' {
+            $controls.AboutUpdateTitle.Text = 'Güncellemeler denetleniyor'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xE895
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#5CC8FF'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#123B52'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#28536A'
+            $controls.AboutUpdateProgress.IsIndeterminate = $true
+        }
+        'Available' {
+            $controls.AboutUpdateTitle.Text = 'Yeni sürüm hazır'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xE896
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#71D5FF'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#123B52'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#258CC0'
+            $controls.AboutUpdateProgress.Visibility = [Windows.Visibility]::Collapsed
+            $controls.AboutUpdateButton.Tag = 'Install'
+            $controls.AboutUpdateButton.Content = 'Şimdi güncelle'
+            $controls.AboutUpdateButton.IsEnabled = $true
+            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
+        }
+        'Current' {
+            $controls.AboutUpdateTitle.Text = 'Tamga güncel'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xE73E
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#55D68B'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#123B2A'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#276044'
+            $controls.AboutUpdateProgress.Visibility = [Windows.Visibility]::Collapsed
+            $controls.AboutUpdateButton.Tag = 'Check'
+            $controls.AboutUpdateButton.Content = 'Yeniden denetle'
+            $controls.AboutUpdateButton.IsEnabled = $true
+            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
+        }
+        'Installing' {
+            $controls.AboutUpdateTitle.Text = 'Güncelleme kuruluyor'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xE895
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#71D5FF'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#123B52'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#258CC0'
+            $controls.AboutUpdateProgress.IsIndeterminate = $true
+            $controls.AboutUpdateButton.Tag = 'Installing'
+            $controls.AboutUpdateButton.Content = 'Kuruluyor…'
+            $controls.AboutUpdateButton.IsEnabled = $false
+            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
+        }
+        'Ready' {
+            $controls.AboutUpdateTitle.Text = 'Güncelleme tamamlandı'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xE73E
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#55D68B'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#123B2A'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#2A8B60'
+            $controls.AboutUpdateProgress.Value = 100
+            $controls.AboutRestartButton.Visibility = [Windows.Visibility]::Visible
+        }
+        'Error' {
+            $controls.AboutUpdateTitle.Text = 'Güncelleme tamamlanamadı'
+            $controls.AboutUpdateStatusIcon.Text = [char]0xEA39
+            $controls.AboutUpdateStatusIcon.Foreground = New-ColorBrush '#FF8C8C'
+            $controls.AboutUpdateStatusBox.Background = New-ColorBrush '#432329'
+            $controls.AboutUpdatePanel.BorderBrush = New-ColorBrush '#7F3B46'
+            $controls.AboutUpdateProgress.Visibility = [Windows.Visibility]::Collapsed
+            $controls.AboutUpdateButton.Tag = 'Check'
+            $controls.AboutUpdateButton.Content = 'Yeniden dene'
+            $controls.AboutUpdateButton.IsEnabled = $true
+            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
+        }
+    }
+}
+
+function Update-TamgaVersionState {
+    if ($script:tamgaUpdateProcess -and -not $script:tamgaUpdateProcess.HasExited) { return }
+    $local = Get-TamgaLocalVersion
+    if ($script:tamgaUpdateReady) {
+        Set-TamgaUpdaterState -State Ready -VersionText "Sürüm $local kullanıma hazır" -Notes "Yeni dosyalar doğrulandı. Güncel sürümü açmak için Tamga'yı yeniden başlatın."
+        return
+    }
+    Set-TamgaUpdaterState -State Checking -VersionText "Yüklü sürüm $local" -Notes 'En son kararlı sürüm güvenli kaynaktan denetleniyor.'
     try {
         $remote = Invoke-RestMethod -UseBasicParsing -Uri ("https://bygog.github.io/Tamga/version.json?v={0}" -f [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) -TimeoutSec 4
+        $script:tamgaRemoteVersion = [string]$remote.Version
+        $releaseNotes = if ($remote.Highlights) { @($remote.Highlights) -join '  •  ' } elseif ($remote.Summary) { [string]$remote.Summary } else { 'Kararlılık ve kullanıcı deneyimi iyileştirmeleri.' }
         if ([version]$remote.Version -gt [version]$local) {
-            $controls.AboutVersionText.Text = "Yüklü: $local  •  Yeni: $($remote.Version)"
-            $controls.AboutUpdateButton.Visibility = [Windows.Visibility]::Visible
-        } else { $controls.AboutVersionText.Text = "Sürüm $local • güncel" }
-    } catch { $controls.AboutVersionText.Text = "Sürüm $local • çevrimdışı denetim" }
+            Set-TamgaUpdaterState -State Available -VersionText "Yüklü $local  →  Yeni $($remote.Version)" -Notes $releaseNotes
+        } else {
+            Set-TamgaUpdaterState -State Current -VersionText "Sürüm $local  •  Kararlı kanal" -Notes 'En son kararlı sürümü kullanıyorsunuz.'
+        }
+    } catch {
+        Set-TamgaUpdaterState -State Error -VersionText "Yüklü sürüm $local" -Notes 'Sürüm sunucusuna ulaşılamadı. İnternet bağlantınızı denetleyip yeniden deneyin.'
+    }
+}
+
+function Complete-TamgaSelfUpdate {
+    if ($script:tamgaUpdateTimer) { $script:tamgaUpdateTimer.Stop() }
+    $result = $null
+    try {
+        if ($script:tamgaUpdateResultPath -and (Test-Path -LiteralPath $script:tamgaUpdateResultPath)) {
+            $result = Get-Content -LiteralPath $script:tamgaUpdateResultPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        }
+    } catch { }
+    finally {
+        if ($script:tamgaUpdateResultPath) { Remove-Item -LiteralPath $script:tamgaUpdateResultPath -Force -ErrorAction SilentlyContinue }
+    }
+
+    $installedVersion = Get-TamgaLocalVersion
+    if ($result -and $result.Success -and (-not $script:tamgaRemoteVersion -or [version]$installedVersion -ge [version]$script:tamgaRemoteVersion)) {
+        $script:tamgaUpdateReady = $true
+        Set-TamgaUpdaterState -State Ready -VersionText "Sürüm $installedVersion kullanıma hazır" -Notes "Yeni dosyalar doğrulandı. Güncel sürümü açmak için Tamga'yı yeniden başlatın."
+        Write-TamgaLog -Message "Tamga $installedVersion sürümüne güncellendi; yeniden başlatma bekleniyor." -Color Green
+    } else {
+        $script:tamgaUpdateReady = $false
+        $detail = if ($result.Error) { [string]$result.Error } else { 'Kurucu beklenmeyen bir sonuç döndürdü.' }
+        Set-TamgaUpdaterState -State Error -VersionText "Yüklü sürüm $installedVersion" -Notes $detail
+        Write-TamgaLog -Message "Tamga güncellemesi tamamlanamadı: $detail" -Color Red
+    }
+    $script:tamgaUpdateProcess = $null
+}
+
+function Start-TamgaSelfUpdate {
+    if ($script:tamgaUpdateProcess -and -not $script:tamgaUpdateProcess.HasExited) { return }
+    $local = Get-TamgaLocalVersion
+    $target = if ($script:tamgaRemoteVersion) { $script:tamgaRemoteVersion } else { 'en son sürüm' }
+    Set-TamgaUpdaterState -State Installing -VersionText "$local  →  $target" -Notes 'Dosyalar indiriliyor, doğrulanıyor ve güvenli biçimde hazırlanıyor. Tamga açık kalabilir.'
+
+    try {
+        $script:tamgaUpdateResultPath = Join-Path $env:TEMP ("Tamga-update-{0}.json" -f [guid]::NewGuid().ToString('N'))
+        $directoryToken = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($PSScriptRoot))
+        $resultToken = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($script:tamgaUpdateResultPath))
+        $updateCommand = @'
+$ErrorActionPreference = 'Stop'
+$installDirectory = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('__DIRECTORY_TOKEN__'))
+$resultPath = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('__RESULT_TOKEN__'))
+$uri = 'https://bygog.github.io/Tamga/install.ps1?v=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+try {
+    $content = Invoke-RestMethod -UseBasicParsing -Uri $uri -TimeoutSec 30
+    & ([scriptblock]::Create([string]$content)) -InstallDirectory $installDirectory -NoLaunch
+    [IO.File]::WriteAllText($resultPath, (@{ Success = $true } | ConvertTo-Json -Compress), [Text.UTF8Encoding]::new($false))
+    exit 0
+} catch {
+    [IO.File]::WriteAllText($resultPath, (@{ Success = $false; Error = $_.Exception.Message } | ConvertTo-Json -Compress), [Text.UTF8Encoding]::new($false))
+    exit 1
+}
+'@
+        $updateCommand = $updateCommand.Replace("__DIRECTORY_TOKEN__", $directoryToken).Replace("__RESULT_TOKEN__", $resultToken)
+        $encodedUpdate = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($updateCommand))
+        $windowsPowerShell = Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
+        if (-not (Test-Path -LiteralPath $windowsPowerShell)) { $windowsPowerShell = 'powershell.exe' }
+        $script:tamgaUpdateProcess = Start-Process -FilePath $windowsPowerShell -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-EncodedCommand',$encodedUpdate) -WindowStyle Hidden -PassThru
+        $script:tamgaUpdateTimer = [Windows.Threading.DispatcherTimer]::new()
+        $script:tamgaUpdateTimer.Interval = [TimeSpan]::FromMilliseconds(450)
+        $script:tamgaUpdateTimer.Add_Tick({
+            if ($script:tamgaUpdateProcess -and $script:tamgaUpdateProcess.HasExited) { Complete-TamgaSelfUpdate }
+        })
+        $script:tamgaUpdateTimer.Start()
+        Write-TamgaLog -Message "Tamga güncellemesi arka planda başlatıldı: $local → $target" -Color Cyan
+    } catch {
+        Set-TamgaUpdaterState -State Error -VersionText "Yüklü sürüm $local" -Notes $_.Exception.Message
+        Write-TamgaLog -Message "Tamga güncellemesi başlatılamadı: $($_.Exception.Message)" -Color Red
+    }
 }
 
 function Import-TamgaBrandImage {
@@ -2884,18 +3066,16 @@ $controls.AboutGitHubButton.Add_Click({
     try { Start-Process -FilePath 'https://github.com/byGOG/Tamga' } catch { Write-TamgaLog -Message "GitHub projesi açılamadı: $($_.Exception.Message)" -Color Red }
 })
 $controls.AboutUpdateButton.Add_Click({
+    if ([string]$controls.AboutUpdateButton.Tag -eq 'Install') { Start-TamgaSelfUpdate }
+    else { Update-TamgaVersionState }
+})
+$controls.AboutRestartButton.Add_Click({
     try {
-        $controls.AboutUpdateButton.IsEnabled = $false
-        $controls.AboutUpdateButton.Content = 'Güncelleme başlatılıyor…'
-        $updateCommand = "`$ErrorActionPreference='Stop'; `$content=Invoke-RestMethod -UseBasicParsing 'https://bygog.github.io/Tamga/install.ps1'; & ([scriptblock]::Create([string]`$content))"
-        $encodedUpdate = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($updateCommand))
-        Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-EncodedCommand',$encodedUpdate) | Out-Null
+        $launcher = Join-Path $PSScriptRoot 'Tamga.bat'
+        if (Test-Path -LiteralPath $launcher) { Start-Process -FilePath $launcher | Out-Null }
+        else { Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-STA','-File',('"{0}"' -f (Join-Path $PSScriptRoot 'Tamga.ps1'))) | Out-Null }
         $window.Close()
-    } catch {
-        $controls.AboutUpdateButton.IsEnabled = $true
-        $controls.AboutUpdateButton.Content = "Tamga'yı güncelle"
-        Write-TamgaLog -Message "Tamga güncellemesi başlatılamadı: $($_.Exception.Message)" -Color Red
-    }
+    } catch { Write-TamgaLog -Message "Tamga yeniden başlatılamadı: $($_.Exception.Message)" -Color Red }
 })
 $controls.SordumLink.Add_RequestNavigate({
     param($sender, $eventArgs)
