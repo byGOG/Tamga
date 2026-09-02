@@ -82,6 +82,8 @@ Assert-Tamga ($scriptText -match 'x:Name="UacSettingsButton" Grid.Row="7" Height
 Assert-Tamga ($scriptText -match 'x:Name="AboutButton" Grid.Row="8" Height="54"') 'Kompakt araç alanında Hakkında sırası veya yüksekliği yanlış.'
 Assert-Tamga ($scriptText -match 'x:Name="WingetCard" Grid.Row="9" Height="54"') 'Kompakt araç alanında WinGet sırası veya yüksekliği yanlış.'
 Assert-Tamga ($scriptText -notmatch 'DefenderNavIconImage|UacNavIconImage') 'Alt araç alanında eski kalkan görselleri kullanılmamalı.'
+Assert-Tamga ($scriptText -match 'x:Name="AboutCloseButton"[^>]+Margin="0"') 'Hakkında kapatma düğmesi başlık alanında doğru konumlandırılmamış.'
+Assert-Tamga ($scriptText -notmatch 'x:Name="AboutCloseButton"[^>]+Margin="[^"]*-') 'Hakkında kapatma düğmesi kırpılmaya neden olan negatif kenar boşluğu içermemeli.'
 
 $tamgaAst = [Management.Automation.Language.Parser]::ParseInput($scriptText, [ref]$null, [ref]$null)
 $upgradeParserAst = $tamgaAst.Find({

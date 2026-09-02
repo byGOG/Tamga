@@ -1318,9 +1318,12 @@ $script:tamgaIconPath = @(
                                             <StackPanel Orientation="Horizontal"><Ellipse Width="6" Height="6" Fill="#3DDC97" Margin="0,0,6,0"/><TextBlock Text="AÇIK KAYNAK" Foreground="#72E3AD" FontSize="8.5" FontWeight="Bold"/></StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <Button x:Name="AboutCloseButton" Grid.Column="2" Content="&#xE711;" Width="36" Height="36" Padding="0" VerticalAlignment="Top" Margin="0,-33,0,0"
+                                    <Button x:Name="AboutCloseButton" Grid.Column="2" Width="34" Height="34" Padding="0" VerticalAlignment="Top" Margin="0"
                                             Background="{DynamicResource ActionBg}" BorderBrush="{DynamicResource ActionBorder}" BorderThickness="1" Foreground="{DynamicResource ActionIcon}"
-                                            FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" ToolTip="Kapat (Esc)"/>
+                                            ToolTip="Kapat (Esc)" AutomationProperties.Name="Hakkında penceresini kapat">
+                                        <TextBlock Text="&#xE711;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>
