@@ -75,6 +75,13 @@ Assert-Tamga ($scriptText -match 'function Resolve-TamgaLaunchTarget') 'Kurulu u
 Assert-Tamga ($scriptText -match 'shell:AppsFolder') 'Başlat menüsü uygulamalarını açma desteği bulunamadı.'
 Assert-Tamga ($scriptText -match 'x:Name="MicrosoftDefenderButton"') 'Microsoft Defender sabit araç kartı bulunamadı.'
 Assert-Tamga ($scriptText -match 'windowsdefender://threat') 'Microsoft Defender virüs ve tehdit koruması bağlantısı bulunamadı.'
+Assert-Tamga ($scriptText -match 'x:Name="UpdateCenterButton" Grid.Row="3" Height="54"') 'Kompakt araç alanında Güncelleme Merkezi sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -match 'x:Name="SecurityCenterButton" Grid.Row="5" Height="54"') 'Kompakt araç alanında Güvenlik Merkezi sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -match 'x:Name="MicrosoftDefenderButton" Grid.Row="6" Height="54"') 'Kompakt araç alanında Microsoft Defender sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -match 'x:Name="UacSettingsButton" Grid.Row="7" Height="54"') 'Kompakt araç alanında UAC sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -match 'x:Name="AboutButton" Grid.Row="8" Height="54"') 'Kompakt araç alanında Hakkında sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -match 'x:Name="WingetCard" Grid.Row="9" Height="54"') 'Kompakt araç alanında WinGet sırası veya yüksekliği yanlış.'
+Assert-Tamga ($scriptText -notmatch 'DefenderNavIconImage|UacNavIconImage') 'Alt araç alanında eski kalkan görselleri kullanılmamalı.'
 
 $tamgaAst = [Management.Automation.Language.Parser]::ParseInput($scriptText, [ref]$null, [ref]$null)
 $upgradeParserAst = $tamgaAst.Find({

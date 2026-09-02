@@ -336,54 +336,57 @@ $script:tamgaIconPath = @(
                     <StackPanel x:Name="CategoryPanel"/>
                 </ScrollViewer>
 
-                <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,4,0,0"
+                <Button x:Name="UpdateCenterButton" Grid.Row="3" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,3,0,0" TabIndex="10"
                         ToolTip="Yüklü paketlerdeki güncellemeleri tara ve yönet" AutomationProperties.Name="Güncelleme Merkezi">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border x:Name="UpdateNavIcon" Width="40" Height="40" CornerRadius="12" Background="#4B3715" BorderBrush="#8A6423" BorderThickness="1">
-                            <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#FFD166"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border x:Name="UpdateNavIcon" Width="36" Height="36" CornerRadius="10" Background="#4B3715" BorderBrush="#8A6423" BorderThickness="1">
+                            <TextBlock Text="&#xE895;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="19" Foreground="#FFD166"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güncelleme Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#C8AC7F" FontSize="10" Margin="0,3,0,0"/>
+                            <TextBlock x:Name="UpdateCenterNavDetail" Text="Paketleri tara ve yükselt" Foreground="#C8AC7F" FontSize="9.5" Margin="0,2,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#FFD58A" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Button x:Name="SecurityCenterButton" Grid.Row="4" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="SecurityCenterButton" Grid.Row="5" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,6,0,0" TabIndex="12"
                         ToolTip="Sistem ve Tamga güvenlik durumunu denetle" AutomationProperties.Name="Güvenlik Merkezi">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border x:Name="SecurityNavIcon" Width="40" Height="40" CornerRadius="12" Background="#123D31" BorderBrush="#25745A" BorderThickness="1">
-                            <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#69E0AE"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border x:Name="SecurityNavIcon" Width="36" Height="36" CornerRadius="10" Background="#123D31" BorderBrush="#25745A" BorderThickness="1">
+                            <TextBlock Text="&#xE72E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="19" Foreground="#69E0AE"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Güvenlik Merkezi" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
-                            <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="10" Margin="0,3,0,0"/>
+                            <TextBlock x:Name="SecurityCenterNavDetail" Text="Denetim bekleniyor" Foreground="#86C9A8" FontSize="9.5" Margin="0,2,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Button x:Name="MicrosoftDefenderButton" Grid.Row="5" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="MicrosoftDefenderButton" Grid.Row="6" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,6,0,0" TabIndex="13"
                         ToolTip="Microsoft Defender virüs ve tehdit korumasını aç" AutomationProperties.Name="Microsoft Defender">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border Width="40" Height="40" CornerRadius="12" Background="#183C58" BorderBrush="#2C78A8" BorderThickness="1">
-                            <Image x:Name="DefenderNavIconImage" Width="28" Height="28" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="36" Height="36" CornerRadius="10" Background="#123B62" BorderBrush="#287DB5" BorderThickness="1">
+                            <Grid>
+                                <TextBlock Text="&#xE83D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#69C7FF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Ellipse Width="8" Height="8" Fill="#39C77A" Stroke="#123B62" StrokeThickness="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,3,3"/>
+                            </Grid>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
                             <TextBlock Text="Microsoft Defender" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
-                            <TextBlock Text="Virüs ve tehdit koruması" Foreground="#86BBD8" FontSize="10" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="Virüs ve tehdit koruması" Foreground="#86BBD8" FontSize="9.5" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Button x:Name="FailureCenterButton" Grid.Row="6" Height="58" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0" Visibility="Collapsed"
+                <Button x:Name="FailureCenterButton" Grid.Row="4" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,6,0,0" Visibility="Collapsed" TabIndex="11"
                         ToolTip="Başarısız paket işlemlerini incele ve yeniden dene" AutomationProperties.Name="Başarısız İşlemler Merkezi">
                     <Grid Width="183">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
@@ -398,60 +401,65 @@ $script:tamgaIconPath = @(
                     </Grid>
                 </Button>
 
-                <Button x:Name="AboutButton" Grid.Row="7" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="AboutButton" Grid.Row="8" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,6,0,0" TabIndex="15"
                         ToolTip="Tamga bilgilerini ve bağlantılarını göster" AutomationProperties.Name="Tamga hakkında">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border x:Name="AboutNavIcon" Width="40" Height="40" CornerRadius="12" Background="#123B55" BorderBrush="#2576A4" BorderThickness="1">
-                            <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#72CFF4"
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border x:Name="AboutNavIcon" Width="36" Height="36" CornerRadius="10" Background="#123B55" BorderBrush="#2576A4" BorderThickness="1">
+                            <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="19" Foreground="#72CFF4"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
-                            <TextBlock Text="Tamga • byGOG" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,3,0,0"/>
+                            <TextBlock Text="Hakkında" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="Tamga • byGOG" Foreground="{DynamicResource Muted}" FontSize="9.5" Margin="0,2,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Button x:Name="UacSettingsButton" Grid.Row="8" Height="62" Style="{StaticResource AboutNavButton}" Margin="0,8,0,0"
+                <Button x:Name="UacSettingsButton" Grid.Row="7" Height="54" Style="{StaticResource AboutNavButton}" Margin="0,6,0,0" TabIndex="14"
                         ToolTip="Kullanıcı Hesabı Denetimi bildirim düzeyini seç" AutomationProperties.Name="UAC Ayarları">
                     <Grid Width="183">
-                        <Grid.ColumnDefinitions><ColumnDefinition Width="48"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
-                        <Border Width="40" Height="40" CornerRadius="12" Background="#183C58" BorderBrush="#2C78A8" BorderThickness="1">
-                            <Image x:Name="UacNavIconImage" Width="28" Height="28" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" SnapsToDevicePixels="True"/>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="42"/><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/></Grid.ColumnDefinitions>
+                        <Border Width="36" Height="36" CornerRadius="10" Background="#342C58" BorderBrush="#6656A0" BorderThickness="1">
+                            <Grid>
+                                <TextBlock Text="&#xE83D;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="20" Foreground="#B7A5FF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border Width="10" Height="10" CornerRadius="5" Background="#F5B942" BorderBrush="#342C58" BorderThickness="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+                                    <TextBlock Text="!" FontSize="7" FontWeight="Bold" Foreground="#201A38" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="2,0,4,0">
-                            <TextBlock Text="UAC Ayarları" Foreground="{DynamicResource Ink}" FontSize="13" FontWeight="SemiBold"/>
-                            <TextBlock Text="Bildirim düzeyini seç" Foreground="#86BBD8" FontSize="10" Margin="0,3,0,0"/>
+                            <TextBlock Text="UAC Ayarları" Foreground="{DynamicResource Ink}" FontSize="12" FontWeight="SemiBold"/>
+                            <TextBlock Text="Bildirim düzeyini seç" Foreground="#B8ACE0" FontSize="9.5" Margin="0,2,0,0"/>
                         </StackPanel>
                         <TextBlock Grid.Column="2" Text="&#xE72A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#72CFF4" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </Button>
 
-                <Border x:Name="WingetCard" Grid.Row="9" Height="62" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
-                        CornerRadius="10" Padding="9,7" Margin="0,8,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir"
+                <Border x:Name="WingetCard" Grid.Row="9" Height="54" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource SubtleBorder}" BorderThickness="1"
+                        CornerRadius="10" Padding="7,5" Margin="0,6,0,0" ToolTip="winget durumunu ve kurulum motorunu gösterir" KeyboardNavigation.TabIndex="16"
                         Focusable="True" AutomationProperties.Name="WinGet paket yöneticisi durumu"
                         AutomationProperties.HelpText="WinGet eksikse Enter veya Boşluk tuşuyla kurulumu başlatın">
-                    <Grid Width="183" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.RowDefinitions><RowDefinition Height="26"/><RowDefinition Height="20"/></Grid.RowDefinitions>
+                    <Grid Width="183" Height="42" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions><RowDefinition Height="23"/><RowDefinition Height="17"/></Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="42"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="40" Height="40" Background="#123D31" BorderBrush="#25745A" BorderThickness="1" CornerRadius="12" VerticalAlignment="Center">
+                        <Border x:Name="WingetIconBox" Grid.RowSpan="2" Width="36" Height="36" Background="#123D31" BorderBrush="#25745A" BorderThickness="1" CornerRadius="10" VerticalAlignment="Center">
                             <Grid>
                                 <TextBlock x:Name="WingetReadyIcon" Text="&#xE73E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                           FontSize="21" Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
-                                <TextBlock x:Name="WingetIcon" Text="✓" Foreground="#6EE7B7" FontSize="16" FontWeight="Bold"
+                                           FontSize="19" Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                                <TextBlock x:Name="WingetIcon" Text="&#xE7B8;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="#6EE7B7" FontSize="18"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <TextBlock x:Name="WingetStatus" Grid.Column="1" Text="winget kontrol ediliyor" Foreground="{DynamicResource Ink}"
                                    FontSize="12" FontWeight="SemiBold" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis" Margin="2,0,5,2"/>
                         <TextBlock x:Name="WingetDetail" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Paket yöneticisi çevrimiçi"
-                                   Foreground="{DynamicResource Muted}" FontSize="10" Margin="2,1,0,0" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
+                                   Foreground="{DynamicResource Muted}" FontSize="9.5" Margin="2,0,0,0" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
                         <Border x:Name="WingetBadge" Grid.Column="2" Background="#123A2A" BorderBrush="#236747" BorderThickness="1"
                                 CornerRadius="12" Padding="6,3" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -1376,7 +1384,7 @@ $window.Add_SourceInitialized({
 })
 
 $controls = @{}
-@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','MicrosoftDefenderButton','DefenderNavIconImage','UacSettingsButton','UacNavIconImage','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
+@('Sidebar','MainWorkspace','HeaderBanner','BrandLogoImage','AboutBrandLogoImage','CategoryPanel','MicrosoftDefenderButton','UacSettingsButton','WingetCard','WingetIconBox','WingetReadyIcon','WingetIcon','WingetStatus','WingetDetail','WingetBadge','WingetBadgeDot','WingetBadgeText','TotalAppBadgeText','CategoryBadgeText','SystemScanBadge','SystemScanBadgeText','RebootBadge','SearchBox','SearchPlaceholder','SearchClearButton','KeyboardHelpButton','KeyboardHelpOverlay','KeyboardHelpBackdrop','KeyboardHelpCard','KeyboardHelpCloseButton','SectionTitle','ResultCount','AppList','SelectionText',
   'ActivityText','InstallProgress','SelectAllButton','InstallButton','DownloadButton','OfflineCacheButton','QueueViewButton','InstallQueueOverlay','QueueBackdrop','QueueCloseButton','InstallQueueList','QueueSummaryText','QueueDetailText','QueueCountText','QueueFooterText','QueueProgress','QueueRetryButton','QueueCancelButton','FailureCenterButton','FailureCenterNavDetail','FailureCenterView','FailureBackButton','FailureCountText','FailureLastText','FailureEmptyState','FailureList','FailureFooterTitle','FailureClearButton','UpdateCenterButton','UpdateNavIcon','UpdateHeaderIcon','UpdateCenterNavDetail','UpdateCenterView','UpdateBackButton','UpdateRefreshButton','UpdateCountBadge','UpdateCountText','UpdateLastScanText','UpdateEmptyState','UpdateList','UpdateSelectionText','UpdateActivityText','UpdateProgress','UpdateSelectAllButton','UpdateInstallButton','SecurityCenterButton','SecurityNavIcon','SecurityHeaderIcon','SecurityCenterNavDetail','SecurityCenterView','SecurityBackButton','SecurityRefreshButton','SecurityScoreBadge','SecurityScoreText','SecuritySummaryText','SecuritySummaryDetail','SecurityLastScanText','SecurityCheckList','OpenWindowsSecurityButton',
   'AppDetailOverlay','AppDetailBackdrop','AppDetailDrawer','AppDetailCloseButton','AppDetailLogo','AppDetailInitial','AppDetailName','AppDetailCategory','AppDetailStatusBadge','AppDetailStatusText','AppDetailStatusDescription','AppDetailInstalledVersion','AppDetailCatalogVersion','AppDetailMetadataState','AppDetailDescription','AppDetailId','AppDetailSource','AppDetailMetaCategory','AppDetailPublisher','AppDetailAuthor','AppDetailLicense','AppDetailInstallerType','AppDetailTags','AppDetailRepository','AppDetailHashStatus','AppDetailElevation','AppDetailCatalogUpdated','AppDetailArchitecture','AppDetailCompatibility','AppDetailRemoveButton','AppDetailWebsiteButton','AppDetailPrimaryButton','UninstallConfirmOverlay','UninstallConfirmBackdrop','UninstallConfirmAppName','UninstallConfirmDetail','UninstallCancelButton','UninstallConfirmButton','AboutButton','AboutNavIcon','AboutOverlay','AboutBackdrop','AboutCard','AboutCloseButton','AboutByGogButton','AboutGitHubButton','AboutVersionText','AboutUpdateButton','SordumLink') | ForEach-Object {
     $controls[$_] = $window.FindName($_)
@@ -1477,12 +1485,6 @@ $linkIconImage = Import-TamgaBrandImage -FileName 'link-icon.png'
 if ($linkIconImage) { $window.Resources['LinkIconImage'] = $linkIconImage }
 $uninstallIconImage = Import-TamgaBrandImage -FileName 'uninstall-icon.png'
 if ($uninstallIconImage) { $window.Resources['UninstallIconImage'] = $uninstallIconImage }
-$uacNavImage = Import-TamgaBrandImage -FileName 'uac-settings-logo.png'
-if ($uacNavImage) {
-    $controls.UacNavIconImage.Source = $uacNavImage
-    $controls.DefenderNavIconImage.Source = $uacNavImage
-}
-
 $script:focusHistory = [Collections.Stack]::new()
 $script:focusRegionIndex = -1
 
